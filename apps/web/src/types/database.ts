@@ -1,4 +1,3 @@
-
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
@@ -23,7 +22,26 @@ export type Database = {
           }
         },"public": {
           Tables: {
-            "inbody_records": {
+            "checkins": {
+                  Row: {
+                    "created_at": string,"id": string,"local_checkin_date": string,"note": string | null,"submitted_at": string,"trainee_id": string
+                  }
+                  Insert: {
+                    "created_at"?: string,"id"?: string,"local_checkin_date": string,"note"?: string | null,"submitted_at"?: string,"trainee_id": string
+                  }
+                  Update: {
+                    "created_at"?: string,"id"?: string,"local_checkin_date"?: string,"note"?: string | null,"submitted_at"?: string,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "checkins_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"inbody_records": {
                   Row: {
                     "body_fat_mass_kg": number,"created_at": string,"id": string,"is_manually_edited": boolean,"percent_body_fat": number,"pt_id": string,"recorded_at": string,"skeletal_muscle_mass_kg": number,"source": Database["public"]['Enums']["inbody_source"],"target_calories": number | null,"target_carb_grams": number | null,"target_fat_grams": number | null,"target_protein_grams": number | null,"total_body_water_liters": number | null,"trainee_id": string,"verified_by": string,"weight_kg": number
                   }
@@ -51,6 +69,31 @@ isOneToOne: false
       columns: ["verified_by"]
 isOneToOne: false
       referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"meal_logs": {
+                  Row: {
+                    "checkin_id": string,"created_at": string,"id": string,"photo_mime_type": string,"photo_size_bytes": number,"private_photo_path": string,"trainee_id": string
+                  }
+                  Insert: {
+                    "checkin_id": string,"created_at"?: string,"id"?: string,"photo_mime_type": string,"photo_size_bytes": number,"private_photo_path": string,"trainee_id": string
+                  }
+                  Update: {
+                    "checkin_id"?: string,"created_at"?: string,"id"?: string,"photo_mime_type"?: string,"photo_size_bytes"?: number,"private_photo_path"?: string,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "meal_logs_checkin_id_fkey"
+      columns: ["checkin_id"]
+isOneToOne: true
+      referencedRelation: "checkins"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "meal_logs_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
       referencedColumns: ["id"]
     }
                   ]
@@ -119,13 +162,13 @@ isOneToOne: false
                   ]
                 },"trainee_profiles": {
                   Row: {
-                    "archived_at": string | null,"assigned_pt_id": string,"created_at": string,"display_name": string,"id": string,"last_checkin_date": string | null,"phone": string | null,"primary_goal": Database["public"]['Enums']["fitness_goal"],"profile_id": string | null,"remaining_sessions": number,"status": Database["public"]['Enums']["trainee_status"],"total_sessions": number,"updated_at": string
+                    "archived_at": string | null,"assigned_pt_id": string,"created_at": string,"display_name": string,"engagement_started_on": string | null,"id": string,"last_checkin_date": string | null,"phone": string | null,"primary_goal": Database["public"]['Enums']["fitness_goal"],"profile_id": string | null,"remaining_sessions": number,"status": Database["public"]['Enums']["trainee_status"],"total_sessions": number,"updated_at": string
                   }
                   Insert: {
-                    "archived_at"?: string | null,"assigned_pt_id": string,"created_at"?: string,"display_name": string,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
+                    "archived_at"?: string | null,"assigned_pt_id": string,"created_at"?: string,"display_name": string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
                   }
                   Update: {
-                    "archived_at"?: string | null,"assigned_pt_id"?: string,"created_at"?: string,"display_name"?: string,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
+                    "archived_at"?: string | null,"assigned_pt_id"?: string,"created_at"?: string,"display_name"?: string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -153,12 +196,29 @@ isOneToOne: false
               "outcome": string,"trainee_id": string
             }[]
                            },
+"application_local_date":
+{ Args: { "at_time": string }; Returns: string
+                           },
+"application_timezone":
+{ Args: Record<PropertyKey, never>; Returns: string
+                           },
+"checkin_warning_starts_on":
+{ Args: { "reference_date": string }; Returns: string
+                           },
 "create_trainee_with_invitation":
 { Args: { "invite_email": string,"invite_expires_at": string,"invite_token_hash": string,"package_remaining": number,"package_total": number,"trainee_display_name": string,"trainee_goal": Database["public"]['Enums']["fitness_goal"],"trainee_phone": string }; Returns: string
                            },
 "get_invitation_preview":
 { Args: { "invite_token_hash": string }; Returns: {
               "display_name": string,"email": string,"expires_at": string
+            }[]
+                           },
+"is_checkin_warning_due":
+{ Args: { "at_time": string,"reference_date": string }; Returns: boolean
+                           },
+"submit_daily_checkin":
+{ Args: { "checkin_note": string,"meal_photo_mime_type"?: string,"meal_photo_path"?: string,"meal_photo_size_bytes"?: number }; Returns: {
+              "checkin_id": string,"local_checkin_date": string,"outcome": string
             }[]
                            }
           }

@@ -11,34 +11,33 @@ import {
 const stages = [
   {
     status: "ĐÃ XÁC MINH CỤC BỘ",
-    title: "Luồng M2 đang hoạt động",
+    title: "Luồng M2 + M3 đang hoạt động",
     icon: Check,
     items: [
       "PT tạo roster và lời mời một lần có hạn",
-      "Nhập tay 5 chỉ số với kiểm tra tính hợp lý",
-      "PT xác nhận, học viên xem đúng bản ghi",
-      "RLS ngăn truy cập chéo giữa các tài khoản",
+      "Xác nhận InBody và theo dõi số buổi còn lại",
+      "Check-in hằng ngày với ảnh bữa ăn riêng tư",
+      "Cảnh báo và follow-up thủ công, không tự gửi",
     ],
   },
   {
-    status: "TIẾP THEO: M3",
-    title: "Nhịp đồng hành hằng ngày",
+    status: "TIẾP THEO: M4",
+    title: "OCR sau bước kiểm chứng",
     icon: CircleDashed,
     items: [
-      "Check-in hằng ngày và ảnh bữa ăn tùy chọn",
-      "Cảnh báo sau 3 ngày không check-in",
-      "Tương tác số buổi còn lại",
-      "Chuẩn bị tin nhắn follow-up cho PT",
+      "Benchmark trên dữ liệu được đồng ý sử dụng",
+      "Kiểm tra định dạng và chữ ký tệp phía server",
+      "Mọi chỉ số vẫn cần PT duyệt trước khi lưu",
     ],
   },
   {
-    status: "SAU M3",
+    status: "SAU M4",
     title: "Chỉ triển khai khi có bằng chứng",
     icon: Clock3,
     items: [
-      "OCR InBody sau benchmark và bước PT duyệt",
       "Pilot có analytics, hỗ trợ và xóa dữ liệu",
       "Thanh toán và ứng dụng mobile dùng chung backend",
+      "Chỉ công bố giá khi luồng thương mại hoạt động",
     ],
   },
 ];

@@ -1,14 +1,14 @@
 # FitSync project handoff
 
-**Updated:** 2026-09-27
+**Updated:** 2026-09-28
 **Branch:** `feature/landing-product-redesign`
-**Current milestone:** M3 next — M2 and the landing activation alignment are verified
+**Current milestone:** M4 next — M3 engagement is verified
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
 
 ## Product in one paragraph
 
-FitSync is a mobile-first coaching workspace for independent Vietnamese personal trainers who manage roughly 5–20 active trainees. PTs use a responsive web workspace on desktop, tablet, or phone. Trainees start with a focused mobile web experience; a shared-backend Expo app comes after the web workflow is validated. The first real outcome is a secure flow where a PT creates a trainee, the trainee accepts an invitation, the PT records and verifies five InBody measurements, and the trainee signs in to see the same verified record.
+FitSync is a mobile-first coaching workspace for independent Vietnamese personal trainers who manage roughly 5–20 active trainees. PTs use a responsive web workspace on desktop, tablet, or phone. Trainees start with a focused mobile web experience; a shared-backend Expo app comes after the web workflow is validated. The verified web flow now covers secure trainee invitation and InBody confirmation plus one daily trainee check-in, optional private meal media, PT activity/session review, and a manual inactivity follow-up queue.
 
 ## Source-of-truth order
 
@@ -106,12 +106,23 @@ Useful survey aggregates:
 - Simulated OCR, hypothetical ROI, and proposed pricing remain explicitly labeled and appear after verified product evidence.
 - `landing-conversion-alignment.md` records the completed checklist and verification evidence.
 
+### M3 — engagement
+
+- Added immutable, one-per-application-day `checkins` and optional `meal_logs`, with versioned migrations, constraints, indexes, grants, and RLS for only the linked trainee and assigned PT.
+- Added the private `meal-media` storage bucket. Trainees upload only beneath their own trainee path; linked PTs and trainees receive 60-second signed URLs, while unrelated and anonymous users cannot read or sign the objects.
+- Added server-side note, file-size, declared-MIME, and JPEG/PNG/WebP binary-signature validation. The database transaction also requires the private object to exist before linking it to a check-in.
+- Fixed the application timezone at `Asia/Ho_Chi_Minh`. A Monday reference date enters the warning queue Friday at 00:00 local time, after Tuesday, Wednesday, and Thursday fully elapse. A linked trainee with no check-in uses the invitation-acceptance application date as the reference.
+- Added trainee check-in/history UI, private meal-photo display, PT activity history, explicit remaining-session editing, and a warning queue on the real `/workspace` routes.
+- Follow-up is intentionally manual: FitSync can copy prepared Vietnamese text or open the trainee's Zalo profile, but there is no send endpoint or automatic network action.
+- Added M3 pgTAP/RLS, domain, and Chromium coverage for persistence, private media, cross-tenant isolation, session updates, calendar/timezone boundaries, no automatic messaging, and desktop/mobile rendering.
+- Updated the landing capability-status copy only, without changing the verified CTA hierarchy or repeating the landing redesign.
+
 ## Last verified product state
 
-The following checks passed on 2026-09-27 with Node `v20.20.2` and npm `10.8.2`:
+The following checks passed on 2026-09-28 with Node `v20.20.2` and npm `10.8.2`:
 
 ```bash
-sg docker -c 'npm run db:reset && npm run db:test && npm run db:types'
+sg docker -c 'npm run db:reset && npm run db:test && npm run db:types && npx supabase db lint --local'
 npm run test
 npm run lint
 npm run typecheck
@@ -119,7 +130,7 @@ npm run build
 npm run test:e2e
 ```
 
-The database suite last passed 38 of 38 pgTAP checks across M1 and M2. The landing checkpoint did not change the schema, so database reset and type generation were not repeated. The domain suite passed 5 of 5 Vitest checks. Two Playwright flows passed in Chromium and demonstrated:
+The database suite passed 82 of 82 pgTAP checks across M1–M3, and Supabase schema lint reported no errors. The domain suite passed 12 of 12 Vitest checks. Three Playwright flows passed in Chromium and demonstrated:
 
 - the landing primary CTA opens `/register`, while “Xem bản mẫu” opens the explicitly labeled fixture tour;
 - the first landing proof shows the verified M2 workflow with synthetic data rather than leading with M3 or OCR concepts;
@@ -133,6 +144,12 @@ The database suite last passed 38 of 38 pgTAP checks across M1 and M2. The landi
 - PT roster access at both 1440px desktop and 390px mobile widths with no horizontal overflow;
 - invitation copy feedback, including the browser fallback used when modern clipboard permission is unavailable;
 - an unrelated PT receiving a 404 for the protected trainee route;
+- an authorized trainee submitting a note and signature-valid meal photo, with both persisting after reload;
+- the assigned PT seeing the same check-in and private image while an unrelated PT cannot read, mutate, download, or create a signed URL for them;
+- PT remaining-session updates persisting and appearing in the trainee view;
+- no warning after only two full intervening dates, then a warning on the fourth local date after three full dates have elapsed;
+- prepared-message copy feedback and an intentional Zalo link without any automatic messaging request;
+- the M3 trainee and PT activity surfaces rendering without horizontal overflow at 390px and at the 1440px desktop viewport;
 - no captured browser runtime errors.
 
 The landing component accessibility scan found no statically detectable issues across 13 files. The production build completes with the landing and fixture tour statically rendered and the invitation/workspace routes dynamically rendered. `npm audit --audit-level=high` still reports the previously documented five findings (four high and one critical); the automated fix requires a breaking Next.js major upgrade and was intentionally not run in this checkpoint.
@@ -145,9 +162,9 @@ Local Supabase endpoints when running:
 
 The current shell may need `sg docker -c '<command>'` until it inherits the user's Docker group. A fresh login should make ordinary `npm run db:*` commands work. Never copy keys from `apps/web/.env.local` into documentation or chat.
 
-## Active next milestone: M3
+## Active next milestone: M4
 
-M2 and the bounded landing conversion checkpoint are complete. The next work is M3 engagement from `docs/MVP_EXECUTION_PLAN.md`: trainee check-ins, optional meal upload, session balance interactions, and the three-full-calendar-day warning queue. Do not begin OCR or payment work before M3 passes.
+M3 engagement is complete and verified. The next planned product milestone is M4 OCR-assisted InBody entry behind mandatory PT review and a consented benchmark. Do not infer that OCR, payments, analytics, or Expo/mobile have started from the M3 implementation.
 
 The local database contains only synthetic accounts created by the final E2E run. Use `npm run db:reset` (or the Docker-group form below) when a clean local state is needed.
 
@@ -161,20 +178,20 @@ The local database contains only synthetic accounts created by the final E2E run
 - Store invitation token hashes, set expirations, and prevent reuse.
 - Use server-side validation for all writes; client validation is for feedback only.
 - Use synthetic data until consent, retention, deletion, and incident-response responsibilities are ready.
-- Follow the active milestone order: finish M3 before live OCR, payments, or Expo/mobile work.
+- Follow the active milestone order: validate M4 OCR before payments or Expo/mobile work.
 
 ## Repository checkpoint
 
-The landing redesign, monorepo move, M1 foundation, and verified M2 slice are committed together on `feature/landing-product-redesign` with the message `feat: establish FitSync web MVP through M2`. This checkpoint intentionally records the former root application moving into `apps/web`.
+The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed with its implementation, tests, generated types, and final handoff on the same branch.
 
 No pull request has been created and nothing has been pushed from this session. Inspect `git status` before new work and preserve any changes made after this checkpoint.
 
-The current worktree contains intentional, uncommitted documentation, landing UI, and browser-test changes from the verified post-M2 conversion checkpoint. Preserve them when M3 implementation begins.
+The final M3 worktree is committed. Preserve future intentional changes and inspect `git status` before beginning M4.
 
 ## Known debt and risks
 
-- `npm audit` currently reports five dependency findings (four high and one critical). The suggested blanket fix includes a breaking Next.js major upgrade. Handle this as a focused dependency-upgrade task rather than running `npm audit fix --force` during M2.
-- Password reset remains listed in the broader frozen MVP scope but is not part of the completed M2 vertical slice.
+- `npm audit` previously reported five dependency findings (four high and one critical). The suggested blanket fix includes a breaking Next.js major upgrade. Handle this as a focused dependency-upgrade task rather than running `npm audit fix --force` during feature milestones.
+- Password reset remains listed in the broader frozen MVP scope but is not part of the completed M1–M3 slices.
 - App Store and Play Store applications do not exist yet. The mobile app remains a later milestone using the same backend and identities.
 - Public pricing remains a hypothesis until a payment flow and pilot evidence exist.
 

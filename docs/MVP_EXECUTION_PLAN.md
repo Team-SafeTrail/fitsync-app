@@ -1,8 +1,8 @@
 # FitSync MVP execution plan
 
 **Status:** Active implementation baseline
-**Version:** 1.1
-**Updated:** 2026-09-27
+**Version:** 1.2
+**Updated:** 2026-09-28
 **Owner:** SafeTrail
 **Supersedes for implementation:** conflicting scope, status, price, platform, and outcome statements in earlier FitSync coursework documents
 
@@ -106,17 +106,19 @@ Android distribution is an EXE202 delivery milestone after the web MVP is stable
 
 **Accepted when:** no automatic message is sent; warning dates use the application timezone consistently; unauthorized users cannot fetch the check-in or media.
 
+**Verified M3 calendar rule:** the application timezone is `Asia/Ho_Chi_Minh`. The reference is the latest local check-in date, or the local invitation-acceptance date when no check-in exists. A reference date of Monday becomes warning-eligible Friday at 00:00 application time, after Tuesday, Wednesday, and Thursday have fully elapsed.
+
 ## 6. Initial data model
 
 | Table | Essential fields |
 | --- | --- |
 | `profiles` | auth user id, role (`pt`, `trainee`, `admin`), display name, phone, timestamps |
 | `pt_profiles` | profile id, gym affiliation, plan, plan expiry |
-| `trainee_profiles` | profile id, assigned PT id, goal, status, total sessions, remaining sessions, last check-in |
+| `trainee_profiles` | profile id, assigned PT id, goal, status, total sessions, remaining sessions, engagement start, last check-in |
 | `trainee_invitations` | PT id, normalized invitee contact, token hash, expiry, accepted timestamp |
 | `inbody_records` | trainee id, PT id, five metrics, draft nutrition fields, source, manual-edit flag, verified-by, recorded timestamp |
-| `checkins` | trainee id, local check-in date, weight, workout/diet flags, note, timestamp |
-| `meal_logs` | trainee id, meal type, private photo path, description, optional calorie estimate, timestamp |
+| `checkins` | trainee id, application-local check-in date, optional note, submitted timestamp |
+| `meal_logs` | check-in id, trainee id, private photo path, validated MIME type and size, timestamp |
 | `ocr_attempts` | PT id, trainee id, private source path, provider status, field confidences, error code, timestamp |
 | `subscriptions` | PT id, plan, status, period dates, payment verification mode |
 | `payment_records` | subscription id, amount, reference, evidence path, verification actor and timestamp |
@@ -153,8 +155,8 @@ Required isolation tests: PT A cannot read or mutate PT B’s trainee; trainee A
 | M0 Foundation | Verified | Monorepo, active plan, staging conventions | Root checks pass; plan and ADR reviewed |
 | M1 Identity | Verified | Supabase local project, migrations, auth, profiles, RLS | Automated cross-role isolation tests pass |
 | M2 First vertical slice | Verified | PT creates trainee and verified manual InBody record; trainee sees it | Desktop and mobile-browser E2E demonstration |
-| M3 Engagement | Next | Check-ins, meal upload, session balance, three-day warning | PT receives real trainee activity in staging |
-| M4 OCR | Planned | InBody 270 extraction behind mandatory review | Consented benchmark and failure tests pass |
+| M3 Engagement | Verified | Check-ins, meal upload, session balance, three-day warning | Desktop/mobile E2E plus RLS and timezone-boundary tests pass |
+| M4 OCR | Next | InBody 270 extraction behind mandatory review | Consented benchmark and failure tests pass |
 | M5 Pilot funnel | Planned | Real signup CTA, analytics, support and deletion flow | Acquisition-to-activation events visible |
 | M6 Paid pilot | Planned | Manual VietQR evidence and entitlement | Reconciled real transactions with consent |
 | M7 Android | Planned | Expo app or justified store-ready wrapper using production backend | Play testing-track listing and install evidence |
@@ -191,17 +193,9 @@ Every milestone must pass lint, TypeScript, focused unit tests for domain rules,
 
 ## 13. Immediate implementation backlog
 
-M0 through M2 and the post-M2 landing conversion checkpoint are complete. `landing-conversion-alignment.md` records the verified marketing-surface change.
+M0 through M3 and the post-M2 landing conversion checkpoint are complete. `landing-conversion-alignment.md` records the verified acquisition change, while `m3-engagement.md` records the M3 implementation checklist and boundary decision.
 
-The active backlog returns to M3:
-
-1. Add the check-in and optional meal-log schema, private storage boundary, RLS, and generated database types.
-2. Implement trainee check-in submission with server-side validation and an authorized history view.
-3. Add PT review of trainee activity plus explicit session-balance interactions.
-4. Implement the warning queue after three full calendar days without a check-in, using the documented application timezone.
-5. Add pgTAP isolation coverage, domain tests, and one desktop/mobile browser flow for the complete M3 loop.
-
-Do not pull OCR, payment, or Expo work forward.
+M4 OCR is next. Keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
 
 ## 14. Change control
 

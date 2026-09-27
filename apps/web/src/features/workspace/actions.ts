@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createInvitationToken, hashInvitationToken, isInvitationToken } from "@/features/invitations/token";
+import { validateCheckin, validateRemainingSessions } from "@/features/engagement/validation";
 import type { WorkspaceActionState } from "./action-state";
 import { validateCreateTrainee, validateInBody, validateNutritionDraft } from "./validation";
 import { getCurrentUser } from "@/lib/auth";
@@ -207,4 +208,103 @@ export async function updateNutritionDraft(recordId: string, traineeId: string, 
   if (error || !updatedRecord) redirect(`/workspace/trainees/${traineeId}?nutrition=error`);
   revalidatePath(`/workspace/trainees/${traineeId}`);
   redirect(`/workspace/trainees/${traineeId}?nutrition=updated`);
+}
+
+export async function submitDailyCheckin(
+  _previousState: WorkspaceActionState,
+  formData: FormData,
+): Promise<WorkspaceActionState> {
+  const context = await requireRole("trainee");
+  if (!context) return errorState("Chỉ học viên đã liên kết mới có thể gửi check-in.");
+
+  const input = await validateCheckin(formData);
+  if (!input.success) return errorState(input.message, input.fieldErrors);
+
+  const { data: trainee } = await context.supabase
+    .from("trainee_profiles")
+    .select("id")
+    .eq("profile_id", context.user.id)
+    .maybeSingle();
+  if (!trainee) return errorState("Hồ sơ học viên chưa được liên kết với tài khoản này.");
+
+  let photoPath: string | null = null;
+  if (input.data.photo && input.data.photoType && input.data.photoExtension) {
+    photoPath = `${trainee.id}/${crypto.randomUUID()}.${input.data.photoExtension}`;
+    const bytes = new Uint8Array(await input.data.photo.arrayBuffer());
+    const { error: uploadError } = await context.supabase.storage
+      .from("meal-media")
+      .upload(photoPath, bytes, {
+        contentType: input.data.photoType,
+        upsert: false,
+      });
+
+    if (uploadError) {
+      return errorState("Không thể tải ảnh bữa ăn lên vùng lưu trữ riêng tư. Hãy thử lại.", {
+        mealPhoto: "Ảnh chưa được tải lên.",
+      });
+    }
+  }
+
+  const rpcArgs = photoPath && input.data.photo && input.data.photoType
+    ? {
+        checkin_note: input.data.note ?? "",
+        meal_photo_path: photoPath,
+        meal_photo_mime_type: input.data.photoType,
+        meal_photo_size_bytes: input.data.photo.size,
+      }
+    : { checkin_note: input.data.note ?? "" };
+  const { data: results, error } = await context.supabase.rpc("submit_daily_checkin", rpcArgs);
+  const result = results?.[0];
+
+  if (error || result?.outcome !== "created") {
+    if (photoPath) await context.supabase.storage.from("meal-media").remove([photoPath]);
+    if (result?.outcome === "already_submitted") {
+      return errorState("Bạn đã gửi check-in cho ngày hôm nay. Mỗi ngày chỉ có một check-in.");
+    }
+    return errorState("Không thể lưu check-in. Hãy tải lại trang và thử lại.");
+  }
+
+  revalidatePath("/workspace");
+  revalidatePath(`/workspace/trainees/${trainee.id}`);
+  return {
+    status: "success",
+    message: input.data.photo
+      ? "Đã lưu check-in và ảnh bữa ăn trong vùng riêng tư."
+      : "Đã lưu check-in hôm nay.",
+  };
+}
+
+export async function updateRemainingSessions(
+  traineeId: string,
+  _previousState: WorkspaceActionState,
+  formData: FormData,
+): Promise<WorkspaceActionState> {
+  const context = await requireRole("pt");
+  if (!context) return errorState("Chỉ PT phụ trách mới có thể cập nhật số buổi.");
+
+  const { data: trainee } = await context.supabase
+    .from("trainee_profiles")
+    .select("id, assigned_pt_id, total_sessions")
+    .eq("id", traineeId)
+    .maybeSingle();
+  if (!trainee || trainee.assigned_pt_id !== context.user.id) {
+    return errorState("Không tìm thấy học viên trong workspace này.");
+  }
+
+  const input = validateRemainingSessions(formData, trainee.total_sessions);
+  if (!input.success) return errorState(input.message, input.fieldErrors);
+
+  const { data: updated, error } = await context.supabase
+    .from("trainee_profiles")
+    .update({ remaining_sessions: input.data.remainingSessions })
+    .eq("id", trainee.id)
+    .eq("assigned_pt_id", context.user.id)
+    .select("id")
+    .maybeSingle();
+
+  if (error || !updated) return errorState("Không thể cập nhật số buổi còn lại.");
+
+  revalidatePath("/workspace");
+  revalidatePath(`/workspace/trainees/${trainee.id}`);
+  return { status: "success", message: "Đã cập nhật số buổi còn lại." };
 }

@@ -1,8 +1,13 @@
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
-import { Activity, ArrowLeft, CircleUserRound, Phone, Target, TicketCheck } from "lucide-react";
+import { Activity, AlertTriangle, ArrowLeft, CircleUserRound, Phone, Target, TicketCheck } from "lucide-react";
+import CheckinActivityList from "@/components/workspace/CheckinActivityList";
+import FollowUpActions from "@/components/workspace/FollowUpActions";
 import InBodyForm from "@/components/workspace/InBodyForm";
 import InBodyRecordCard from "@/components/workspace/InBodyRecordCard";
+import SessionBalanceForm from "@/components/workspace/SessionBalanceForm";
+import { isCheckinWarningDue } from "@/features/engagement/calendar";
+import { prepareFollowUp } from "@/features/engagement/follow-up";
 import { getPtTrainee, getWorkspaceViewer } from "@/features/workspace/data";
 
 const goalLabels = {
@@ -22,8 +27,11 @@ export default async function TraineeDetailPage({
   if (!viewer) redirect("/login");
   if (viewer.profile.role !== "pt") redirect("/workspace");
 
-  const { trainee, records } = await getPtTrainee(params.traineeId);
+  const { trainee, records, checkins } = await getPtTrainee(params.traineeId);
   if (!trainee) notFound();
+  const warningReference = trainee.last_checkin_date ?? trainee.engagement_started_on;
+  const warningDue = warningReference ? isCheckinWarningDue(warningReference) : false;
+  const followUp = prepareFollowUp(trainee.display_name, trainee.phone);
 
   const nutritionMessage = searchParams.nutrition === "updated"
     ? "Đã cập nhật bản nháp dinh dưỡng."
@@ -52,6 +60,23 @@ export default async function TraineeDetailPage({
         <div><dt><Activity size={15} /> InBody</dt><dd>{records.length} bản ghi</dd></div>
       </dl>
 
+      <section className="workspace-panel workspace-session-panel" aria-labelledby="session-balance-title">
+        <div>
+          <p className="workspace-kicker">Gói tập</p>
+          <h2 id="session-balance-title">Số buổi còn lại</h2>
+          <p>Điều chỉnh rõ ràng sau khi hai bên xác nhận một buổi đã sử dụng.</p>
+        </div>
+        <SessionBalanceForm traineeId={trainee.id} remainingSessions={trainee.remaining_sessions} totalSessions={trainee.total_sessions} />
+      </section>
+
+      {warningDue && (
+        <section className="workspace-followup-panel" data-testid="trainee-warning">
+          <AlertTriangle size={22} />
+          <div><p className="workspace-kicker">Cần theo dõi</p><h2>Đã qua ba ngày trọn vẹn chưa check-in</h2><p>Sao chép nội dung hoặc chủ động mở Zalo. FitSync không tự gửi tin nhắn.</p></div>
+          <FollowUpActions message={followUp.message} zaloUrl={followUp.zaloUrl} />
+        </section>
+      )}
+
       {searchParams.created && <p className="workspace-alert is-success" role="status">Bản ghi đã được xác minh và lưu.</p>}
       {nutritionMessage && <p className={`workspace-alert is-${searchParams.nutrition === "updated" ? "success" : "error"}`} role="status">{nutritionMessage}</p>}
 
@@ -60,6 +85,11 @@ export default async function TraineeDetailPage({
       ) : (
         <section className="workspace-empty compact"><CircleUserRound size={28} /><h2>Đang chờ học viên kết nối</h2><p>Gửi link mời đã tạo cho học viên. Biểu mẫu InBody sẽ mở ngay sau khi họ tạo mật khẩu.</p><Link href="/workspace#new-trainee" className="workspace-inline-link"><ArrowLeft size={15} /> Về roster</Link></section>
       )}
+
+      <section className="workspace-record-list" aria-labelledby="checkin-history-title">
+        <div className="workspace-section-heading"><div><p className="workspace-kicker">Hoạt động</p><h2 id="checkin-history-title">Check-in của học viên</h2></div><p>{checkins.length} ngày đã ghi nhận</p></div>
+        <CheckinActivityList checkins={checkins} emptyMessage="Check-in của học viên sẽ xuất hiện ở đây sau khi gửi." />
+      </section>
 
       <section className="workspace-record-list" aria-labelledby="record-history-title">
         <div className="workspace-section-heading"><div><p className="workspace-kicker">Theo thời gian</p><h2 id="record-history-title">Lịch sử InBody</h2></div><p>{records.length} bản ghi</p></div>

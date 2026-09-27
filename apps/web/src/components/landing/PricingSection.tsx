@@ -4,7 +4,7 @@ import { ArrowRight, ArrowUpRight, Check, Compass } from "lucide-react";
 const launchFeatures = [
   "Tối đa 3 học viên trong giả thuyết Free",
   "OCR chỉ sau khi có benchmark và bước duyệt",
-  "Check-in và cảnh báo thuộc milestone M3",
+  "Check-in và cảnh báo đã được kiểm chứng cục bộ",
   "Không gian riêng cho PT và học viên",
 ];
 
@@ -19,7 +19,7 @@ export default function PricingSection() {
           <span>Kiểm chứng phần còn lại.</span>
         </h2>
         <p>
-          Luồng workspace M2 đã hoạt động. Gói thương mại, thanh toán và trial
+          Luồng workspace M2 + M3 đã hoạt động. Gói thương mại, thanh toán và trial
           vẫn chưa được phát hành.
         </p>
       </div>
@@ -41,6 +41,9 @@ export default function PricingSection() {
           </li>
           <li>
             <Check size={16} aria-hidden="true" /> Xác nhận bản ghi InBody thủ công
+          </li>
+          <li>
+            <Check size={16} aria-hidden="true" /> Check-in, ảnh riêng tư và cảnh báo thủ công
           </li>
         </ul>
         <Link href="/register" className="fs-button">
