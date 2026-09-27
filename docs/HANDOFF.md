@@ -1,7 +1,7 @@
 # FitSync project handoff
 
 **Updated:** 2026-09-28
-**Branch:** `feature/landing-product-redesign`
+**Branch:** `main`
 **Current milestone:** M4 next — M3 engagement is verified
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
@@ -16,11 +16,10 @@ When documents disagree, use this order:
 
 1. Executable migrations, tests, and application behavior.
 2. `docs/MVP_EXECUTION_PLAN.md` for current scope and delivery order.
-3. `docs/architecture/adr-001-monorepo-and-modular-monolith.md` for architecture.
+3. `docs/architecture/` for accepted architecture decisions.
 4. `DESIGN.md` for visual tokens and interface direction.
-5. `docs/landing-page-research-and-improvement-report.md` for the current landing and competitor analysis.
-6. `docs/full-docs-to-landing-alignment.md` for research-to-marketing claim boundaries.
-7. The sibling `fitsync-docs` repository for historical research and coursework context.
+5. `docs/research/` for retained claim evidence.
+6. `docs/archive/` and the sibling `fitsync-docs` repository for historical context only.
 
 Earlier coursework claims about features, pricing, platforms, or outcomes do not override the active MVP plan.
 
@@ -29,13 +28,10 @@ Earlier coursework claims about features, pricing, platforms, or outcomes do not
 ```text
 fitsync-app/
   apps/web/                 Next.js marketing site, public demo, and web product
-  packages/                 Reserved for code genuinely shared by two applications
   supabase/                 Local config, migrations, seed data, and pgTAP tests
-  docs/                     Active plan, architecture, alignment, and this handoff
+  docs/                     Active plan, handoff, ADRs, milestone plans, and evidence
   DESIGN.md                 Design system and visual rationale
-  landing-conversion-alignment.md Completed pre-M3 landing checkpoint
-  identity-foundation.md    Completed M1 checklist
-  mvp-monorepo-foundation.md Completed M0 checklist and M2 pointer
+  CONTRIBUTING.md           Team workflow, ownership, and validation rules
 ```
 
 Key route boundaries:
@@ -52,7 +48,7 @@ Key route boundaries:
 
 - Reviewed all 14 Markdown documents in the sibling `fitsync-docs` repository.
 - Reviewed the raw PT survey workbook. It contains 104 responses; only aggregate findings are used because the open-text fields contain duplication and there is no publication-consent field.
-- Recorded the research and claim alignment in `docs/full-docs-to-landing-alignment.md`.
+- Recorded the research and claim alignment in the archived landing reports and retained aggregate evidence in `docs/research/survey-evidence.md`.
 - Redesigned the landing page and auth screens into a consistent dark athletic visual system.
 
 Useful survey aggregates:
@@ -104,7 +100,7 @@ Useful survey aggregates:
 - The landing primary action is now real PT activation through `/register`. `/app/*` remains available as a clearly labeled secondary tour for coursework demonstrations and visitors who are not ready to register.
 - The hero and first product proof now show the verified M2 workflow: roster state, secure invitation, manual five-metric confirmation, and the trainee's read-only record.
 - Simulated OCR, hypothetical ROI, and proposed pricing remain explicitly labeled and appear after verified product evidence.
-- `landing-conversion-alignment.md` records the completed checklist and verification evidence.
+- Consolidated the completed landing checkpoint and verification evidence into this handoff; the original checklist remains available in Git history.
 
 ### M3 — engagement
 
@@ -166,7 +162,7 @@ The current shell may need `sg docker -c '<command>'` until it inherits the user
 
 M3 engagement is complete and verified. The next planned product milestone is M4 OCR-assisted InBody entry behind mandatory PT review and a consented benchmark. Do not infer that OCR, payments, analytics, or Expo/mobile have started from the M3 implementation.
 
-M4 planning is captured in `m4-ocr-architecture-and-benchmark-plan.md`, `docs/architecture/adr-002-ocr-drafts-behind-provider-adapter.md`, and `docs/m4-ocr-benchmark-protocol.md`. The accepted direction is a server-only provider adapter in the modular monolith, a dedicated private source-image bucket, persisted normalized drafts, and a separate atomic confirmation step that reuses the existing five-field validation. Provider selection is intentionally open until at least two candidates are measured on a locked, consented-or-synthetic InBody 270 benchmark.
+M4 planning is captured in `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`, `docs/plans/m4-ocr-benchmark-protocol.md`, and `docs/architecture/adr-002-ocr-drafts-behind-provider-adapter.md`. The accepted direction is a server-only provider adapter in the modular monolith, a dedicated private source-image bucket, persisted normalized drafts, and a separate atomic confirmation step that reuses the existing five-field validation. Provider selection is intentionally open until at least two candidates are measured on a locked, consented-or-synthetic InBody 270 benchmark.
 
 Before implementation sends any real report to a provider, assign a data owner and record consent, provider-processing permission, retention, deletion, and incident-response handling. Manual entry remains the product fallback if no candidate passes. Internal benchmark thresholds are release gates, not public accuracy or latency claims.
 
@@ -186,11 +182,7 @@ The local database contains only synthetic accounts created by the final E2E run
 
 ## Repository checkpoint
 
-The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed with its implementation, tests, generated types, and final handoff on the same branch.
-
-No pull request has been created and nothing has been pushed from this session. Inspect `git status` before new work and preserve any changes made after this checkpoint.
-
-The final M3 worktree is committed. Preserve future intentional changes and inspect `git status` before beginning M4.
+The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, and the team collaboration workflow is merged through pull request #1. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status` and pull the latest `main` before beginning work.
 
 ## Known debt and risks
 

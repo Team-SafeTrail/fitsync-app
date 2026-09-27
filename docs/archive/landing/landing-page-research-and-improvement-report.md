@@ -67,7 +67,7 @@ These directly affect whether a polished website feels trustworthy:
 | Survey counts are aggregate research submissions | The form did not collect publication consent for named endorsements | Keep the denominator and methodology; never present respondents as customers or testimonials |
 | Local RLS and E2E verification are not production deployment evidence | No production environment or privacy operations are documented as released | Say “verified locally” where relevant and avoid production-security or compliance claims |
 
-Source: [local survey summary](../../fitsync-docs/docs/04-market-research/SURVEY_INSIGHTS.md). This is an internal summary, not a fresh validation of its raw dataset.
+Source: [local survey summary](../../../../fitsync-docs/docs/04-market-research/SURVEY_INSIGHTS.md). This is an internal summary, not a fresh validation of its raw dataset.
 
 ## 4. What to learn from established websites
 
@@ -238,7 +238,7 @@ Acceptance targets:
 
 ## 9. Implementation roadmap
 
-The original redesign and the smaller post-M2 conversion checkpoint are complete. The root `landing-conversion-alignment.md` plan records the implementation and verification:
+The original redesign and the smaller post-M2 conversion checkpoint are complete. Their implementation and verification are consolidated in `docs/HANDOFF.md`; the original checklist remains available in Git history:
 
 1. Reverse the CTA hierarchy so `/register` is primary and the public tour is secondary.
 2. Reframe the hero and first product proof around the verified M2 workflow.
@@ -271,7 +271,7 @@ Release checklist:
 
 ## 11. How this differs from the earlier report
 
-The [earlier master report](fitsync_landing_redesign_master_report.md) remains historical context. This report should guide the next landing-page proposal because it separates current implementation from aspirations and supplies directly inspected sources.
+The [earlier master report](fitsync-landing-redesign-master-report.md) remains historical context. This report should guide the next landing-page proposal because it separates current implementation from aspirations and supplies directly inspected sources.
 
 Specific corrections:
 
