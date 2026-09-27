@@ -2,13 +2,12 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   ArrowUpRight,
+  BadgeCheck,
   Check,
-  MessageCircle,
-  CalendarDays,
-  ArrowRight,
-  Flame,
-  Utensils,
-  Dumbbell,
+  Droplets,
+  Scale,
+  Send,
+  ShieldCheck,
   Activity,
   Users,
 } from "lucide-react";
@@ -17,15 +16,15 @@ export default function FeaturesSection() {
   return (
     <section id="product" className="fs-section fs-features fs-container">
       <div className="fs-section-heading">
-        <p className="fs-eyebrow">MỘT NHỊP CHUNG CHO COACH VÀ HỌC VIÊN</p>
+        <p className="fs-eyebrow">MỘT BẢN GHI, HAI GÓC NHÌN</p>
         <h2>
-          Phần mềm lo sắp xếp.
+          PT xác nhận một lần.
           <br />
-          <span>Bạn lo đồng hành.</span>
+          <span>Học viên xem đúng dữ liệu.</span>
         </h2>
         <p>
-          Mọi điểm chạm trong hành trình huấn luyện, được kết nối trong một
-          không gian rõ ràng.
+          FitSync nối roster của PT với một trải nghiệm học viên tập trung,
+          nhưng giữ quyền truy cập tách biệt.
         </p>
       </div>
       <div className="fs-feature-grid">
@@ -35,13 +34,13 @@ export default function FeaturesSection() {
               <Users size={22} />
             </span>
             <h3>
-              Không bỏ lỡ
+              Roster nói rõ
               <br />
-              người cần bạn.
+              trạng thái tiếp theo.
             </h3>
             <p>
-              Nhìn thấy học viên chưa check-in và số buổi còn lại. Biết nên bắt
-              đầu cuộc trò chuyện với ai.
+              Biết ai đang chờ lời mời, ai đã kết nối và ai đã có bản ghi
+              InBody được xác nhận.
             </p>
             <Link href="/app/dashboard" className="fs-text-link">
               Xem bản mẫu PT <ArrowUpRight size={16} />
@@ -54,43 +53,42 @@ export default function FeaturesSection() {
                 <strong>Khánh Linh</strong>
                 <span>Dữ liệu minh họa</span>
               </div>
-              <span className="fs-attention-label">Cần hỏi thăm</span>
+              <span className="fs-attention-label">Đã xác minh</span>
             </div>
             <div className="fs-followup-metrics">
               <span>
-                <CalendarDays size={16} />
-                <strong>8 buổi</strong> còn lại
+                <Send size={16} />
+                <strong>Đã kết nối</strong> tài khoản
               </span>
               <span>
-                <Activity size={16} />
-                <strong>3 ngày</strong> chưa check-in
+                <BadgeCheck size={16} />
+                <strong>1 bản ghi</strong> đã xác nhận
               </span>
             </div>
             <div className="fs-message-example">
-              <MessageCircle size={17} />
+              <Scale size={17} />
               <p>
-                “Linh ơi, tuần này tập luyện thế nào? Mình cùng điều chỉnh lịch
-                nếu cần nhé.”
+                59,8 kg cân nặng · 22,1 kg cơ xương · 28,4% mỡ cơ thể
               </p>
             </div>
             <span className="fs-message-caption">
-              Một gợi ý trò chuyện, không phải tin nhắn tự động.
+              PT xác nhận dữ liệu ngày 27/09/2026.
             </span>
           </div>
         </article>
         <article className="fs-feature-client">
           <div className="fs-feature-copy">
             <span className="fs-feature-icon">
-              <Flame size={22} />
+              <ShieldCheck size={22} />
             </span>
             <h3>
-              Thói quen nhỏ.
+              Bản ghi của bạn.
               <br />
-              Hành trình dài.
+              Chỉ mình bạn thấy.
             </h3>
             <p>
-              Mục tiêu, bữa ăn và buổi tập trong một góc nhìn dành riêng cho học
-              viên.
+              Học viên xem chỉ số đã xác minh và mục tiêu dinh dưỡng đang ở
+              trạng thái bản nháp coaching.
             </p>
             <Link href="/app/trainee" className="fs-text-link">
               Xem bản mẫu học viên <ArrowUpRight size={16} />
@@ -103,34 +101,34 @@ export default function FeaturesSection() {
               <Activity size={14} />
             </div>
             <div className="fs-phone-body">
-              <span className="fs-phone-greeting">MỖI NGÀY MỘT CHÚT</span>
-              <h4>Hôm nay của Linh</h4>
+              <span className="fs-phone-greeting">INBODY ĐÃ XÁC MINH</span>
+              <h4>Chỉ số của Linh</h4>
               <div className="fs-phone-ring">
                 <div>
-                  <Flame size={18} />
-                  <strong>1.240</strong>
-                  <span>/ 1.650 kcal mẫu</span>
+                  <Scale size={18} />
+                  <strong>59,8</strong>
+                  <span>kg cân nặng</span>
                 </div>
               </div>
               <div className="fs-phone-meal">
                 <span>
-                  <Utensils size={16} />
+                  <Activity size={16} />
                 </span>
                 <div>
-                  <strong>Bữa trưa</strong>
-                  <small>Đã ghi nhận</small>
+                  <strong>22,1 kg cơ xương</strong>
+                  <small>28,4% mỡ cơ thể</small>
                 </div>
                 <Check size={15} />
               </div>
               <div className="fs-phone-meal">
                 <span>
-                  <Dumbbell size={16} />
+                  <Droplets size={16} />
                 </span>
                 <div>
-                  <strong>Buổi tập tiếp theo</strong>
-                  <small>Thứ 3 · 17:30</small>
+                  <strong>31,7 L nước cơ thể</strong>
+                  <small>Xác nhận 27/09/2026</small>
                 </div>
-                <ArrowRight size={15} />
+                <BadgeCheck size={15} />
               </div>
             </div>
           </div>
@@ -161,7 +159,7 @@ export default function FeaturesSection() {
             học viên, ở một lần nâng tạ tốt hơn, một thói quen mới, một bước
             tiến nhỏ.
           </p>
-          <a href="#demo" className="fs-text-link">
+          <a href="#workflow" className="fs-text-link">
             Tìm lại nhịp huấn luyện của bạn <ArrowUpRight size={17} />
           </a>
         </div>

@@ -2,7 +2,7 @@
 
 **Updated:** 2026-09-27
 **Branch:** `feature/landing-product-redesign`
-**Current milestone:** M2 complete — secure vertical slice and product hardening verified
+**Current milestone:** M3 next — M2 and the landing activation alignment are verified
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
 
@@ -18,8 +18,9 @@ When documents disagree, use this order:
 2. `docs/MVP_EXECUTION_PLAN.md` for current scope and delivery order.
 3. `docs/architecture/adr-001-monorepo-and-modular-monolith.md` for architecture.
 4. `DESIGN.md` for visual tokens and interface direction.
-5. `docs/full-docs-to-landing-alignment.md` for research-to-marketing alignment.
-6. The sibling `fitsync-docs` repository for historical research and coursework context.
+5. `docs/landing-page-research-and-improvement-report.md` for the current landing and competitor analysis.
+6. `docs/full-docs-to-landing-alignment.md` for research-to-marketing claim boundaries.
+7. The sibling `fitsync-docs` repository for historical research and coursework context.
 
 Earlier coursework claims about features, pricing, platforms, or outcomes do not override the active MVP plan.
 
@@ -32,6 +33,7 @@ fitsync-app/
   supabase/                 Local config, migrations, seed data, and pgTAP tests
   docs/                     Active plan, architecture, alignment, and this handoff
   DESIGN.md                 Design system and visual rationale
+  landing-conversion-alignment.md Completed pre-M3 landing checkpoint
   identity-foundation.md    Completed M1 checklist
   mvp-monorepo-foundation.md Completed M0 checklist and M2 pointer
 ```
@@ -39,7 +41,7 @@ fitsync-app/
 Key route boundaries:
 
 - `/` is the redesigned public landing page.
-- `/app/*` is an honest public prototype backed by fixture data.
+- `/app/*` is an honest, fixture-backed public product tour and a secondary acquisition path.
 - `/login` and `/register` use Supabase authentication.
 - `/workspace` is the protected product surface backed by real authenticated data.
 - Keep fixture data and authenticated user data separate.
@@ -95,7 +97,16 @@ Useful survey aggregates:
 - Corrected the public journey after review: the documented primary landing CTA opens the fixture demo, while the visually secondary activation path opens `/register`; both destinations are explicitly labeled.
 - Re-themed `/app/dashboard` and `/app/trainee` into the same dark Carbon palette and added a persistent sample-data banner plus a route to the real PT workspace.
 
-## Last verified state
+### Post-M2 landing conversion alignment
+
+- A focused review of the official TrueCoach, ABC Trainerize, Everfit, and PT Distinction websites found a consistent acquisition pattern: visible product proof supports a primary path into the real product, usually a no-card trial. Their anonymous demonstrations, when present, are explanatory rather than the main conversion destination.
+- FitSync must not copy the mature competitors' trial claims because it does not yet have a defined trial or pilot operation. The truthful activation available now is PT registration at `/register`.
+- The landing primary action is now real PT activation through `/register`. `/app/*` remains available as a clearly labeled secondary tour for coursework demonstrations and visitors who are not ready to register.
+- The hero and first product proof now show the verified M2 workflow: roster state, secure invitation, manual five-metric confirmation, and the trainee's read-only record.
+- Simulated OCR, hypothetical ROI, and proposed pricing remain explicitly labeled and appear after verified product evidence.
+- `landing-conversion-alignment.md` records the completed checklist and verification evidence.
+
+## Last verified product state
 
 The following checks passed on 2026-09-27 with Node `v20.20.2` and npm `10.8.2`:
 
@@ -108,9 +119,11 @@ npm run build
 npm run test:e2e
 ```
 
-The database suite passed 38 of 38 pgTAP checks across M1 and M2. The domain suite passed 5 of 5 Vitest checks. Two Playwright flows passed in Chromium and demonstrated:
+The database suite last passed 38 of 38 pgTAP checks across M1 and M2. The landing checkpoint did not change the schema, so database reset and type generation were not repeated. The domain suite passed 5 of 5 Vitest checks. Two Playwright flows passed in Chromium and demonstrated:
 
-- the landing primary CTA opens the explicitly labeled fixture demo, while the secondary activation path opens `/register`;
+- the landing primary CTA opens `/register`, while “Xem bản mẫu” opens the explicitly labeled fixture tour;
+- the first landing proof shows the verified M2 workflow with synthetic data rather than leading with M3 or OCR concepts;
+- the landing actions remain visible at 1440px and 390px, expose an amber keyboard focus state, and render without horizontal overflow;
 - `/app/dashboard` uses the Carbon palette on desktop and mobile without horizontal overflow;
 - PT registration, empty roster, trainee creation, and a single-use invitation;
 - trainee credential creation and account linking;
@@ -122,7 +135,7 @@ The database suite passed 38 of 38 pgTAP checks across M1 and M2. The domain sui
 - an unrelated PT receiving a 404 for the protected trainee route;
 - no captured browser runtime errors.
 
-The production build completes with the landing and fixture demo statically rendered and the invitation/workspace routes dynamically rendered. `npm audit --audit-level=high` still reports the previously documented five findings (four high and one critical); the automated fix requires a breaking Next.js major upgrade and was intentionally not run during M2.
+The landing component accessibility scan found no statically detectable issues across 13 files. The production build completes with the landing and fixture tour statically rendered and the invitation/workspace routes dynamically rendered. `npm audit --audit-level=high` still reports the previously documented five findings (four high and one critical); the automated fix requires a breaking Next.js major upgrade and was intentionally not run in this checkpoint.
 
 Local Supabase endpoints when running:
 
@@ -134,27 +147,29 @@ The current shell may need `sg docker -c '<command>'` until it inherits the user
 
 ## Active next milestone: M3
 
-M2 is complete after both functional and visible product verification. The next planned milestone is M3 engagement from `docs/MVP_EXECUTION_PLAN.md`: trainee check-ins, optional meal upload, session balance interactions, and the three-full-calendar-day warning queue. Do not begin OCR or payment work before the earlier milestone order is deliberately changed.
+M2 and the bounded landing conversion checkpoint are complete. The next work is M3 engagement from `docs/MVP_EXECUTION_PLAN.md`: trainee check-ins, optional meal upload, session balance interactions, and the three-full-calendar-day warning queue. Do not begin OCR or payment work before M3 passes.
 
 The local database contains only synthetic accounts created by the final E2E run. Use `npm run db:reset` (or the Docker-group form below) when a clean local state is needed.
 
 ## Implementation constraints
 
 - Read `AGENTS.md` before editing Next.js code. It requires consulting the installed Next.js documentation because project conventions may differ from remembered APIs.
-- Preserve the landing page and public `/app` demo while building the protected product.
+- Preserve the public `/app` tour and its explicit sample-data labeling, but do not make it the primary landing conversion path.
 - Use migrations as the schema authority and regenerate TypeScript database types after schema changes.
 - Enforce ownership in RLS. UI filtering is not authorization.
 - Keep service-role credentials out of browser code.
 - Store invitation token hashes, set expirations, and prevent reuse.
 - Use server-side validation for all writes; client validation is for feedback only.
 - Use synthetic data until consent, retention, deletion, and incident-response responsibilities are ready.
-- Do not implement live OCR, payments, an Expo app, or broad engagement features before the M2 vertical slice passes.
+- Follow the active milestone order: finish M3 before live OCR, payments, or Expo/mobile work.
 
 ## Repository checkpoint
 
 The landing redesign, monorepo move, M1 foundation, and verified M2 slice are committed together on `feature/landing-product-redesign` with the message `feat: establish FitSync web MVP through M2`. This checkpoint intentionally records the former root application moving into `apps/web`.
 
 No pull request has been created and nothing has been pushed from this session. Inspect `git status` before new work and preserve any changes made after this checkpoint.
+
+The current worktree contains intentional, uncommitted documentation, landing UI, and browser-test changes from the verified post-M2 conversion checkpoint. Preserve them when M3 implementation begins.
 
 ## Known debt and risks
 

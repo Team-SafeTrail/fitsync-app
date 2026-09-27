@@ -14,17 +14,17 @@ This is an existing dirty working tree with intentional, uncommitted work. Do no
 4. docs/architecture/adr-001-monorepo-and-modular-monolith.md
 5. DESIGN.md when changing UI
 
-Treat docs/HANDOFF.md as the compact session state and docs/MVP_EXECUTION_PLAN.md as the active product source of truth. Inspect the current implementation and git status before editing. Do not repeat the completed market research, landing redesign, monorepo migration, or M1 identity work.
+Treat docs/HANDOFF.md as the compact session state and docs/MVP_EXECUTION_PLAN.md as the active product source of truth. Inspect the current implementation and git status before editing. M0, M1, M2, and the post-M2 landing conversion checkpoint are verified; do not repeat them or the completed market research and landing redesign.
 
-Now complete M2, the first real-data vertical slice:
+Now complete M3 engagement:
 
-PT signs in -> sees a role-aware workspace and roster -> creates a trainee -> receives a secure single-use expiring invitation -> trainee accepts and creates credentials -> PT manually enters the five InBody metrics -> the system validates bounds and cross-field consistency -> nutrition values remain editable coaching drafts -> PT explicitly confirms the record -> trainee signs in and sees only their own verified record.
+Trainee signs in -> submits one daily check-in with an optional note and meal photo -> the PT sees the activity in the linked trainee view -> PT can update the explicit remaining-session balance -> after three full calendar days without a check-in, the trainee appears in a warning queue -> the PT may copy a prepared follow-up message or intentionally open Zalo, but FitSync never sends it automatically.
 
-Preserve the public landing page and fixture-backed /app demo. Build real authenticated features under /workspace. Use the existing Next.js + Supabase modular-monolith architecture, migrations, generated database types, server-side write validation, and RLS. Store only invitation token hashes and enforce expiry and one-time use. Do not start OCR, payments, Expo/mobile, or unrelated engagement features before M2 passes.
+Preserve the landing CTA hierarchy: `/register` is primary and `/app/*` is a clearly labeled secondary fixture tour. Extend the existing Next.js + Supabase modular monolith with versioned migrations, generated types, server-side write validation, private storage for meal media, and RLS. Define and test the application timezone used by the three-full-calendar-day rule. Do not start OCR, payments, Expo/mobile, analytics, or unrelated engagement features during M3.
 
 Follow AGENTS.md before writing Next.js code and consult the installed Next.js docs it points to. Use Node 20 or newer. Supabase may already be running locally. If Docker access fails in the current shell, use sg docker -c '<command>' or open a fresh login shell. Never print or document values from apps/web/.env.local.
 
-Work autonomously through the complete milestone. Add meaningful pgTAP/RLS coverage and one browser E2E flow, including cross-tenant denial and desktop/mobile viewport verification. Regenerate database types after schema changes. Run the relevant database checks, lint, typecheck, and production build. Fix failures you introduce. Update docs/HANDOFF.md with the verified final state before reporting completion.
+Work autonomously through the complete milestone. Add meaningful pgTAP/RLS and domain-test coverage plus one browser E2E flow covering authorized check-in creation, PT visibility, warning timing, session changes, media privacy, cross-tenant denial, and desktop/mobile rendering. Regenerate database types after schema changes. Run database checks, unit tests, lint, typecheck, production build, and E2E; fix failures introduced by M3. Update `docs/HANDOFF.md` with the verified final state before reporting completion.
 
-M2 is done only when data persists after reload, the PT sees the linked trainee and verified record, the trainee sees their own record, unrelated users cannot read or mutate it, invalid biometric data cannot be silently saved, and the full workflow is demonstrated in a browser.
+M3 is done only when activity persists after reload, the linked PT sees it, unrelated users cannot read or mutate it, private media cannot be fetched across tenants, the warning date is correct at calendar boundaries, no automatic message is sent, and the complete flow is demonstrated in a browser.
 ```

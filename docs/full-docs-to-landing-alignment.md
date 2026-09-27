@@ -13,7 +13,7 @@ FitSync is a mobile-first, responsive B2B SaaS workspace for Vietnamese personal
 5. The coach sees inactivity and remaining-session signals and follows up.
 6. Coach and client review biometric and behavior trends over time.
 
-The current codebase is a browser prototype of that loop. It does not prove a live OCR service, persisted accounts, a production PWA, Supabase RLS, private media storage, VietQR payment, automatic renewal, uptime, OCR accuracy, or real customer outcomes.
+The current codebase contains two deliberately separate surfaces. `/workspace` implements and locally verifies the M2 loop with persisted accounts, Supabase RLS, secure invitations, manual biometric validation, and authorized PT/trainee views. `/app/*` remains a fixture-backed public tour. The repository still does not prove a live OCR service, production deployment, private media storage, VietQR payment, automatic renewal, uptime, OCR accuracy, or real customer outcomes.
 
 ## Documents reviewed
 
@@ -55,7 +55,7 @@ The survey summary calls all 104 respondents verified fitness professionals and 
 
 ### Product status
 
-Coursework documents say the landing page, live OCR, Play Store app, early leads, pilots, and channel results are complete in some passages, while other passages schedule them as future work. The current repository only substantiates a web prototype with fixture data. The landing page therefore labels current interactions as samples and separates them from MVP and post-MVP scope.
+Coursework documents say the landing page, live OCR, Play Store app, early leads, pilots, and channel results are complete in some passages, while other passages schedule them as future work. The current repository substantiates a locally verified authenticated M2 workflow plus a separate fixture-backed public tour. The landing page must distinguish verified M2 behavior, public samples, and roadmap scope.
 
 ### Platform
 
@@ -81,7 +81,8 @@ The docs contain targets of under 3.5 or 5 seconds, at least 96% OCR accuracy, 9
 - Replaced the generic smart-scale sample label with Xiaomi Smart Scale 2 and named all five target report types in the demo disclaimer.
 - Added the documented Free-tier hypothesis alongside the 199,000 VND Pro hypothesis, while retaining the clear no-checkout disclaimer.
 - Kept the raw-workbook-backed survey counts and methodology note.
-- Kept live-product boundaries explicit: no live OCR, account persistence, payment, store app, or installable PWA in the prototype.
+- Kept product boundaries explicit: the authenticated M2 workspace persists local data, while the public tour is fixture-backed and live OCR, payment, store apps, and installable PWA behavior remain unverified.
+- After M2 verification, changed the acquisition decision: real PT registration is the intended primary action and the public tour is secondary.
 
 ## What the landing page should not claim yet
 
@@ -101,10 +102,10 @@ The docs contain targets of under 3.5 or 5 seconds, at least 96% OCR accuracy, 9
 2. Run an OCR benchmark on consented, representative report photos and publish the sample definition, metric, and error rate.
 3. Verify the five critical QA flows end to end, including manual correction, inactivity logic, access isolation, and failed uploads.
 4. Perform a privacy and Decree 13 review before accepting real biometric or meal-photo data.
-5. Connect a real lead or waitlist flow before changing the CTA from prototype exploration.
+5. Use the working PT registration flow as the primary activation path; add a separate lead or waitlist claim only after its persistence and operations exist.
 6. Validate pricing with recorded offers and paid conversions before calling any tier final.
 7. Replace AI editorial imagery with consented local coaching photography when available.
 
 ## Overall assessment
 
-The landing page now represents the product more accurately than the coursework pitch material. Its visual quality is already at a current SaaS marketing standard. The remaining path to a credible public launch depends primarily on product evidence and a working acquisition path, rather than adding more decorative sections.
+The landing page now leads with verified M2 product evidence and real PT registration while retaining the fixture tour as an explicitly secondary path. OCR, commercial, pilot, and production claims remain constrained by the evidence requirements above.

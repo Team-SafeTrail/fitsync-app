@@ -1,28 +1,34 @@
 # FitSync landing page: research and improvement report
 
 Research date: 27 September 2026
-Status: proposed redesign brief, not an approved implementation specification
+Status: strategy implemented and verified after M2 delivery
 Scope: the public landing page in `fitsync-app/`, including its demo and conversion journey.
 
 ## 1. Main recommendation
 
-Make the coaching experience visible. The current page has a consistent dark palette and functioning sample interactions, but its presentation relies heavily on headings, small icons, bullets, and bordered panels. Visitors must imagine the product. A stronger page should let them see a coach review a scan, notice a client who needs attention, and understand what that client sees on a phone.
+Make the verified coaching experience visible and connect it to real activation. The current page has a consistent dark palette and functioning sample interactions, but its primary path still ends in a fixture-backed dashboard. M2 now provides stronger evidence: a PT can register, create and invite a trainee, validate and confirm a manual InBody record, and the trainee can read that verified record under tested RLS boundaries.
 
-The recommended direction is **a product-led coaching website with human context**: retain FitSync’s charcoal and amber identity, introduce large authentic product views, organize the page around a connected coaching workflow, and support its promises with evidence. More gradients, more cards, and a larger headline alone will not resolve the problem.
+The recommended direction remains **a product-led coaching website with human context**, but the product proof must now come from the real M2 workflow rather than simulated future breadth. Retain FitSync’s charcoal and amber identity, show readable coach and trainee views, organize the page around a connected workflow, and support every promise with evidence.
 
 Design read: a marketing website for Vietnamese independent personal trainers and small studios, combining clear software demonstrations with the warmth of real coaching.
 
-The five highest-value changes are:
+The five highest-value changes are now:
 
-1. Put a substantial coach dashboard and client mobile preview in the hero.
-2. Replace the three text-heavy feature cards with a connected, visual product story.
-3. Make the scan demonstration show its source, review step, and resulting client view.
-4. Align every CTA, form, pricing promise, and demo label with the actual product stage.
-5. Add verifiable research or customer evidence, practical FAQs, and a complete footer.
+1. Make `/register` the visually primary path into the real PT workspace.
+2. Keep `/app/*` as a clearly labeled secondary product tour, not the conversion goal.
+3. Show the verified M2 sequence: roster → invitation → manual InBody confirmation → trainee view.
+4. Move simulated OCR, hypothetical ROI, and proposed pricing below verified product evidence.
+5. Add consented pilot proof when it exists; until then, use qualified research evidence without implying customer outcomes.
+
+### Post-M2 acquisition decision
+
+The public demo is useful for coursework demonstrations and low-commitment exploration, so it should not be deleted. It is not necessary as the primary landing action. A visitor who is ready to act should enter the real product through PT registration, while a visitor who only wants to inspect the interface may choose the secondary fixture-backed tour.
+
+FitSync must not copy mature competitors' “free trial” language yet. Registration works, but trial duration, support operations, entitlement rules, and pilot evidence are not defined. The truthful primary label is “Tạo workspace PT”; “Xem bản mẫu” is the secondary label.
 
 ## 2. Research method and limits
 
-This report combines inspection of the current source code, the existing design specification and redesign report, the local survey summary, web searches, and direct retrieval of seven official product websites. The reference set deliberately includes fitness, productivity, collaboration, and mental wellness products.
+This report combines inspection of the current source code, the existing design specification and redesign report, the local survey summary, web searches, and direct retrieval of official product websites. A post-M2 follow-up added TrueCoach and PT Distinction to the original reference set and rechecked the current Everfit and ABC Trainerize acquisition paths.
 
 External observations below concern page content, exposed product examples, information structure, and conversion paths visible in retrieved pages. This was not a rendered browser screenshot audit: precise spacing, colors, animation behavior, responsive layouts, and measured performance of those sites were not independently verified. Local visual diagnoses are inferred from JSX and CSS, rather than a live screenshot review. No conversion uplift is claimed, and no competitor marketing metric is treated as independently verified research.
 
@@ -33,26 +39,22 @@ Recommendations are design hypotheses to test. They do not establish that a feat
 ### What already works
 
 - The charcoal, amber, and ivory palette provides a recognizable starting point.
-- Space Grotesk, Inter, and numeric typography already supply a useful hierarchy. Replacing every font is unnecessary.
-- The hero communicates a relevant administrative problem.
-- The OCR section already supports selecting fixtures and editing biometric fields to recalculate nutrition.
-- The ROI slider offers something to interact with.
-- Pricing, a mobile navigation menu, a skip link, focus styling, reduced-motion handling, and scroll-animation fallback styles already exist.
+- The hero includes an interactive coach/client composition, explicit sample-data labeling, and a relevant administrative promise.
+- The fixture-backed `/app` routes are visually aligned with the landing page and clearly identify themselves as a public sample.
+- `/register` leads into the real authenticated M2 workspace, whose core PT/trainee workflow is covered by database, unit, and browser tests.
+- The page already includes qualified survey evidence, product-scope disclosures, responsive navigation, legal pages, focus styling, and reduced-motion handling.
+- Simulated OCR, ROI, and proposed pricing are disclosed rather than presented as verified production outcomes.
 
-### Why it still feels simple
+### Conversion gaps addressed by the checkpoint
 
-| Finding and source | Consequence | Recommended improvement |
+| Pre-checkpoint finding and source | Consequence | Implemented treatment |
 |---|---|---|
-| `HeroSection.tsx`: centered badge, headline, paragraph, CTAs, and three metrics; no product image or preview | The first impression could belong to many SaaS products | Give the actual coaching interface comparable visual weight to the headline |
-| `FeaturesSection.tsx`: three cards use the same icon → title → paragraph → bullets structure, despite unequal widths | Changing column widths has not created a richer story | Use a dashboard scene, a scan comparison, and a mobile journey with different compositions |
-| `page.tsx`: hero → features → OCR → ROI → pricing → footer | Visitors see claims before clear product evidence, then are asked to evaluate money | Move a concise workflow demonstration immediately after the hero |
-| Multiple sections repeat centered headers, small uppercase tags, generous identical padding, and dark cards | The page has little change in scale or visual emphasis | Alternate a large product stage, compact process explanation, editorial proof block, and purchase comparison |
-| `public/`: default framework SVG assets, with no product marketing image set in the inspected inventory | No asset library supports a distinctive identity | Produce screenshots from FitSync and a small set of original contextual assets |
-| `Footer.tsx`: branding and coursework attribution only | The page ends without resolving practical concerns | Add support, privacy, terms, product-stage information, and FAQs above the footer |
-| `layout.tsx`: `lang="vi"`, while most landing copy is English | Language metadata and reader experience disagree | Ship complete Vietnamese copy first, or use correct English metadata until translated |
-| `globals.css`: muted text is `#5C5A55` on very dark surfaces | Secondary information risks being difficult to read | Increase essential-label contrast and test every surface pairing |
-
-The existing `DESIGN.md` reinforces some limitations: it explicitly makes typography the main visual and prohibits photos of people or gyms. It also describes a glass-style proof strip while prohibiting glassmorphism elsewhere. The next design revision should resolve those contradictions and allow real product imagery and consented original coaching photography.
+| `HeroSection.tsx` sent the amber primary button to `/app/dashboard` | Ready visitors were sent to fixtures while the working product appeared secondary | `/register` is now primary and “Xem bản mẫu” is secondary |
+| `ProductPreview.tsx` emphasized check-ins, inactivity, meals, and session alerts | The first proof foregrounded M3 concepts instead of the verified M2 loop | The preview now shows roster, connection state, verified InBody data, and trainee read-only access |
+| `page.tsx` placed survey evidence and simulated OCR before the broader product story | Visitors saw research and future capability before current product evidence | The verified three-step workflow and paired product views now come first |
+| `ProductScope.tsx` described secure roles and manual confirmation as planned scope | Verified M2 behavior was understated while OCR/check-ins appeared equally current | The scope section now distinguishes locally verified M2, next M3, and later work |
+| Repeated landing CTAs used the public sample destination | The page lacked a consistent acquisition action despite working registration | Navigation, hero, offer, and final CTA now repeat real registration |
+| Pricing and ROI occupied substantial space before pilot validation | Commercial hypotheses distracted from the narrow product wedge | They remain lower on the page with explicit hypothesis and estimate labels |
 
 ### Credibility and interaction gaps
 
@@ -60,13 +62,10 @@ These directly affect whether a polished website feels trustworthy:
 
 | Current behavior or claim | Evidence | Required treatment |
 |---|---|---|
-| “104 Coaches Surveyed” | The local survey summary lists 104 fitness professionals **and trainees**, including 15 general trainees | Use an accurately qualified research statement after verifying the underlying survey; never convert respondents into active customers |
-| “90%+ Faster,” “96%+ extraction accuracy,” and processing-time promises | Strings exist in landing components; this review did not establish a benchmark dataset | Supply measurement methodology or remove/qualify the numbers |
-| “Real-time biometric extraction” | `OCRDemoSection.tsx` loads `scanFixtures` through timers | Label it a sample simulation; do not imply that a live OCR service processed a document |
-| Trial activation and a Zalo response within 24 hours | Hero form submission only calls `setSubmitted(true)` | Connect real lead persistence and operations before promising either outcome |
-| Payment presentation | Pricing contains a manually drawn QR-style SVG | Do not present it as a verified payment instrument; use a tested payment flow when ready |
-| Large revenue/ROI results | Calculator assumes 2.85 saved hours per client, 3.3 hours per additional session, and 500,000 VND per session | Expose assumptions, allow editing, and distinguish saved time from earned revenue |
-| Product availability claims such as PWA and Zalo integration | Marketing text is not implementation evidence | Check each capability end to end before advertising it as available |
+| OCR interaction uses local `scanFixtures` and timers | It does not call a live extraction service | Retain its simulation label and move it below verified product proof |
+| The time estimator calculates user-editable assumptions | It is illustrative and does not establish saved time or revenue | Keep the formula and disclaimer; reduce prominence until pilot measurements exist |
+| Survey counts are aggregate research submissions | The form did not collect publication consent for named endorsements | Keep the denominator and methodology; never present respondents as customers or testimonials |
+| Local RLS and E2E verification are not production deployment evidence | No production environment or privacy operations are documented as released | Say “verified locally” where relevant and avoid production-security or compliance claims |
 
 Source: [local survey summary](../../fitsync-docs/docs/04-market-research/SURVEY_INSIGHTS.md). This is an internal summary, not a fresh validation of its raw dataset.
 
@@ -76,8 +75,10 @@ The following comparisons separate observations from proposed adaptations. Their
 
 | Reference | Observed on the official page | Adaptation for FitSync | Avoid copying |
 |---|---|---|---|
+| [TrueCoach](https://truecoach.co/) | Leads with reduced administration, visible product capabilities, customer evidence, and a repeated 14-day no-card trial | Lead with the specific PT outcome, show working M2 screens, and repeat one truthful activation path | Its mature customer counts, testimonials, feature breadth, or trial promise |
 | [Everfit](https://everfit.io/) | Organizes capabilities around coaching, engagement, management, and scale; includes branded app imagery and named customer stories | Demonstrate both coach and client experiences, then connect functions to a coaching outcome | Its entire feature catalog, customer counts, or large-company navigation |
 | [ABC Trainerize](https://www.trainerize.com/) | Connects training, engagement, and business administration to benefits; repeats a clear trial offer; distinguishes independent trainers and larger organizations | Write benefit-led sections and make the next step consistent across the page | Enterprise breadth and unsupported “all-in-one” promises |
+| [PT Distinction](https://beta.ptdistinction.com/) | Pairs a free-trial action with a lower-commitment “How it works” path, then supports it with product features and user evidence | Use real activation as the primary action and the sample tour as the explanatory alternative | Its automation breadth, AI claims, or community proof |
 | [Apple Fitness+](https://www.apple.com/apple-fitness-plus/) | Pairs routine and motivation messaging with specific iPhone/Watch examples, plan choices, and explained trial terms | Show the client’s daily experience and make devices explain a real workflow | Hardware-style spectacle, unrelated device compatibility, or subscription terms |
 | [Linear](https://linear.app/) | Exposes detailed issue, planning, and workflow examples as part of its product explanation | Make a believable client roster and follow-up decision the centerpiece of the coach story | Developer terminology, dense tiny text, or a charcoal palette as a substitute for product evidence |
 | [Raycast](https://www.raycast.com/) | Makes keyboard interaction central to its explanation and shows concrete extension/task examples | Build one memorable interaction around reviewing a scan and seeing the result change | Keyboard-centric behavior that is awkward for coaches on phones |
@@ -112,19 +113,19 @@ Use the first direction with one signature interaction from the third. Photograp
 ## 6. Proposed page structure
 
 ```text
-Navigation: Product / How it works / Pricing / FAQ / Request early access
+Navigation: Product / How it works / Evidence / FAQ / Create PT workspace
 
-Hero: specific coaching promise + substantial product preview
+Hero: specific coaching promise + verified M2 product preview
                  ↓
-Connected workflow: Scan → Review → Coach
+Connected workflow: Create trainee → Invite → Verify record
                  ↓
-Coach workspace: one clear follow-up decision
+Coach workspace: roster + confirmed InBody record
                  ↓
-Client experience: a readable mobile check-in journey
+Trainee experience: the same verified record on mobile
                  ↓
 Evidence: verified research or one real pilot story
                  ↓
-Pricing + optional transparent time-savings estimate
+Secondary fixture tour + clearly labeled roadmap/hypotheses
                  ↓
 FAQ → final CTA → complete footer
 ```
@@ -141,9 +142,9 @@ Suggested Vietnamese copy, subject to product readiness:
 
 > Bớt việc quản lý. Thêm thời gian huấn luyện.
 >
-> Xem cách FitSync giúp bạn kiểm tra chỉ số, theo dõi học viên và quản lý buổi tập.
+> Tạo hồ sơ, mời học viên và xác nhận chỉ số InBody trong một luồng rõ ràng.
 >
-> Đăng ký trải nghiệm · Xem bản demo
+> Tạo workspace PT · Xem bản mẫu
 
 The second sentence invites exploration rather than asserting that every integration is production-ready. For an English variant: “Less admin. More time with your clients.” Support it with a concrete explanation of scan review and client follow-up.
 
@@ -153,33 +154,31 @@ Mobile composition: headline, short explanation, CTA, then one readable phone or
 
 ### Signature interaction: one client, two perspectives
 
-Use one clearly fictional sample client consistently throughout the page. The visitor can switch between “Coach view” and “Client view,” seeing how a reviewed value or planned action appears to each person. This is a proposed FitSync-specific synthesis of workflow demonstrations and multi-device storytelling, not a feature observed on every reference site.
+Use one clearly fictional sample trainee consistently throughout the page. The visitor can switch between “PT view” and “Trainee view,” seeing the same confirmed InBody record from each authorized perspective. This connects directly to verified M2 behavior.
 
 Keep the interaction local and bounded. It should not require a login or accept personal health information. Show a good static default before JavaScript is ready, make controls keyboard-accessible, and provide a reduced-motion state.
 
-### Scan → Review → Coach
+### Create → Invite → Verify
 
-Replace the technical processing terminal as the main story with three visible artifacts:
+Use the verified M2 workflow as the main story with three visible artifacts:
 
-1. **Scan:** an anonymized or synthetic sample sheet with a readable highlighted field.
-2. **Review:** the extracted value, units, and an editable confirmation step.
-3. **Coach:** the corresponding client record or sample target view.
+1. **Create:** a synthetic trainee appears in the PT roster with goal and session context.
+2. **Invite:** a secure, expiring, single-use invitation connects the trainee account.
+3. **Verify:** the PT validates and confirms five manual InBody metrics; the trainee sees the same verified result.
 
-Use the label “Interactive sample; results are simulated” while fixtures drive the experience. Keep internal processing stages secondary. A coach’s question is whether the information is correct and useful, not which computer-vision stage ran.
-
-Provide start, processing, complete, correction, reset, and explanatory failure states. Cancel earlier timers when switching examples so an old simulation cannot overwrite the new selection. Numeric correction should reject invalid values and preserve units. Do not describe a calculation as a personalized meal plan unless that capability is implemented and appropriate.
+Use synthetic values and avoid exposing real invitation tokens or health data. If the existing OCR fixture remains on the page, label it “Interactive sample; results are simulated” and position it after the verified workflow.
 
 ### Coach workspace
 
-Headline concept: “Know who needs your attention today.”
+Headline concept: “One place for every trainee record.”
 
-Show a real screenshot from the sample dashboard with one inactivity state and one session-balance state, using labels as well as color. Explain the next action in a short caption. If Zalo messaging is not connected, demonstrate preparing or copying a message only if that action exists; do not depict automatic delivery.
+Show a sanitized product composition based on the real workspace: roster status, invitation state, and a verified record. Use labels as well as color. Future check-in warnings and Zalo follow-up remain outside this first proof until M3 is verified.
 
-### Client experience
+### Trainee experience
 
-Headline concept: “A daily check-in your clients can understand.”
+Headline concept: “Your trainee sees the record you confirmed.”
 
-Use two or three sequential mobile views: today’s target, a meal/check-in entry, and progress. Only show available interactions as real product capability. Explain browser access accurately; a responsive page alone is not evidence of an installable PWA.
+Show the focused mobile trainee view with identity, coach connection, five verified metrics, and nutrition drafts. Only show available interactions as real product capability. Explain browser access accurately; a responsive page alone is not evidence of an installable PWA.
 
 ### Evidence and human context
 
@@ -189,11 +188,9 @@ After a pilot, replace or supplement this with one consented case study: coach c
 
 ### Pricing and the next step
 
-Current `mock-data.ts` displays Free, Pro at 199,000 VND/month, and Enterprise Studio at 1,500,000 VND/month. The old report proposed different plans and prices. Treat current values as prototype configuration, not a confirmed commercial decision. Resolve the product offer before publishing new copy.
+The current landing page presents a Freemium direction and a Pro hypothesis at 199,000 VND/month. Treat both as research hypotheses, not a confirmed commercial offer. Resolve the product offer before publishing checkout or trial copy.
 
-Explain who each plan suits, client limits, scan limits, included support, and what happens next. Use “Request early access” consistently while onboarding remains manual. Use “Start trial” only when that action actually starts a trial. Add annual billing only after both price arithmetic and billing support are defined.
-
-The lead form should ask for the minimum needed: a name and preferred contact, plus optional role/client count. Preserve entries on failure, prevent duplicate submissions, and confirm success only after persistence. The current four required fields can be tested against this shorter alternative.
+Keep proposed plan limits and prices explicitly hypothetical. Use “Tạo workspace PT” for the working registration path. Use “Start trial,” “Join pilot,” or lead-form success language only when those operations actually exist. Add annual billing only after both price arithmetic and billing support are defined.
 
 ### Time-savings estimator
 
@@ -241,23 +238,16 @@ Acceptance targets:
 
 ## 9. Implementation roadmap
 
-Effort sizes are relative and exclude unknown backend work. No production code was changed for this report.
+The original redesign and the smaller post-M2 conversion checkpoint are complete. The root `landing-conversion-alignment.md` plan records the implementation and verification:
 
-| Priority | Deliverable | Main files or assets | Relative effort | Completion evidence |
-|---|---|---|---|---|
-| P0 | Reconcile product claims, sample labels, prices, and CTA intent | Landing components, `mock-data.ts`, approved content sheet | Small–medium | Every public promise maps to evidence or an explicit sample label |
-| P0 | Make lead capture truthful and functional | Shared lead form and real persistence integration | Backend-dependent | Success, failure, retry, and duplicate-submit paths verified |
-| P1 | Produce product assets and redesign hero | `HeroSection.tsx`, `public/`, revised `DESIGN.md` | Medium | Desktop/mobile captures demonstrate the product and readable hierarchy |
-| P1 | Build the connected workflow demo | `OCRDemoSection.tsx`, shared fixtures | Medium | Selection, correction, reset, and rapid switching behave consistently |
-| P1 | Replace text-card feature presentation | `FeaturesSection.tsx`, coach/client preview sections | Medium | Each main benefit has a concrete product scene |
-| P1 | Unify navigation, pricing, FAQ, footer | `LandingNav.tsx`, `PricingSection.tsx`, `Footer.tsx`, `page.tsx` | Medium | Every CTA has an accurate destination and matching result |
-| P2 | Add verified research/pilot proof and Vietnamese content | Evidence section, copy, metadata | Evidence-dependent | Claims reviewed; language and page metadata agree |
-| P2 | Rework optional estimator | `ROICalculator.tsx` | Small–medium | Inputs, units, formula, and assumptions are visible |
-| P2 | Add restrained motion and finish QA | `globals.css`, interactive leaf components | Medium | Keyboard, reduced motion, responsive, and performance checks recorded |
+1. Reverse the CTA hierarchy so `/register` is primary and the public tour is secondary.
+2. Reframe the hero and first product proof around the verified M2 workflow.
+3. Demote future-facing OCR, ROI, and pricing material while preserving honest labels.
+4. Keep survey evidence qualified and do not invent pilot proof.
+5. Update the public-journey browser test for the new intent and both CTA destinations.
+6. Validate lint, types, production build, and desktop/mobile browser rendering.
 
-Keep the existing Next.js/React/Tailwind stack. A framework migration is not needed for this redesign. Consolidate duplicated lead forms into one component when implementing the shared flow. Avoid turning the whole marketing page into a client component to support a few interactions.
-
-Update `DESIGN.md` before UI implementation so it permits product imagery and resolves its current contradictions. Preserve existing uncommitted work while implementing; the inspected repository already contains landing-page modifications.
+Keep the existing Next.js/React stack and scoped landing styles. This checkpoint does not require database changes, new authentication behavior, analytics, OCR, payments, or M3 engagement work.
 
 ## 10. Validation and success measurement
 
@@ -294,4 +284,4 @@ Specific corrections:
 - PWA, messaging, payment, and trial claims require implementation checks.
 - A report title saying “approved” does not establish approval for this new proposal.
 
-The first implementation milestone should deliver a compelling hero, one connected sample workflow, and an accurate CTA path. Those changes address the strongest first-impression and trust gaps before optional visual flourishes are added.
+The landing now uses verified M2 behavior in the hero, real registration as the primary path, and the public sample as a clearly secondary tour. Desktop and mobile browser verification passed, so product work returns to M3.

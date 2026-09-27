@@ -10,34 +10,35 @@ import {
 
 const stages = [
   {
-    status: "CÓ THỂ KHÁM PHÁ",
-    title: "Bản mẫu hiện tại",
+    status: "ĐÃ XÁC MINH CỤC BỘ",
+    title: "Luồng M2 đang hoạt động",
     icon: Check,
     items: [
-      "Dashboard coach với dữ liệu minh họa",
-      "Không gian học viên trên trình duyệt",
-      "Luồng đọc phiếu và chỉnh số mô phỏng",
+      "PT tạo roster và lời mời một lần có hạn",
+      "Nhập tay 5 chỉ số với kiểm tra tính hợp lý",
+      "PT xác nhận, học viên xem đúng bản ghi",
+      "RLS ngăn truy cập chéo giữa các tài khoản",
     ],
   },
   {
-    status: "PHẠM VI MVP",
-    title: "Vòng lặp cốt lõi",
+    status: "TIẾP THEO: M3",
+    title: "Nhịp đồng hành hằng ngày",
     icon: CircleDashed,
     items: [
-      "OCR 5 chỉ số với bước coach xác nhận",
+      "Check-in hằng ngày và ảnh bữa ăn tùy chọn",
       "Cảnh báo sau 3 ngày không check-in",
-      "Gói buổi tập, bữa ăn và biểu đồ tiến trình",
-      "Phân quyền riêng cho PT và học viên",
+      "Tương tác số buổi còn lại",
+      "Chuẩn bị tin nhắn follow-up cho PT",
     ],
   },
   {
-    status: "SAU MVP",
-    title: "Hướng phát triển",
+    status: "SAU M3",
+    title: "Chỉ triển khai khi có bằng chứng",
     icon: Clock3,
     items: [
-      "Bảng xếp hạng ẩn danh theo tính đều đặn",
-      "So sánh ảnh tiến trình có kiểm soát riêng tư",
-      "Thiết bị đeo, ghi chú giọng nói và marketplace",
+      "OCR InBody sau benchmark và bước PT duyệt",
+      "Pilot có analytics, hỗ trợ và xóa dữ liệu",
+      "Thanh toán và ứng dụng mobile dùng chung backend",
     ],
   },
 ];
@@ -53,14 +54,13 @@ export default function ProductScope() {
           <span>Biết điều gì đang được xây.</span>
         </h2>
         <p>
-          FitSync bắt đầu với một vòng lặp hẹp: coach đọc và xác nhận dữ liệu,
-          học viên check-in, coach can thiệp đúng lúc, cả hai cùng nhìn lại tiến
-          trình.
+          FitSync chỉ gọi một khả năng là đang hoạt động khi luồng đó đã được
+          kiểm thử. Phần còn lại giữ đúng vị trí trong kế hoạch.
         </p>
       </div>
       <div className="fs-scope-grid">
         {stages.map(({ status, title, icon: Icon, items }, index) => (
-          <article key={status} className={index === 1 ? "is-core" : ""}>
+          <article key={status} className={index === 0 ? "is-core" : ""}>
             <div className="fs-scope-title">
               <Icon size={21} aria-hidden="true" />
               <span>{status}</span>
@@ -76,10 +76,10 @@ export default function ProductScope() {
           </article>
         ))}
       </div>
-      <div className="fs-scope-foundation" aria-label="Nền tảng kỹ thuật dự kiến">
+      <div className="fs-scope-foundation" aria-label="Nền tảng kỹ thuật đã xác minh cục bộ">
         <span><ScanLine size={16} /> Coach xác nhận trước khi lưu</span>
-        <span><ShieldCheck size={16} /> Dữ liệu tách theo vai trò</span>
-        <span><Smartphone size={16} /> Web responsive, hướng tới PWA</span>
+        <span><ShieldCheck size={16} /> RLS tách dữ liệu theo vai trò</span>
+        <span><Smartphone size={16} /> Web responsive trên desktop và mobile</span>
         <span><Users size={16} /> PT độc lập là người dùng chính</span>
       </div>
     </section>

@@ -1,5 +1,5 @@
 ---
-version: 3.0.0
+version: 3.1.0
 name: FitSync Carbon Interface
 description: Dark data-forward design system for FitSync. Rich anthracite background, amber-gold accent, warm ivory typography, oversized hero type, asymmetric layouts, scroll-driven animations. Premium health-tech aesthetic that communicates trust and technical capability.
 colors:
@@ -70,7 +70,7 @@ shadows:
   glow_accent: "0 0 30px rgba(52, 211, 153, 0.06)"
 ---
 
-# FitSync Design Specification — Carbon Interface v2.0
+# FitSync Design Specification — Carbon Interface v3.1
 
 > **Design Theme:** Carbon Interface — Dark Data-Forward
 > **Aesthetic Philosophy:** Premium warmth via amber-gold on dark anthracite. Oversized typography-first hero. Asymmetric layouts. Scroll-driven reveals. Product-led composition, readable contrast, and locally served editorial imagery.
@@ -145,23 +145,25 @@ Mono: 14px / 20px                   | SemiBold (600)| Metrics, Prices, Data
 ```
 ┌─────────────────────────────────────────────────────┐
 │ STICKY NAV: Dark transparent → solid on scroll      │
-│ FitSync ⚡ | Features  Demo  ROI  Pricing | CTA    │
+│ FitSync | Product  How it works  Evidence | CTA     │
 ├─────────────────────────────────────────────────────┤
-│ HERO: Oversized headline + subtitle + CTAs          │
-│ + Interactive sample coach and client workspace   │
-│ + Subtle radial amber glow behind headline          │
+│ HERO: Specific PT outcome + real activation CTA     │
+│ + Verified M2 coach and trainee product proof       │
 ├─────────────────────────────────────────────────────┤
-│ FEATURES: Asymmetric triptych (45% | 30% | 25%)    │
-│ Staggered scroll-reveal, hover glow borders         │
+│ HOW IT WORKS: Create trainee → invite → verify      │
+│ Three concrete steps using synthetic product data   │
 ├─────────────────────────────────────────────────────┤
-│ OCR DEMO: Terminal-style processing visualization   │
-│ Split-panel results, editable fields with amber     │
+│ PRODUCT PROOF: PT roster + confirmed InBody record  │
+│ Paired with the trainee's read-only mobile view     │
 ├─────────────────────────────────────────────────────┤
-│ ROI CALCULATOR: Amber slider, animated counters     │
-│ Full-width dark card with comparison bar             │
+│ EVIDENCE: Qualified survey findings and boundaries  │
+│ No fabricated testimonials or outcome claims        │
 ├─────────────────────────────────────────────────────┤
-│ PRICING: 3 cards, recommended has amber glow border │
-│ VietQR modal (dark themed)                          │
+│ SECONDARY TOUR / ROADMAP: Clearly labeled fixtures  │
+│ OCR and pricing remain prototypes or hypotheses     │
+├─────────────────────────────────────────────────────┤
+│ FINAL CTA: Create a real PT workspace               │
+│ Secondary link: view the public sample              │
 ├─────────────────────────────────────────────────────┤
 │ FOOTER: Minimal dark, FitSync branding              │
 └─────────────────────────────────────────────────────┘
@@ -264,12 +266,16 @@ Children use `animation-delay` at `150ms` intervals for triptych/pricing cards.
 * **DO Use Monospace for Data:** All numbers, prices, and biometric values in JetBrains Mono.
 
 
-## Landing implementation v3
+## Landing implementation v4 — post-M2 acquisition alignment
 
-The 2026-09-27 research report guides this revision. The marketing page uses scoped `.fs-landing` styles so dashboard styling is preserved. Keep charcoal and amber, 1240px containers, 20px mobile gutters, 44–80px responsive display type, and 16–18px marketing body copy. Use a substantial interactive sample workspace in the hero, a Scan → Review → Coach workflow, editorial coaching imagery, distinct coach/client feature compositions, transparent proposed pricing, an assumption-based time estimator, native FAQ disclosures, and sample-dashboard CTAs. Green is semantic status only. Existing fonts and Lucide icons remain.
+The 2026-09-27 research report and verified M2 workflow guide this revision. The marketing page uses scoped `.fs-landing` styles so product styling remains isolated. Keep charcoal and amber, 1240px containers, 20px mobile gutters, 44–80px responsive display type, and 16–18px marketing body copy. Green remains semantic status only. Existing fonts and Lucide icons remain.
 
-All marketing copy is Vietnamese. The public primary action is “Khám phá bản mẫu” linking to the clearly labeled fixture-backed `/app/dashboard`; this does not create accounts or imply live onboarding. “Tạo workspace PT” is the secondary activation path linking to `/register`. OCR uses clearly labeled local fixtures. Do not show payment QR codes, invented customer proof, unsupported accuracy claims, or fake submission success.
+All marketing copy is Vietnamese. The primary action is “Tạo workspace PT” linking to `/register`, because this is the real activation path available today. The secondary action is “Xem bản mẫu” linking to the clearly labeled fixture-backed `/app/dashboard`. Do not call registration a free trial or pilot until those operations are defined and supported.
+
+The hero and first product story must show the verified M2 loop: a PT roster, a secure invitation, manual entry and confirmation of five InBody metrics, and the trainee's read-only verified record. Use synthetic data and keep product text readable at mobile and desktop sizes. `/app/*` remains useful as an optional interactive tour, but it must not visually compete with the primary activation action.
+
+Simulated OCR, the assumption-based ROI estimator, and proposed pricing may remain as lower-priority prototype or roadmap material only when their status is unmistakable. They must not be the first proof of a working product. Do not show payment QR codes, invented customer proof, unsupported accuracy claims, implied automatic OCR, or fake submission success.
 
 Research evidence must show its denominator and describe the source as survey submissions, never customers or verified coaches. Publish aggregate counts only unless a separate consent record explicitly permits a named quotation, image, or testimonial. Survey evidence establishes the problem; it does not establish product outcomes.
 
-Use CSS for control transitions and a short initial entrance, with reduced-motion support. Content remains visible without animation. Images require responsive sizes and dimensions. Interactive previews are working, accessible sample UI rather than screenshots of nonexistent capabilities.
+Use CSS for control transitions and a short initial entrance, with reduced-motion support. Content remains visible without animation. Images require responsive sizes and dimensions. Interactive previews must either reflect verified M2 behavior or be labeled as fixtures. Prefer sanitized product captures or faithful UI compositions from `/workspace` over screenshots of nonexistent capabilities.

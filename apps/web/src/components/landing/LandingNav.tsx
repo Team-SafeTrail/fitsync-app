@@ -6,8 +6,8 @@ import { ArrowUpRight, Menu, X, Activity } from "lucide-react";
 
 const links = [
   ["Sản phẩm", "#product"],
-  ["Cách hoạt động", "#demo"],
-  ["Bảng giá", "#pricing"],
+  ["Cách hoạt động", "#workflow"],
+  ["Bằng chứng", "#evidence"],
   ["Câu hỏi", "#faq"],
 ];
 
@@ -48,9 +48,9 @@ export default function LandingNav() {
         </div>
         <Link
           className="fs-button fs-button-small fs-nav-cta"
-          href="/app/dashboard"
+          href="/register"
         >
-          Khám phá bản mẫu <ArrowUpRight size={15} />
+          Tạo workspace PT <ArrowUpRight size={15} />
         </Link>
         <button
           ref={toggle}
@@ -69,8 +69,8 @@ export default function LandingNav() {
                 {label}
               </a>
             ))}
-            <Link href="/app/dashboard" className="fs-button">
-              Khám phá bản mẫu <ArrowUpRight size={16} />
+            <Link href="/register" className="fs-button">
+              Tạo workspace PT <ArrowUpRight size={16} />
             </Link>
           </div>
         )}

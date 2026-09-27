@@ -2,9 +2,9 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   ArrowRight,
-  ScanLine,
-  Users,
-  Smartphone,
+  BadgeCheck,
+  Send,
+  UserPlus,
 } from "lucide-react";
 import ProductPreview from "./ProductPreview";
 
@@ -24,16 +24,15 @@ export default function HeroSection() {
           </span>
         </h1>
         <p className="fs-hero-description">
-          Từ phiếu InBody đến từng lần check-in. Một không gian cho PT độc lập
-          quản lý hồ sơ, gói tập và tiến trình của học viên mà không phải ghép
-          dữ liệu từ nhiều công cụ.
+          Tạo hồ sơ, mời học viên và xác nhận 5 chỉ số InBody trong một
+          workspace rõ ràng cho PT Việt và học viên của họ.
         </p>
         <div className="fs-actions">
-          <Link className="fs-button" href="/app/dashboard">
-            Khám phá bản mẫu <ArrowUpRight size={18} />
+          <Link className="fs-button" href="/register">
+            Tạo workspace PT <ArrowRight size={18} />
           </Link>
-          <Link className="fs-text-link" href="/register">
-            Tạo workspace PT <ArrowRight size={17} />
+          <Link className="fs-text-link" href="/app/dashboard">
+            Xem bản mẫu <ArrowUpRight size={17} />
           </Link>
         </div>
       </div>
@@ -41,16 +40,16 @@ export default function HeroSection() {
         <ProductPreview />
       </div>
       <div className="fs-hero-bottom">
-        <span>ÍT THAO TÁC HƠN. KẾT NỐI TỐT HƠN.</span>
+        <span>MỘT LUỒNG. HAI GÓC NHÌN.</span>
         <div>
           <span>
-            <ScanLine size={17} /> Đọc chỉ số
+            <UserPlus size={17} /> Tạo hồ sơ
           </span>
           <span>
-            <Users size={17} /> Quản lý học viên
+            <Send size={17} /> Mời an toàn
           </span>
           <span>
-            <Smartphone size={17} /> Đồng hành mỗi ngày
+            <BadgeCheck size={17} /> Xác nhận InBody
           </span>
         </div>
       </div>

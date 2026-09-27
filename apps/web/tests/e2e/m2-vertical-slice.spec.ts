@@ -16,7 +16,8 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   const landingResponse = await ptPage.goto("/");
   expect(landingResponse?.ok()).toBe(true);
   await expect(ptPage.locator("#main-content")).toBeVisible();
-  await expect(ptPage.getByRole("link", { name: "Khám phá bản mẫu" }).first()).toHaveAttribute("href", "/app/dashboard");
+  await expect(ptPage.getByRole("link", { name: "Tạo workspace PT" }).first()).toHaveAttribute("href", "/register");
+  await expect(ptPage.getByRole("link", { name: "Xem bản mẫu" }).first()).toHaveAttribute("href", "/app/dashboard");
   const demoResponse = await ptPage.goto("/app/dashboard");
   expect(demoResponse?.ok()).toBe(true);
   await expect(ptPage.getByRole("heading", { name: "Smart PT Hub" })).toBeVisible();

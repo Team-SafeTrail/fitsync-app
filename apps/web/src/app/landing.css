@@ -281,10 +281,84 @@
 .fs-hero-bottom svg {
   color: #9d9d98;
 }
+.fs-workflow {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.72fr) minmax(0, 1.45fr);
+  gap: 70px;
+  align-items: end;
+  border-bottom: 1px solid var(--fs-border);
+}
+.fs-workflow-heading > p {
+  color: var(--fs-amber);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 1.6px;
+  margin-bottom: 16px;
+}
+.fs-workflow-heading h2 {
+  font-size: clamp(32px, 3.6vw, 48px);
+}
+.fs-workflow-proof {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  color: #a9aaa5;
+  font-size: 11px;
+  line-height: 1.7;
+  margin-top: 25px;
+  max-width: 350px;
+}
+.fs-workflow-proof svg {
+  color: #86b99d;
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+.fs-workflow-steps {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-top: 1px solid #3a3a37;
+}
+.fs-workflow-steps article {
+  position: relative;
+  min-height: 245px;
+  padding: 25px 24px 28px;
+  border-left: 1px solid #353633;
+}
+.fs-workflow-step-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--fs-amber);
+  margin-bottom: 42px;
+}
+.fs-workflow-step-top > span {
+  color: #8f908b;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 11px;
+  letter-spacing: 1.2px;
+}
+.fs-workflow-steps h3 {
+  font-size: 17px;
+  font-weight: 500;
+  letter-spacing: -0.3px;
+  margin-bottom: 11px;
+}
+.fs-workflow-steps p {
+  color: #a5a6a1;
+  font-size: 11px;
+  line-height: 1.8;
+}
+.fs-workflow-arrow {
+  position: absolute;
+  top: 28px;
+  right: -10px;
+  z-index: 1;
+  color: #777872;
+  background: var(--fs-bg);
+}
 .fs-product-stage {
   position: relative;
   z-index: 1;
-  animation: fs-enter 0.65s ease both;
 }
 .fs-preview-label {
   display: flex;
@@ -602,6 +676,85 @@
   justify-content: center;
   flex-direction: column;
   gap: 20px;
+}
+.fs-trainee-record {
+  width: min(100%, 370px);
+  border: 1px solid #3b3d38;
+  background: #1b1c1e;
+  border-radius: 8px;
+  padding: 17px;
+}
+.fs-trainee-record-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-bottom: 13px;
+  border-bottom: 1px solid #31332f;
+}
+.fs-trainee-record-head > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  color: #93c2a7;
+  font-size: 8px;
+  letter-spacing: 0.9px;
+}
+.fs-trainee-record-head small {
+  color: #8f918b;
+  font-size: 8px;
+}
+.fs-trainee-primary-metric {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 16px 0 13px;
+}
+.fs-trainee-primary-metric > span {
+  color: #9fa19b;
+  font-size: 9px;
+}
+.fs-trainee-primary-metric strong {
+  font-family: var(--font-space-grotesk), sans-serif;
+  color: var(--fs-amber);
+  font-size: 28px;
+  font-weight: 500;
+  line-height: 1;
+}
+.fs-trainee-primary-metric strong small {
+  color: #a9aaa5;
+  font-family: var(--font-inter), sans-serif;
+  font-size: 9px;
+  font-weight: 400;
+}
+.fs-trainee-metrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 7px;
+}
+.fs-trainee-metrics > span {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 3px;
+  color: #8f918b;
+  background: #232426;
+  border-radius: 5px;
+  padding: 8px;
+  font-size: 7px;
+}
+.fs-trainee-metrics strong {
+  width: 100%;
+  color: #d4d3ce;
+  font-family: var(--font-space-grotesk), sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
+.fs-trainee-draft {
+  color: #979993;
+  font-size: 8px;
+  line-height: 1.6;
+  margin-top: 12px !important;
 }
 .fs-calorie-ring {
   width: 153px;
@@ -1578,6 +1731,13 @@
   color: #d6b370;
 }
 .fs-final-cta .fs-button {
+  margin-top: 0;
+}
+.fs-final-actions {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
   margin-top: 31px;
 }
 .fs-footer {
@@ -3156,5 +3316,51 @@
   }
   .fs-legal-sections p {
     grid-column: 1;
+  }
+}
+
+@media (max-width: 800px) {
+  .fs-workflow {
+    grid-template-columns: 1fr;
+    gap: 38px;
+    align-items: start;
+  }
+  .fs-workflow-heading {
+    max-width: 560px;
+  }
+  .fs-workflow-steps article {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+}
+
+@media (max-width: 560px) {
+  .fs-workflow {
+    gap: 30px;
+  }
+  .fs-workflow-steps {
+    grid-template-columns: 1fr;
+  }
+  .fs-workflow-steps article {
+    min-height: 0;
+    padding: 22px 8px 25px;
+    border-left: 0;
+    border-bottom: 1px solid #353633;
+  }
+  .fs-workflow-step-top {
+    margin-bottom: 22px;
+  }
+  .fs-workflow-arrow {
+    top: auto;
+    right: 4px;
+    bottom: -10px;
+    transform: rotate(90deg);
+  }
+  .fs-trainee-record {
+    padding: 14px;
+  }
+  .fs-final-actions {
+    flex-direction: column;
+    gap: 8px;
   }
 }

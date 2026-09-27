@@ -13,15 +13,15 @@ const faqs = [
   ],
   [
     "Demo có đọc phiếu InBody thật không?",
-    "Chưa. Demo dùng ba bộ dữ liệu có sẵn: InBody 270, InBody 370 và Xiaomi Smart Scale 2. Bạn có thể chỉnh cân nặng để xem phép tính thay đổi, nhưng không có ảnh nào được gửi đến dịch vụ OCR. InBody 570 và Eufy Smart Scale P2 nằm trong phạm vi MVP dự kiến.",
+    "Chưa. Demo dùng ba bộ dữ liệu có sẵn: InBody 270, InBody 370 và Xiaomi Smart Scale 2. Bạn có thể chỉnh cân nặng để xem phép tính thay đổi, nhưng không có ảnh nào được gửi đến dịch vụ OCR. OCR thật chỉ được xem xét sau M3 và một benchmark có dữ liệu được đồng ý sử dụng.",
   ],
   [
     "FitSync sẽ đọc và theo dõi những chỉ số nào?",
-    "Đặc tả MVP tập trung vào 5 chỉ số: cân nặng, khối lượng cơ xương, khối lượng mỡ, tỷ lệ mỡ và tổng lượng nước cơ thể. Coach phải kiểm tra và xác nhận dữ liệu trước khi lưu hoặc dùng để tạo mục tiêu mẫu.",
+    "Workspace hiện cho PT nhập tay 5 chỉ số: cân nặng, khối lượng cơ xương, khối lượng mỡ, tỷ lệ mỡ và tổng lượng nước cơ thể. Hệ thống kiểm tra giới hạn và tính nhất quán trước khi PT xác nhận. OCR vẫn chỉ là mô phỏng trên landing.",
   ],
   [
     "Học viên có cần cài ứng dụng không?",
-    "Không gian học viên mẫu mở trực tiếp trong trình duyệt trên điện thoại hoặc máy tính. Ứng dụng trên App Store, Google Play và khả năng cài đặt PWA chưa được cung cấp trong bản mẫu này.",
+    "Không. Sau khi nhận lời mời và tạo tài khoản, học viên mở workspace trong trình duyệt trên điện thoại hoặc máy tính. Ứng dụng App Store, Google Play và PWA chưa được phát hành.",
   ],
   [
     "Bảng giá đã áp dụng chưa?",
@@ -68,9 +68,14 @@ export function ClosingSections() {
           <br />
           <span>Kết nối là việc của FitSync.</span>
         </h2>
-        <Link href="/app/dashboard" className="fs-button">
-          Khám phá bản mẫu <ArrowUpRight size={18} />
-        </Link>
+        <div className="fs-final-actions">
+          <Link href="/register" className="fs-button">
+            Tạo workspace PT <ArrowUpRight size={18} />
+          </Link>
+          <Link href="/app/dashboard" className="fs-text-link">
+            Xem bản mẫu <ArrowRight size={17} />
+          </Link>
+        </div>
       </section>
     </>
   );
@@ -91,8 +96,9 @@ export default function Footer() {
         <div>
           <strong>Khám phá</strong>
           <a href="#product">Sản phẩm</a>
-          <a href="#demo">Demo tương tác</a>
-          <a href="#pricing">Gói dự kiến</a>
+          <a href="#workflow">Cách hoạt động</a>
+          <a href="#evidence">Bằng chứng</a>
+          <a href="#demo">Bản mẫu OCR</a>
         </div>
         <div>
           <strong>Truy cập</strong>

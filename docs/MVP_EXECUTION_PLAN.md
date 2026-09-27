@@ -1,7 +1,8 @@
 # FitSync MVP execution plan
 
 **Status:** Active implementation baseline
-**Version:** 1.0
+**Version:** 1.1
+**Updated:** 2026-09-27
 **Owner:** SafeTrail
 **Supersedes for implementation:** conflicting scope, status, price, platform, and outcome statements in earlier FitSync coursework documents
 
@@ -15,13 +16,21 @@ The MVP is working when a real PT can create a trainee, record and verify an InB
 
 | Surface | MVP responsibility | Delivery |
 | --- | --- | --- |
-| Public website | Product explanation, honest demo, pricing hypothesis, legal pages, signup entry | `apps/web`, Next.js |
+| Public website | Product explanation, verified M2 product evidence, secondary fixture-backed tour, pricing hypothesis, legal pages, signup entry | `apps/web`, Next.js |
 | PT web workspace | Roster, trainee profiles, manual InBody entry, OCR review, sessions, alerts, check-ins | `apps/web`, responsive Next.js |
 | Trainee web experience | Invitation, targets, check-ins, meals, progress | `apps/web`, mobile-first Next.js |
 | Mobile app | Camera-first PT actions, trainee daily companion, push notifications | Expo/React Native after web vertical slice |
 | Backend | Auth, PostgreSQL, RLS, private storage, server operations | Supabase plus server-only application code |
 
 Web and mobile use the same identities, database, storage policies, domain rules, and API contracts. Marketing pages and the authenticated web app remain one deployment because they share signup, analytics, branding, and routing.
+
+### Public acquisition boundary
+
+- `/workspace` is the real authenticated product surface and is the destination after signup.
+- `/app/*` is a public, fixture-backed product tour. It must remain clearly labeled as sample data and must never be presented as persisted user work.
+- The landing page's primary action leads to real PT activation through `/register`; the public tour is a secondary evaluation path.
+- Real, synthetic M2 screens should provide the main product proof. OCR, check-ins, payments, and mobile-app concepts must be labeled by their actual capability status.
+- Do not advertise a free trial, pilot participation, support response time, or final price until the corresponding operational flow and evidence exist.
 
 ## 3. Frozen MVP scope
 
@@ -139,16 +148,16 @@ Required isolation tests: PT A cannot read or mutate PT B’s trainee; trainee A
 
 ## 9. Delivery milestones
 
-| Milestone | Deliverable | Exit evidence |
-| --- | --- | --- |
-| M0 Foundation | Monorepo, active plan, staging conventions | Root checks pass; plan and ADR reviewed |
-| M1 Identity | Supabase local project, migrations, auth, profiles, RLS | Automated cross-role isolation tests pass |
-| M2 First vertical slice | PT creates trainee and verified manual InBody record; trainee sees it | Desktop and mobile-browser E2E demonstration |
-| M3 Engagement | Check-ins, meal upload, session balance, three-day warning | PT receives real trainee activity in staging |
-| M4 OCR | InBody 270 extraction behind mandatory review | Consented benchmark and failure tests pass |
-| M5 Pilot funnel | Real signup CTA, analytics, support and deletion flow | Acquisition-to-activation events visible |
-| M6 Paid pilot | Manual VietQR evidence and entitlement | Reconciled real transactions with consent |
-| M7 Android | Expo app or justified store-ready wrapper using production backend | Play testing-track listing and install evidence |
+| Milestone | Status | Deliverable | Exit evidence |
+| --- | --- | --- | --- |
+| M0 Foundation | Verified | Monorepo, active plan, staging conventions | Root checks pass; plan and ADR reviewed |
+| M1 Identity | Verified | Supabase local project, migrations, auth, profiles, RLS | Automated cross-role isolation tests pass |
+| M2 First vertical slice | Verified | PT creates trainee and verified manual InBody record; trainee sees it | Desktop and mobile-browser E2E demonstration |
+| M3 Engagement | Next | Check-ins, meal upload, session balance, three-day warning | PT receives real trainee activity in staging |
+| M4 OCR | Planned | InBody 270 extraction behind mandatory review | Consented benchmark and failure tests pass |
+| M5 Pilot funnel | Planned | Real signup CTA, analytics, support and deletion flow | Acquisition-to-activation events visible |
+| M6 Paid pilot | Planned | Manual VietQR evidence and entitlement | Reconciled real transactions with consent |
+| M7 Android | Planned | Expo app or justified store-ready wrapper using production backend | Play testing-track listing and install evidence |
 
 ## 10. EXE202 evidence model
 
@@ -182,14 +191,17 @@ Every milestone must pass lint, TypeScript, focused unit tests for domain rules,
 
 ## 13. Immediate implementation backlog
 
-1. Initialize Supabase configuration and versioned migrations.
-2. Create `profiles`, `pt_profiles`, `trainee_profiles`, and invitation policies.
-3. Implement PT signup and protected routing.
-4. Replace the sample roster with an authenticated empty/seeded state.
-5. Implement trainee creation and invitation acceptance.
-6. Implement manual InBody form, validation, confirmation, and history.
-7. Add trainee read-only view of verified records.
-8. Add isolation integration tests and one full browser E2E test.
+M0 through M2 and the post-M2 landing conversion checkpoint are complete. `landing-conversion-alignment.md` records the verified marketing-surface change.
+
+The active backlog returns to M3:
+
+1. Add the check-in and optional meal-log schema, private storage boundary, RLS, and generated database types.
+2. Implement trainee check-in submission with server-side validation and an authorized history view.
+3. Add PT review of trainee activity plus explicit session-balance interactions.
+4. Implement the warning queue after three full calendar days without a check-in, using the documented application timezone.
+5. Add pgTAP isolation coverage, domain tests, and one desktop/mobile browser flow for the complete M3 loop.
+
+Do not pull OCR, payment, or Expo work forward.
 
 ## 14. Change control
 

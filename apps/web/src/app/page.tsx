@@ -7,18 +7,18 @@ import ROICalculator from "@/components/landing/ROICalculator";
 import PricingSection from "@/components/landing/PricingSection";
 import Footer, { ClosingSections } from "@/components/landing/Footer";
 import SurveyEvidence from "@/components/landing/SurveyEvidence";
-import ProgressJourney from "@/components/landing/ProgressJourney";
 import ProductScope from "@/components/landing/ProductScope";
+import VerifiedWorkflowSection from "@/components/landing/VerifiedWorkflowSection";
 import "./landing.css";
 
 export const metadata: Metadata = {
   title: "FitSync | Bớt việc quản lý. Thêm giờ huấn luyện.",
   description:
-    "Khám phá FitSync: không gian quản lý học viên, theo dõi chỉ số và đồng hành mỗi ngày dành cho huấn luyện viên Việt Nam. Trải nghiệm bản mẫu tương tác.",
+    "FitSync giúp PT Việt tạo hồ sơ, mời học viên và xác nhận chỉ số InBody trong một workspace được phân quyền rõ ràng.",
   openGraph: {
     title: "FitSync | Thêm thời gian đồng hành",
     description:
-      "Từ phiếu InBody đến từng buổi tập. Khám phá không gian huấn luyện FitSync.",
+      "Từ lời mời học viên đến bản ghi InBody đã xác nhận trong cùng một workspace.",
     locale: "vi_VN",
     type: "website",
   },
@@ -30,11 +30,11 @@ export default function LandingPage() {
       <LandingNav />
       <main id="main-content">
         <HeroSection />
-        <SurveyEvidence />
-        <OCRDemoSection />
+        <VerifiedWorkflowSection />
         <FeaturesSection />
-        <ProgressJourney />
+        <SurveyEvidence />
         <ProductScope />
+        <OCRDemoSection />
         <PricingSection />
         <ROICalculator />
         <ClosingSections />

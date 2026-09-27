@@ -2,10 +2,10 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, Compass } from "lucide-react";
 
 const launchFeatures = [
-  "Đọc phiếu và kiểm tra chỉ số",
-  "Theo dõi check-in và gói tập",
-  "Không gian riêng cho học viên",
-  "Tổng quan tiến trình theo thời gian",
+  "Tối đa 3 học viên trong giả thuyết Free",
+  "OCR chỉ sau khi có benchmark và bước duyệt",
+  "Check-in và cảnh báo thuộc milestone M3",
+  "Không gian riêng cho PT và học viên",
 ];
 
 export default function PricingSection() {
@@ -14,37 +14,37 @@ export default function PricingSection() {
       <div className="fs-offer-heading">
         <p className="fs-eyebrow">TRẠNG THÁI SẢN PHẨM</p>
         <h2>
-          Khám phá trước.
+          Bắt đầu với điều đã chạy.
           <br />
-          <span>Quyết định sau.</span>
+          <span>Kiểm chứng phần còn lại.</span>
         </h2>
         <p>
-          FitSync đang ở giai đoạn bản mẫu. Hiện chưa mở đăng ký, thanh toán hay
-          tự động gia hạn.
+          Luồng workspace M2 đã hoạt động. Gói thương mại, thanh toán và trial
+          vẫn chưa được phát hành.
         </p>
       </div>
       <div className="fs-offer-now">
-        <span className="fs-offer-label">CÓ THỂ DÙNG HÔM NAY</span>
+        <span className="fs-offer-label">LUỒNG THẬT TRONG SẢN PHẨM</span>
         <div className="fs-offer-title">
           <Compass size={25} aria-hidden="true" />
           <div>
-            <h3>Bản mẫu tương tác</h3>
-            <p>Không cần tài khoản hoặc thông tin thẻ.</p>
+            <h3>Workspace PT</h3>
+            <p>Tạo tài khoản PT. Không có bước thanh toán.</p>
           </div>
         </div>
         <ul>
           <li>
-            <Check size={16} aria-hidden="true" /> Dashboard coach mẫu
+            <Check size={16} aria-hidden="true" /> Roster PT có dữ liệu lưu lại
           </li>
           <li>
-            <Check size={16} aria-hidden="true" /> Không gian học viên mẫu
+            <Check size={16} aria-hidden="true" /> Tạo và mời học viên an toàn
           </li>
           <li>
-            <Check size={16} aria-hidden="true" /> Demo đọc phiếu mô phỏng
+            <Check size={16} aria-hidden="true" /> Xác nhận bản ghi InBody thủ công
           </li>
         </ul>
-        <Link href="/app/dashboard" className="fs-button">
-          Khám phá bản mẫu <ArrowUpRight size={17} />
+        <Link href="/register" className="fs-button">
+          Tạo workspace PT <ArrowUpRight size={17} />
         </Link>
       </div>
       <div className="fs-offer-later">
@@ -54,8 +54,8 @@ export default function PricingSection() {
           <small>mức giá Pro đang được kiểm chứng</small>
         </div>
         <p className="fs-offer-free">
-          Định hướng Freemium: tối đa 3 học viên và 3 lượt quét thử. Chưa được
-          kích hoạt trong bản mẫu.
+          Định hướng Freemium: tối đa 3 học viên và 3 lượt quét thử. Đây chưa
+          phải gói được phát hành.
         </p>
         <ul>
           {launchFeatures.map((feature) => (

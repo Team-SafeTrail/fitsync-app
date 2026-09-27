@@ -24,14 +24,14 @@ const jetbrainsMono = JetBrains_Mono({
 export const metadata: Metadata = {
   title: "FitSync | Bớt việc quản lý. Thêm giờ huấn luyện.",
   description:
-    "Bản mẫu FitSync dành cho huấn luyện viên Việt Nam: quản lý học viên, xem chỉ số và khám phá quy trình đọc phiếu mô phỏng.",
+    "Workspace FitSync dành cho PT Việt: tạo hồ sơ, mời học viên và xác nhận chỉ số InBody trong một luồng được phân quyền.",
   keywords: [
     "FitSync",
     "Personal Trainer CRM",
-    "InBody Scanner",
+    "InBody Records",
     "Fitness CRM Vietnam",
-    "AI OCR",
-    "Macro Nutrition",
+    "PT Workspace Vietnam",
+    "Trainee Management",
   ],
 };
 
