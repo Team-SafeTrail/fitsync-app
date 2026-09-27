@@ -166,6 +166,10 @@ The current shell may need `sg docker -c '<command>'` until it inherits the user
 
 M3 engagement is complete and verified. The next planned product milestone is M4 OCR-assisted InBody entry behind mandatory PT review and a consented benchmark. Do not infer that OCR, payments, analytics, or Expo/mobile have started from the M3 implementation.
 
+M4 planning is captured in `m4-ocr-architecture-and-benchmark-plan.md`, `docs/architecture/adr-002-ocr-drafts-behind-provider-adapter.md`, and `docs/m4-ocr-benchmark-protocol.md`. The accepted direction is a server-only provider adapter in the modular monolith, a dedicated private source-image bucket, persisted normalized drafts, and a separate atomic confirmation step that reuses the existing five-field validation. Provider selection is intentionally open until at least two candidates are measured on a locked, consented-or-synthetic InBody 270 benchmark.
+
+Before implementation sends any real report to a provider, assign a data owner and record consent, provider-processing permission, retention, deletion, and incident-response handling. Manual entry remains the product fallback if no candidate passes. Internal benchmark thresholds are release gates, not public accuracy or latency claims.
+
 The local database contains only synthetic accounts created by the final E2E run. Use `npm run db:reset` (or the Docker-group form below) when a clean local state is needed.
 
 ## Implementation constraints
