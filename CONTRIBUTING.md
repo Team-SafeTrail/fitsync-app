@@ -1,6 +1,6 @@
 # Contributing to FitSync
 
-FitSync is developed by the SafeTrail team. `docs/MVP_EXECUTION_PLAN.md` is the active product source of truth, and `docs/HANDOFF.md` records the latest verified state. Read both before starting a milestone task. Read `AGENTS.md` before changing Next.js code.
+FitSync is developed by the SafeTrail team. Start with `docs/README.md`: `docs/MVP_EXECUTION_PLAN.md` is the active product source of truth, and `docs/HANDOFF.md` records the latest verified state. Read both before starting a milestone task. Read `AGENTS.md` before changing Next.js code.
 
 ## Team workflow
 

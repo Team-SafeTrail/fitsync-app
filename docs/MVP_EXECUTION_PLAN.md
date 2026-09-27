@@ -193,9 +193,9 @@ Every milestone must pass lint, TypeScript, focused unit tests for domain rules,
 
 ## 13. Immediate implementation backlog
 
-M0 through M3 and the post-M2 landing conversion checkpoint are complete. `landing-conversion-alignment.md` records the verified acquisition change, while `m3-engagement.md` records the M3 implementation checklist and boundary decision.
+M0 through M3 and the post-M2 landing conversion checkpoint are complete. Their verified outcomes are consolidated in `docs/HANDOFF.md`; the removed implementation checklists remain available in Git history.
 
-M4 OCR is next. Keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
+M4 OCR is next. Follow `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`; keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
 
 ## 14. Change control
 

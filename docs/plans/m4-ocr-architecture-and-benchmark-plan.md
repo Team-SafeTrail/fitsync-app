@@ -6,7 +6,7 @@
 
 ## Work plan
 
-1. **Approve the data gate.** Assign a data owner and record consent, retention, deletion, and incident-response handling before any real report is collected. Build the versioned synthetic/consented corpus described in `docs/m4-ocr-benchmark-protocol.md`; keep source images out of Git.
+1. **Approve the data gate.** Assign a data owner and record consent, retention, deletion, and incident-response handling before any real report is collected. Build the versioned synthetic/consented corpus described in `docs/plans/m4-ocr-benchmark-protocol.md`; keep source images out of Git.
 2. **Benchmark behind one contract.** Implement a server-only provider adapter and deterministic fake. Evaluate at least two candidates on the same locked holdout, publish denominators and failure cases, and select a provider only if every release gate passes.
 3. **Add persistence and private storage.** Create a versioned migration for `ocr_attempts`, a private InBody-source bucket, indexes, constraints, and RLS. Use PT/trainee/attempt-scoped paths, store normalized drafts and confidence metadata, and exclude raw provider payloads and extracted text. Regenerate database types.
 4. **Implement the guarded extraction action.** Re-authenticate PT ownership; validate JPEG/PNG/WebP, 10 MB maximum, and binary signature server-side; create the attempt; call the adapter with a bounded timeout; persist a normalized draft or recoverable failure. Never insert `inbody_records` here.
