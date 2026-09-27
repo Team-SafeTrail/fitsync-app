@@ -1,0 +1,314 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ─── CSS Custom Properties (Carbon Interface Design Tokens) ──────── */
+:root {
+  --color-canvas: #0E0E12;
+  --color-surface: #18181D;
+  --color-surface-elevated: #1F1F25;
+  --color-surface-muted: #13131A;
+  --color-border-default: #28282E;
+  --color-border-strong: #3A3A42;
+  --color-border-accent: rgba(245, 166, 35, 0.2);
+  --color-text-primary: #ECEAE6;
+  --color-text-secondary: #9A968F;
+  --color-text-muted: #5C5A55;
+  --color-brand: #F5A623;
+  --color-brand-hover: #FFB83D;
+  --color-brand-light: rgba(245, 166, 35, 0.1);
+  --color-brand-foreground: #0E0E12;
+  --color-accent: #34D399;
+  --color-accent-light: rgba(52, 211, 153, 0.1);
+  --color-success: #34D399;
+  --color-success-light: rgba(52, 211, 153, 0.08);
+  --color-warning: #F59E0B;
+  --color-warning-light: rgba(245, 158, 11, 0.08);
+  --color-destructive: #EF4444;
+  --color-destructive-light: rgba(239, 68, 68, 0.08);
+  --color-glow-primary: rgba(245, 166, 35, 0.05);
+  --color-glow-accent: rgba(52, 211, 153, 0.05);
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
+  --shadow-sm: 0 2px 4px 0 rgba(0, 0, 0, 0.25);
+  --shadow-md: 0 4px 12px -2px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 24px -4px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 40px rgba(245, 166, 35, 0.08);
+  --radius-sm: 4px;
+  --radius-base: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 20px;
+  --radius-full: 9999px;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-display: var(--font-space-grotesk), var(--font-inter), sans-serif;
+  --font-mono: "JetBrains Mono", "SF Mono", Consolas, monospace;
+}
+
+/* ─── Base Reset ─────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-feature-settings: "cv02", "cv03", "cv04", "cv11", "tnum";
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+  background-color: var(--color-canvas);
+  font-size: 15px;
+  line-height: 24px;
+}
+
+/* ─── Focus Styles ───────────────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+/* ─── Scrollbar ──────────────────────────────────────────────────── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-border-strong);
+  border-radius: var(--radius-full);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-text-muted);
+}
+
+/* ─── Selection ──────────────────────────────────────────────────── */
+::selection {
+  background: rgba(245, 166, 35, 0.25);
+  color: var(--color-text-primary);
+}
+
+/* ─── Grain Texture Overlay ──────────────────────────────────────── */
+.grain-overlay::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  pointer-events: none;
+  opacity: 0.03;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 256px 256px;
+}
+
+/* ─── Scroll-Driven Reveal Animation ─────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  animation: revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-timeline: view();
+  animation-range: entry 5% cover 25%;
+}
+
+.reveal-delay-1 { animation-delay: 150ms; }
+.reveal-delay-2 { animation-delay: 300ms; }
+.reveal-delay-3 { animation-delay: 450ms; }
+
+@keyframes revealUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Fallback for browsers without scroll timeline support */
+@supports not (animation-timeline: view()) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ─── Reduced Motion ─────────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* ─── Custom Component Classes ───────────────────────────────────── */
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 h-[44px] px-6 text-[15px] font-semibold cursor-pointer whitespace-nowrap;
+    background: var(--color-brand);
+    color: var(--color-brand-foreground);
+    border: none;
+    border-radius: var(--radius-base);
+    transition: background 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+  }
+  .btn-primary:hover {
+    background: var(--color-brand-hover);
+    box-shadow: 0 0 20px rgba(245, 166, 35, 0.15);
+    transform: scale(1.02);
+  }
+  .btn-primary:active {
+    transform: scale(0.98);
+  }
+  .btn-primary:disabled {
+    background: var(--color-border-default);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 h-[44px] px-6 text-[15px] font-medium cursor-pointer whitespace-nowrap;
+    background: transparent;
+    color: var(--color-text-primary);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-base);
+    transition: background 0.2s ease, border-color 0.2s ease;
+  }
+  .btn-secondary:hover {
+    background: var(--color-surface-elevated);
+    border-color: var(--color-text-muted);
+  }
+
+  .card {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  .card:hover {
+    border-color: var(--color-border-strong);
+    box-shadow: var(--shadow-md);
+  }
+  .card-highlighted {
+    border-color: var(--color-border-accent);
+    box-shadow: var(--shadow-glow);
+  }
+
+  .badge {
+    @apply inline-flex items-center gap-1 h-[24px] px-2.5 text-[11px] font-semibold leading-[14px] whitespace-nowrap;
+    border-radius: var(--radius-full);
+    border: 1px solid transparent;
+  }
+  .badge-active {
+    color: var(--color-success);
+    background: var(--color-success-light);
+    border-color: rgba(52, 211, 153, 0.2);
+  }
+  .badge-warning {
+    color: var(--color-warning);
+    background: var(--color-warning-light);
+    border-color: rgba(245, 158, 11, 0.2);
+  }
+  .badge-destructive {
+    color: var(--color-destructive);
+    background: var(--color-destructive-light);
+    border-color: rgba(239, 68, 68, 0.2);
+  }
+
+  .input {
+    @apply h-[44px] px-4 text-[15px] w-full;
+    background: var(--color-surface-muted);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-base);
+    color: var(--color-text-primary);
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  }
+  .input:focus {
+    border-color: var(--color-brand);
+    box-shadow: 0 0 0 2px rgba(245, 166, 35, 0.1);
+    outline: none;
+  }
+  .input::placeholder {
+    color: var(--color-text-muted);
+  }
+
+  .section-tag {
+    @apply text-[11px] font-bold uppercase tracking-[0.08em];
+    color: var(--color-brand);
+  }
+
+  .data-table {
+    @apply w-full text-[14px];
+    border-collapse: collapse;
+  }
+  .data-table thead th {
+    @apply h-10 text-[11px] font-bold uppercase tracking-[0.06em] text-left px-4;
+    background: var(--color-surface-muted);
+    border-bottom: 1px solid var(--color-border-default);
+    color: var(--color-text-secondary);
+  }
+  .data-table tbody tr {
+    @apply h-12 transition-colors;
+    border-bottom: 1px solid var(--color-border-default);
+  }
+  .data-table tbody tr:hover {
+    background: var(--color-surface-elevated);
+  }
+  .data-table tbody td {
+    @apply px-4 align-middle;
+  }
+  .data-table .numeric {
+    @apply font-mono text-right;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .progress-bar {
+    @apply h-1.5 overflow-hidden;
+    background: var(--color-surface-muted);
+    border-radius: var(--radius-full);
+  }
+  .progress-fill {
+    @apply h-full transition-[width] duration-300;
+    border-radius: var(--radius-full);
+  }
+
+  .modal-overlay {
+    @apply fixed inset-0 flex items-center justify-center z-50 p-6;
+    background: rgba(0, 0, 0, 0.6);
+    animation: fadeIn 0.15s ease;
+  }
+  .modal-content {
+    @apply max-w-[640px] w-full max-h-[90vh] overflow-y-auto;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border-default);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    animation: slideUp 0.2s ease;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}

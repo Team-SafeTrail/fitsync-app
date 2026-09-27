@@ -1,0 +1,1 @@
+-- Keep committed seed data synthetic. Authenticated fixtures belong in database tests.

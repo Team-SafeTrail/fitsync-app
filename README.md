@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# FitSync
 
-## Getting Started
+FitSync is a coaching workspace for Vietnamese personal trainers and their trainees. This repository contains the public website, responsive web product, future mobile application, product documentation, and eventually shared domain packages.
 
-First, run the development server:
+## Repository structure
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+```text
+apps/
+  web/                   Next.js landing page and product prototype
+packages/                Shared code only when consumed by multiple apps
+docs/
+  MVP_EXECUTION_PLAN.md  Active implementation source of truth
+  HANDOFF.md             Compact state for resuming in a new chat
+  NEXT_CHAT_PROMPT.md    Copy-ready continuation prompt
+  architecture/          Architecture decision records
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+The historical research and coursework repository remains in the sibling `fitsync-docs` repository. When it conflicts with the active execution plan or executable code, it is not an implementation source of truth.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Local development
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Use Node.js 20 or newer.
 
-## Learn More
+If this machine continues to report Node 18 inside the Conda base environment, install the supported runtime with `conda install -c conda-forge nodejs=20`, then open a new shell and confirm with `node -v`.
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run db:start
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The web application runs at `http://localhost:3000` by default.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Validation
 
-## Deploy on Vercel
+```bash
+npm run lint
+npm run typecheck
+npm run build
+npm run db:test
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Local Supabase requires Docker access. Copy `apps/web/.env.example` to `apps/web/.env.local`, then replace the publishable key with the value printed by `npm run db:start`.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Current status
+
+The landing page, public fixture-backed demo, local Supabase identity foundation, authentication routes, protected workspace shell, core profile schema, and initial RLS tests are implemented. The first complete real-data product workflow is the active milestone; live OCR, payment processing, an installable PWA, and store-distributed mobile applications remain later work. See [the handoff](docs/HANDOFF.md) to resume development and [the MVP execution plan](docs/MVP_EXECUTION_PLAN.md) for scope and release criteria.
