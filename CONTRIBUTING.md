@@ -13,6 +13,12 @@ The private organization plan does not currently provide branch protection. Trea
 5. Wait for CI and the relevant local checks to pass before merging.
 6. Use a normal merge or squash through a pull request. Do not force-push shared branches or rewrite `main`.
 
+## Working with coding agents
+
+Follow `docs/TEAM_PLAYBOOK.md`. A teammate may begin by stating only their name; the agent then discovers assigned open issues labeled `agent-ready`, recommends one, and waits for confirmation. A role is not permission to invent work.
+
+After confirmation, an agent may implement, verify, commit, push the feature branch, and open a linked pull request. The agent may not push to `main`, approve its own work, or merge its own pull request. Request review from the relevant owner listed in the playbook; CODEOWNERS is advisory on the current private GitHub Free repository.
+
 ## Local setup
 
 - Use Node.js 20 or newer.
@@ -56,7 +62,7 @@ Run `npm run test:e2e` whenever a user workflow, route, authorization path, or r
 | --- | --- |
 | Product coordination and OCR direction | Việt (`Am2uocVi3t`) |
 | OCR dataset, preprocessing, and evaluation | Hưng (`hei1sme`) |
-| Web/mobile UI and Play Store packaging | Khải (`DiepKhai`) |
+| Web/mobile UI and Play Store packaging | Khai (`DiepKhai`) |
 | Supabase, server integration, and payments | Huy (`huydqse180459-art`) |
 | UI/UX and growth evidence | Toàn (GitHub account pending) |
 

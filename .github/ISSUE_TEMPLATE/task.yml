@@ -1,0 +1,117 @@
+name: Team task
+description: Scope one owned, testable FitSync task before implementation.
+title: "[Task]: "
+labels:
+  - team-task
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use one issue for one outcome. A lead or relevant owner adds `agent-ready` after assignment, dependency review, and scope review.
+
+  - type: dropdown
+    id: owner
+    attributes:
+      label: Human owner
+      description: Who is accountable for decisions and handoff?
+      options:
+        - Việt (@Am2uocVi3t)
+        - Hưng (@hei1sme)
+        - Khai (@DiepKhai)
+        - Huy (@huydqse180459-art)
+        - Toàn (GitHub account pending)
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Primary area
+      options:
+        - Product coordination
+        - OCR and data
+        - Web or mobile UI
+        - Supabase or server
+        - Design or growth evidence
+        - Documentation or repository operations
+    validations:
+      required: true
+
+  - type: textarea
+    id: outcome
+    attributes:
+      label: Outcome
+      description: State the observable result, not a list of activities.
+      placeholder: A PT can review an OCR draft without any extraction being saved automatically.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Scope and exclusions
+      description: List what is included and explicitly excluded.
+      placeholder: |
+        Included:
+        - ...
+
+        Excluded:
+        - ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      description: Provide testable conditions that define completion.
+      placeholder: |
+        - [ ] ...
+        - [ ] ...
+    validations:
+      required: true
+
+  - type: textarea
+    id: dependencies
+    attributes:
+      label: Dependencies and overlap
+      description: Name prerequisite issues, external decisions, or overlapping branches. Write "None" when clear.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: data-class
+    attributes:
+      label: Data classification
+      description: Tasks requiring real health data remain blocked until governance is approved.
+      options:
+        - No user or health data
+        - Synthetic data only
+        - Real or consented data required — keep blocked
+    validations:
+      required: true
+
+  - type: textarea
+    id: verification
+    attributes:
+      label: Required verification
+      description: List the exact unit, database, browser, build, benchmark, or evidence checks.
+      placeholder: |
+        - npm run test
+        - npm run lint
+        - npm run typecheck
+        - npm run build
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: readiness
+    attributes:
+      label: Readiness acknowledgement
+      options:
+        - label: This task follows the active milestone or an explicitly approved course requirement.
+          required: true
+        - label: No secret, environment value, personal data, or real health report will be placed in the issue or repository.
+          required: true
+        - label: An agent must wait for the assigned teammate to confirm this issue before editing.
+          required: true

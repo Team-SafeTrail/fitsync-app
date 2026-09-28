@@ -1,0 +1,18 @@
+# Advisory ownership map. Automatic CODEOWNERS review requests are unavailable
+# for this private repository on the current GitHub Free organization plan.
+
+* @hei1sme @Am2uocVi3t
+
+/.github/ @hei1sme @Am2uocVi3t
+/AGENTS.md @hei1sme @Am2uocVi3t
+/CONTRIBUTING.md @hei1sme @Am2uocVi3t
+/README.md @hei1sme @Am2uocVi3t
+
+/apps/web/ @DiepKhai @huydqse180459-art
+/supabase/ @huydqse180459-art @hei1sme
+
+/docs/ @hei1sme @Am2uocVi3t
+/docs/architecture/ @huydqse180459-art @hei1sme
+/docs/plans/ @hei1sme @Am2uocVi3t
+/docs/research/ @hei1sme @Am2uocVi3t
+/DESIGN.md @DiepKhai @hei1sme
