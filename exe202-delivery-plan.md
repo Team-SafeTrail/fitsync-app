@@ -105,16 +105,16 @@ Copy this single Vietnamese announcement into `#announcement` after the Trello c
 ```text
 📣 FITSYNC — KẾ HOẠCH TUẦN 4 → 14
 
-@Việt @Hưng @Khai @Huy @Toàn: từ hôm nay Trello là bảng tiến độ chính để giảng viên kiểm tra theo từng tuần; GitHub Issue/PR quản lý phần code; Discord dùng để trao đổi và báo cáo. Mỗi task phải có 1 người chịu trách nhiệm, deadline theo tuần, checklist, reviewer và link minh chứng. Chưa có minh chứng thì chưa được đánh dấu DONE.
+@2uoc_vi3t @hei.isme @nottooamaz1ng @_huymc @letoan8423: từ hôm nay Trello là bảng tiến độ chính để giảng viên kiểm tra theo từng tuần; GitHub Issue/PR quản lý phần code; Discord dùng để trao đổi và báo cáo. Mỗi task phải có 1 người chịu trách nhiệm, deadline theo tuần, checklist, reviewer và link minh chứng. Chưa có minh chứng thì chưa được đánh dấu DONE.
 
 🎯 Mốc môn học: OC1 trong tuần 5–7; OC2 + OC3 trong tuần 13–14.
 
 TUẦN 4 — khởi động M4/OC1:
-• @Việt: hoàn thiện board, ngày LMS, phạm vi OC1, checklist minh chứng; hỗ trợ quyết định OCR (#2).
-• @Hưng: corpus synthetic-first, ground truth, benchmark ≥2 OCR candidates và safety gates (#2).
-• @Huy: schema OCR attempts, private storage, RLS, server boundary và tests (#3).
-• @Khai: UX upload/sửa/xác nhận/fallback + đánh giá hướng đóng gói Android/Play (#4).
-• @Toàn: review UI/copy, checklist screenshot và store/marketing assets bằng dữ liệu giả (#5).
+• @2uoc_vi3t (Việt): hoàn thiện board, ngày LMS, phạm vi OC1, checklist minh chứng; hỗ trợ quyết định OCR (#2).
+• @hei.isme (Hưng): corpus synthetic-first, ground truth, benchmark ≥2 OCR candidates và safety gates (#2).
+• @_huymc (Huy): schema OCR attempts, private storage, RLS, server boundary và tests (#3).
+• @nottooamaz1ng (Khai): UX upload/sửa/xác nhận/fallback + đánh giá hướng đóng gói Android/Play (#4).
+• @letoan8423 (Toàn): review UI/copy, checklist screenshot và store/marketing assets bằng dữ liệu giả (#5).
 
 TUẦN 5: tích hợp và kiểm thử M4. TUẦN 6: release candidate, deploy, Android/Play hoặc APK fallback, rehearsal. TUẦN 7: đóng băng và nộp OC1.
 TUẦN 8–9: pilot an toàn, password reset, roster edit/archive/search/filter, biểu đồ tiến độ, analytics không chứa dữ liệu sức khỏe.

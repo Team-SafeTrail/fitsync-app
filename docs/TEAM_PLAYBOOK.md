@@ -6,13 +6,13 @@ The course schedule and cross-tool workflow are defined in [`exe202-delivery-pla
 
 ## Team ownership
 
-| Teammate | Accepted identity names | GitHub | Primary responsibility |
-| --- | --- | --- | --- |
-| Huỳnh Quốc Việt | Việt, Viet, Huỳnh Quốc Việt | `Am2uocVi3t` | Product coordination, OCR direction, milestone and evidence alignment |
-| Lê Nguyễn Gia Hưng | Hưng, Hung, Lê Nguyễn Gia Hưng | `hei1sme` | OCR datasets, preprocessing, evaluation, benchmark evidence |
-| Diệp Khai | Khai, Diệp Khai | `DiepKhai` | Web/mobile UI, OCR correction experience, Android and Play delivery |
-| Dương Quang Huy | Huy, Dương Quang Huy | `huydqse180459-art` | Supabase, server integration, RLS, cloud operations, payments |
-| Lê Văn Toàn | Toàn, Toan, Lê Văn Toàn | Account pending | UI/UX review, Play/marketing assets, channel and growth evidence |
+| Teammate | Accepted identity names | GitHub | Discord | Primary responsibility |
+| --- | --- | --- | --- | --- |
+| Huỳnh Quốc Việt | Việt, Viet, Huỳnh Quốc Việt | `Am2uocVi3t` | `@2uoc_vi3t` | Product coordination, OCR direction, milestone and evidence alignment |
+| Lê Nguyễn Gia Hưng | Hưng, Hung, Lê Nguyễn Gia Hưng | `hei1sme` | `@hei.isme` | OCR datasets, preprocessing, evaluation, benchmark evidence |
+| Diệp Khai | Khai, Diệp Khai | `DiepKhai` | `@nottooamaz1ng` | Web/mobile UI, OCR correction experience, Android and Play delivery |
+| Dương Quang Huy | Huy, Dương Quang Huy | `huydqse180459-art` | `@_huymc` | Supabase, server integration, RLS, cloud operations, payments |
+| Lê Văn Toàn | Toàn, Toan, Lê Văn Toàn | Account pending | `@letoan8423` | UI/UX review, Play/marketing assets, channel and growth evidence |
 
 Ownership determines the first coordinator and reviewer. It does not give permission to bypass an issue, validation, privacy rules, or review.
 
