@@ -1,4 +1,4 @@
-# FitSync EXE202 delivery plan
+﻿# FitSync EXE201 delivery plan
 
 ## Goal
 
@@ -46,7 +46,7 @@ The lanes can begin in parallel, but the final OCR provider decision depends on 
 
 ## Trello setup
 
-Create one board named `FitSync — EXE202 Delivery` with these lists:
+Create one board named `FitSync — EXE201 Delivery` with these lists:
 
 1. `Course Backlog`
 2. `Ready This Week`

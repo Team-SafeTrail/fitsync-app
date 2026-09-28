@@ -1,4 +1,4 @@
-# FitSync MVP execution plan
+﻿# FitSync MVP execution plan
 
 **Status:** Active implementation baseline
 **Version:** 1.3
@@ -64,7 +64,7 @@ Web and mobile use the same identities, database, storage policies, domain rules
 
 The following are not required for the MVP vertical slice: App Store release, automated VietQR webhooks, studio administration, voice transcription, wearables, meal recognition, prescribed meal plans, anonymous leaderboards, rewards marketplace, before/after photos, medical-risk alerts, complex offline mutation queues, and automated workout-motion analysis.
 
-Android distribution is an EXE202 delivery milestone after the web MVP is stable. iOS follows after privacy, Apple developer, and review requirements are ready.
+Android distribution is an EXE201 delivery milestone after the web MVP is stable. iOS follows after privacy, Apple developer, and review requirements are ready.
 
 ## 5. Core workflows and acceptance criteria
 
@@ -161,13 +161,13 @@ Required isolation tests: PT A cannot read or mutate PT B’s trainee; trainee A
 | M6 Paid pilot | Planned | Manual VietQR evidence and entitlement | Reconciled real transactions with consent |
 | M7 Android | Planned | Expo app or justified store-ready wrapper using production backend | Play testing-track listing and install evidence |
 
-### EXE202 schedule overlay
+### EXE201 schedule overlay
 
-The team confirmed that it is currently in Week 4, OC1 is assessed during Weeks 5–7, and OC2 plus OC3 are assessed during Weeks 13–14. Trello is required for course tracking. The week-by-week ownership, Trello contract, Discord routing, and evidence gates are in [`exe202-delivery-plan.md`](../exe202-delivery-plan.md).
+The team confirmed that it is currently in Week 4, OC1 is assessed during Weeks 5–7, and OC2 plus OC3 are assessed during Weeks 13–14. Trello is required for course tracking. The week-by-week ownership, Trello contract, Discord routing, and evidence gates are in [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md).
 
 This schedule does not change the dependency order above. M4 must retain mandatory PT review and its privacy gate; M5 must define safe measurement before analytics evidence; M6 must reconcile genuine payments before revenue is claimed; and the Android path must be chosen from the current application constraints before scaffolding a mobile client.
 
-## 10. EXE202 evidence model
+## 10. EXE201 evidence model
 
 ### Outcome 1
 

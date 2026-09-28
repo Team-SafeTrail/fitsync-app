@@ -1,8 +1,8 @@
-# FitSync team and agent playbook
+﻿# FitSync team and agent playbook
 
 This playbook defines how SafeTrail teammates and coding agents select, implement, review, and hand off work. A role identifies the relevant work queue; a confirmed GitHub issue defines the authorized scope.
 
-The course schedule and cross-tool workflow are defined in [`exe202-delivery-plan.md`](../exe202-delivery-plan.md). The team is currently in Week 4; OC1 is assessed during Weeks 5–7, and OC2 plus OC3 during Weeks 13–14.
+The course schedule and cross-tool workflow are defined in [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md). The team is currently in Week 4; OC1 is assessed during Weeks 5–7, and OC2 plus OC3 during Weeks 13–14.
 
 ## Team ownership
 

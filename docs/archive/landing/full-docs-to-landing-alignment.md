@@ -1,4 +1,4 @@
-# FitSync documentation and landing-page alignment review
+﻿# FitSync documentation and landing-page alignment review
 
 Review date: 2026-09-27
 
@@ -29,12 +29,12 @@ All 14 Markdown documents in `fitsync-docs` were reviewed.
 | `docs/02-architecture/DESIGN.md` | Operational-product design system | Applies most strongly to dashboard/PWA surfaces; the marketing site can be more expressive while preserving clarity |
 | `docs/02-architecture/OCR_PIPELINE_SPEC.md` | Intended OCR behavior and fixtures | Supports five metrics and five report targets; latency and accuracy remain targets |
 | `docs/02-architecture/SYSTEM_DESIGN.md` | Intended production architecture | Supports the unified web/PWA direction, role model, and data relationships; not current deployment evidence |
-| `docs/03-coursework/EXE202_SUBMISSIONS.md` | Coursework submission copy | Contains plans and claimed progress that require external evidence before publication |
+| `docs/03-coursework/EXE201_SUBMISSIONS.md` | Coursework submission copy | Contains plans and claimed progress that require external evidence before publication |
 | `docs/04-market-research/SURVEY_INSIGHTS.md` | Internal survey interpretation | Useful context, but the raw workbook is the stronger source where totals or audience descriptions differ |
 | `docs/05-business/BUSINESS_MODEL_AND_GTM.md` | Pricing and GTM hypothesis | Supports Free, Pro, and Enterprise hypotheses; prices and unit economics are not a current offer |
 | `docs/06-quality-and-devops/QA_TEST_PLAN.md` | Intended acceptance criteria | Defines desired behavior, including manual correction and offline queueing; it does not show those tests currently pass |
 | `docs/06-quality-and-devops/SECURITY_AND_COMPLIANCE.md` | Intended security controls | RLS, signed URLs, rate limits, and webhook validation must not be advertised as active until implemented and verified |
-| `EXE202_Full_Guide.md` | Broad coursework plan and pitch material | Lowest authority for live product claims because it mixes goals, scripts, forecasts, and statements of completion |
+| `EXE201_Full_Guide.md` | Broad coursework plan and pitch material | Lowest authority for live product claims because it mixes goals, scripts, forecasts, and statements of completion |
 
 ## Source-of-truth order
 
