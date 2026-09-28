@@ -12,6 +12,7 @@ This directory separates active product decisions from supporting evidence and h
 | [Contributing guide](../CONTRIBUTING.md) | Team ownership, branches, validation, and data-safety rules |
 | [Team and agent playbook](TEAM_PLAYBOOK.md) | Name-based issue discovery, agent authority, review, and handoff rules |
 | [EXE202 delivery plan](../exe202-delivery-plan.md) | Week 4–14 course roadmap, Trello board contract, Discord routing, and evidence rules |
+| [Trello refresh prompt](../trello-weekly-refresh-prompt.md) | Safe, paste-ready board migration and detailed weekly member cards |
 
 Executable code, migrations, and tests take precedence over prose when they disagree. `MVP_EXECUTION_PLAN.md` is the product source of truth for work that has not yet been implemented.
 

@@ -83,6 +83,7 @@ Start with [the documentation index](docs/README.md). The most important documen
 - [Contributing guide](CONTRIBUTING.md) — branches, checks, security, and ownership
 - [Team and agent playbook](docs/TEAM_PLAYBOOK.md) — identity-based task discovery and reviewed delivery
 - [EXE202 delivery plan](exe202-delivery-plan.md) — Week 4–14 ownership, Trello workflow, Discord routing, and evidence gates
+- [Trello refresh prompt](trello-weekly-refresh-prompt.md) — paste-ready instructions for rebuilding the existing board around weekly lecturer reviews
 
 When documents disagree, executable behavior and tests come first, followed by the MVP execution plan and accepted architecture decisions.
 
