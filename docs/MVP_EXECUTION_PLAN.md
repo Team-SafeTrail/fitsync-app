@@ -1,7 +1,7 @@
 # FitSync MVP execution plan
 
 **Status:** Active implementation baseline
-**Version:** 1.2
+**Version:** 1.3
 **Updated:** 2026-09-28
 **Owner:** SafeTrail
 **Supersedes for implementation:** conflicting scope, status, price, platform, and outcome statements in earlier FitSync coursework documents
@@ -160,6 +160,12 @@ Required isolation tests: PT A cannot read or mutate PT B’s trainee; trainee A
 | M5 Pilot funnel | Planned | Real signup CTA, analytics, support and deletion flow | Acquisition-to-activation events visible |
 | M6 Paid pilot | Planned | Manual VietQR evidence and entitlement | Reconciled real transactions with consent |
 | M7 Android | Planned | Expo app or justified store-ready wrapper using production backend | Play testing-track listing and install evidence |
+
+### EXE202 schedule overlay
+
+The team confirmed that it is currently in Week 4, OC1 is assessed during Weeks 5–7, and OC2 plus OC3 are assessed during Weeks 13–14. Trello is required for course tracking. The week-by-week ownership, Trello contract, Discord routing, and evidence gates are in [`exe202-delivery-plan.md`](../exe202-delivery-plan.md).
+
+This schedule does not change the dependency order above. M4 must retain mandatory PT review and its privacy gate; M5 must define safe measurement before analytics evidence; M6 must reconcile genuine payments before revenue is claimed; and the Android path must be chosen from the current application constraints before scaffolding a mobile client.
 
 ## 10. EXE202 evidence model
 

@@ -82,6 +82,7 @@ Start with [the documentation index](docs/README.md). The most important documen
 - [Design specification](DESIGN.md) — visual system and interface rules
 - [Contributing guide](CONTRIBUTING.md) — branches, checks, security, and ownership
 - [Team and agent playbook](docs/TEAM_PLAYBOOK.md) — identity-based task discovery and reviewed delivery
+- [EXE202 delivery plan](exe202-delivery-plan.md) — Week 4–14 ownership, Trello workflow, Discord routing, and evidence gates
 
 When documents disagree, executable behavior and tests come first, followed by the MVP execution plan and accepted architecture decisions.
 

@@ -2,6 +2,8 @@
 
 This playbook defines how SafeTrail teammates and coding agents select, implement, review, and hand off work. A role identifies the relevant work queue; a confirmed GitHub issue defines the authorized scope.
 
+The course schedule and cross-tool workflow are defined in [`exe202-delivery-plan.md`](../exe202-delivery-plan.md). The team is currently in Week 4; OC1 is assessed during Weeks 5–7, and OC2 plus OC3 during Weeks 13–14.
+
 ## Team ownership
 
 | Teammate | Accepted identity names | GitHub | Primary responsibility |
@@ -13,6 +15,15 @@ This playbook defines how SafeTrail teammates and coding agents select, implemen
 | Lê Văn Toàn | Toàn, Toan, Lê Văn Toàn | Account pending | UI/UX review, Play/marketing assets, channel and growth evidence |
 
 Ownership determines the first coordinator and reviewer. It does not give permission to bypass an issue, validation, privacy rules, or review.
+
+## Trello, GitHub, and Discord
+
+- Trello is the course-facing roadmap and weekly sprint board. It owns course-week deadlines, accountable owners, and evidence checklists.
+- GitHub Issues own engineering scope, dependencies, acceptance criteria, and implementation status. Every branch and pull request links one issue.
+- Discord carries announcements, meetings, questions, and daily status. Every task message links its Trello card; Discord is not a separate backlog.
+- Repository plans, architecture decisions, migrations, and tests remain authoritative for product behavior and data safety.
+
+An engineering task therefore has one Trello card for course tracking and one linked GitHub issue for code. Update both at meaningful state changes; do not copy competing acceptance criteria into Discord.
 
 ## Task readiness contract
 
