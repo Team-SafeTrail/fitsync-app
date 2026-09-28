@@ -1,4 +1,4 @@
-﻿# FitSync
+# FitSync
 
 FitSync is a mobile-first coaching workspace for independent Vietnamese personal trainers and their trainees. This repository contains the public website and the authenticated responsive web application built with Next.js and Supabase.
 
@@ -82,7 +82,8 @@ Start with [the documentation index](docs/README.md). The most important documen
 - [Design specification](DESIGN.md) — visual system and interface rules
 - [Contributing guide](CONTRIBUTING.md) — branches, checks, security, and ownership
 - [Team and agent playbook](docs/TEAM_PLAYBOOK.md) — identity-based task discovery and reviewed delivery
-- [EXE201 delivery plan](EXE201-delivery-plan.md) — Week 4–14 ownership, Trello workflow, Discord routing, and evidence gates
+- [EXE202 delivery plan](exe202-delivery-plan.md) — Week 4–14 ownership, Trello workflow, Discord routing, and evidence gates
+- [Trello refresh prompt](trello-weekly-refresh-prompt.md) — paste-ready instructions for rebuilding the existing board around weekly lecturer reviews
 
 When documents disagree, executable behavior and tests come first, followed by the MVP execution plan and accepted architecture decisions.
 

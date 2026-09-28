@@ -1,4 +1,4 @@
-﻿# FitSync project handoff
+# FitSync project handoff
 
 **Updated:** 2026-09-28
 **Branch:** `main`
@@ -162,7 +162,7 @@ The current shell may need `sg docker -c '<command>'` until it inherits the user
 
 M3 engagement is complete and verified. The next planned product milestone is M4 OCR-assisted InBody entry behind mandatory PT review and a consented benchmark. Do not infer that OCR, payments, analytics, or Expo/mobile have started from the M3 implementation.
 
-The team is currently in EXE201 Week 4. OC1 is assessed during Weeks 5–7, OC2 plus OC3 during Weeks 13–14, and Trello is required for course tracking. [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md) maps those deadlines to the verified product sequence, existing GitHub issues, the team's Discord channels, and evidence gates. Course targets do not override the active milestone dependencies or establish that planned capabilities already work.
+The team is currently in EXE202 Week 4. OC1 is assessed during Weeks 5–7, OC2 plus OC3 during Weeks 13–14, and Trello is required for course tracking. [`exe202-delivery-plan.md`](../exe202-delivery-plan.md) maps those deadlines to the verified product sequence, existing GitHub issues, the team's Discord channels, and evidence gates. [`trello-weekly-refresh-prompt.md`](../trello-weekly-refresh-prompt.md) contains the detailed Week 4–14 owner cards and safe instructions for refreshing the existing board around weekly lecturer review. Course targets do not override the active milestone dependencies or establish that planned capabilities already work.
 
 M4 planning is captured in `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`, `docs/plans/m4-ocr-benchmark-protocol.md`, and `docs/architecture/adr-002-ocr-drafts-behind-provider-adapter.md`. The accepted direction is a server-only provider adapter in the modular monolith, a dedicated private source-image bucket, persisted normalized drafts, and a separate atomic confirmation step that reuses the existing five-field validation. Provider selection is intentionally open until at least two candidates are measured on a locked, consented-or-synthetic InBody 270 benchmark.
 
@@ -184,7 +184,7 @@ The local database contains only synthetic accounts created by the final E2E run
 
 ## Repository checkpoint
 
-The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, and the team agent workflow is merged through pull request #7. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status` and pull the latest `main` before beginning work.
+The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, the team agent workflow is merged through pull request #7, and the first EXE202 delivery workflow through pull request #8. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status` and pull the latest `main` before beginning work.
 
 ## Known debt and risks
 

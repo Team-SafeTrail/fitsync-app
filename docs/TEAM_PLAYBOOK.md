@@ -6,24 +6,26 @@ The course schedule and cross-tool workflow are defined in [`EXE201-delivery-pla
 
 ## Team ownership
 
-| Teammate | Accepted identity names | GitHub | Primary responsibility |
-| --- | --- | --- | --- |
-| Huỳnh Quốc Việt | Việt, Viet, Huỳnh Quốc Việt | `Am2uocVi3t` | Product coordination, OCR direction, milestone and evidence alignment |
-| Lê Nguyễn Gia Hưng | Hưng, Hung, Lê Nguyễn Gia Hưng | `hei1sme` | OCR datasets, preprocessing, evaluation, benchmark evidence |
-| Diệp Khai | Khai, Diệp Khai | `DiepKhai` | Web/mobile UI, OCR correction experience, Android and Play delivery |
-| Dương Quang Huy | Huy, Dương Quang Huy | `huydqse180459-art` | Supabase, server integration, RLS, cloud operations, payments |
-| Lê Văn Toàn | Toàn, Toan, Lê Văn Toàn | Account pending | UI/UX review, Play/marketing assets, channel and growth evidence |
+| Teammate | Accepted identity names | GitHub | Discord | Primary responsibility |
+| --- | --- | --- | --- | --- |
+| Huỳnh Quốc Việt | Việt, Viet, Huỳnh Quốc Việt | `Am2uocVi3t` | `@2uoc_vi3t` | Product coordination, OCR direction, milestone and evidence alignment |
+| Lê Nguyễn Gia Hưng | Hưng, Hung, Lê Nguyễn Gia Hưng | `hei1sme` | `@hei.isme` | OCR datasets, preprocessing, evaluation, benchmark evidence |
+| Diệp Khai | Khai, Diệp Khai | `DiepKhai` | `@nottooamaz1ng` | Web/mobile UI, OCR correction experience, Android and Play delivery |
+| Dương Quang Huy | Huy, Dương Quang Huy | `huydqse180459-art` | `@_huymc` | Supabase, server integration, RLS, cloud operations, payments |
+| Lê Văn Toàn | Toàn, Toan, Lê Văn Toàn | Account pending | `@letoan8423` | UI/UX review, Play/marketing assets, channel and growth evidence |
 
 Ownership determines the first coordinator and reviewer. It does not give permission to bypass an issue, validation, privacy rules, or review.
 
 ## Trello, GitHub, and Discord
 
-- Trello is the course-facing roadmap and weekly sprint board. It owns course-week deadlines, accountable owners, and evidence checklists.
+- Trello is the course-facing roadmap and weekly sprint board. It uses one list per course week so the lecturer can inspect planned versus completed work. Cards remain in their original week and use status labels; Trello owns course-week deadlines, accountable owners, and evidence checklists.
 - GitHub Issues own engineering scope, dependencies, acceptance criteria, and implementation status. Every branch and pull request links one issue.
 - Discord carries announcements, meetings, questions, and daily status. Every task message links its Trello card; Discord is not a separate backlog.
 - Repository plans, architecture decisions, migrations, and tests remain authoritative for product behavior and data safety.
 
 An engineering task therefore has one Trello card for course tracking and one linked GitHub issue for code. Update both at meaningful state changes; do not copy competing acceptance criteria into Discord.
+
+The exact list names, weekly card assignments, migration safeguards, and connected-ChatGPT instructions are in [`trello-weekly-refresh-prompt.md`](../trello-weekly-refresh-prompt.md).
 
 ## Task readiness contract
 
