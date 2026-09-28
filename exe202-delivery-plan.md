@@ -103,24 +103,30 @@ A card reaches `DONE` only when its checklist passes and its evidence is linked.
 Copy this single Vietnamese announcement into `#announcement` after the Trello cards exist. Select each teammate from Discord autocomplete so the `@name` text becomes a real mention. The message is verified below Discord's 2,000-character limit.
 
 ```text
-📣 FITSYNC — KẾ HOẠCH TUẦN 4 → 14
+## 📣 FITSYNC — KẾ HOẠCH TUẦN 4 → 14
 
 @2uoc_vi3t @hei.isme @nottooamaz1ng @_huymc @letoan8423: từ hôm nay Trello là bảng tiến độ chính để giảng viên kiểm tra theo từng tuần; GitHub Issue/PR quản lý phần code; Discord dùng để trao đổi và báo cáo. Mỗi task phải có 1 người chịu trách nhiệm, deadline theo tuần, checklist, reviewer và link minh chứng. Chưa có minh chứng thì chưa được đánh dấu DONE.
 
-🎯 Mốc môn học: OC1 trong tuần 5–7; OC2 + OC3 trong tuần 13–14.
+**🎯 Mốc môn học:** OC1 trong tuần 5–7; OC2 + OC3 trong tuần 13–14.
 
-TUẦN 4 — khởi động M4/OC1:
-• @2uoc_vi3t (Việt): hoàn thiện board, ngày LMS, phạm vi OC1, checklist minh chứng; hỗ trợ quyết định OCR (#2).
-• @hei.isme (Hưng): corpus synthetic-first, ground truth, benchmark ≥2 OCR candidates và safety gates (#2).
-• @_huymc (Huy): schema OCR attempts, private storage, RLS, server boundary và tests (#3).
-• @nottooamaz1ng (Khai): UX upload/sửa/xác nhận/fallback + đánh giá hướng đóng gói Android/Play (#4).
-• @letoan8423 (Toàn): review UI/copy, checklist screenshot và store/marketing assets bằng dữ liệu giả (#5).
+**TUẦN 4 — Khởi động M4/OC1**
+- @2uoc_vi3t **(Việt):** hoàn thiện board, ngày LMS, phạm vi OC1, checklist minh chứng; hỗ trợ quyết định OCR `#2`.
+- @hei.isme **(Hưng):** corpus synthetic-first, ground truth, benchmark ≥2 OCR candidates và safety gates `#2`.
+- @_huymc **(Huy):** schema OCR attempts, private storage, RLS, server boundary và tests `#3`.
+- @nottooamaz1ng **(Khai):** UX upload/sửa/xác nhận/fallback + đánh giá hướng đóng gói Android/Play `#4`.
+- @letoan8423 **(Toàn):** review UI/copy, checklist screenshot và store/marketing assets bằng dữ liệu giả `#5`.
 
-TUẦN 5: tích hợp và kiểm thử M4. TUẦN 6: release candidate, deploy, Android/Play hoặc APK fallback, rehearsal. TUẦN 7: đóng băng và nộp OC1.
-TUẦN 8–9: pilot an toàn, password reset, roster edit/archive/search/filter, biểu đồ tiến độ, analytics không chứa dữ liệu sức khỏe.
-TUẦN 10: chạy 2 kênh có UTM và số liệu thật. TUẦN 11–12: paid pilot, VietQR/evidence, đối soát, feedback, Demo 3–5 phút và TVC 60–90 giây. TUẦN 13–14: khóa số liệu OC2/OC3, báo cáo, slide, bảo vệ và lưu evidence đã che dữ liệu nhạy cảm.
+**Các mốc tiếp theo**
+- **Tuần 5:** tích hợp và kiểm thử M4.
+- **Tuần 6:** release candidate, deploy, Android/Play hoặc APK fallback, rehearsal.
+- **Tuần 7:** đóng băng và nộp OC1.
+- **Tuần 8–9:** pilot an toàn, password reset, roster edit/archive/search/filter, biểu đồ tiến độ và analytics không chứa dữ liệu sức khỏe.
+- **Tuần 10:** chạy 2 kênh có UTM và số liệu thật.
+- **Tuần 11–12:** paid pilot, VietQR/evidence, đối soát, feedback, Demo 3–5 phút và TVC 60–90 giây.
+- **Tuần 13–14:** khóa số liệu OC2/OC3, báo cáo, slide, bảo vệ và lưu evidence đã che dữ liệu nhạy cảm.
 
-Mỗi ngày đăng tại #sprint-discuss: `[Tên] [link Trello] | Đã làm | Tiếp theo | Blocker`. Không tự nhận feature, user, traffic, accuracy hay doanh thu là “đã đạt” nếu chưa đo và kiểm chứng.
+**Báo cáo mỗi ngày tại #sprint-discuss:** `[Tên] [link Trello] | Đã làm | Tiếp theo | Blocker`
+Không tự nhận feature, user, traffic, accuracy hay doanh thu là **“đã đạt”** nếu chưa đo và kiểm chứng.
 ```
 
 Use this daily update in `#sprint-discuss`:
