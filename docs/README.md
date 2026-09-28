@@ -10,6 +10,7 @@ This directory separates active product decisions from supporting evidence and h
 | [Project handoff](HANDOFF.md) | Compact verified implementation state and resume instructions |
 | [Design specification](../DESIGN.md) | Interface tokens, components, and visual rationale |
 | [Contributing guide](../CONTRIBUTING.md) | Team ownership, branches, validation, and data-safety rules |
+| [Team and agent playbook](TEAM_PLAYBOOK.md) | Name-based issue discovery, agent authority, review, and handoff rules |
 
 Executable code, migrations, and tests take precedence over prose when they disagree. `MVP_EXECUTION_PLAN.md` is the product source of truth for work that has not yet been implemented.
 

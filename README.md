@@ -81,6 +81,7 @@ Start with [the documentation index](docs/README.md). The most important documen
 - [Architecture decisions](docs/architecture/) — durable technical decisions
 - [Design specification](DESIGN.md) — visual system and interface rules
 - [Contributing guide](CONTRIBUTING.md) — branches, checks, security, and ownership
+- [Team and agent playbook](docs/TEAM_PLAYBOOK.md) — identity-based task discovery and reviewed delivery
 
 When documents disagree, executable behavior and tests come first, followed by the MVP execution plan and accepted architecture decisions.
 
@@ -118,11 +119,13 @@ Pull requests run the domain tests, lint, typecheck, and production build in Git
 | --- | --- |
 | Product coordination and OCR direction | Việt (`Am2uocVi3t`) |
 | OCR dataset, preprocessing, and evaluation | Hưng (`hei1sme`) |
-| Web/mobile UI and Play Store packaging | Khải (`DiepKhai`) |
+| Web/mobile UI and Play Store packaging | Khai (`DiepKhai`) |
 | Supabase, server integration, and payments | Huy (`huydqse180459-art`) |
 | UI/UX and growth evidence | Toàn (GitHub account pending) |
 
 Use feature branches and pull requests. The private organization plan does not currently provide branch protection, so the team must enforce the no-direct-push rule by convention.
+
+When working with a coding agent, a teammate may state only their name. The agent follows the team playbook to discover assigned `agent-ready` issues, recommends one, and waits for confirmation before editing. Agents may deliver through a pull request but never merge their own work.
 
 ## Data safety
 

@@ -4,9 +4,14 @@ Describe the user-visible or engineering outcome and why it is needed.
 
 ## Ownership
 
-- Owner:
+- Human owner:
+- Agent/operator:
 - Related issue:
+- Requested reviewer:
 - Areas changed: web / mobile / database / OCR / design / documentation
+
+- [ ] The issue was assigned and `agent-ready` before implementation began.
+- [ ] The requested reviewer did not implement this change.
 
 ## Verification
 
@@ -26,3 +31,4 @@ List the commands and browser/database scenarios you actually ran.
 - [ ] Generated database types were refreshed after schema changes.
 - [ ] The change stays within the active milestone in `docs/MVP_EXECUTION_PLAN.md`.
 - [ ] Documentation reflects any verified behavior or architectural decision.
+- [ ] This pull request will not be approved or merged by its implementation agent.
