@@ -2,7 +2,7 @@
 
 > **Document Version:** 2.0.0
 > **Status:** Architecture Approved & Design Strategy Baseline
-> **Target Alignment:** EXE202 PRD, `fitsync-docs/`, and Modern 2026 SaaS Benchmarks
+> **Target Alignment:** EXE201 PRD, `fitsync-docs/`, and Modern 2026 SaaS Benchmarks
 > **Core Slogan:** *"Less Admin. More Coaching."*
 
 ---

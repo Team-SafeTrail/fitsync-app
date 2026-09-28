@@ -1,4 +1,4 @@
-# FitSync EXE202 delivery plan
+# FitSync EXE201 delivery plan
 
 ## Goal
 
@@ -32,7 +32,7 @@ The distribution now covers the work needed to turn the verified M3 baseline int
 | Paid-pilot terms, payment evidence, entitlement, and reconciliation | Huy and Việt | Khai | Weeks 11–13 |
 | Demo, TVC, final report, presentation, redaction, and evidence archive | Việt | Hưng, Khai, Huy, Toàn | Weeks 12–14 |
 
-Detailed member cards and checklists are in [`trello-weekly-refresh-prompt.md`](trello-weekly-refresh-prompt.md). Each member owns at least one verifiable card every week. The weekly review card records planned work, completed work, carry-over, blockers, and evidence for the lecturer.
+Detailed deliverable cards and checklists are in [`trello-weekly-refresh-prompt.md`](trello-weekly-refresh-prompt.md). Cards reflect real outcomes rather than forcing one artificial card per person per week. Every card has one accountable owner, named contributors when needed, an independent reviewer, and verifiable evidence. A weekly report records planned work, completed work, carry-over, blockers, evidence, and each member's contribution for the lecturer.
 
 ## Delivery roadmap
 
@@ -54,7 +54,7 @@ Detailed member cards and checklists are in [`trello-weekly-refresh-prompt.md`](
 
 | Trello card | Owner | GitHub link | Done this week when |
 | --- | --- | --- | --- |
-| `[W4][OC1] Freeze scope and operate the course board` | Việt | This plan | Each member owns a card; exact LMS dates are copied into Trello; OC1 evidence checklist and Week 5 review are scheduled |
+| `[W4][OC1] Freeze scope and operate the course board` | Việt | This plan | Each deliverable has an owner and reviewer; exact LMS dates are copied into Trello; OC1 evidence checklist and Week 5 review are scheduled |
 | `[W4][OC1] Benchmark InBody 270 OCR candidates` | Hưng with Việt | [Issue #2](https://github.com/Team-SafeTrail/fitsync-app/issues/2) | Synthetic-first corpus and ground truth are ready; two candidates and safety gates are defined |
 | `[W4][OC1] Add private OCR attempts, storage, and RLS` | Huy | [Issue #3](https://github.com/Team-SafeTrail/fitsync-app/issues/3) | Migration/server boundary is implemented with cross-tenant denial tests and generated types |
 | `[W4][OC1] Build OCR review UI and decide Android packaging` | Khai | [Issue #4](https://github.com/Team-SafeTrail/fitsync-app/issues/4) | Review states work responsively; packaging recommendation covers auth, upload, Play policy, build, and release |
@@ -63,31 +63,30 @@ Detailed member cards and checklists are in [`trello-weekly-refresh-prompt.md`](
 
 The lanes can begin in parallel, but the final OCR provider decision depends on Issue #2, integration depends on Issue #3, and the complete browser demonstration depends on Issues #3 and #4. Manual InBody entry remains the release fallback.
 
-## Trello setup for weekly lecturer review
+## Trello Kanban setup for weekly lecturer review
 
-Refresh the existing board rather than deleting it. Preserve cards, comments, attachments, and history; archive obsolete empty lists only after useful cards have been migrated.
+Refresh the existing board rather than deleting it. Preserve cards, comments, attachments, and activity history; archive an obsolete list only after every useful card has been migrated.
 
-Use these lists:
+Use these lists in order:
 
 1. `00 — GUIDE & MASTER LINKS`
-2. `W04 — M4 / OCR KICK-OFF`
-3. `W05 — M4 INTEGRATION`
-4. `W06 — OC1 RELEASE CANDIDATE`
-5. `W07 — OC1 FREEZE & SUBMISSION`
-6. `W08 — SAFE PILOT DESIGN`
-7. `W09 — M5 ANALYTICS & ASSETS`
-8. `W10 — TWO-CHANNEL LAUNCH`
-9. `W11 — M6 PAID PILOT`
-10. `W12 — PILOT & MEDIA PRODUCTION`
-11. `W13 — OC2/OC3 EVIDENCE FREEZE`
-12. `W14 — FINAL SUBMISSION`
-13. `99 — EVIDENCE INDEX`
+2. `01 — PRODUCT BACKLOG`
+3. `02 — TO DO THIS WEEK`
+4. `03 — DOING`
+5. `04 — REVIEW`
+6. `05 — DONE`
+7. `06 — BLOCKED`
+8. `07 — WEEKLY REPORTS & EVIDENCE`
 
-Cards stay in their week list so the lecturer can inspect the original plan and final result together. Use status labels `NOT STARTED`, `IN PROGRESS`, `IN REVIEW`, `BLOCKED`, and `DONE`, plus `OC1`, `OC2`, `OC3`, `ENGINEERING`, `MARKETING`, `EVIDENCE`, and `PRIVACY`. Never represent status by moving a card into a different week.
+The card lifecycle is `PRODUCT BACKLOG → TO DO THIS WEEK → DOING → REVIEW → DONE`. Only the current week's committed work enters `TO DO THIS WEEK`; future work remains in `PRODUCT BACKLOG`. A blocked card moves to `BLOCKED` with a blocking reason, dependency owner, and next review date. It returns to its previous active stage when resolved.
 
-Name member cards `[W##][OC#][NAME] Outcome`. Every card has one accountable member, course-week deadline, checklist, dependencies, GitHub issue when code is ready, reviewer, and evidence link. Add one `[W##][REVIEW] Lecturer progress report` card per week, owned by Việt, with planned/completed/carry-over/blockers/evidence fields. Add actual Trello due dates only after copying official LMS dates.
+Use a `[W##][OC#] Outcome` title prefix and week labels `W01` through `W14`, so the lecturer can filter all cards belonging to a course week regardless of status. Use outcome/area labels `OC1`, `OC2`, `OC3`, `ENGINEERING`, `PRODUCT`, `MARKETING`, `EVIDENCE`, `PRIVACY`, plus `BACKFILLED` for reconstructed Week 1–3 work. Lists represent status, so duplicate status labels are unnecessary.
 
-A card reaches `DONE` only when its checklist passes and its evidence is linked. A merged pull request alone does not prove a course outcome. Use the [paste-ready Trello prompt](trello-weekly-refresh-prompt.md) to perform the refresh through the user's Trello-connected ChatGPT.
+Every deliverable card has one accountable owner, contributors when needed, a reviewer who is not the owner, checklist, dependency, course-week deadline, GitHub issue/PR when code is ready, `Done when` acceptance, and evidence links. Reviewers move accepted cards from `REVIEW` to `DONE`; owners never self-approve.
+
+Create `[W01]` through `[W14] Weekly progress report` cards in `WEEKLY REPORTS & EVIDENCE`. Each report records commitments, status totals, carry-over, blockers, evidence, individual contributions, and next-week scope. Week 1–3 cards and reports are marked `BACKFILLED`, cite real repository evidence, and explicitly say they were reconstructed in Week 4; they must not invent original Trello activity or calendar dates.
+
+A merged pull request alone does not prove a course outcome. Use the [paste-ready Trello prompt](trello-weekly-refresh-prompt.md) to refresh the board through the user's Trello-connected ChatGPT.
 
 ## Discord routing
 
