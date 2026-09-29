@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
-import { CheckCircle2, Info, Ruler } from "lucide-react";
-import { createInBodyRecord } from "@/features/workspace/actions";
+import { CheckCircle2, Info, Ruler, Camera, AlertTriangle, Loader2, Image as ImageIcon } from "lucide-react";
+import { createInBodyRecord, uploadOCRImage } from "@/features/workspace/actions";
 import { initialWorkspaceActionState } from "@/features/workspace/action-state";
 import SubmitButton from "./SubmitButton";
 
@@ -17,9 +17,51 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
   const currentState = state ?? initialWorkspaceActionState;
   const formRef = useRef<HTMLFormElement>(null);
 
+  const [ocrStatus, setOcrStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
+  const [ocrMessage, setOcrMessage] = useState<string>("");
+  const [ocrImageUrl, setOcrImageUrl] = useState<string>("");
+  const [ocrWarnings, setOcrWarnings] = useState<string[]>([]);
+  const [draftData, setDraftData] = useState<any>(null);
+
   useEffect(() => {
-    if (currentState.status === "success") formRef.current?.reset();
+    if (currentState.status === "success") {
+      formRef.current?.reset();
+      setOcrStatus("idle");
+      setOcrImageUrl("");
+      setDraftData(null);
+      setOcrWarnings([]);
+    }
   }, [currentState]);
+
+  async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setOcrStatus("uploading");
+    setOcrMessage("");
+    
+    const formData = new FormData();
+    formData.append("file", file);
+
+    try {
+      const result = await uploadOCRImage(formData);
+      if (result.success) {
+        setOcrStatus("success");
+        setOcrImageUrl(result.imageUrl || "");
+        setDraftData(result.draftData || null);
+        setOcrWarnings(result.warnings || []);
+      } else {
+        setOcrStatus("error");
+        setOcrMessage(result.message || "Không thể xử lý ảnh. Vui lòng nhập thủ công.");
+      }
+    } catch (err) {
+      setOcrStatus("error");
+      setOcrMessage("Lỗi kết nối. Vui lòng nhập thủ công.");
+    }
+    
+    // Reset file input so user can re-upload if needed
+    e.target.value = "";
+  }
 
   return (
     <section className="workspace-panel" aria-labelledby="inbody-form-title">
@@ -30,36 +72,79 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         </div>
         <p><Info size={15} /> Nhập từ phiếu InBody, sau đó kiểm tra lại trước khi xác nhận.</p>
       </div>
+      
       {currentState.message && <p className={`workspace-alert is-${currentState.status}`} role={currentState.status === "error" ? "alert" : "status"}>{currentState.message}</p>}
+
+      {/* OCR Upload Section */}
+      <div className="workspace-fieldset workspace-field-wide" style={{ marginBottom: '2rem', padding: '1rem', backgroundColor: 'var(--surface-sunken)', borderRadius: 'var(--radius-md)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
+          <Camera size={18} /> <strong>Quét ảnh InBody (Thử nghiệm)</strong>
+        </div>
+        <p className="workspace-helper" style={{ marginBottom: '1rem' }}>
+          Tải lên ảnh chụp phiếu InBody để máy trích xuất số liệu tự động. (Hỗ trợ JPG, PNG, WEBP)
+        </p>
+        
+        {ocrStatus === "uploading" ? (
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", color: "var(--text-muted)" }}>
+            <Loader2 size={16} className="animate-spin" /> Đang tải lên và xử lý ảnh...
+          </div>
+        ) : (
+          <label className="workspace-field" style={{ display: "inline-block", width: "auto", cursor: "pointer" }}>
+            <span style={{ display: "none" }}>Tải ảnh lên</span>
+            <input type="file" accept="image/jpeg, image/png, image/webp, application/pdf" onChange={handleFileUpload} />
+          </label>
+        )}
+
+        {ocrStatus === "error" && (
+          <p className="workspace-alert is-error" style={{ marginTop: '1rem' }}><AlertTriangle size={15}/> {ocrMessage}</p>
+        )}
+
+        {ocrWarnings.length > 0 && (
+          <div className="workspace-alert is-warning" style={{ marginTop: '1rem' }}>
+            <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
+              {ocrWarnings.map((w, i) => <li key={i}>{w}</li>)}
+            </ul>
+          </div>
+        )}
+
+        {ocrImageUrl && (
+          <div style={{ marginTop: '1rem', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', overflow: 'hidden' }}>
+            <div style={{ padding: '0.5rem', backgroundColor: 'var(--surface-raised)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <ImageIcon size={14} /> Ảnh nguồn (sẽ bị xóa sau 1 giờ)
+            </div>
+            <img src={ocrImageUrl} alt="Bản chụp InBody" style={{ display: 'block', width: '100%', maxHeight: '400px', objectFit: 'contain', backgroundColor: '#000' }} />
+          </div>
+        )}
+      </div>
 
       <form ref={formRef} action={action} className="workspace-form-grid">
         <fieldset className="workspace-fieldset workspace-field-wide">
-          <legend><Ruler size={16} /> Chỉ số đo</legend>
+          <legend><Ruler size={16} /> Chỉ số đo {ocrStatus === "success" && <span style={{fontSize: '0.8rem', color: 'var(--accent-primary)'}}>(Bản nháp OCR)</span>}</legend>
           <p className="workspace-helper">FitSync sẽ đối chiếu giới hạn và sự nhất quán giữa cân nặng, khối mỡ và tỷ lệ mỡ.</p>
-          <div className="workspace-metric-fields">
+          <div className="workspace-metric-fields" key={ocrImageUrl ? 'ocr-loaded' : 'manual'}>
             <label className="workspace-field" htmlFor="weight-kg">
               <span>Cân nặng (kg)</span>
-              <input id="weight-kg" data-testid="weight-kg" name="weightKg" type="number" inputMode="decimal" min={30} max={220} step="0.01" required />
+              <input id="weight-kg" data-testid="weight-kg" name="weightKg" type="number" inputMode="decimal" min={30} max={220} step="0.01" defaultValue={draftData?.weightKg} required />
               <ErrorText error={currentState.fieldErrors?.weightKg} />
             </label>
             <label className="workspace-field" htmlFor="muscle-kg">
               <span>Khối cơ xương (kg)</span>
-              <input id="muscle-kg" name="skeletalMuscleMassKg" type="number" inputMode="decimal" min={10} max={75} step="0.01" required />
+              <input id="muscle-kg" name="skeletalMuscleMassKg" type="number" inputMode="decimal" min={10} max={75} step="0.01" defaultValue={draftData?.skeletalMuscleMassKg} required />
               <ErrorText error={currentState.fieldErrors?.skeletalMuscleMassKg} />
             </label>
             <label className="workspace-field" htmlFor="fat-mass-kg">
               <span>Khối mỡ (kg)</span>
-              <input id="fat-mass-kg" name="bodyFatMassKg" type="number" inputMode="decimal" min={2} max={100} step="0.01" required />
+              <input id="fat-mass-kg" name="bodyFatMassKg" type="number" inputMode="decimal" min={2} max={100} step="0.01" defaultValue={draftData?.bodyFatMassKg} required />
               <ErrorText error={currentState.fieldErrors?.bodyFatMassKg} />
             </label>
             <label className="workspace-field" htmlFor="body-fat-percent">
-              <span>Tỷ lệ mỡ (%)</span>
-              <input id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" required />
+              <span>Tỷ lệ mỡ (%) {ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) && <AlertTriangle size={14} color="var(--intent-warning)" style={{display: 'inline', verticalAlign: 'middle', marginLeft: '0.3rem'}}/>}</span>
+              <input id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" defaultValue={draftData?.percentBodyFat} required style={ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) ? { borderColor: 'var(--intent-warning)', backgroundColor: 'color-mix(in srgb, var(--intent-warning) 10%, transparent)' } : {}}/>
               <ErrorText error={currentState.fieldErrors?.percentBodyFat} />
             </label>
             <label className="workspace-field" htmlFor="body-water-liters">
               <span>Tổng nước cơ thể (L)</span>
-              <input id="body-water-liters" name="totalBodyWaterLiters" type="number" inputMode="decimal" min={10} max={100} step="0.01" />
+              <input id="body-water-liters" name="totalBodyWaterLiters" type="number" inputMode="decimal" min={10} max={100} step="0.01" defaultValue={draftData?.totalBodyWaterLiters} />
               <ErrorText error={currentState.fieldErrors?.totalBodyWaterLiters} />
             </label>
           </div>

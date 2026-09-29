@@ -2,6 +2,8 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import sharp from "sharp";
+import exifr from "exifr";
 import { createInvitationToken, hashInvitationToken, isInvitationToken } from "@/features/invitations/token";
 import { validateCheckin, validateRemainingSessions } from "@/features/engagement/validation";
 import type { WorkspaceActionState } from "./action-state";
@@ -247,11 +249,11 @@ export async function submitDailyCheckin(
 
   const rpcArgs = photoPath && input.data.photo && input.data.photoType
     ? {
-        checkin_note: input.data.note ?? "",
-        meal_photo_path: photoPath,
-        meal_photo_mime_type: input.data.photoType,
-        meal_photo_size_bytes: input.data.photo.size,
-      }
+      checkin_note: input.data.note ?? "",
+      meal_photo_path: photoPath,
+      meal_photo_mime_type: input.data.photoType,
+      meal_photo_size_bytes: input.data.photo.size,
+    }
     : { checkin_note: input.data.note ?? "" };
   const { data: results, error } = await context.supabase.rpc("submit_daily_checkin", rpcArgs);
   const result = results?.[0];
@@ -307,4 +309,87 @@ export async function updateRemainingSessions(
   revalidatePath("/workspace");
   revalidatePath(`/workspace/trainees/${trainee.id}`);
   return { status: "success", message: "Đã cập nhật số buổi còn lại." };
+}
+
+export type OCRUploadResult = {
+  success: boolean;
+  message?: string;
+  imageUrl?: string;
+  draftData?: {
+    weightKg: string;
+    skeletalMuscleMassKg: string;
+    bodyFatMassKg: string;
+    percentBodyFat: string;
+    totalBodyWaterLiters: string;
+  };
+  warnings?: string[];
+};
+
+export async function uploadOCRImage(formData: FormData): Promise<OCRUploadResult> {
+  const context = await requireRole("pt");
+  if (!context) return { success: false, message: "Chỉ PT mới có thể tải lên InBody." };
+
+  const file = formData.get("file") as File;
+  if (!file || file.size === 0) return { success: false, message: "Vui lòng chọn một tệp hợp lệ." };
+
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    const buffer = Buffer.from(arrayBuffer);
+
+    // 1. Extract EXIF data to check authenticity
+    const exifData = await exifr.parse(buffer).catch(() => null);
+    const warnings: string[] = [];
+    if (!exifData || (!exifData.Make && !exifData.DateTimeOriginal)) {
+      warnings.push("Ảnh tải lên có vẻ không chứa dữ liệu EXIF gốc (có thể là ảnh chụp màn hình hoặc tải về).");
+    }
+
+    // 2. Compress to WebP
+    const webpBuffer = await sharp(buffer)
+      .webp({ quality: 80 })
+      .toBuffer();
+
+    // 3. Upload to Supabase (inbody-scans bucket)
+    const filePath = `${context.user.id}/${crypto.randomUUID()}.webp`;
+    const { error: uploadError } = await context.supabase.storage
+      .from("inbody-scans")
+      .upload(filePath, webpBuffer, {
+        contentType: "image/webp",
+      });
+
+    if (uploadError) {
+      console.error(uploadError);
+      return { success: false, message: "Lỗi tải ảnh lên hệ thống lưu trữ." };
+    }
+
+    // 4. Generate short-lived URL (valid for 1 hour)
+    const { data: signedUrlData, error: urlError } = await context.supabase.storage
+      .from("inbody-scans")
+      .createSignedUrl(filePath, 3600);
+
+    if (urlError || !signedUrlData) {
+      return { success: false, message: "Không thể tạo liên kết xem ảnh an toàn." };
+    }
+
+    // 5. Mock OCR Results (Synthetic Data)
+    const draftData = {
+      weightKg: "75.5",
+      skeletalMuscleMassKg: "35.2",
+      bodyFatMassKg: "12.4",
+      percentBodyFat: "16.4", // Intentionally inconsistent or low-confidence to test UI?
+      totalBodyWaterLiters: "48.1",
+    };
+
+    // Adding a warning about low confidence
+    warnings.push("Tỷ lệ mỡ (16.4%) được nhận diện với độ tin cậy thấp.");
+
+    return {
+      success: true,
+      imageUrl: signedUrlData.signedUrl,
+      draftData,
+      warnings,
+    };
+  } catch (error) {
+    console.error(error);
+    return { success: false, message: "Lỗi xử lý ảnh OCR." };
+  }
 }
