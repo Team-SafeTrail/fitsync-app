@@ -18,14 +18,14 @@ Ownership determines the first coordinator and reviewer. It does not give permis
 
 ## Trello, GitHub, and Discord
 
-- Trello is the course-facing roadmap and weekly sprint board. It uses one list per course week so the lecturer can inspect planned versus completed work. Cards remain in their original week and use status labels; Trello owns course-week deadlines, accountable owners, and evidence checklists.
+- Trello is the course-facing roadmap and Kanban board. Deliverable cards move through `PRODUCT BACKLOG → TO DO THIS WEEK → DOING → REVIEW → DONE`; the reviewer, not the owner, accepts `DONE`. Week labels, title prefixes, and immutable weekly-report cards preserve the lecturer's Week 1–14 view.
 - GitHub Issues own engineering scope, dependencies, acceptance criteria, and implementation status. Every branch and pull request links one issue.
 - Discord carries announcements, meetings, questions, and daily status. Every task message links its Trello card; Discord is not a separate backlog.
 - Repository plans, architecture decisions, migrations, and tests remain authoritative for product behavior and data safety.
 
 An engineering task therefore has one Trello card for course tracking and one linked GitHub issue for code. Update both at meaningful state changes; do not copy competing acceptance criteria into Discord.
 
-The exact list names, weekly card assignments, migration safeguards, and connected-ChatGPT instructions are in [`trello-weekly-refresh-prompt.md`](../trello-weekly-refresh-prompt.md).
+The exact list names, deliverable backlog, Week 1–3 backfill rules, migration safeguards, and connected-ChatGPT instructions are in [`trello-weekly-refresh-prompt.md`](../trello-weekly-refresh-prompt.md).
 
 ## Task readiness contract
 

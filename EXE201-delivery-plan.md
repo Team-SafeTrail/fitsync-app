@@ -1,4 +1,4 @@
-﻿# FitSync EXE201 delivery plan
+# FitSync EXE201 delivery plan
 
 ## Goal
 
@@ -14,6 +14,25 @@ Calendar dates have not been supplied. Until the LMS dates are known, every task
 | GitHub Issues | Engineering scope, acceptance criteria, dependencies, and code status | Every code branch and pull request links one issue |
 | Discord | Announcements, questions, meetings, and daily status | Messages link the Trello card; Discord is not a second backlog |
 | Repository docs | Product scope, architecture, security, and verified capability status | Course pressure cannot bypass these constraints |
+
+## Coverage audit
+
+The distribution now covers the work needed to turn the verified M3 baseline into a course-complete project. This means the **plan is fully assigned**; it does not mean the remaining product is already implemented.
+
+| Remaining workstream | Accountable owner | Supporting owner | Scheduled |
+| --- | --- | --- | --- |
+| Weekly planning, scope, evidence, and submissions | Việt | All members | Weeks 4–14 |
+| OCR corpus, ground truth, provider benchmark, and measured report | Hưng | Việt | Weeks 4–7, 10–13 monitoring |
+| OCR schema, private media, provider adapter, RLS, and operations | Huy | Hưng | Weeks 4–7 |
+| OCR review UX, responsive verification, Android packaging, and Play evidence | Khai | Huy | Weeks 4–7 |
+| Product/UI review, store assets, and truthful product copy | Toàn | Khai | Weeks 4–7 |
+| Remaining MVP gaps: password reset; roster edit/archive/search/filter; biometric trends | Huy and Khai | Việt | Weeks 8–9 |
+| Consent, support, deletion, production readiness, and privacy-safe analytics | Việt and Huy | Hưng | Weeks 8–10 |
+| Two measured acquisition channels and their creative assets | Toàn | Việt | Weeks 8–13 |
+| Paid-pilot terms, payment evidence, entitlement, and reconciliation | Huy and Việt | Khai | Weeks 11–13 |
+| Demo, TVC, final report, presentation, redaction, and evidence archive | Việt | Hưng, Khai, Huy, Toàn | Weeks 12–14 |
+
+Detailed deliverable cards and checklists are in [`trello-weekly-refresh-prompt.md`](trello-weekly-refresh-prompt.md). Cards reflect real outcomes rather than forcing one artificial card per person per week. Every card has one accountable owner, named contributors when needed, an independent reviewer, and verifiable evidence. A weekly report records planned work, completed work, carry-over, blockers, evidence, and each member's contribution for the lecturer.
 
 ## Delivery roadmap
 
@@ -35,7 +54,7 @@ Calendar dates have not been supplied. Until the LMS dates are known, every task
 
 | Trello card | Owner | GitHub link | Done this week when |
 | --- | --- | --- | --- |
-| `[W4][OC1] Freeze scope and operate the course board` | Việt | This plan | Each member owns a card; exact LMS dates are copied into Trello; OC1 evidence checklist and Week 5 review are scheduled |
+| `[W4][OC1] Freeze scope and operate the course board` | Việt | This plan | Each deliverable has an owner and reviewer; exact LMS dates are copied into Trello; OC1 evidence checklist and Week 5 review are scheduled |
 | `[W4][OC1] Benchmark InBody 270 OCR candidates` | Hưng with Việt | [Issue #2](https://github.com/Team-SafeTrail/fitsync-app/issues/2) | Synthetic-first corpus and ground truth are ready; two candidates and safety gates are defined |
 | `[W4][OC1] Add private OCR attempts, storage, and RLS` | Huy | [Issue #3](https://github.com/Team-SafeTrail/fitsync-app/issues/3) | Migration/server boundary is implemented with cross-tenant denial tests and generated types |
 | `[W4][OC1] Build OCR review UI and decide Android packaging` | Khai | [Issue #4](https://github.com/Team-SafeTrail/fitsync-app/issues/4) | Review states work responsively; packaging recommendation covers auth, upload, Play policy, build, and release |
@@ -44,21 +63,30 @@ Calendar dates have not been supplied. Until the LMS dates are known, every task
 
 The lanes can begin in parallel, but the final OCR provider decision depends on Issue #2, integration depends on Issue #3, and the complete browser demonstration depends on Issues #3 and #4. Manual InBody entry remains the release fallback.
 
-## Trello setup
+## Trello Kanban setup for weekly lecturer review
 
-Create one board named `FitSync — EXE201 Delivery` with these lists:
+Refresh the existing board rather than deleting it. Preserve cards, comments, attachments, and activity history; archive an obsolete list only after every useful card has been migrated.
 
-1. `Course Backlog`
-2. `Ready This Week`
-3. `In Progress`
-4. `Review / Verification`
-5. `Blocked`
-6. `Done`
-7. `Evidence Index`
+Use these lists in order:
 
-Use labels `OC1`, `OC2`, `OC3`, `Engineering`, `Product`, `Marketing`, `Evidence`, and `Privacy`. Name cards `[W#][OC#] Verb + outcome`. Every card must contain one accountable owner, course-week deadline, linked GitHub issue when code is involved, dependencies, acceptance criteria, evidence link, and reviewer. Add actual Trello due dates only after copying the official LMS calendar dates.
+1. `00 — GUIDE & MASTER LINKS`
+2. `01 — PRODUCT BACKLOG`
+3. `02 — TO DO THIS WEEK`
+4. `03 — DOING`
+5. `04 — REVIEW`
+6. `05 — DONE`
+7. `06 — BLOCKED`
+8. `07 — WEEKLY REPORTS & EVIDENCE`
 
-A card reaches `Done` only when its acceptance criteria pass and its evidence link is present. A merged pull request alone does not prove a course outcome; move the card to `Evidence Index` only after the corresponding screenshot, export, install proof, report, or transaction evidence is safely archived.
+The card lifecycle is `PRODUCT BACKLOG → TO DO THIS WEEK → DOING → REVIEW → DONE`. Only the current week's committed work enters `TO DO THIS WEEK`; future work remains in `PRODUCT BACKLOG`. A blocked card moves to `BLOCKED` with a blocking reason, dependency owner, and next review date. It returns to its previous active stage when resolved.
+
+Use a `[W##][OC#] Outcome` title prefix and week labels `W01` through `W14`, so the lecturer can filter all cards belonging to a course week regardless of status. Use outcome/area labels `OC1`, `OC2`, `OC3`, `ENGINEERING`, `PRODUCT`, `MARKETING`, `EVIDENCE`, `PRIVACY`, plus `BACKFILLED` for reconstructed Week 1–3 work. Lists represent status, so duplicate status labels are unnecessary.
+
+Every deliverable card has one accountable owner, contributors when needed, a reviewer who is not the owner, checklist, dependency, course-week deadline, GitHub issue/PR when code is ready, `Done when` acceptance, and evidence links. Reviewers move accepted cards from `REVIEW` to `DONE`; owners never self-approve.
+
+Create `[W01]` through `[W14] Weekly progress report` cards in `WEEKLY REPORTS & EVIDENCE`. Each report records commitments, status totals, carry-over, blockers, evidence, individual contributions, and next-week scope. Week 1–3 cards and reports are marked `BACKFILLED`, cite real repository evidence, and explicitly say they were reconstructed in Week 4; they must not invent original Trello activity or calendar dates.
+
+A merged pull request alone does not prove a course outcome. Use the [paste-ready Trello prompt](trello-weekly-refresh-prompt.md) to refresh the board through the user's Trello-connected ChatGPT.
 
 ## Discord routing
 
@@ -71,20 +99,33 @@ A card reaches `Done` only when its acceptance criteria pass and its evidence li
 - `#market-research` and `#customer-survey`: consented research and aggregate findings only.
 - `#pitchdeck-content`, `#branding-pitchdeck`, `#ui-ux-app`, `#moodboard-inspo`, and `#assets-export`: Toàn and Khai coordinate reviewed presentation and store assets.
 
-Copy this Week 4 announcement into `#announcement` after the Trello cards exist:
+Copy this single Vietnamese announcement into `#announcement` after the Trello cards exist. Select each teammate from Discord autocomplete so the `@name` text becomes a real mention. The message is verified below Discord's 2,000-character limit.
 
 ```text
-FitSync — WEEK 4 SPRINT
-Goal: prepare the verified M4/OC1 release path. OC1 window: Weeks 5–7. OC2/OC3 window: Weeks 13–14.
+## 📣 FITSYNC — KẾ HOẠCH TUẦN 4 → 14
 
-Việt: operate Trello, freeze OC1 evidence, support OCR decision — Issue #2
-Hưng: synthetic-first OCR benchmark and ground truth — Issue #2
-Huy: private OCR attempts, storage, RLS, server boundary — Issue #3
-Khai: OCR review UI and Android packaging decision — Issue #4
-Toàn: UI review and truthful evidence/store asset checklist — Issue #5
+@2uoc_vi3t @hei.isme @nottooamaz1ng @_huymc @letoan8423: từ hôm nay Trello là bảng tiến độ chính để giảng viên kiểm tra theo từng tuần; GitHub Issue/PR quản lý phần code; Discord dùng để trao đổi và báo cáo. Mỗi task phải có 1 người chịu trách nhiệm, deadline theo tuần, checklist, reviewer và link minh chứng. Chưa có minh chứng thì chưa được đánh dấu DONE.
 
-Trello is the course board. GitHub Issues define code. Discord is for coordination.
-Post status in #sprint-discuss and always link the Trello card. Never report a target as a completed result.
+**🎯 Mốc môn học:** OC1 trong tuần 5–7; OC2 + OC3 trong tuần 13–14.
+
+**TUẦN 4 — Khởi động M4/OC1**
+- @2uoc_vi3t **(Việt):** hoàn thiện board, ngày LMS, phạm vi OC1, checklist minh chứng; hỗ trợ quyết định OCR `#2`.
+- @hei.isme **(Hưng):** corpus synthetic-first, ground truth, benchmark ≥2 OCR candidates và safety gates `#2`.
+- @_huymc **(Huy):** schema OCR attempts, private storage, RLS, server boundary và tests `#3`.
+- @nottooamaz1ng **(Khai):** UX upload/sửa/xác nhận/fallback + đánh giá hướng đóng gói Android/Play `#4`.
+- @letoan8423 **(Toàn):** review UI/copy, checklist screenshot và store/marketing assets bằng dữ liệu giả `#5`.
+
+**Các mốc tiếp theo**
+- **Tuần 5:** tích hợp và kiểm thử M4.
+- **Tuần 6:** release candidate, deploy, Android/Play hoặc APK fallback, rehearsal.
+- **Tuần 7:** đóng băng và nộp OC1.
+- **Tuần 8–9:** pilot an toàn, password reset, roster edit/archive/search/filter, biểu đồ tiến độ và analytics không chứa dữ liệu sức khỏe.
+- **Tuần 10:** chạy 2 kênh có UTM và số liệu thật.
+- **Tuần 11–12:** paid pilot, VietQR/evidence, đối soát, feedback, Demo 3–5 phút và TVC 60–90 giây.
+- **Tuần 13–14:** khóa số liệu OC2/OC3, báo cáo, slide, bảo vệ và lưu evidence đã che dữ liệu nhạy cảm.
+
+**Báo cáo mỗi ngày tại #sprint-discuss:** `[Tên] [link Trello] | Đã làm | Tiếp theo | Blocker`
+Không tự nhận feature, user, traffic, accuracy hay doanh thu là **“đã đạt”** nếu chưa đo và kiểm chứng.
 ```
 
 Use this daily update in `#sprint-discuss`:
