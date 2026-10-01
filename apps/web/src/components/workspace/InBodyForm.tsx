@@ -21,6 +21,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
   const [ocrMessage, setOcrMessage] = useState<string>("");
   const [ocrImageUrl, setOcrImageUrl] = useState<string>("");
   const [ocrWarnings, setOcrWarnings] = useState<string[]>([]);
+  const [attemptId, setAttemptId] = useState<string>("");
   const [draftData, setDraftData] = useState<any>(null);
 
   useEffect(() => {
@@ -28,6 +29,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
       formRef.current?.reset();
       setOcrStatus("idle");
       setOcrImageUrl("");
+      setAttemptId("");
       setDraftData(null);
       setOcrWarnings([]);
     }
@@ -42,12 +44,14 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
     
     const formData = new FormData();
     formData.append("file", file);
+    formData.append("traineeId", traineeId);
 
     try {
       const result = await uploadOCRImage(formData);
       if (result.success) {
         setOcrStatus("success");
         setOcrImageUrl(result.imageUrl || "");
+        setAttemptId(result.attemptId || "");
         setDraftData(result.draftData || null);
         setOcrWarnings(result.warnings || []);
       } else {
@@ -91,7 +95,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         ) : (
           <label className="workspace-field" style={{ display: "inline-block", width: "auto", cursor: "pointer" }}>
             <span style={{ display: "none" }}>Tải ảnh lên</span>
-            <input type="file" accept="image/jpeg, image/png, image/webp, application/pdf" onChange={handleFileUpload} />
+            <input type="file" accept="image/jpeg, image/png, image/webp" onChange={handleFileUpload} />
           </label>
         )}
 
@@ -110,7 +114,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         {ocrImageUrl && (
           <div style={{ marginTop: '1rem', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', overflow: 'hidden' }}>
             <div style={{ padding: '0.5rem', backgroundColor: 'var(--surface-raised)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-              <ImageIcon size={14} /> Ảnh nguồn (sẽ bị xóa sau 1 giờ)
+              <ImageIcon size={14} /> Ảnh nguồn (bảo mật)
             </div>
             <img src={ocrImageUrl} alt="Bản chụp InBody" style={{ display: 'block', width: '100%', maxHeight: '400px', objectFit: 'contain', backgroundColor: '#000' }} />
           </div>
@@ -118,10 +122,11 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
       </div>
 
       <form ref={formRef} action={action} className="workspace-form-grid">
+        <input type="hidden" name="ocrAttemptId" value={attemptId} />
         <fieldset className="workspace-fieldset workspace-field-wide">
           <legend><Ruler size={16} /> Chỉ số đo {ocrStatus === "success" && <span style={{fontSize: '0.8rem', color: 'var(--accent-primary)'}}>(Bản nháp OCR)</span>}</legend>
           <p className="workspace-helper">FitSync sẽ đối chiếu giới hạn và sự nhất quán giữa cân nặng, khối mỡ và tỷ lệ mỡ.</p>
-          <div className="workspace-metric-fields" key={ocrImageUrl ? 'ocr-loaded' : 'manual'}>
+          <div className="workspace-metric-fields" key={attemptId || 'manual'}>
             <label className="workspace-field" htmlFor="weight-kg">
               <span>Cân nặng (kg)</span>
               <input id="weight-kg" data-testid="weight-kg" name="weightKg" type="number" inputMode="decimal" min={30} max={220} step="0.01" defaultValue={draftData?.weightKg} required />

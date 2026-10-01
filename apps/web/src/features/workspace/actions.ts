@@ -158,12 +158,14 @@ export async function createInBodyRecord(
     return errorState("Học viên chưa liên kết hoặc không thuộc workspace này.");
   }
 
+  const ocrAttemptId = formData.get("ocrAttemptId") as string | null;
   const values = input.data;
   const { error } = await context.supabase.from("inbody_records").insert({
     trainee_id: trainee.id,
     pt_id: context.user.id,
     verified_by: context.user.id,
-    source: "manual",
+    source: ocrAttemptId ? "ocr" : "manual",
+    ocr_attempt_id: ocrAttemptId || null,
     is_manually_edited: true,
     weight_kg: values.weightKg,
     skeletal_muscle_mass_kg: values.skeletalMuscleMassKg,
@@ -177,6 +179,10 @@ export async function createInBodyRecord(
   });
 
   if (error) return errorState("Không thể lưu bản ghi. Các chỉ số chưa vượt qua kiểm tra dữ liệu.");
+
+  if (ocrAttemptId) {
+    await (context.supabase as any).from("ocr_attempts").update({ status: 'confirmed' }).eq('id', ocrAttemptId);
+  }
 
   revalidatePath("/workspace");
   revalidatePath(`/workspace/trainees/${trainee.id}`);
@@ -315,6 +321,7 @@ export type OCRUploadResult = {
   success: boolean;
   message?: string;
   imageUrl?: string;
+  attemptId?: string;
   draftData?: {
     weightKg: string;
     skeletalMuscleMassKg: string;
@@ -329,8 +336,13 @@ export async function uploadOCRImage(formData: FormData): Promise<OCRUploadResul
   const context = await requireRole("pt");
   if (!context) return { success: false, message: "Chỉ PT mới có thể tải lên InBody." };
 
+  const traineeId = formData.get("traineeId") as string;
+  if (!traineeId) return { success: false, message: "Không tìm thấy thông tin học viên." };
+
   const file = formData.get("file") as File;
   if (!file || file.size === 0) return { success: false, message: "Vui lòng chọn một tệp hợp lệ." };
+  if (file.size > 10 * 1024 * 1024) return { success: false, message: "Kích thước tệp vượt quá 10MB." };
+  if (!['image/jpeg', 'image/png', 'image/webp'].includes(file.type)) return { success: false, message: "Chỉ hỗ trợ tệp JPEG, PNG, WebP." };
 
   try {
     const arrayBuffer = await file.arrayBuffer();
@@ -349,7 +361,8 @@ export async function uploadOCRImage(formData: FormData): Promise<OCRUploadResul
       .toBuffer();
 
     // 3. Upload to Supabase (inbody-scans bucket)
-    const filePath = `${context.user.id}/${crypto.randomUUID()}.webp`;
+    const attemptId = crypto.randomUUID();
+    const filePath = `${context.user.id}/${traineeId}/${attemptId}.webp`;
     const { error: uploadError } = await context.supabase.storage
       .from("inbody-scans")
       .upload(filePath, webpBuffer, {
@@ -371,20 +384,38 @@ export async function uploadOCRImage(formData: FormData): Promise<OCRUploadResul
     }
 
     // 5. Mock OCR Results (Synthetic Data)
-    const draftData = {
+    const isTest = process.env.NODE_ENV === 'test' || process.env.NEXT_PUBLIC_E2E_TEST === 'true';
+    const draftData = isTest ? {
       weightKg: "75.5",
       skeletalMuscleMassKg: "35.2",
       bodyFatMassKg: "12.4",
-      percentBodyFat: "16.4", // Intentionally inconsistent or low-confidence to test UI?
+      percentBodyFat: "16.4",
       totalBodyWaterLiters: "48.1",
-    };
+    } : undefined;
 
-    // Adding a warning about low confidence
-    warnings.push("Tỷ lệ mỡ (16.4%) được nhận diện với độ tin cậy thấp.");
+    if (isTest) {
+      warnings.push("Tỷ lệ mỡ (16.4%) được nhận diện với độ tin cậy thấp.");
+    }
+
+    const { error: dbError } = await (context.supabase as any).from("ocr_attempts").insert({
+      id: attemptId,
+      pt_id: context.user.id,
+      trainee_id: traineeId,
+      photo_path: filePath,
+      status: 'completed',
+      draft_data: draftData || null,
+      confidence_data: isTest ? { percentBodyFat: 0.4 } : null
+    });
+
+    if (dbError) {
+      console.error(dbError);
+      return { success: false, message: "Không thể lưu phiên bản OCR." };
+    }
 
     return {
       success: true,
       imageUrl: signedUrlData.signedUrl,
+      attemptId,
       draftData,
       warnings,
     };
