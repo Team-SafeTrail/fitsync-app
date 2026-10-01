@@ -22,6 +22,7 @@
     "node": ">=20"
   },
   "devDependencies": {
+    "@supabase/cli-windows-x64": "^2.118.0",
     "supabase": "^2.118.0"
   }
 }

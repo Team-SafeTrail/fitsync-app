@@ -1,7 +1,8 @@
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
-
+  
   "graphql_public": {
           Tables: {
             [_ in never]: never
@@ -109,26 +110,24 @@ isOneToOne: false
                   }
                   Relationships: [
                     {
-                      foreignKeyName: "ocr_attempts_inbody_record_id_fkey"
-                      columns: ["inbody_record_id"]
-                      isOneToOne: true
-                      referencedRelation: "inbody_records"
-                      referencedColumns: ["id"]
-                    },
-                    {
-                      foreignKeyName: "ocr_attempts_pt_id_fkey"
-                      columns: ["pt_id"]
-                      isOneToOne: false
-                      referencedRelation: "pt_profiles"
-                      referencedColumns: ["id"]
-                    },
-                    {
-                      foreignKeyName: "ocr_attempts_trainee_id_fkey"
-                      columns: ["trainee_id"]
-                      isOneToOne: false
-                      referencedRelation: "trainee_profiles"
-                      referencedColumns: ["id"]
-                    }
+      foreignKeyName: "ocr_attempts_inbody_record_id_fkey"
+      columns: ["inbody_record_id"]
+isOneToOne: true
+      referencedRelation: "inbody_records"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ocr_attempts_pt_id_fkey"
+      columns: ["pt_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ocr_attempts_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
                   ]
                 },"profiles": {
                   Row: {
@@ -141,7 +140,7 @@ isOneToOne: false
                     "created_at"?: string,"display_name"?: string,"id"?: string,"phone"?: string | null,"role"?: Database["public"]['Enums']["user_role"],"updated_at"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"pt_profiles": {
                   Row: {
@@ -238,6 +237,11 @@ isOneToOne: false
 "checkin_warning_starts_on":
 { Args: { "reference_date": string }; Returns: string
                            },
+"confirm_ocr_inbody_record":
+{ Args: { "attempt_id": string,"confirmed_fat_kg": number,"confirmed_fat_percent": number,"confirmed_muscle_kg": number,"confirmed_water_liters"?: number,"confirmed_weight_kg": number,"nutrition_calories"?: number,"nutrition_carb"?: number,"nutrition_fat"?: number,"nutrition_protein"?: number }; Returns: {
+              "is_manually_edited": boolean,"outcome": string,"record_id": string
+            }[]
+                           },
 "create_trainee_with_invitation":
 { Args: { "invite_email": string,"invite_expires_at": string,"invite_token_hash": string,"package_remaining": number,"package_total": number,"trainee_display_name": string,"trainee_goal": Database["public"]['Enums']["fitness_goal"],"trainee_phone": string }; Returns: string
                            },
@@ -252,11 +256,6 @@ isOneToOne: false
 "submit_daily_checkin":
 { Args: { "checkin_note": string,"meal_photo_mime_type"?: string,"meal_photo_path"?: string,"meal_photo_size_bytes"?: number }; Returns: {
               "checkin_id": string,"local_checkin_date": string,"outcome": string
-            }[]
-                            },
-"confirm_ocr_inbody_record":
-{ Args: { "attempt_id": string,"confirmed_fat_kg": number,"confirmed_fat_percent": number,"confirmed_muscle_kg": number,"confirmed_water_liters"?: number | null,"confirmed_weight_kg": number,"nutrition_calories"?: number | null,"nutrition_carb"?: number | null,"nutrition_fat"?: number | null,"nutrition_protein"?: number | null }; Returns: {
-              "is_manually_edited": boolean,"outcome": string,"record_id": string
             }[]
                            }
           }
@@ -377,7 +376,7 @@ export type CompositeTypes<
 export const Constants = {
   "graphql_public": {
           Enums: {
-
+            
           }
         },"public": {
           Enums: {
@@ -385,3 +384,4 @@ export const Constants = {
           }
         }
 } as const
+

@@ -190,11 +190,11 @@ export async function confirmOcrDraft(
       confirmed_muscle_kg: values.skeletalMuscleMassKg,
       confirmed_fat_kg: values.bodyFatMassKg,
       confirmed_fat_percent: values.percentBodyFat,
-      confirmed_water_liters: values.totalBodyWaterLiters,
-      nutrition_calories: values.targetCalories,
-      nutrition_protein: values.targetProteinGrams,
-      nutrition_carb: values.targetCarbGrams,
-      nutrition_fat: values.targetFatGrams,
+      confirmed_water_liters: values.totalBodyWaterLiters ?? undefined,
+      nutrition_calories: values.targetCalories ?? undefined,
+      nutrition_protein: values.targetProteinGrams ?? undefined,
+      nutrition_carb: values.targetCarbGrams ?? undefined,
+      nutrition_fat: values.targetFatGrams ?? undefined,
     },
   );
 
