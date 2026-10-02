@@ -100,13 +100,13 @@ isOneToOne: false
                   ]
                 },"ocr_attempts": {
                   Row: {
-                    "created_at": string,"error_code": string | null,"id": string,"image_mime_type": string,"image_size_bytes": number,"inbody_record_id": string | null,"is_confirmed": boolean,"private_image_path": string,"provider": string,"provider_version": string,"pt_id": string,"raw_draft": Json | null,"status": Database["public"]['Enums']["ocr_attempt_status"],"trainee_id": string,"updated_at": string
+                    "created_at": string,"duration_ms": number,"error_code": string | null,"id": string,"image_mime_type": string,"image_size_bytes": number,"inbody_record_id": string | null,"is_confirmed": boolean,"private_image_path": string,"provider": string,"provider_version": string,"pt_id": string,"raw_draft": Json | null,"status": Database["public"]['Enums']["ocr_attempt_status"],"trainee_id": string,"updated_at": string
                   }
                   Insert: {
-                    "created_at"?: string,"error_code"?: string | null,"id"?: string,"image_mime_type": string,"image_size_bytes": number,"inbody_record_id"?: string | null,"is_confirmed"?: boolean,"private_image_path": string,"provider": string,"provider_version": string,"pt_id": string,"raw_draft"?: Json | null,"status"?: Database["public"]['Enums']["ocr_attempt_status"],"trainee_id": string,"updated_at"?: string
+                    "created_at"?: string,"duration_ms"?: number,"error_code"?: string | null,"id"?: string,"image_mime_type": string,"image_size_bytes": number,"inbody_record_id"?: string | null,"is_confirmed"?: boolean,"private_image_path": string,"provider": string,"provider_version": string,"pt_id": string,"raw_draft"?: Json | null,"status"?: Database["public"]['Enums']["ocr_attempt_status"],"trainee_id": string,"updated_at"?: string
                   }
                   Update: {
-                    "created_at"?: string,"error_code"?: string | null,"id"?: string,"image_mime_type"?: string,"image_size_bytes"?: number,"inbody_record_id"?: string | null,"is_confirmed"?: boolean,"private_image_path"?: string,"provider"?: string,"provider_version"?: string,"pt_id"?: string,"raw_draft"?: Json | null,"status"?: Database["public"]['Enums']["ocr_attempt_status"],"trainee_id"?: string,"updated_at"?: string
+                    "created_at"?: string,"duration_ms"?: number,"error_code"?: string | null,"id"?: string,"image_mime_type"?: string,"image_size_bytes"?: number,"inbody_record_id"?: string | null,"is_confirmed"?: boolean,"private_image_path"?: string,"provider"?: string,"provider_version"?: string,"pt_id"?: string,"raw_draft"?: Json | null,"status"?: Database["public"]['Enums']["ocr_attempt_status"],"trainee_id"?: string,"updated_at"?: string
                   }
                   Relationships: [
                     {

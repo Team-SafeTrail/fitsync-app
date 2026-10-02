@@ -156,7 +156,7 @@ Required isolation tests: PT A cannot read or mutate PT B’s trainee; trainee A
 | M1 Identity | Verified | Supabase local project, migrations, auth, profiles, RLS | Automated cross-role isolation tests pass |
 | M2 First vertical slice | Verified | PT creates trainee and verified manual InBody record; trainee sees it | Desktop and mobile-browser E2E demonstration |
 | M3 Engagement | Verified | Check-ins, meal upload, session balance, three-day warning | Desktop/mobile E2E plus RLS and timezone-boundary tests pass |
-| M4 OCR | Next | InBody 270 extraction behind mandatory review | Consented benchmark and failure tests pass |
+| M4 OCR | In progress | InBody 270 extraction behind mandatory review | Consented benchmark and failure tests pass |
 | M5 Pilot funnel | Planned | Real signup CTA, analytics, support and deletion flow | Acquisition-to-activation events visible |
 | M6 Paid pilot | Planned | Manual VietQR evidence and entitlement | Reconciled real transactions with consent |
 | M7 Android | Planned | Expo app or justified store-ready wrapper using production backend | Play testing-track listing and install evidence |
@@ -201,7 +201,7 @@ Every milestone must pass lint, TypeScript, focused unit tests for domain rules,
 
 M0 through M3 and the post-M2 landing conversion checkpoint are complete. Their verified outcomes are consolidated in `docs/HANDOFF.md`; the removed implementation checklists remain available in Git history.
 
-M4 OCR is next. Follow `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`; keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
+M4 OCR is in progress. Its private storage, normalized-attempt persistence, server-only write boundary, and atomic confirmation foundation are implemented, while provider benchmarking and the complete review UI/browser flow remain outstanding. Follow `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`; keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
 
 ## 14. Change control
 
