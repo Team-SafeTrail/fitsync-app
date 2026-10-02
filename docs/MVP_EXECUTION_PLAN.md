@@ -1,8 +1,8 @@
 # FitSync MVP execution plan
 
 **Status:** Active implementation baseline
-**Version:** 1.3
-**Updated:** 2026-09-28
+**Version:** 1.4
+**Updated:** 2026-10-02
 **Owner:** SafeTrail
 **Supersedes for implementation:** conflicting scope, status, price, platform, and outcome statements in earlier FitSync coursework documents
 

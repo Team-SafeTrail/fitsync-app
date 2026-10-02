@@ -1,7 +1,8 @@
 # FitSync project handoff
 
 **Updated:** 2026-10-02
-**Branch:** `main`
+**Target branch:** `main`
+**Active corrective branch:** `fix/m4-ocr-backend-gates`
 **Current milestone:** M4 in progress — M3 engagement remains verified
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
@@ -22,6 +23,14 @@ When documents disagree, use this order:
 6. `docs/archive/` and the sibling `fitsync-docs` repository for historical context only.
 
 Earlier coursework claims about features, pricing, platforms, or outcomes do not override the active MVP plan.
+
+## Live delivery state
+
+- `main` is currently at `6036053`, the initial Issue #3 backend merge. Do not treat its M4 security and verification gates as accepted until the corrective pull request is merged.
+- [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) at corrective commit `12d48bf` restores those gates. Its hosted CI is green and it is waiting for independent review; it must not be self-approved or merged by its author.
+- [Issue #3](https://github.com/Team-SafeTrail/fitsync-app/issues/3) is reopened and remains the tracking issue until PR #13 is independently accepted and merged.
+- PR #11 remains changes-requested at `9866324`. Do not merge it in its current form: it must first rebase on the accepted Issue #3 backend, remove the duplicate schema/server contract, and rerun its real browser workflow.
+- Immediate handoff: Việt reviews PR #13 against Issue #3 and this handoff; after acceptance, an authorized teammate merges it and closes Issue #3. Khai then rebases the OCR review work before requesting another review.
 
 ## Repository map
 
@@ -168,7 +177,7 @@ Local Supabase endpoints when running:
 
 The current shell may need `sg docker -c '<command>'` until it inherits the user's Docker group. A fresh login should make ordinary `npm run db:*` commands work. Never copy keys from `apps/web/.env.local` into documentation or chat.
 
-## Active next milestone: M4
+## Active milestone: M4
 
 M3 engagement is complete and verified. M4 OCR-assisted InBody entry is now in progress behind mandatory PT review and a consented benchmark. The corrected persistence and authorization foundation is implemented, but provider selection and the real OCR review UI/browser flow are not verified. Do not infer that payments, analytics, or Expo/mobile have started.
 
@@ -194,7 +203,7 @@ The local database contains only synthetic accounts created by the final E2E run
 
 ## Repository checkpoint
 
-The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, and the initial M4 backend merge is `6036053`. The corrective branch `fix/m4-ocr-backend-gates` restores its install, authorization, and verification gates. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status`, open pull requests, and the latest `main` before beginning work.
+The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, and the initial M4 backend merge is `6036053`. The corrective branch `fix/m4-ocr-backend-gates` and [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) restore its install, authorization, and verification gates. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status`, open pull requests, and the latest `main` before beginning work. The live-delivery section above is a snapshot, so verify GitHub again if work resumes after 2026-10-02.
 
 ## Known debt and risks
 

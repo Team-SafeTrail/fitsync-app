@@ -63,6 +63,8 @@ Detailed deliverable cards and checklists are in [`trello-weekly-refresh-prompt.
 
 The lanes can begin in parallel, but the final OCR provider decision depends on Issue #2, integration depends on Issue #3, and the complete browser demonstration depends on Issues #3 and #4. Manual InBody entry remains the release fallback.
 
+**Live Week 4 recovery note (2026-10-02):** Issue #3 is reopened after review of the initial merge. Huy remains the accountable owner, Hưng supplied the corrective implementation in [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13), and Việt is the independent reviewer. Hosted CI is green, but the Trello card stays in `REVIEW` until PR #13 is accepted and merged. PR #11 must remain changes-requested until it rebases on the accepted backend and removes its duplicate OCR schema/server work.
+
 ## Trello Kanban setup for weekly lecturer review
 
 Refresh the existing board rather than deleting it. Preserve cards, comments, attachments, and activity history; archive an obsolete list only after every useful card has been migrated.
