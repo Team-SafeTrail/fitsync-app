@@ -1,7 +1,8 @@
+
 export type Json = string | number | boolean | null | { [key: string]: Json | undefined } | Json[]
 
 export type Database = {
-
+  
   "graphql_public": {
           Tables: {
             [_ in never]: never
@@ -97,6 +98,37 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"ocr_attempts": {
+                  Row: {
+                    "created_at": string,"error_code": string | null,"id": string,"image_mime_type": string,"image_size_bytes": number,"inbody_record_id": string | null,"is_confirmed": boolean,"private_image_path": string,"provider": string,"provider_version": string,"pt_id": string,"raw_draft": Json | null,"status": Database["public"]['Enums']["ocr_attempt_status"],"trainee_id": string,"updated_at": string
+                  }
+                  Insert: {
+                    "created_at"?: string,"error_code"?: string | null,"id"?: string,"image_mime_type": string,"image_size_bytes": number,"inbody_record_id"?: string | null,"is_confirmed"?: boolean,"private_image_path": string,"provider": string,"provider_version": string,"pt_id": string,"raw_draft"?: Json | null,"status"?: Database["public"]['Enums']["ocr_attempt_status"],"trainee_id": string,"updated_at"?: string
+                  }
+                  Update: {
+                    "created_at"?: string,"error_code"?: string | null,"id"?: string,"image_mime_type"?: string,"image_size_bytes"?: number,"inbody_record_id"?: string | null,"is_confirmed"?: boolean,"private_image_path"?: string,"provider"?: string,"provider_version"?: string,"pt_id"?: string,"raw_draft"?: Json | null,"status"?: Database["public"]['Enums']["ocr_attempt_status"],"trainee_id"?: string,"updated_at"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "ocr_attempts_inbody_record_id_fkey"
+      columns: ["inbody_record_id"]
+isOneToOne: true
+      referencedRelation: "inbody_records"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ocr_attempts_pt_id_fkey"
+      columns: ["pt_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "ocr_attempts_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "created_at": string,"display_name": string,"id": string,"phone": string | null,"role": Database["public"]['Enums']["user_role"],"updated_at": string
@@ -108,7 +140,7 @@ isOneToOne: false
                     "created_at"?: string,"display_name"?: string,"id"?: string,"phone"?: string | null,"role"?: Database["public"]['Enums']["user_role"],"updated_at"?: string
                   }
                   Relationships: [
-
+                    
                   ]
                 },"pt_profiles": {
                   Row: {
@@ -205,6 +237,11 @@ isOneToOne: false
 "checkin_warning_starts_on":
 { Args: { "reference_date": string }; Returns: string
                            },
+"confirm_ocr_inbody_record":
+{ Args: { "attempt_id": string,"confirmed_fat_kg": number,"confirmed_fat_percent": number,"confirmed_muscle_kg": number,"confirmed_water_liters"?: number,"confirmed_weight_kg": number,"nutrition_calories"?: number,"nutrition_carb"?: number,"nutrition_fat"?: number,"nutrition_protein"?: number }; Returns: {
+              "is_manually_edited": boolean,"outcome": string,"record_id": string
+            }[]
+                           },
 "create_trainee_with_invitation":
 { Args: { "invite_email": string,"invite_expires_at": string,"invite_token_hash": string,"package_remaining": number,"package_total": number,"trainee_display_name": string,"trainee_goal": Database["public"]['Enums']["fitness_goal"],"trainee_phone": string }; Returns: string
                            },
@@ -223,7 +260,7 @@ isOneToOne: false
                            }
           }
           Enums: {
-            "fitness_goal": "fat_loss"|"muscle_gain"|"recomp","inbody_source": "manual"|"ocr","invitation_status": "pending"|"accepted"|"revoked"|"expired","subscription_plan": "free"|"pro"|"enterprise","trainee_status": "active"|"warning"|"inactive"|"archived","user_role": "pt"|"trainee"|"admin"
+            "fitness_goal": "fat_loss"|"muscle_gain"|"recomp","inbody_source": "manual"|"ocr","invitation_status": "pending"|"accepted"|"revoked"|"expired","ocr_attempt_status": "pending"|"success"|"failed","subscription_plan": "free"|"pro"|"enterprise","trainee_status": "active"|"warning"|"inactive"|"archived","user_role": "pt"|"trainee"|"admin"
           }
           CompositeTypes: {
             [_ in never]: never
@@ -339,11 +376,12 @@ export type CompositeTypes<
 export const Constants = {
   "graphql_public": {
           Enums: {
-
+            
           }
         },"public": {
           Enums: {
-            "fitness_goal": ["fat_loss", "muscle_gain", "recomp"],"inbody_source": ["manual", "ocr"],"invitation_status": ["pending", "accepted", "revoked", "expired"],"subscription_plan": ["free", "pro", "enterprise"],"trainee_status": ["active", "warning", "inactive", "archived"],"user_role": ["pt", "trainee", "admin"]
+            "fitness_goal": ["fat_loss", "muscle_gain", "recomp"],"inbody_source": ["manual", "ocr"],"invitation_status": ["pending", "accepted", "revoked", "expired"],"ocr_attempt_status": ["pending", "success", "failed"],"subscription_plan": ["free", "pro", "enterprise"],"trainee_status": ["active", "warning", "inactive", "archived"],"user_role": ["pt", "trainee", "admin"]
           }
         }
 } as const
+
