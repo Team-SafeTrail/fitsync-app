@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { getCurrentUser } from "@/lib/auth";
+import { createPrivilegedClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import type { WorkspaceActionState } from "./action-state";
 import { validateInBody } from "./validation";
@@ -11,9 +12,8 @@ import {
   type OcrNormalizedDraft,
 } from "./ocr-validation";
 import {
-  DeterministicFakeOcrAdapter,
-  type FakeOcrScenario,
-  type OcrProviderAdapter,
+  createDefaultOcrAdapter,
+  type OcrAdapterResult,
 } from "./ocr-adapter";
 import type { Json } from "@/types/database";
 
@@ -51,7 +51,6 @@ export async function startOcrAttempt(
   traineeId: string,
   _previousState: WorkspaceActionState,
   formData: FormData,
-  adapterOverride?: OcrProviderAdapter,
 ): Promise<WorkspaceActionState> {
   const context = await requirePt();
   if (!context) {
@@ -81,8 +80,27 @@ export async function startOcrAttempt(
   }
 
   const fileData = fileValidation.data;
+  const adapter = createDefaultOcrAdapter();
+  if (!adapter.available) {
+    const unavailableResult = await adapter.extract(new Uint8Array(), fileData.mimeType);
+    if (!unavailableResult.success) {
+      return errorState(unavailableResult.message, undefined, unavailableResult.errorCode);
+    }
+  }
+
   const imagePath = `${trainee.id}/${crypto.randomUUID()}.${fileData.extension}`;
   const imageBytes = new Uint8Array(await fileData.file.arrayBuffer());
+
+  let privilegedSupabase: ReturnType<typeof createPrivilegedClient>;
+  try {
+    privilegedSupabase = createPrivilegedClient();
+  } catch {
+    return errorState(
+      "OCR chưa được cấu hình an toàn. Bạn vẫn có thể nhập các chỉ số thủ công.",
+      undefined,
+      "provider_unavailable",
+    );
+  }
 
   // Upload to private InBody media storage
   const { error: uploadError } = await context.supabase.storage
@@ -100,19 +118,22 @@ export async function startOcrAttempt(
     );
   }
 
-  // Execute OCR provider adapter (deterministic fake by default for development/test)
-  const scenario = (formData.get("mockScenario") as FakeOcrScenario | null) ?? undefined;
-  const adapter = adapterOverride ?? new DeterministicFakeOcrAdapter(scenario);
-  const extractionResult = await adapter.extract(imageBytes, fileData.mimeType, {
-    mockScenario: scenario,
-  });
-
-  // Create signed URL for PT to view private image side-by-side
-  const { data: signedData } = await context.supabase.storage
-    .from("inbody-media")
-    .createSignedUrl(imagePath, 60);
-
-  const signedUrl = signedData?.signedUrl;
+  const extractionStartedAt = Date.now();
+  let extractionResult: OcrAdapterResult;
+  try {
+    extractionResult = await adapter.extract(imageBytes, fileData.mimeType, {
+      timeoutMs: 15_000,
+    });
+  } catch {
+    extractionResult = {
+      success: false,
+      provider: adapter.name,
+      providerVersion: adapter.version,
+      errorCode: "processing_error",
+      message: "Không thể xử lý ảnh lúc này. Bạn có thể tiếp tục nhập tay.",
+      durationMs: Date.now() - extractionStartedAt,
+    };
+  }
 
   // Persist attempt to database
   const insertPayload = {
@@ -123,24 +144,31 @@ export async function startOcrAttempt(
     image_size_bytes: fileData.sizeBytes,
     provider: extractionResult.provider,
     provider_version: extractionResult.providerVersion,
+    duration_ms: extractionResult.durationMs,
     status: (extractionResult.success ? "success" : "failed") as "success" | "failed",
     error_code: extractionResult.success ? null : extractionResult.errorCode,
     raw_draft: (extractionResult.success ? (extractionResult.draft as unknown as Json) : null),
   };
 
-  const { data: attemptRow, error: attemptError } = await context.supabase
+  const { data: attemptRow, error: attemptError } = await privilegedSupabase
     .from("ocr_attempts")
     .insert(insertPayload)
     .select("id")
     .maybeSingle();
 
   if (attemptError || !attemptRow) {
+    await privilegedSupabase.storage.from("inbody-media").remove([imagePath]);
     return errorState(
       "Không thể khởi tạo bản ghi lần quét OCR trong cơ sở dữ liệu.",
       undefined,
       "processing_error",
     );
   }
+
+  const { data: signedData } = await context.supabase.storage
+    .from("inbody-media")
+    .createSignedUrl(imagePath, 60);
+  const signedUrl = signedData?.signedUrl;
 
   if (!extractionResult.success) {
     return {

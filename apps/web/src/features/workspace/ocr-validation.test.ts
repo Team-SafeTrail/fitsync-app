@@ -7,6 +7,7 @@ import {
   OCR_FAILURE_MESSAGES,
 } from "./ocr-validation";
 import {
+  createDefaultOcrAdapter,
   DeterministicFakeOcrAdapter,
   type FakeOcrScenario,
 } from "./ocr-adapter";
@@ -310,6 +311,21 @@ describe("Deterministic Fake OCR Provider Adapter", () => {
     expect(resInconsistent.success).toBe(false);
     if (!resInconsistent.success) {
       expect(resInconsistent.errorCode).toBe("inconsistent_values");
+    }
+  });
+});
+
+describe("Default OCR provider boundary", () => {
+  it("returns a recoverable unavailable result instead of synthetic metrics", async () => {
+    const adapter = createDefaultOcrAdapter();
+    const result = await adapter.extract(VALID_PNG_HEADER, "image/png");
+
+    expect(adapter.available).toBe(false);
+    expect(adapter.name).not.toBe("deterministic-fake");
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.errorCode).toBe("provider_unavailable");
+      expect(result.message).toContain("nhập tay");
     }
   });
 });

@@ -31,6 +31,7 @@ export type OcrAdapterResult =
 export interface OcrProviderAdapter {
   readonly name: string;
   readonly version: string;
+  readonly available: boolean;
   extract(
     imageBytes: Uint8Array,
     mimeType: string,
@@ -49,9 +50,31 @@ export type FakeOcrScenario =
   | "unavailable"
   | "unreadable";
 
+class UnavailableOcrAdapter implements OcrProviderAdapter {
+  readonly name = "unconfigured";
+  readonly version = "0";
+  readonly available = false;
+
+  async extract(): Promise<OcrAdapterResult> {
+    return {
+      success: false,
+      provider: this.name,
+      providerVersion: this.version,
+      errorCode: "provider_unavailable",
+      message: "Nhà cung cấp OCR chưa được chọn. Bạn có thể tiếp tục nhập tay.",
+      durationMs: 0,
+    };
+  }
+}
+
+export function createDefaultOcrAdapter(): OcrProviderAdapter {
+  return new UnavailableOcrAdapter();
+}
+
 export class DeterministicFakeOcrAdapter implements OcrProviderAdapter {
   readonly name = "deterministic-fake";
   readonly version = "1.0.0";
+  readonly available = true;
 
   private defaultScenario: FakeOcrScenario;
 
