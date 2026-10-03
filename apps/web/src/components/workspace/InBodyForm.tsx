@@ -198,27 +198,27 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
           <div className="workspace-metric-fields" key={attemptId || 'manual'}>
             <label className="workspace-field" htmlFor="weight-kg">
               <span>Cân nặng (kg)</span>
-              <input id="weight-kg" data-testid="weight-kg" name="weightKg" type="number" inputMode="decimal" min={30} max={220} step="0.01" defaultValue={draftData?.metrics?.weight_kg} required />
+              <input id="weight-kg" data-testid="weight-kg" name="weightKg" type="number" inputMode="decimal" min={30} max={220} step="0.01" defaultValue={draftData?.metrics?.weight_kg ?? ""} required />
               <ErrorText error={currentState.fieldErrors?.weightKg} />
             </label>
             <label className="workspace-field" htmlFor="muscle-kg">
               <span>Khối cơ xương (kg)</span>
-              <input id="muscle-kg" name="skeletalMuscleMassKg" type="number" inputMode="decimal" min={10} max={75} step="0.01" defaultValue={draftData?.metrics?.skeletal_muscle_mass_kg} required />
+              <input id="muscle-kg" name="skeletalMuscleMassKg" type="number" inputMode="decimal" min={10} max={75} step="0.01" defaultValue={draftData?.metrics?.skeletal_muscle_mass_kg ?? ""} required />
               <ErrorText error={currentState.fieldErrors?.skeletalMuscleMassKg} />
             </label>
             <label className="workspace-field" htmlFor="fat-mass-kg">
               <span>Khối mỡ (kg)</span>
-              <input id="fat-mass-kg" name="bodyFatMassKg" type="number" inputMode="decimal" min={2} max={100} step="0.01" defaultValue={draftData?.metrics?.body_fat_mass_kg} required />
+              <input id="fat-mass-kg" name="bodyFatMassKg" type="number" inputMode="decimal" min={2} max={100} step="0.01" defaultValue={draftData?.metrics?.body_fat_mass_kg ?? ""} required />
               <ErrorText error={currentState.fieldErrors?.bodyFatMassKg} />
             </label>
             <label className="workspace-field" htmlFor="body-fat-percent">
               <span>Tỷ lệ mỡ (%) {ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) && <AlertTriangle size={14} color="var(--intent-warning)" style={{display: 'inline', verticalAlign: 'middle', marginLeft: '0.3rem'}}/>}</span>
-              <input id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" defaultValue={draftData?.metrics?.percent_body_fat} required style={ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) ? { borderColor: 'var(--intent-warning)', backgroundColor: 'color-mix(in srgb, var(--intent-warning) 10%, transparent)' } : {}}/>
+              <input id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" defaultValue={draftData?.metrics?.percent_body_fat ?? ""} required style={ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) ? { borderColor: 'var(--intent-warning)', backgroundColor: 'color-mix(in srgb, var(--intent-warning) 10%, transparent)' } : {}}/>
               <ErrorText error={currentState.fieldErrors?.percentBodyFat} />
             </label>
             <label className="workspace-field" htmlFor="body-water-liters">
               <span>Tổng nước cơ thể (L)</span>
-              <input id="body-water-liters" name="totalBodyWaterLiters" type="number" inputMode="decimal" min={10} max={100} step="0.01" defaultValue={draftData?.metrics?.total_body_water_liters} />
+              <input id="body-water-liters" name="totalBodyWaterLiters" type="number" inputMode="decimal" min={10} max={100} step="0.01" defaultValue={draftData?.metrics?.total_body_water_liters ?? ""} />
               <ErrorText error={currentState.fieldErrors?.totalBodyWaterLiters} />
             </label>
           </div>
