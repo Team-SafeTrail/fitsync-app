@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { useFormState } from "react-dom";
 import { CheckCircle2, Info, Ruler, Camera, AlertTriangle, Loader2, Image as ImageIcon } from "lucide-react";
-import { createInBodyRecord, uploadOCRImage } from "@/features/workspace/actions";
+import { submitInBodyForm } from "@/features/workspace/actions";
+import { startOcrAttempt } from "@/features/workspace/ocr-actions";
 import { initialWorkspaceActionState } from "@/features/workspace/action-state";
 import SubmitButton from "./SubmitButton";
 
@@ -12,7 +13,7 @@ function ErrorText({ error }: { error?: string }) {
 }
 
 export default function InBodyForm({ traineeId }: { traineeId: string }) {
-  const boundAction = createInBodyRecord.bind(null, traineeId);
+  const boundAction = submitInBodyForm.bind(null, traineeId);
   const [state, action] = useFormState(boundAction, initialWorkspaceActionState);
   const currentState = state ?? initialWorkspaceActionState;
   const formRef = useRef<HTMLFormElement>(null);
@@ -35,6 +36,16 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
     }
   }, [currentState]);
 
+  function clearOcrDraft() {
+    setOcrStatus("idle");
+    setOcrMessage("");
+    setOcrImageUrl("");
+    setAttemptId("");
+    setDraftData(null);
+    setOcrWarnings([]);
+    if (formRef.current) formRef.current.reset();
+  }
+
   async function handleFileUpload(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -44,23 +55,28 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
     
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("traineeId", traineeId);
 
     try {
-      const result = await uploadOCRImage(formData);
-      if (result.success) {
+      const result = await startOcrAttempt(traineeId, initialWorkspaceActionState, formData);
+      if (result.status === "success") {
         setOcrStatus("success");
-        setOcrImageUrl(result.imageUrl || "");
-        setAttemptId(result.attemptId || "");
-        setDraftData(result.draftData || null);
-        setOcrWarnings(result.warnings || []);
+        setOcrImageUrl(result.ocrSourceImageUrl || "");
+        setAttemptId(result.ocrAttemptId || "");
+        setDraftData(result.ocrDraft || null);
+        setOcrWarnings([]); // Server currently doesn't return warnings in draft
       } else {
         setOcrStatus("error");
         setOcrMessage(result.message || "Không thể xử lý ảnh. Vui lòng nhập thủ công.");
+        setOcrImageUrl(result.ocrSourceImageUrl || "");
+        setAttemptId(result.ocrAttemptId || "");
+        setDraftData(null);
       }
     } catch (err) {
       setOcrStatus("error");
       setOcrMessage("Lỗi kết nối. Vui lòng nhập thủ công.");
+      setOcrImageUrl("");
+      setAttemptId("");
+      setDraftData(null);
     }
     
     // Reset file input so user can re-upload if needed
@@ -95,7 +111,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         ) : (
           <label className="workspace-field" style={{ display: "inline-block", width: "auto", cursor: "pointer" }}>
             <span style={{ display: "none" }}>Tải ảnh lên</span>
-            <input type="file" accept="image/jpeg, image/png, image/webp" onChange={handleFileUpload} />
+            <input type="file" accept="image/jpeg, image/png, image/webp" capture="environment" onChange={handleFileUpload} />
           </label>
         )}
 
@@ -123,6 +139,13 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
 
       <form ref={formRef} action={action} className="workspace-form-grid">
         <input type="hidden" name="ocrAttemptId" value={attemptId} />
+        {attemptId && (
+          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+            <button type="button" onClick={clearOcrDraft} className="workspace-btn workspace-btn-secondary" style={{ fontSize: '0.8rem' }}>
+              Hủy bản nháp OCR / Nhập thủ công
+            </button>
+          </div>
+        )}
         <fieldset className="workspace-fieldset workspace-field-wide">
           <legend><Ruler size={16} /> Chỉ số đo {ocrStatus === "success" && <span style={{fontSize: '0.8rem', color: 'var(--accent-primary)'}}>(Bản nháp OCR)</span>}</legend>
           <p className="workspace-helper">FitSync sẽ đối chiếu giới hạn và sự nhất quán giữa cân nặng, khối mỡ và tỷ lệ mỡ.</p>

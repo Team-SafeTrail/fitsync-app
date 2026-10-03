@@ -41,18 +41,16 @@ Rebuilding the mobile application natively using Expo.
 - **Play Policy**: Generally accepted and provides the highest quality native feel.
 - **Effort**: Very High. Requires rewriting the entire UI and maintaining a parallel codebase (or setting up complex React Native Web configurations). Violates the "smallest viable path" constraint for the current milestone.
 
-## Recommendation
-**We recommend Option 1: Trusted Web Activity (TWA)**.
+## Decision
+We will evaluate Option 1: Trusted Web Activity (TWA) as the primary candidate.
 
-It is the only path that preserves our Next.js Server Actions and SSR architecture without requiring a massive refactor. It fulfills the Play Store distribution requirement with minimal overhead, allowing the team to focus entirely on the OCR business logic and product quality rather than native mobile bridging.
+TWA preserves our Next.js Server Actions and SSR architecture without requiring a massive refactor. It has the potential to fulfill the Play Store distribution requirement with minimal overhead, allowing the team to focus on the OCR business logic.
 
-### Implementation Implications
-If approved, the delivery path will be:
-1. Ensure the Next.js app passes Lighthouse PWA requirements, especially robust offline/failure behavior for the web app.
-2. Host `assetlinks.json` on our domain (Digital Asset Links) and complete app signing for TWA verification.
-3. Prepare Play Store listings including Privacy Policy and Google Play Data Safety forms.
-4. Conduct physical device testing to verify camera uploads and viewport behaviors.
-5. Provide testing-track evidence (Internal/Closed Testing releases) before determining that TWA fully satisfies OC1 constraints.
-6. Submit to Google Play Console for review.
+### Evidence Requirements & Next Steps
+Before TWA can be confirmed as the final solution for OC1, the following evidence must be demonstrated:
+1. **Lighthouse PWA Validation**: The Next.js app must pass baseline PWA requirements, specifically robust offline fallback behavior.
+2. **Digital Asset Links Verification**: Host `assetlinks.json` on our domain and successfully verify ownership with the built APK/AAB.
+3. **Hardware Integration Proof**: Conduct physical device testing to verify that `<input type="file" capture="environment">` correctly triggers the native camera within the TWA shell.
+4. **Play Console Pipeline Proof**: Deploy the packaged TWA to the Play Store Internal Testing track. 
 
-No empty Expo, Capacitor, or Flutter projects will be scaffolded.
+Only upon successful installation and verification of camera integration from the Internal Testing track will TWA be confirmed as satisfying the OC1 constraint. No alternative empty native mobile projects (Expo, Capacitor, Flutter) will be scaffolded until this evaluation fails.

@@ -88,8 +88,26 @@ export async function startOcrAttempt(
     }
   }
 
-  const imagePath = `${trainee.id}/${crypto.randomUUID()}.${fileData.extension}`;
-  const imageBytes = new Uint8Array(await fileData.file.arrayBuffer());
+  const rawBytes = await fileData.file.arrayBuffer();
+  
+  // Process image with sharp: auto-rotate based on EXIF and compress
+  let imageBytes: Buffer;
+  let finalMimeType = fileData.mimeType;
+  let finalExtension = fileData.extension;
+  try {
+    const sharp = (await import("sharp")).default;
+    imageBytes = await sharp(Buffer.from(rawBytes))
+      .rotate()
+      .resize(1000, null, { withoutEnlargement: true })
+      .webp({ quality: 80 })
+      .toBuffer();
+    finalMimeType = "image/webp";
+    finalExtension = "webp";
+  } catch (err) {
+    return errorState("Lỗi xử lý định dạng ảnh OCR.", undefined, "processing_error");
+  }
+
+  const imagePath = `${trainee.id}/${crypto.randomUUID()}.${finalExtension}`;
 
   let privilegedSupabase: ReturnType<typeof createPrivilegedClient>;
   try {
@@ -106,7 +124,7 @@ export async function startOcrAttempt(
   const { error: uploadError } = await context.supabase.storage
     .from("inbody-media")
     .upload(imagePath, imageBytes, {
-      contentType: fileData.mimeType,
+      contentType: finalMimeType,
       upsert: false,
     });
 
@@ -121,7 +139,7 @@ export async function startOcrAttempt(
   const extractionStartedAt = Date.now();
   let extractionResult: OcrAdapterResult;
   try {
-    extractionResult = await adapter.extract(imageBytes, fileData.mimeType, {
+    extractionResult = await adapter.extract(imageBytes, finalMimeType, {
       timeoutMs: 15_000,
     });
   } catch {
@@ -140,8 +158,8 @@ export async function startOcrAttempt(
     trainee_id: trainee.id,
     pt_id: context.user.id,
     private_image_path: imagePath,
-    image_mime_type: fileData.mimeType,
-    image_size_bytes: fileData.sizeBytes,
+    image_mime_type: finalMimeType,
+    image_size_bytes: imageBytes.byteLength,
     provider: extractionResult.provider,
     provider_version: extractionResult.providerVersion,
     duration_ms: extractionResult.durationMs,

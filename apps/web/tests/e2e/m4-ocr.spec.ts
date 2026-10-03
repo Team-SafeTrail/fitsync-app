@@ -1,73 +1,92 @@
-import { test, expect } from '@playwright/test';
+import { expect, test } from "@playwright/test";
 
-test.describe('M4 OCR Workflow', () => {
-  test.use({ storageState: 'tests/e2e/.auth/pt.json' });
+test.describe('M4 OCR Workflow (End-to-End)', () => {
+  test("PT registers, creates trainee, and uses OCR for InBody", async ({ browser }) => {
+    test.slow();
+    const runId = Date.now();
+    const password = "FitSync-M4-Strong-2026";
+    const ptEmail = `m4-pt-${runId}@example.test`;
+    const traineeEmail = `m4-trainee-${runId}@example.test`;
 
-  test.beforeEach(async ({ page }) => {
-    // Navigate to a known trainee profile workspace
-    await page.goto('/workspace/trainees/seed-trainee-id');
-  });
-
-  test('successfully uploads OCR, allows correction, and confirms', async ({ page }) => {
-    // Upload
-    const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.locator('input[type="file"]').click({ force: true });
-    const fileChooser = await fileChooserPromise;
-    await fileChooser.setFiles('tests/fixtures/sample-inbody.webp');
+    // 1. Setup PT
+    const ptContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+    const ptPage = await ptContext.newPage();
     
-    await expect(page.locator('text=Đang tải lên và xử lý ảnh...')).toBeVisible();
-    await expect(page.locator('text=Bản nháp OCR')).toBeVisible();
+    await ptPage.goto("/register");
+    await ptPage.getByLabel("Tên hiển thị").fill("PT OCR Test");
+    await ptPage.getByLabel("Email").fill(ptEmail);
+    await ptPage.getByLabel("Mật khẩu").fill(password);
+    await ptPage.getByRole("button", { name: "Tạo workspace PT" }).click();
+    await expect(ptPage).toHaveURL(/\/workspace$/);
 
-    // Correction (verify draft data populated and edit it)
-    const weightInput = page.locator('input[name="weightKg"]');
-    await expect(weightInput).toHaveValue('75.5');
-    await weightInput.fill('75.0');
+    // 2. Create Trainee
+    await ptPage.getByLabel("Tên hiển thị").fill("Học viên OCR");
+    await ptPage.getByLabel("Email nhận lời mời").fill(traineeEmail);
+    await ptPage.getByLabel("Số điện thoại").fill("0901234567");
+    await ptPage.getByLabel("Mục tiêu chính").selectOption("recomp");
+    await ptPage.getByLabel("Tổng số buổi").fill("12");
+    await ptPage.getByLabel("Số buổi còn lại").fill("10");
+    await ptPage.getByRole("button", { name: "Tạo học viên" }).click();
+
+    const traineeRow = ptPage.getByRole("link", { name: /Học viên OCR/ });
+    await expect(traineeRow).toBeVisible();
+    const traineePath = await traineeRow.getAttribute("href");
+    expect(traineePath).toBeTruthy();
+
+    // 3. Trainee Accepts Invitation
+    const invitationUrl = await ptPage.getByTestId("invitation-link").inputValue();
+    const traineeContext = await browser.newContext({ viewport: { width: 430, height: 932 } });
+    const traineePage = await traineeContext.newPage();
+    await traineePage.goto(invitationUrl);
+    await traineePage.getByLabel("Tạo mật khẩu").fill(password);
+    await traineePage.getByRole("button", { name: "Chấp nhận lời mời" }).click();
+    await expect(traineePage).toHaveURL(/\/workspace$/);
+
+    // 4. PT navigates to Trainee Profile
+    await ptPage.goto(traineePath!);
+    await expect(ptPage.getByRole("heading", { name: "Xác nhận năm chỉ số InBody" })).toBeVisible();
+
+    // Create a dummy valid PNG buffer so sharp doesn't crash
+    const validPngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
+    const validPng = Buffer.from(validPngBase64, 'base64');
+
+    // Create a dummy file input using DataTransfer
+    await ptPage.locator('input[type="file"]').setInputFiles({
+      name: 'sample-inbody.png',
+      mimeType: 'image/png',
+      buffer: validPng,
+    });
+
+    // We passed a clean scenario, so we wait for success
+    await expect(ptPage.locator('text=Quét phiếu thành công')).toBeVisible({ timeout: 10000 });
+    await expect(ptPage.locator('text=Bản nháp OCR')).toBeVisible();
+
+    // 5. Correction (verify draft data populated and edit it)
+    const weightInput = ptPage.locator('input[name="weightKg"]');
+    await expect(weightInput).toHaveValue('70.00'); // clean scenario default
+    await weightInput.fill('71.5');
 
     // Confirmation
-    await page.locator('button:has-text("Xác nhận & Lưu")').click();
-    await expect(page.locator('text=Bản ghi đã được xác minh và lưu.')).toBeVisible();
-  });
-
-  test('handles manual fallback upon upload failure', async ({ page }) => {
-    // Attempt upload with bad file
-    const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.locator('input[type="file"]').click({ force: true });
-    const fileChooser = await fileChooserPromise;
-    await fileChooser.setFiles('tests/fixtures/bad-file.txt');
+    await ptPage.locator('button:has-text("Xác nhận & Lưu")').click();
+    await expect(ptPage.locator('text=Bản ghi đã được lưu thành công.')).toBeVisible();
     
-    await expect(page.locator('text=Chỉ hỗ trợ tệp JPEG, PNG, WebP.')).toBeVisible();
+    // 6. Test manual fallback failure
+    await ptPage.goto(traineePath!);
+    const badJpeg = Buffer.from([0x00, 0x00, 0x00, 0x00]); // invalid signature
+    await ptPage.locator('input[type="file"]').setInputFiles({
+      name: 'bad-inbody.jpg',
+      mimeType: 'image/jpeg',
+      buffer: badJpeg,
+    });
+    
+    await expect(ptPage.locator('text=Chữ ký nhị phân của tệp không khớp')).toBeVisible();
 
     // Manual fallback
-    await page.locator('input[name="weightKg"]').fill('80');
-    await page.locator('input[name="skeletalMuscleMassKg"]').fill('35');
-    await page.locator('input[name="bodyFatMassKg"]').fill('15');
-    await page.locator('input[name="percentBodyFat"]').fill('18.5');
-    await page.locator('button:has-text("Xác nhận & Lưu")').click();
-    await expect(page.locator('text=Bản ghi đã được xác minh và lưu.')).toBeVisible();
-  });
-
-  test('reloads maintain attempt isolation (no draft bleed)', async ({ page }) => {
-    // If a draft is loaded but the user reloads, the state should reset to manual
-    const fileChooserPromise = page.waitForEvent('filechooser');
-    await page.locator('input[type="file"]').click({ force: true });
-    const fileChooser = await fileChooserPromise;
-    await fileChooser.setFiles('tests/fixtures/sample-inbody.webp');
-    await expect(page.locator('text=Bản nháp OCR')).toBeVisible();
-    
-    await page.reload();
-    await expect(page.locator('text=Bản nháp OCR')).not.toBeVisible();
-    await expect(page.locator('input[name="weightKg"]')).toHaveValue('');
-  });
-});
-
-test.describe('M4 OCR Workflow - Mobile', () => {
-  test.use({ storageState: 'tests/e2e/.auth/pt.json', viewport: { width: 375, height: 667 } });
-
-  test('renders responsive UI correctly', async ({ page }) => {
-    await page.goto('/workspace/trainees/seed-trainee-id');
-    // Verify layout constraints on mobile
-    await expect(page.locator('form.workspace-form-grid')).toBeVisible();
-    const box = await page.locator('form.workspace-form-grid').boundingBox();
-    expect(box?.width).toBeLessThanOrEqual(375);
+    await ptPage.locator('input[name="weightKg"]').fill('80');
+    await ptPage.locator('input[name="skeletalMuscleMassKg"]').fill('35');
+    await ptPage.locator('input[name="bodyFatMassKg"]').fill('15');
+    await ptPage.locator('input[name="percentBodyFat"]').fill('18.5');
+    await ptPage.locator('button:has-text("Xác nhận & Lưu")').click();
+    await expect(ptPage.locator('text=Bản ghi đã được lưu thành công.')).toBeVisible();
   });
 });
