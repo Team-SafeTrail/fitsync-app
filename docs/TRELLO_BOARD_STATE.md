@@ -158,6 +158,20 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
      - [ ] Gửi thông tin tài khoản đăng nhập kiểm thử vào kênh Discord `#sprint-discuss` cho Khai
      - [ ] Cập nhật hướng dẫn vào `docs/HANDOFF.md`
 
+5. `[W05][OC1][VIỆT] Khảo sát chốt slot thuyết trình 30p Tuần 5 và chuẩn bị Slide & Kịch bản báo cáo GV` *(NEW)*
+   * Owner: Việt | Reviewer: Hưng | Contributors: Cả 5 thành viên (Hưng, Huy, Khai, Toàn, Việt)
+   * Labels: `OC1`, `Sprint W05`, `Presentation`, `Governance`, `High Priority`
+   * Due Date: **2026-10-04 23:59:00** (Chủ nhật)
+   * Description: Khảo sát biểu quyết 28 slot thời gian của Giảng viên (Thứ 2 đến Thứ 5, 05/10 - 08/10), chọn slot có số lượng thành viên tham gia đông nhất (bắt buộc Trưởng nhóm Việt có mặt). Đăng ký slot chính thức với Giảng viên, khởi tạo bộ Slide Google Slides chuẩn Brand SafeTrail/FitSync và soạn kịch bản thuyết trình 30 phút bám sát câu hỏi Google Form Week 1, 2, 3 và kết quả thực thi Milestone M4.
+   * Checklist:
+     - [ ] Gửi thông báo & bảng khảo sát 28 slot thời gian của Giảng viên lên Discord `#sprint-discuss`
+     - [ ] 5/5 thành viên hoàn thành biểu quyết trước 23h59 Chủ nhật 04/10
+     - [ ] Trưởng nhóm Việt chốt và đăng ký slot chính thức với Giảng viên
+     - [ ] Khởi tạo template Slide chuẩn Dark/Carbon theme trên Google Slides
+     - [ ] Soạn nội dung Slide & Kịch bản 30 phút (Phần 1: Form W1; Phần 2: Form W2; Phần 3: Form W3; Phần 4: Live Demo M4 OCR & Android TWA; Phần 5: Q&A)
+     - [ ] Phân công thuyết trình (Việt: Tech/Product/OC1; Toàn: Marketing/Finance/OC2-OC3)
+     - [ ] Tổ chức buổi tổng duyệt (Dry-run) nội bộ nhóm trước buổi báo cáo chính thức
+
 ---
 
 ### `03 — DOING` (0 cards)
