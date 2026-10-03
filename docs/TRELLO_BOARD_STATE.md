@@ -175,11 +175,12 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
    * Current Review State (2026-10-03):
      - Revision `9866324` addressed initial feedback (role admin default, 10MB limit, unique attempt constraint, state key reset).
      - Round 2 Review by Hưng & Việt requested changes (Playwright E2E failures, RLS leak risks, schema overlap with Huy).
-     - **Revision `1fa221d` (Round 3 Submitted):**
+     - **Revisions `1fa221d` & `bd197fd` (Round 3 Submitted):**
        * Tích hợp hoàn toàn backend `ocr-actions.ts` của Huy (PR #12 & PR #13); xóa bỏ hoàn toàn schema/action trùng lặp trong `actions.ts`.
        * Bổ sung tính năng Sharp auto-rotation `.rotate()` và nút "Hủy bản nháp" trên giao diện `InBodyForm.tsx`.
        * Viết lại bộ kiểm thử tự động **Playwright E2E** (`apps/web/tests/e2e/m4-ocr.spec.ts`) tự sinh luồng tạo PT + Trainee thật, kiểm thử thành công và fallback khi tệp ảnh lỗi chữ ký nhị phân.
        * Chuẩn hóa [ADR-003](file:///c:/LEARNING/FPT_NVH/FAL2026/EXE201/project/fitsync-app/docs/architecture/adr-003-android-packaging-path.md) với 4 điều kiện nghiệm thu cứng cho Trusted Web Activity (TWA).
+       * **Commit `bd197fd`:** Phục hồi đầy đủ các ràng buộc kiến trúc đa nền tảng (cross-platform optional bindings) trong `package-lock.json` cho Sharp/SWC, bảo đảm `npm ci` chạy ổn định trên mọi môi trường CI (Linux/macOS/Windows).
      - Card giữ nguyên ở `04 — REVIEW`, đang chờ Hưng & Việt chạy nghiệm thu chặng cuối trước khi merge vào `main`.
 2. `[W04][OC1][VIỆT] Freeze OC1 scope and weekly governance` (Việt ➔ Hưng) — *PR #10 merged, LMS dates & risk matrix ready*
 3. `[W01][OC1] Freeze product scope, team roles, and course outcomes` (Việt ➔ Hưng) — *BACKFILLED*
@@ -229,4 +230,4 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
 | **2026-09-29** | Added 3 W04 member cards to `02 — TO DO THIS WEEK` (Huy #3, Khai #4, Toàn #5). Moved `[W04][OC1][VIỆT]` to `04 — REVIEW`. Active cards: 80 total. | Việt / AI Assistant | Verified ✅ |
 | **2026-09-30** | Diệp Khai submitted PR #11 closing Issue #4. Moved `[W04][OC1][KHAI]` to `04 — REVIEW`. Added new card `[W04][OC1][VIỆT] Seed test PT account with populated trainees for OCR testing` to `02 — TO DO THIS WEEK`. Total active cards: 81. | Khai / Việt / Antigravity | Verified ✅ |
 | **2026-10-02** | Round 2 technical review on PR #11 (revision 9866324) completed by Hưng & Việt. Status set to CHANGES REQUESTED (retained in 04 — REVIEW). Logged blocker for schema collision with Issue #3 (Huy) in 06 — BLOCKED. Dispatched coordination update to Discord #sprint-discuss. | Hưng / Việt / AI Assistant | Verified ✅ |
-| **2026-10-03** | Merged PR #12 (Huy - Issue #3) and corrective PR #13 (Hưng - M4 gates recovery) to `main`. Unblocked Issue #3/#4 schema collision in 06 — BLOCKED. Khai submitted PR #11 Round 3 revision `1fa221d` (clean backend integration, Sharp rotation, and dynamic Playwright E2E suite). Synchronized branch `Viet` with `main`. | Việt / AI Assistant | Verified ✅ |
+| **2026-10-03** | Merged PR #12 (Huy - Issue #3) and corrective PR #13 (Hưng - M4 gates recovery) to `main`. Unblocked Issue #3/#4 schema collision in 06 — BLOCKED. Khai submitted PR #11 Round 3 revisions: `1fa221d` (clean backend integration, Sharp rotation, dynamic Playwright E2E) and `bd197fd` (restored cross-platform package-lock bindings). Synchronized branch `Viet` and updated documentation. | Việt / AI Assistant | Verified ✅ |
