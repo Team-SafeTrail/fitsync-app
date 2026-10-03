@@ -127,9 +127,10 @@ Reuse matching existing cards and place ready work in TO DO THIS WEEK. Preserve 
    Checklist: corpus manifest; five-field ground truth; development/holdout separation; at least two candidates; accuracy/error/latency/cost definitions; no unapproved real health reports.
    Done when: benchmark protocol and inputs are independently reviewable.
 3. `[W04][OC1] Build private OCR data foundation`
-   Owner: Huy. Contributor: Hưng. Reviewer: Hưng. Link Issue #3.
+   Owner: Huy. Corrective contributor: Hưng. Independent reviewer: Việt. Link Issue #3 and corrective PR #13.
    Checklist: versioned migration; private bucket; bounded statuses/errors; assigned-PT RLS; server file validation; generated types; cross-tenant pgTAP.
-   Done when: extraction cannot create a verified InBody record and all security checks pass.
+   Current state: Issue #3 is reopened; PR #13 has green CI and is waiting for independent review. Keep the card in REVIEW until the corrective PR is accepted and merged.
+   Done when: extraction cannot create a verified InBody record, all security checks pass, and the independently reviewed correction is on `main`.
 4. `[W04][OC1] Prototype OCR review and decide Android constraints`
    Owner: Khai. Contributor: Huy. Reviewer: Huy. Link Issue #4.
    Checklist: upload/loading/success/low-confidence/failure states; correction; explicit confirmation; manual fallback; responsive layouts; auth/upload/camera/server/Play/build comparison.

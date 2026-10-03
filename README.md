@@ -13,7 +13,7 @@ The web baseline is implemented and verified through M3:
 - PT activity review, remaining-session updates, and a deterministic inactivity queue;
 - responsive browser coverage for PT and trainee workflows.
 
-M4 OCR-assisted InBody entry is next. OCR is not live yet, and every future extraction must remain a draft until explicit PT confirmation. Payment processing, analytics, an installable Android application, and Play Store distribution are also not implemented.
+M4 OCR-assisted InBody entry is in progress. Its private-storage, persistence, authorization, and server-boundary foundation is being corrected in [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13), which still requires independent review before it reaches `main`. No OCR provider or user-complete OCR workflow is live, and every future extraction must remain a draft until explicit PT confirmation. Payment processing, analytics, an installable Android application, and Play Store distribution are also not implemented.
 
 ## Quick start
 
@@ -37,9 +37,10 @@ Create `apps/web/.env.local` locally with these variable names:
 NEXT_PUBLIC_SUPABASE_URL
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY
 NEXT_PUBLIC_SITE_URL
+SUPABASE_SERVICE_ROLE_KEY
 ```
 
-Use the values from the local Supabase project and `http://127.0.0.1:3000` as the local site URL. Never commit or paste environment values into documentation, issues, or pull requests.
+Use the values from the local Supabase project and `http://127.0.0.1:3000` as the local site URL. `SUPABASE_SERVICE_ROLE_KEY` is server-only: never add a `NEXT_PUBLIC_` prefix or import it into browser code. Never commit or paste environment values into documentation, issues, pull requests, or chat.
 
 The application is available at `http://127.0.0.1:3000`. If the current shell cannot access Docker, run Supabase commands through `sg docker -c '<command>'` or open a fresh login shell.
 
@@ -77,7 +78,7 @@ Start with [the documentation index](docs/README.md). The most important documen
 
 - [MVP execution plan](docs/MVP_EXECUTION_PLAN.md) — active product scope and milestone order
 - [Project handoff](docs/HANDOFF.md) — latest verified implementation state
-- [M4 OCR plan](docs/plans/m4-ocr-architecture-and-benchmark-plan.md) — next milestone checklist
+- [M4 OCR plan](docs/plans/m4-ocr-architecture-and-benchmark-plan.md) — active milestone checklist
 - [Architecture decisions](docs/architecture/) — durable technical decisions
 - [Design specification](DESIGN.md) — visual system and interface rules
 - [Contributing guide](CONTRIBUTING.md) — branches, checks, security, and ownership

@@ -4,6 +4,10 @@ export type WorkspaceActionState = {
   fieldErrors?: Record<string, string>;
   invitationUrl?: string;
   invitationExpiresAt?: string;
+  ocrAttemptId?: string;
+  ocrDraft?: import("./ocr-validation").OcrNormalizedDraft;
+  ocrErrorCode?: import("./ocr-validation").OcrFailureCode;
+  ocrSourceImageUrl?: string;
 };
 
 export const initialWorkspaceActionState: WorkspaceActionState = {
