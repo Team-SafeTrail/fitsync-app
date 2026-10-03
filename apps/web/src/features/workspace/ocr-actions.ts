@@ -266,6 +266,7 @@ export async function confirmOcrDraft(
 export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
   success: boolean;
   signedUrl?: string;
+  draft?: any;
   error?: string;
 }> {
   const context = await requirePt();
@@ -275,7 +276,7 @@ export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
 
   const { data: attempt, error: attemptError } = await context.supabase
     .from("ocr_attempts")
-    .select("private_image_path, pt_id")
+    .select("private_image_path, pt_id, raw_draft")
     .eq("id", attemptId)
     .maybeSingle();
 
@@ -291,5 +292,5 @@ export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
     return { success: false, error: "Không thể tạo liên kết xem ảnh an toàn." };
   }
 
-  return { success: true, signedUrl: signedData.signedUrl };
+  return { success: true, signedUrl: signedData.signedUrl, draft: attempt.raw_draft };
 }

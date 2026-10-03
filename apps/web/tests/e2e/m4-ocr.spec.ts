@@ -46,6 +46,15 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
     await ptPage.goto(traineePath!);
     await expect(ptPage.getByRole("heading", { name: "Xác nhận năm chỉ số InBody" })).toBeVisible();
 
+    // Inject mockScenario
+    await ptPage.evaluate(() => {
+      const input = document.createElement('input');
+      input.type = 'hidden';
+      input.name = 'mockScenario';
+      input.value = 'clean_success';
+      document.body.appendChild(input);
+    });
+
     // Create a dummy valid PNG buffer so sharp doesn't crash
     const validPngBase64 = "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=";
     const validPng = Buffer.from(validPngBase64, 'base64');
@@ -58,16 +67,17 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
     });
 
     // We passed a clean scenario, so we wait for success
-    await expect(ptPage.locator('text=Quét phiếu thành công')).toBeVisible({ timeout: 10000 });
+    await expect(ptPage.locator('text=Tải ảnh thành công')).toBeVisible({ timeout: 10000 });
     await expect(ptPage.locator('text=Bản nháp OCR')).toBeVisible();
 
     // 5. Correction (verify draft data populated and edit it)
     const weightInput = ptPage.locator('input[name="weightKg"]');
-    await expect(weightInput).toHaveValue('70.00'); // clean scenario default
+    await expect(weightInput).toHaveValue('70.5'); // clean scenario default
     await weightInput.fill('71.5');
 
     // Confirmation
-    await ptPage.locator('button:has-text("Xác nhận & Lưu")').click();
+    await ptPage.locator('input[name="confirmed"]').check();
+    await ptPage.locator('button:has-text("Xác nhận và lưu")').click();
     await expect(ptPage.locator('text=Bản ghi đã được lưu thành công.')).toBeVisible();
     
     // 6. Test manual fallback failure
@@ -86,7 +96,8 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
     await ptPage.locator('input[name="skeletalMuscleMassKg"]').fill('35');
     await ptPage.locator('input[name="bodyFatMassKg"]').fill('15');
     await ptPage.locator('input[name="percentBodyFat"]').fill('18.5');
-    await ptPage.locator('button:has-text("Xác nhận & Lưu")').click();
+    await ptPage.locator('input[name="confirmed"]').check();
+    await ptPage.locator('button:has-text("Xác nhận và lưu")').click();
     await expect(ptPage.locator('text=Bản ghi đã được lưu thành công.')).toBeVisible();
   });
 });

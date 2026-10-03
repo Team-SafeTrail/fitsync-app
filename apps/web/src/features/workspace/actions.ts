@@ -163,7 +163,6 @@ export async function createInBodyRecord(
     pt_id: context.user.id,
     verified_by: context.user.id,
     source: "manual",
-    ocr_attempt_id: null,
     is_manually_edited: true,
     weight_kg: values.weightKg,
     skeletal_muscle_mass_kg: values.skeletalMuscleMassKg,
