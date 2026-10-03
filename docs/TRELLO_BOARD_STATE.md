@@ -2,7 +2,7 @@
 
 > **Board Name:** `FitSync — EXE201 Delivery`  
 > **Board URL:** https://trello.com/b/nkyUhT5E/fitsync-exe201-delivery  
-> **Last Synchronized:** 2026-10-02  
+> **Last Synchronized:** 2026-10-03  
 > **Source of Truth:** Live Trello Board state via SafeTrail PM & Git Sync  
 
 ---
@@ -168,18 +168,19 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
 ### `04 — REVIEW` (10 cards)
 *Status: In Review — awaiting independent reviewer verification before moving to DONE*
 
-1. `[W04][OC1][KHAI] Prototype OCR review and decide packaging constraints` *(IN REVIEW — CHANGES REQUESTED)*
+1. `[W04][OC1][KHAI] Prototype OCR review and decide packaging constraints` *(IN REVIEW — ROUND 3 READY)*
    * Owner: Khai | Reviewer: Huy, Hưng & Việt
    * Pull Request: [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11)
    * Closes Issue: [Issue #4](https://github.com/Team-SafeTrail/fitsync-app/issues/4)
-   * Current Review State (2026-10-02):
+   * Current Review State (2026-10-03):
      - Revision `9866324` addressed initial feedback (role admin default, 10MB limit, unique attempt constraint, state key reset).
-     - Round 2 Review by Hưng & Việt requested changes:
-       * Blocker: Playwright E2E test fails (3/7 pass, missing `.auth/pt.json`, fixtures, fake trainee id).
-       * Security: Lỗ hổng RLS cross-tenant & confirmation thiếu server-side ownership validation theo ADR-002.
-       * Architecture/Monorepo: Schema migration `ocr_attempts` đang bị trùng lặp/đá contract với nhánh `feature/m4-ocr-attempts-storage` (Issue #3) của Huy.
-       * Enhancement: Thiếu Sharp `.rotate()` và nút hủy bản nháp trên UI.
-     - Card giữ nguyên ở `04 — REVIEW`, đang chờ Khai đồng bộ schema với Huy và nộp revision mới.
+     - Round 2 Review by Hưng & Việt requested changes (Playwright E2E failures, RLS leak risks, schema overlap with Huy).
+     - **Revision `1fa221d` (Round 3 Submitted):**
+       * Tích hợp hoàn toàn backend `ocr-actions.ts` của Huy (PR #12 & PR #13); xóa bỏ hoàn toàn schema/action trùng lặp trong `actions.ts`.
+       * Bổ sung tính năng Sharp auto-rotation `.rotate()` và nút "Hủy bản nháp" trên giao diện `InBodyForm.tsx`.
+       * Viết lại bộ kiểm thử tự động **Playwright E2E** (`apps/web/tests/e2e/m4-ocr.spec.ts`) tự sinh luồng tạo PT + Trainee thật, kiểm thử thành công và fallback khi tệp ảnh lỗi chữ ký nhị phân.
+       * Chuẩn hóa [ADR-003](file:///c:/LEARNING/FPT_NVH/FAL2026/EXE201/project/fitsync-app/docs/architecture/adr-003-android-packaging-path.md) với 4 điều kiện nghiệm thu cứng cho Trusted Web Activity (TWA).
+     - Card giữ nguyên ở `04 — REVIEW`, đang chờ Hưng & Việt chạy nghiệm thu chặng cuối trước khi merge vào `main`.
 2. `[W04][OC1][VIỆT] Freeze OC1 scope and weekly governance` (Việt ➔ Hưng) — *PR #10 merged, LMS dates & risk matrix ready*
 3. `[W01][OC1] Freeze product scope, team roles, and course outcomes` (Việt ➔ Hưng) — *BACKFILLED*
 4. `[W01][OC1] Establish research and design baseline` (Toàn ➔ Khai) — *BACKFILLED*
@@ -197,12 +198,10 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
 
 ---
 
-### `06 — BLOCKED` (3 cards)
+### `06 — BLOCKED` (2 cards)
 *(Requires dependency resolution, owner invitation, or unblocking action before progression)*
-1. `[W04][OC1][BLOCKER] Backend schema & RLS contract overlap between Issue #3 (Huy) and Issue #4 (Khai)`
-   * Reason: Cả Issue #3 và PR #11 đều tự sinh schema bảng `ocr_attempts` và RLS storage policies với 2 contract khác nhau, gây nguy cơ xung đột migration khi merge.
-   * Dependency Owner: Huy & Khai | Coordinator: Việt
-   * Action: Thống nhất contract qua Discord `#sprint-discuss`; Khai tập trung scope UI/Client cho Issue #4 và rebase trên backend của Huy.
+1. `[RESOLVED / UNBLOCKED 2026-10-03] Backend schema & RLS contract overlap between Issue #3 (Huy) and Issue #4 (Khai)`
+   * Resolved: Huy đã merge PR #12 và Hưng hoàn thiện corrective PR #13 trên `main`. Khai đã rebase và tích hợp trực tiếp backend vào PR #11 (commit `1fa221d`). Không còn xung đột schema.
 2. `[HISTORICAL] Backfilled deliverable evidence collection` (Pending verified PR links/receipts for W01–W03)
 3. `[ACCESS] Teammate Trello invitation acceptance gaps` (Waiting for pending accounts to claim cards)
 
@@ -230,3 +229,4 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
 | **2026-09-29** | Added 3 W04 member cards to `02 — TO DO THIS WEEK` (Huy #3, Khai #4, Toàn #5). Moved `[W04][OC1][VIỆT]` to `04 — REVIEW`. Active cards: 80 total. | Việt / AI Assistant | Verified ✅ |
 | **2026-09-30** | Diệp Khai submitted PR #11 closing Issue #4. Moved `[W04][OC1][KHAI]` to `04 — REVIEW`. Added new card `[W04][OC1][VIỆT] Seed test PT account with populated trainees for OCR testing` to `02 — TO DO THIS WEEK`. Total active cards: 81. | Khai / Việt / Antigravity | Verified ✅ |
 | **2026-10-02** | Round 2 technical review on PR #11 (revision 9866324) completed by Hưng & Việt. Status set to CHANGES REQUESTED (retained in 04 — REVIEW). Logged blocker for schema collision with Issue #3 (Huy) in 06 — BLOCKED. Dispatched coordination update to Discord #sprint-discuss. | Hưng / Việt / AI Assistant | Verified ✅ |
+| **2026-10-03** | Merged PR #12 (Huy - Issue #3) and corrective PR #13 (Hưng - M4 gates recovery) to `main`. Unblocked Issue #3/#4 schema collision in 06 — BLOCKED. Khai submitted PR #11 Round 3 revision `1fa221d` (clean backend integration, Sharp rotation, and dynamic Playwright E2E suite). Synchronized branch `Viet` with `main`. | Việt / AI Assistant | Verified ✅ |
