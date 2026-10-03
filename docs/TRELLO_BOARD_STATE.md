@@ -164,9 +164,9 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
    * Due Date: **2026-10-03 23:59:00** (Tối Thứ Bảy hôm nay — để dành trọn ngày Chủ nhật 04/10 làm Slide & Kịch bản)
    * Description: Khảo sát biểu quyết 28 slot thời gian của Giảng viên (Thứ 2 đến Thứ 5, 05/10 - 08/10), chọn slot có số lượng thành viên tham gia đông nhất (bắt buộc Trưởng nhóm Việt có mặt làm thuyết trình chính). Đăng ký slot chính thức với Giảng viên ngay trong đêm Thứ 7, để ngày Chủ nhật 04/10 nhóm tập trung 100% làm bộ Slide Google Slides 30 phút và kịch bản thuyết trình bám sát Form Week 1, 2, 3 và kết quả Milestone M4.
    * Checklist:
-     - [ ] Đăng thông báo & tạo Poll 28 slot thời gian của Giảng viên lên kênh Discord `#announcement`
-     - [ ] 5/5 thành viên hoàn thành biểu quyết trước 23h59 tối Thứ 7 (03/10)
-     - [ ] Trưởng nhóm Việt tổng hợp, chọn slot đông nhất và đăng ký chính thức với Giảng viên
+     - [ ] Đăng thông báo 28 slot lên kênh `#announcement`; yêu cầu thành viên comment lịch rảnh vào `#general-chat` (tag Leader) do giới hạn số lựa chọn của Discord Poll
+     - [ ] 5/5 thành viên hoàn thành comment trước 23h59 tối Thứ 7 (03/10)
+     - [ ] Trưởng nhóm Việt tổng hợp, chọn slot đông nhất, đăng ký với Giảng viên và công bố kết quả vào `#announcement`
      - [ ] Dành ngày Chủ nhật (04/10) khởi tạo Google Slides chuẩn Dark/Carbon theme cho bài 30 phút
      - [ ] Hoàn thành nội dung Slide & Kịch bản (Form W1-W3 + Live Demo M4 InBody OCR & Android TWA)
      - [ ] Phân công thuyết trình (Việt thuyết trình chính về Tech/Product/OC1; Toàn/Hưng hỗ trợ Q&A)
