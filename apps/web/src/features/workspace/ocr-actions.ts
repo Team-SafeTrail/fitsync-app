@@ -13,6 +13,7 @@ import {
 } from "./ocr-validation";
 import {
   createDefaultOcrAdapter,
+  DeterministicFakeOcrAdapter,
   type OcrAdapterResult,
 } from "./ocr-adapter";
 import type { Json } from "@/types/database";
@@ -80,7 +81,11 @@ export async function startOcrAttempt(
   }
 
   const fileData = fileValidation.data;
-  const adapter = createDefaultOcrAdapter();
+  const mockScenario = formData.get("mockScenario") as string | null;
+  const isTestMode = process.env.NODE_ENV === "test" || process.env.NEXT_PUBLIC_E2E_TEST === "true";
+  const adapter = (isTestMode && mockScenario)
+    ? new DeterministicFakeOcrAdapter(mockScenario === "clean_success" ? "clean" : (mockScenario as any))
+    : createDefaultOcrAdapter();
   if (!adapter.available) {
     const unavailableResult = await adapter.extract(new Uint8Array(), fileData.mimeType);
     if (!unavailableResult.success) {
@@ -266,7 +271,7 @@ export async function confirmOcrDraft(
 export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
   success: boolean;
   signedUrl?: string;
-  draft?: any;
+  draft?: OcrNormalizedDraft | null;
   error?: string;
 }> {
   const context = await requirePt();
@@ -292,5 +297,9 @@ export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
     return { success: false, error: "Không thể tạo liên kết xem ảnh an toàn." };
   }
 
-  return { success: true, signedUrl: signedData.signedUrl, draft: attempt.raw_draft };
+  return {
+    success: true,
+    signedUrl: signedData.signedUrl,
+    draft: (attempt.raw_draft as unknown as OcrNormalizedDraft) ?? null,
+  };
 }

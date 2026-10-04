@@ -78,7 +78,7 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
     // Confirmation
     await ptPage.locator('input[name="confirmed"]').check();
     await ptPage.locator('button:has-text("Xác nhận và lưu")').click();
-    await expect(ptPage.locator('text=Bản ghi đã được lưu thành công.')).toBeVisible();
+    await expect(ptPage.locator('text=Bản ghi InBody đã được xác minh và lưu')).toBeVisible();
     
     // 6. Test manual fallback failure
     await ptPage.goto(traineePath!);
