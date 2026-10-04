@@ -1,9 +1,8 @@
 # FitSync project handoff
 
-**Updated:** 2026-10-02
+**Updated:** 2026-10-04
 **Target branch:** `main`
-**Active corrective branch:** `fix/m4-ocr-backend-gates`
-**Current milestone:** M4 in progress — M3 engagement remains verified
+**Current milestone:** M4 OCR review in final approval — M3 engagement remains verified
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
 
@@ -26,11 +25,11 @@ Earlier coursework claims about features, pricing, platforms, or outcomes do not
 
 ## Live delivery state
 
-- `main` is currently at `6036053`, the initial Issue #3 backend merge. Do not treat its M4 security and verification gates as accepted until the corrective pull request is merged.
-- [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) at corrective commit `12d48bf` restores those gates. Its hosted CI is green and it is waiting for independent review; it must not be self-approved or merged by its author.
-- [Issue #3](https://github.com/Team-SafeTrail/fitsync-app/issues/3) is reopened and remains the tracking issue until PR #13 is independently accepted and merged.
-- PR #11 remains changes-requested at `9866324`. Do not merge it in its current form: it must first rebase on the accepted Issue #3 backend, remove the duplicate schema/server contract, and rerun its real browser workflow.
-- Immediate handoff: Việt reviews PR #13 against Issue #3 and this handoff; after acceptance, an authorized teammate merges it and closes Issue #3. Khai then rebases the OCR review work before requesting another review.
+- `main` is currently at `c863954`, with both [PR #12](https://github.com/Team-SafeTrail/fitsync-app/pull/12) (Huy — Issue #3) and corrective [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) (Hưng — M4 backend security gates) merged and accepted. The local database suite passes all 111 pgTAP security and RLS tests.
+- [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11) (Khai — Issue #4) completed Round 3 polish at commit `f41187c`. All blockers (mock adapter wiring, E2E assertion, test env, strict types) were resolved. All 4 quality gates pass locally (Vitest 33/33, typecheck 0, lint 0, build 13/13).
+- PR #11 is marked **APPROVED** by Tech Lead Việt; awaiting Hưng's final sign-off before merging into `main` and closing Issue #4.
+- W05 Lecturer presentation slot is frozen for **16:00 – 16:30 Thursday, 2026-10-08**.
+- Immediate handoff: Hưng confirms review on PR #11; merge into `main` and close Issue #4. Team focuses on the W05 30-minute Google Slides deck and script, while supporting Hưng on the OCR benchmark (Issue #2).
 
 ## Repository map
 

@@ -2,7 +2,7 @@
 
 > **Board Name:** `FitSync — EXE201 Delivery`  
 > **Board URL:** https://trello.com/b/nkyUhT5E/fitsync-exe201-delivery  
-> **Last Synchronized:** 2026-10-03  
+> **Last Synchronized:** 2026-10-04  
 > **Source of Truth:** Live Trello Board state via SafeTrail PM & Git Sync  
 
 ---
@@ -158,15 +158,15 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
      - [ ] Gửi thông tin tài khoản đăng nhập kiểm thử vào kênh Discord `#sprint-discuss` cho Khai
      - [ ] Cập nhật hướng dẫn vào `docs/HANDOFF.md`
 
-5. `[W05][OC1][VIỆT] Khảo sát chốt slot thuyết trình 30p Tuần 5 và chuẩn bị Slide & Kịch bản báo cáo GV` *(NEW)*
+5. `[W05][OC1][VIỆT] Khảo sát chốt slot thuyết trình 30p Tuần 5 và chuẩn bị Slide & Kịch bản báo cáo GV` *(SLOT CHỐT: 16:00 THỨ NĂM 08/10)*
    * Owner: Việt | Reviewer: Hưng | Contributors: Cả 5 thành viên (Hưng, Huy, Khai, Toàn, Việt)
    * Labels: `OC1`, `Sprint W05`, `Presentation`, `Governance`, `High Priority`
-   * Due Date: **2026-10-03 23:59:00** (Tối Thứ Bảy hôm nay — để dành trọn ngày Chủ nhật 04/10 làm Slide & Kịch bản)
-   * Description: Khảo sát biểu quyết 28 slot thời gian của Giảng viên (Thứ 2 đến Thứ 5, 05/10 - 08/10), chọn slot có số lượng thành viên tham gia đông nhất (bắt buộc Trưởng nhóm Việt có mặt làm thuyết trình chính). Đăng ký slot chính thức với Giảng viên ngay trong đêm Thứ 7, để ngày Chủ nhật 04/10 nhóm tập trung 100% làm bộ Slide Google Slides 30 phút và kịch bản thuyết trình bám sát Form Week 1, 2, 3 và kết quả Milestone M4.
+   * Due Date: **2026-10-03 23:59:00** (Đã hoàn thành khảo sát; tập trung ngày 04/10 làm Slide & Kịch bản)
+   * Description: Khảo sát biểu quyết 28 slot thời gian của Giảng viên (Thứ 2 đến Thứ 5, 05/10 - 08/10), chọn slot có số lượng thành viên tham gia đông nhất (bắt buộc Trưởng nhóm Việt có mặt làm thuyết trình chính). Đã chốt slot chính thức: 16:00 – 16:30 Thứ 5 (08/10/2026) theo biểu quyết đa số thành viên, để ngày Chủ nhật 04/10 nhóm tập trung 100% làm bộ Slide Google Slides 30 phút và kịch bản thuyết trình bám sát Form Week 1, 2, 3 và kết quả Milestone M4.
    * Checklist:
-     - [ ] Đăng thông báo 28 slot lên kênh `#announcement`; yêu cầu thành viên comment lịch rảnh vào `#general-chat` (tag Leader) do giới hạn số lựa chọn của Discord Poll
-     - [ ] 5/5 thành viên hoàn thành comment trước 23h59 tối Thứ 7 (03/10)
-     - [ ] Trưởng nhóm Việt tổng hợp, chọn slot đông nhất, đăng ký với Giảng viên và công bố kết quả vào `#announcement`
+     - [x] Đăng thông báo 28 slot lên kênh `#announcement`; yêu cầu thành viên comment lịch rảnh vào `#general-chat` (tag Leader) do giới hạn số lựa chọn của Discord Poll
+     - [x] 5/5 thành viên hoàn thành comment trước 23h59 tối Thứ 7 (03/10)
+     - [x] Trưởng nhóm Việt tổng hợp, chọn slot đông nhất (16:00 – 16:30 Thứ 5 ngày 08/10/2026), đăng ký với Giảng viên và công bố kết quả vào `#announcement`
      - [ ] Dành ngày Chủ nhật (04/10) khởi tạo Google Slides chuẩn Dark/Carbon theme cho bài 30 phút
      - [ ] Hoàn thành nội dung Slide & Kịch bản (Form W1-W3 + Live Demo M4 InBody OCR & Android TWA)
      - [ ] Phân công thuyết trình (Việt thuyết trình chính về Tech/Product/OC1; Toàn/Hưng hỗ trợ Q&A)
@@ -182,20 +182,21 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
 ### `04 — REVIEW` (10 cards)
 *Status: In Review — awaiting independent reviewer verification before moving to DONE*
 
-1. `[W04][OC1][KHAI] Prototype OCR review and decide packaging constraints` *(IN REVIEW — ROUND 3 READY)*
+1. `[W04][OC1][KHAI] Prototype OCR review and decide packaging constraints` *(IN REVIEW — APPROVED BY TECH LEAD, AWAITING FINAL SIGN-OFF)*
    * Owner: Khai | Reviewer: Huy, Hưng & Việt
    * Pull Request: [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11)
    * Closes Issue: [Issue #4](https://github.com/Team-SafeTrail/fitsync-app/issues/4)
-   * Current Review State (2026-10-03):
+   * Current Review State (2026-10-04):
      - Revision `9866324` addressed initial feedback (role admin default, 10MB limit, unique attempt constraint, state key reset).
-     - Round 2 Review by Hưng & Việt requested changes (Playwright E2E failures, RLS leak risks, schema overlap with Huy).
-     - **Revisions `1fa221d` & `bd197fd` (Round 3 Submitted):**
-       * Tích hợp hoàn toàn backend `ocr-actions.ts` của Huy (PR #12 & PR #13); xóa bỏ hoàn toàn schema/action trùng lặp trong `actions.ts`.
-       * Bổ sung tính năng Sharp auto-rotation `.rotate()` và nút "Hủy bản nháp" trên giao diện `InBodyForm.tsx`.
-       * Viết lại bộ kiểm thử tự động **Playwright E2E** (`apps/web/tests/e2e/m4-ocr.spec.ts`) tự sinh luồng tạo PT + Trainee thật, kiểm thử thành công và fallback khi tệp ảnh lỗi chữ ký nhị phân.
-       * Chuẩn hóa [ADR-003](file:///c:/LEARNING/FPT_NVH/FAL2026/EXE201/project/fitsync-app/docs/architecture/adr-003-android-packaging-path.md) với 4 điều kiện nghiệm thu cứng cho Trusted Web Activity (TWA).
-       * **Commit `bd197fd`:** Phục hồi đầy đủ các ràng buộc kiến trúc đa nền tảng (cross-platform optional bindings) trong `package-lock.json` cho Sharp/SWC, bảo đảm `npm ci` chạy ổn định trên mọi môi trường CI (Linux/macOS/Windows).
-     - Card giữ nguyên ở `04 — REVIEW`, đang chờ Hưng & Việt chạy nghiệm thu chặng cuối trước khi merge vào `main`.
+     - Revisions `1fa221d` & `bd197fd` integrated Huy's PR #12 and Hưng's PR #13, restored cross-platform package-lock bindings, Sharp `.rotate()`, and ADR-003.
+     - Revisions `962f2d0` & `7eba8ab` resolved `defaultValue` TS2322 type error and cleaned up obsolete DB tests.
+     - **Final Polish Revision `f41187c` (Approved):**
+       * Kết nối kịch bản `mockScenario` trong `ocr-actions.ts` với `DeterministicFakeOcrAdapter` khi chạy test.
+       * Sửa khớp câu assertion trong `apps/web/tests/e2e/m4-ocr.spec.ts` với thông báo thành công `"Bản ghi InBody đã được xác minh và lưu"`.
+       * Bổ sung `NEXT_PUBLIC_E2E_TEST: "true"` vào cấu hình dev server trong `playwright.config.ts`.
+       * Khử sạch kiểu `any` trong `getOcrAttemptSignedUrl`, định kiểu chuẩn `OcrNormalizedDraft | null`.
+       * Đã xác minh 4 cổng kiểm thử đều đạt 100%: Unit test 33/33 pass, Typecheck 0 errors, Lint 0 warnings, Build 13/13 routes.
+     - Đã được Trưởng nhóm Việt phê duyệt (**APPROVED**). Thẻ giữ tại `04 — REVIEW` đợi Hưng duyệt xác nhận lần cuối để merge vào `main` và chuyển sang `05 — DONE`.
 2. `[W04][OC1][VIỆT] Freeze OC1 scope and weekly governance` (Việt ➔ Hưng) — *PR #10 merged, LMS dates & risk matrix ready*
 3. `[W01][OC1] Freeze product scope, team roles, and course outcomes` (Việt ➔ Hưng) — *BACKFILLED*
 4. `[W01][OC1] Establish research and design baseline` (Toàn ➔ Khai) — *BACKFILLED*
@@ -245,3 +246,4 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
 | **2026-09-30** | Diệp Khai submitted PR #11 closing Issue #4. Moved `[W04][OC1][KHAI]` to `04 — REVIEW`. Added new card `[W04][OC1][VIỆT] Seed test PT account with populated trainees for OCR testing` to `02 — TO DO THIS WEEK`. Total active cards: 81. | Khai / Việt / Antigravity | Verified ✅ |
 | **2026-10-02** | Round 2 technical review on PR #11 (revision 9866324) completed by Hưng & Việt. Status set to CHANGES REQUESTED (retained in 04 — REVIEW). Logged blocker for schema collision with Issue #3 (Huy) in 06 — BLOCKED. Dispatched coordination update to Discord #sprint-discuss. | Hưng / Việt / AI Assistant | Verified ✅ |
 | **2026-10-03** | Merged PR #12 (Huy - Issue #3) and corrective PR #13 (Hưng - M4 gates recovery) to `main`. Unblocked Issue #3/#4 schema collision in 06 — BLOCKED. Khai submitted PR #11 Round 3 revisions: `1fa221d` (clean backend integration, Sharp rotation, dynamic Playwright E2E) and `bd197fd` (restored cross-platform package-lock bindings). Synchronized branch `Viet` and updated documentation. | Việt / AI Assistant | Verified ✅ |
+| **2026-10-04** | PR #11 Round 3 review completed by Việt. Diệp Khai submitted final polish revisions (`962f2d0`, `7eba8ab`, `f41187c`) addressing mock adapter, E2E assertions, playwright config, and strict typing. All 4 quality gates verified green locally (33/33 tests pass). PR #11 marked APPROVED by Tech Lead Việt, retained in 04 — REVIEW awaiting Hưng's final approval for merge. Completed W05 presentation poll: frozen slot at 16:00 Thursday (08/10). Synchronized branch Viet. | Việt / Antigravity | Verified ✅ |
