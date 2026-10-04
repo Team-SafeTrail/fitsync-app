@@ -11,10 +11,10 @@
 
 | Metric | Value |
 | :--- | :--- |
-| **Total Active Cards** | 81 |
+| **Total Active Cards** | 82 |
 | **`00 — GUIDE & MASTER LINKS`** | 5 cards |
 | **`01 — PRODUCT BACKLOG`** | 41 cards |
-| **`02 — TO DO THIS WEEK`** | 4 cards |
+| **`02 — TO DO THIS WEEK`** | 6 cards |
 | **`03 — DOING`** | 0 cards |
 | **`04 — REVIEW`** | 10 cards |
 | **`05 — DONE`** | 0 cards |
@@ -168,9 +168,25 @@ PRODUCT BACKLOG ➔ TO DO THIS WEEK ➔ DOING ➔ REVIEW ➔ DONE
      - [x] 5/5 thành viên hoàn thành comment trước 23h59 tối Thứ 7 (03/10)
      - [x] Trưởng nhóm Việt tổng hợp, chọn slot đông nhất (16:00 – 16:30 Thứ 5 ngày 08/10/2026), đăng ký với Giảng viên và công bố kết quả vào `#announcement`
      - [ ] Dành ngày Chủ nhật (04/10) khởi tạo Google Slides chuẩn Dark/Carbon theme cho bài 30 phút
-     - [ ] Hoàn thành nội dung Slide & Kịch bản (Form W1-W3 + Live Demo M4 InBody OCR & Android TWA)
+      - [x] Hoàn thành nội dung Slide Brief & Kịch bản 30p (`docs/W05_PRESENTATION_SCRIPT_30MIN.md`, `docs/W05_SLIDE_DESIGN_BRIEF_FOR_TOAN.md`)
      - [ ] Phân công thuyết trình (Việt thuyết trình chính về Tech/Product/OC1; Toàn/Hưng hỗ trợ Q&A)
      - [ ] Tổ chức buổi tổng duyệt (Dry-run) nội bộ nhóm trước buổi báo cáo chính thức
+
+6. `[W05][OC1][TOÀN] Thiết kế bộ 17 Slide trình chiếu Báo cáo Giảng viên Tuần 5 (Carbon Dark Theme)` *(NEW)*
+   * Owner: Toàn | Reviewer: Việt | Contributors: Việt (Script & Brief)
+   * Labels: `OC1`, `Design`, `Sprint W05`, `Presentation`, `High Priority`
+   * Due Date: **2026-10-07 12:00:00** (Bản thảo hoàn chỉnh trước buổi báo cáo 28 tiếng)
+   * Description: Thiết kế bộ Slide 17 trang chuẩn 16:9 Widescreen (Figma hoặc Google Slides) theo phong cách Carbon Dark Athletic Theme phục vụ bài báo cáo tiến độ 30 phút trước Giảng viên môn EXE201 vào 16:00 Thứ Năm (08/10/2026). Tuân thủ nguyên tắc "Show, Don't Tell", ưu tiên hình ảnh/mockup/biểu đồ, số liệu to nổi bật và tối giản chữ theo đúng bản đặc tả chi tiết `docs/W05_SLIDE_DESIGN_BRIEF_FOR_TOAN.md` và kịch bản `docs/W05_PRESENTATION_SCRIPT_30MIN.md`.
+   * Checklist:
+     - [ ] Thiết lập Master Slide Template chuẩn tỉ lệ 16:9, bảng màu Carbon Dark (`#0B0E14`, `#151921`, `#FF6B00`, `#10B981`) và Typography thể thao
+     - [ ] Hoàn thành Slide 1 – 3: Cover Brand, Nỗi đau 104 PTs (3 thẻ kính số liệu to), Giải pháp & Luồng 3 bước FitSync
+     - [ ] Hoàn thành Slide 4 – 6 (Tuần 1): Bảng Trello 8 cột & 5 thành viên SafeTrail, Sơ đồ Final System Design 4 khối, Ma trận cam kết OC1 (10 ĐIỂM) - OC2 - OC3
+     - [ ] Hoàn thành Slide 7 – 10 (Tuần 2): Grid 4 ô Target KPIs, Phễu AARRR tích hợp GA4/UTM, 2 Kênh Marketing chủ lực (Gym B2B & TikTok), Ngân sách tinh gọn & Vốn tự có
+     - [ ] Hoàn thành Slide 11 – 13 (Tuần 3): 5 Screenshots Android Store & Early Bird Ticket 99k, Kết quả test thực địa tại 4 gym & Zalo feedback, Danh sách 10 Paid Users & Mockup VietQR động
+     - [ ] Hoàn thành Slide 14 – 16 (Tuần 4 & Lộ trình): 3 Thẻ GitHub PR #11/#12/#13 merged, Slide đệm Live Demo hệ thống, Timeline phát hành Google Play Tuần 5–7
+     - [ ] Hoàn thành Slide 17: Tổng kết 3 giá trị thật (Sản phẩm thật, Thị trường thật, Dòng tiền thật) & 2 Mã QR Code tương phản cao
+     - [ ] Xuất bản link Figma / Google Slides (quyền Comment) và file PDF High Quality Print dự phòng
+     - [ ] Gửi Tech Lead Việt review và duyệt nghiệm thu trước 12:00 Thứ Tư (07/10)
 
 ---
 
