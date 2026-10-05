@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+
 import { createInvitationToken, hashInvitationToken, isInvitationToken } from "@/features/invitations/token";
 import { validateCheckin, validateRemainingSessions } from "@/features/engagement/validation";
 import type { WorkspaceActionState } from "./action-state";
@@ -180,7 +181,7 @@ export async function createInBodyRecord(
   revalidatePath(`/workspace/trainees/${trainee.id}`);
   return {
     status: "success",
-    message: "Bản ghi đã được xác minh và lưu.",
+    message: "Bản ghi đã được lưu thành công.",
   };
 }
 
@@ -247,11 +248,11 @@ export async function submitDailyCheckin(
 
   const rpcArgs = photoPath && input.data.photo && input.data.photoType
     ? {
-        checkin_note: input.data.note ?? "",
-        meal_photo_path: photoPath,
-        meal_photo_mime_type: input.data.photoType,
-        meal_photo_size_bytes: input.data.photo.size,
-      }
+      checkin_note: input.data.note ?? "",
+      meal_photo_path: photoPath,
+      meal_photo_mime_type: input.data.photoType,
+      meal_photo_size_bytes: input.data.photo.size,
+    }
     : { checkin_note: input.data.note ?? "" };
   const { data: results, error } = await context.supabase.rpc("submit_daily_checkin", rpcArgs);
   const result = results?.[0];
@@ -307,4 +308,13 @@ export async function updateRemainingSessions(
   revalidatePath("/workspace");
   revalidatePath(`/workspace/trainees/${trainee.id}`);
   return { status: "success", message: "Đã cập nhật số buổi còn lại." };
+}
+
+export async function submitInBodyForm(traineeId: string, previousState: WorkspaceActionState, formData: FormData) {
+  const ocrAttemptId = formData.get("ocrAttemptId") as string | null;
+  if (ocrAttemptId) {
+    const { confirmOcrDraft } = await import("./ocr-actions");
+    return confirmOcrDraft(ocrAttemptId, traineeId, previousState, formData);
+  }
+  return createInBodyRecord(traineeId, previousState, formData);
 }

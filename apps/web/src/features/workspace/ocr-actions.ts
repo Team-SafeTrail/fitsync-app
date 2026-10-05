@@ -13,6 +13,7 @@ import {
 } from "./ocr-validation";
 import {
   createDefaultOcrAdapter,
+  DeterministicFakeOcrAdapter,
   type OcrAdapterResult,
 } from "./ocr-adapter";
 import type { Json } from "@/types/database";
@@ -80,7 +81,11 @@ export async function startOcrAttempt(
   }
 
   const fileData = fileValidation.data;
-  const adapter = createDefaultOcrAdapter();
+  const mockScenario = formData.get("mockScenario") as string | null;
+  const isTestMode = process.env.NODE_ENV === "test" || process.env.NEXT_PUBLIC_E2E_TEST === "true";
+  const adapter = (isTestMode && mockScenario)
+    ? new DeterministicFakeOcrAdapter(mockScenario === "clean_success" ? "clean" : (mockScenario as any))
+    : createDefaultOcrAdapter();
   if (!adapter.available) {
     const unavailableResult = await adapter.extract(new Uint8Array(), fileData.mimeType);
     if (!unavailableResult.success) {
@@ -88,8 +93,26 @@ export async function startOcrAttempt(
     }
   }
 
-  const imagePath = `${trainee.id}/${crypto.randomUUID()}.${fileData.extension}`;
-  const imageBytes = new Uint8Array(await fileData.file.arrayBuffer());
+  const rawBytes = await fileData.file.arrayBuffer();
+  
+  // Process image with sharp: auto-rotate based on EXIF and compress
+  let imageBytes: Buffer;
+  let finalMimeType = fileData.mimeType;
+  let finalExtension = fileData.extension;
+  try {
+    const sharp = (await import("sharp")).default;
+    imageBytes = await sharp(Buffer.from(rawBytes))
+      .rotate()
+      .resize(1000, null, { withoutEnlargement: true })
+      .webp({ quality: 80 })
+      .toBuffer();
+    finalMimeType = "image/webp";
+    finalExtension = "webp";
+  } catch (err) {
+    return errorState("Lỗi xử lý định dạng ảnh OCR.", undefined, "processing_error");
+  }
+
+  const imagePath = `${trainee.id}/${crypto.randomUUID()}.${finalExtension}`;
 
   let privilegedSupabase: ReturnType<typeof createPrivilegedClient>;
   try {
@@ -106,7 +129,7 @@ export async function startOcrAttempt(
   const { error: uploadError } = await context.supabase.storage
     .from("inbody-media")
     .upload(imagePath, imageBytes, {
-      contentType: fileData.mimeType,
+      contentType: finalMimeType,
       upsert: false,
     });
 
@@ -121,7 +144,7 @@ export async function startOcrAttempt(
   const extractionStartedAt = Date.now();
   let extractionResult: OcrAdapterResult;
   try {
-    extractionResult = await adapter.extract(imageBytes, fileData.mimeType, {
+    extractionResult = await adapter.extract(imageBytes, finalMimeType, {
       timeoutMs: 15_000,
     });
   } catch {
@@ -140,8 +163,8 @@ export async function startOcrAttempt(
     trainee_id: trainee.id,
     pt_id: context.user.id,
     private_image_path: imagePath,
-    image_mime_type: fileData.mimeType,
-    image_size_bytes: fileData.sizeBytes,
+    image_mime_type: finalMimeType,
+    image_size_bytes: imageBytes.byteLength,
     provider: extractionResult.provider,
     provider_version: extractionResult.providerVersion,
     duration_ms: extractionResult.durationMs,
@@ -248,6 +271,7 @@ export async function confirmOcrDraft(
 export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
   success: boolean;
   signedUrl?: string;
+  draft?: OcrNormalizedDraft | null;
   error?: string;
 }> {
   const context = await requirePt();
@@ -257,7 +281,7 @@ export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
 
   const { data: attempt, error: attemptError } = await context.supabase
     .from("ocr_attempts")
-    .select("private_image_path, pt_id")
+    .select("private_image_path, pt_id, raw_draft")
     .eq("id", attemptId)
     .maybeSingle();
 
@@ -273,5 +297,9 @@ export async function getOcrAttemptSignedUrl(attemptId: string): Promise<{
     return { success: false, error: "Không thể tạo liên kết xem ảnh an toàn." };
   }
 
-  return { success: true, signedUrl: signedData.signedUrl };
+  return {
+    success: true,
+    signedUrl: signedData.signedUrl,
+    draft: (attempt.raw_draft as unknown as OcrNormalizedDraft) ?? null,
+  };
 }
