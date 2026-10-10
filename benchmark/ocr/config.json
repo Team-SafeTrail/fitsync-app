@@ -1,0 +1,35 @@
+{
+  "protocolVersion": "1.0.0",
+  "corpusVersion": "inbody270-synthetic-v1",
+  "preprocessingVersion": "orientation-grayscale-autocontrast-1200-v2",
+  "reportCount": 30,
+  "splits": {
+    "development": [1, 2, 3, 4, 5, 6, 7, 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25, 26],
+    "holdout": [8, 9, 10, 18, 19, 20, 27, 28, 29, 30]
+  },
+  "candidates": [
+    {
+      "id": "tesseract-lstm",
+      "provider": "Tesseract OCR",
+      "version": "5.5.3",
+      "model": "eng LSTM traineddata",
+      "modelSha256": "7d4322bd2a7749724879683fc3912cb542f19906c83bcc1a52132556427170b2",
+      "region": "local-only",
+      "configuration": "OEM 1, PSM 11 sparse text, TSV confidence",
+      "confidenceAvailable": true
+    },
+    {
+      "id": "easyocr-english-g2",
+      "provider": "EasyOCR",
+      "version": "1.7.2",
+      "model": "CRAFT detector + english_g2 recognizer",
+      "modelSha256": {
+        "craft_mlt_25k.pth": "4a5efbfb48b4081100544e75e1e2b57f8de3d84f213004b14b85fd4b3748db17",
+        "english_g2.pth": "e2272681d9d67a04e2dff396b6e95077bc19001f8f6d3593c307b9852e1c29e8"
+      },
+      "region": "local-only",
+      "configuration": "CPU, English, paragraph=false",
+      "confidenceAvailable": true
+    }
+  ]
+}

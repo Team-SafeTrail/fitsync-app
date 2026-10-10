@@ -42,3 +42,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# OCR benchmark inputs, model weights, and per-sample results are private.
+/benchmark/ocr/private/

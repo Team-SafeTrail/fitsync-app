@@ -1,0 +1,13 @@
+name: fitsync-ocr-benchmark
+channels:
+  - conda-forge
+dependencies:
+  - python=3.12.12
+  - pillow=11.3.0
+  - tesseract=5.5.3
+  - pip
+  - pip:
+      - --extra-index-url https://download.pytorch.org/whl/cpu
+      - easyocr==1.7.2
+      - torch==2.8.0+cpu
+      - torchvision==0.23.0+cpu

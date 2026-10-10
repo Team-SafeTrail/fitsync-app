@@ -129,6 +129,9 @@ Useful survey aggregates:
 - Added bounded provider timing, best-effort source-image cleanup when attempt persistence fails, and a 12 MB Server Action envelope for the documented 10 MB image limit.
 - The provider remains intentionally unselected. The production/default adapter returns a recoverable `provider_unavailable` result and preserves manual entry; deterministic synthetic results require explicit test-only adapter construction.
 - Replaced the broken M4 pgTAP plan with executable privilege, RLS, storage, confirmation, and cross-tenant behavior checks. PR #11 must rebase on this backend contract and remove its duplicate schema before it can be reconsidered.
+- Added a deterministic 30-report synthetic corpus generator, pseudonymous private manifest, fixed 20/10 development/holdout split, two local OCR adapters, aggregate calculator, and redacted evidence report. Private images, manifests, ground truth, model weights, raw text, and per-sample results remain outside Git.
+- The 2026-10-10 locked holdout measured Tesseract at 6/10 all-required exact with 561 ms p95 and EasyOCR at 10/10 with 13,904 ms p95. Both produced zero unflagged invalid values and zero verified-record writes; all observed failures were recoverable.
+- No provider is selected because independent two-person ground-truth reconciliation is not signed off. Production remains `provider_unavailable`; manual entry and explicit PT confirmation remain mandatory. These internal synthetic figures are not a public accuracy or latency claim.
 
 ## Last verified product state
 
@@ -211,7 +214,7 @@ The landing redesign, monorepo move, and verified M1/M2 slice are recorded befor
 - Password reset remains listed in the broader frozen MVP scope but is not part of the completed M1–M3 slices.
 - App Store and Play Store applications do not exist yet. The mobile app remains a later milestone using the same backend and identities.
 - Public pricing remains a hypothesis until a payment flow and pilot evidence exist.
-- The OCR provider remains unselected until the consented benchmark passes. Production therefore returns a recoverable unavailable state rather than synthetic metrics.
+- The OCR provider remains unselected after the synthetic benchmark because the required independent ground-truth reconciliation is pending. Production therefore returns a recoverable unavailable state rather than synthetic metrics.
 - PR #11 still contains a duplicate OCR schema and storage contract. It must rebase on the corrected Issue #3 backend, remove overlapping migrations/actions, and pass its real browser flow before merge.
 
 ## Resume commands
