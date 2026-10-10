@@ -2,7 +2,7 @@
 
 ## Goal
 
-Finish the course with truthful, reviewable evidence while preserving the verified FitSync product sequence. The team is in Week 4. OC1 is assessed during Weeks 5–7, and OC2 plus OC3 are assessed during Weeks 13–14.
+Finish the course with truthful, reviewable evidence while preserving the verified FitSync product sequence. The repository planning cycle is now Week 5, following the confirmed Week 4 checkpoint. OC1 is assessed during Weeks 5–7, and OC2 plus OC3 are assessed during Weeks 13–14.
 
 Calendar dates have not been supplied. Until the LMS dates are known, every task must use its course week in the title and must not invent a calendar deadline.
 
@@ -50,7 +50,9 @@ Detailed deliverable cards and checklists are in [`trello-weekly-refresh-prompt.
 | End of Week 13 | Freeze OC2/OC3 data and rehearse the defense | Hưng, Việt, Toàn | Dated analytics exports; OCR report; paid-user count with valid evidence; complete report and slides |
 | End of Week 14 | Submit OC2 and OC3 and archive the evidence | Việt | Final report, demo, TVC, presentation, redacted evidence archive, and board export |
 
-## Current Week 4 sprint
+## Week 4 closeout and current Week 5 sprint
+
+### Week 4 closeout
 
 | Trello card | Owner | GitHub link | Done this week when |
 | --- | --- | --- | --- |
@@ -61,9 +63,19 @@ Detailed deliverable cards and checklists are in [`trello-weekly-refresh-prompt.
 | `[W4][OC1] Review UI and prepare evidence assets` | Toàn | [Issue #5](https://github.com/Team-SafeTrail/fitsync-app/issues/5) | OCR states and screenshot checklist are reviewed using synthetic data; GitHub handoff waits for his account |
 | `[W4][OC1] Close sprint and index evidence` | All; Việt accountable | Trello card links the relevant issues/PRs | Each card has evidence or a named blocker; unfinished work is rescheduled explicitly |
 
-The lanes can begin in parallel, but the final OCR provider decision depends on Issue #2, integration depends on Issue #3, and the complete browser demonstration depends on Issues #3 and #4. Manual InBody entry remains the release fallback.
+The Week 4 lanes began in parallel. Issues #3 and #4 are now closed after their reviewed merges; the final OCR provider decision still depends on Issue #2, and manual InBody entry remains the release fallback.
 
-**Live Week 4 recovery note (2026-10-02):** Issue #3 is reopened after review of the initial merge. Huy remains the accountable owner, Hưng supplied the corrective implementation in [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13), and Việt is the independent reviewer. Hosted CI is green, but the Trello card stays in `REVIEW` until PR #13 is accepted and merged. PR #11 must remain changes-requested until it rebases on the accepted backend and removes its duplicate OCR schema/server work.
+**Week 4 completion note (verified 2026-10-10):** [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) was independently accepted and merged at `c863954`, closing Issue #3. [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11) then rebased onto that backend, removed the overlapping contract, passed hosted CI, and merged at `21c55ce`, closing Issue #4. The deterministic four-flow Chromium suite passes on the verification branch after stale assertions were aligned. This proves the synthetic review workflow, not production-provider quality or Android delivery.
+
+### Current Week 5
+
+| Trello card | Owner | GitHub link | Current evidence and next gate |
+| --- | --- | --- | --- |
+| `[W05][OC1] Select OCR provider or manual-only fallback` | Hưng with Việt | [Issue #2](https://github.com/Team-SafeTrail/fitsync-app/issues/2) | `agent-ready`; run the approved two-candidate benchmark and record denominators, failures, latency, cost, governance, and go/no-go evidence |
+| `[W05][OC1] Integrate secure server-only OCR draft lifecycle` | Huy with Hưng | Issues #3/#4, PRs #13/#11 | Foundation and synthetic workflow are implemented; production integration waits for Issue #2 and must retain private media, RLS, recoverable failure, and manual fallback |
+| `[W05][OC1] Complete OCR correction and confirmation evidence` | Khai with Huy | [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11) | Core synthetic flow passes; add benchmark-driven low-confidence/failure evidence and desktop/mobile proof required by the M4 plan |
+| `[W05][OC1] Finalize truthful OCR copy and visuals` | Toàn with Khai | [Issue #5](https://github.com/Team-SafeTrail/fitsync-app/issues/5) | Still blocked; do not claim provider performance or move to DONE until reviewed evidence and a provider/fallback decision exist |
+| `[W05][OC1] Keep course evidence synchronized` | Việt | Trello weekly report plus merged PRs | Record Week 4 carry-over, current blockers, reviewer acceptance, and links without rewriting historical activity |
 
 ## Trello Kanban setup for weekly lecturer review
 
@@ -101,7 +113,7 @@ A merged pull request alone does not prove a course outcome. Use the [paste-read
 - `#market-research` and `#customer-survey`: consented research and aggregate findings only.
 - `#pitchdeck-content`, `#branding-pitchdeck`, `#ui-ux-app`, `#moodboard-inspo`, and `#assets-export`: Toàn and Khai coordinate reviewed presentation and store assets.
 
-Copy this single Vietnamese announcement into `#announcement` after the Trello cards exist. Select each teammate from Discord autocomplete so the `@name` text becomes a real mention. The message is verified below Discord's 2,000-character limit.
+The following block is the Week 4 kickoff announcement retained for audit context. It has already been superseded by the live Week 5 table above and must not be reposted as current status. New announcements should link the current Trello cards and state only verified progress.
 
 ```text
 ## 📣 FITSYNC — KẾ HOẠCH TUẦN 4 → 14

@@ -88,7 +88,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.getByLabel("Khối mỡ (kg)").fill("14");
   await ptPage.getByLabel("Tỷ lệ mỡ (%)").fill("20");
   await ptPage.getByRole("button", { name: "Xác nhận và lưu" }).click();
-  await expect(ptPage.getByRole("status")).toContainText("Bản ghi đã được xác minh và lưu");
+  await expect(ptPage.getByRole("status")).toContainText("Bản ghi đã được lưu thành công.");
   await expect(ptPage.getByTestId("verified-record")).toContainText("70 kg");
 
   await ptPage.reload();
