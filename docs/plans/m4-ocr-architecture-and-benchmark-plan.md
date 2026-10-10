@@ -22,3 +22,7 @@
 - Source media, attempts, and resulting records are inaccessible across tenants.
 - Benchmark artifacts are reproducible, pseudonymous, consented or synthetic, and evaluated on a locked holdout.
 - All existing M1-M3 checks remain green, and the full OCR review flow passes in a real browser at desktop and mobile widths.
+
+## Issue #2 benchmark outcome — 2026-10-10
+
+The reproducible synthetic v1 harness and redacted aggregate report are implemented. Tesseract 5.5.3 failed the locked-holdout accuracy gates. EasyOCR 1.7.2 crossed the numeric thresholds on the 10-report synthetic holdout, but the mandatory independent two-person ground-truth reconciliation remains unsigned. No provider is selected; the production adapter stays unavailable and manual entry remains the supported path. See `docs/evidence/m4-ocr-benchmark-2026-10-10.md` for denominators, latency, failures, configuration, privacy handling, and limitations.

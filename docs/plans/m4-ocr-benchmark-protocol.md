@@ -101,3 +101,16 @@ Unexpected provider details stay out of user-facing errors and ordinary logs. Mo
 The final private benchmark package contains the pseudonymous manifest, split assignment, reconciled ground truth, pipeline version/configuration, per-sample normalized result, aggregate calculation, error review, cost note, consent or synthetic provenance, retention/deletion record, and reviewer sign-off. Only the redacted aggregate report may be committed.
 
 Select a provider only after the holdout run. Record the chosen provider/version, observed limitations, date, corpus denominator, and reason for selection in the M4 handoff. If no candidate passes, ship no OCR claim and retain the already working manual workflow.
+
+## 8. Benchmark record — 2026-10-10
+
+The synthetic-only v1 harness generated 30 distinct pseudonymous InBody 270-style sources: 10 clean, 10 typical handheld, and 10 degraded but human-readable. Split membership was fixed before tuning at 20 development and 10 holdout sources. Source images, the private manifest, ground-truth values, per-sample normalized results, raw OCR text, and model weights remain Git-ignored.
+
+Two local candidates were run through the same normalized adapter and the existing application validator:
+
+- Tesseract OCR 5.5.3, `eng` LSTM data, OEM 1, PSM 11, local-only CPU execution. On the holdout it produced 6/10 all-required-fields exact, 100% flagged-error recall, zero unflagged invalid values, and 561 ms p95 latency. It failed the accuracy gates.
+- EasyOCR 1.7.2 with CRAFT and `english_g2`, local-only CPU execution. On the holdout it produced 10/10 all-required-fields exact, no observed field errors, zero unflagged invalid values, and 13,904 ms p95 latency. These figures are synthetic internal evidence only.
+
+No provider is selected. Although the EasyOCR run crossed the numeric thresholds, the required two-person independent ground-truth transcription and reconciliation is not signed off. Production/default OCR therefore remains `provider_unavailable`, manual entry remains available, and explicit PT confirmation remains mandatory. Re-running or selecting EasyOCR requires the two private review files to reconcile with each other and the rendered source truth; a materially changed corpus, parser, preprocessing step, model, or configuration requires a new locked evaluation.
+
+The committed redacted evidence is in [`docs/evidence/m4-ocr-benchmark-2026-10-10.md`](../evidence/m4-ocr-benchmark-2026-10-10.md). Candidate versions were checked against the official [Tesseract repository and release documentation](https://github.com/tesseract-ocr/tesseract) and the official [EasyOCR repository and v1.7.2 release](https://github.com/JaidedAI/EasyOCR/releases/tag/v1.7.2).

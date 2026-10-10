@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fitsync.local/schemas/m4-ocr-manifest.schema.json",
+  "title": "FitSync M4 pseudonymous OCR corpus manifest",
+  "type": "array",
+  "minItems": 30,
+  "items": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["sampleId", "sourceGroupId", "split", "stratum", "provenance", "imagePath", "imageSha256", "transformVersion"],
+    "properties": {
+      "sampleId": { "type": "string", "pattern": "^syn-[0-9]{3}$" },
+      "sourceGroupId": { "type": "string", "pattern": "^syn-[0-9]{3}$" },
+      "split": { "enum": ["development", "holdout"] },
+      "stratum": { "enum": ["clean", "typical_handheld", "degraded_human_readable"] },
+      "provenance": { "const": "synthetic" },
+      "imagePath": { "type": "string", "pattern": "^images/syn-[0-9]{3}\\.jpg$" },
+      "imageSha256": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+      "transformVersion": { "type": "string", "minLength": 1 }
+    }
+  }
+}

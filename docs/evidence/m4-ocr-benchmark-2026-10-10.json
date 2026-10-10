@@ -1,0 +1,144 @@
+{
+  "runDate": "2026-10-10",
+  "groundTruthReconciled": false,
+  "aggregates": [
+    {
+      "candidateId": "tesseract-lstm",
+      "provider": "Tesseract OCR",
+      "providerVersion": "5.5.3",
+      "denominatorReports": 10,
+      "fieldMetrics": {
+        "weight_kg": {
+          "eligible": 10,
+          "returned": 7,
+          "exact": 7
+        },
+        "skeletal_muscle_mass_kg": {
+          "eligible": 10,
+          "returned": 7,
+          "exact": 6
+        },
+        "body_fat_mass_kg": {
+          "eligible": 10,
+          "returned": 7,
+          "exact": 7
+        },
+        "percent_body_fat": {
+          "eligible": 10,
+          "returned": 7,
+          "exact": 7
+        },
+        "total_body_water_liters": {
+          "eligible": 10,
+          "returned": 8,
+          "exact": 8
+        }
+      },
+      "allRequiredExact": {
+        "exact": 6,
+        "eligible": 10
+      },
+      "optionalFieldExact": {
+        "exact": 8,
+        "eligible": 10
+      },
+      "flaggedErrorRecall": {
+        "flagged": 15,
+        "errors": 15
+      },
+      "unflaggedInvalidCount": 0,
+      "failures": {
+        "unsupported_type": 0,
+        "file_too_large": 0,
+        "signature_mismatch": 0,
+        "provider_timeout": 0,
+        "provider_unavailable": 0,
+        "unreadable_document": 0,
+        "missing_fields": 4,
+        "invalid_values": 0,
+        "inconsistent_values": 0,
+        "processing_error": 0
+      },
+      "recoverableFailures": {
+        "recoverable": 4,
+        "failures": 4
+      },
+      "latencyMs": {
+        "p50": 425,
+        "p95": 561
+      },
+      "verifiedRecordWrites": 0,
+      "vendorCostUsdPerAttempt": 0,
+      "vendorCostUsdPerAllRequiredExact": 0
+    },
+    {
+      "candidateId": "easyocr-english-g2",
+      "provider": "EasyOCR",
+      "providerVersion": "1.7.2/english_g2+craft",
+      "denominatorReports": 10,
+      "fieldMetrics": {
+        "weight_kg": {
+          "eligible": 10,
+          "returned": 10,
+          "exact": 10
+        },
+        "skeletal_muscle_mass_kg": {
+          "eligible": 10,
+          "returned": 10,
+          "exact": 10
+        },
+        "body_fat_mass_kg": {
+          "eligible": 10,
+          "returned": 10,
+          "exact": 10
+        },
+        "percent_body_fat": {
+          "eligible": 10,
+          "returned": 10,
+          "exact": 10
+        },
+        "total_body_water_liters": {
+          "eligible": 10,
+          "returned": 10,
+          "exact": 10
+        }
+      },
+      "allRequiredExact": {
+        "exact": 10,
+        "eligible": 10
+      },
+      "optionalFieldExact": {
+        "exact": 10,
+        "eligible": 10
+      },
+      "flaggedErrorRecall": {
+        "flagged": 0,
+        "errors": 0
+      },
+      "unflaggedInvalidCount": 0,
+      "failures": {
+        "unsupported_type": 0,
+        "file_too_large": 0,
+        "signature_mismatch": 0,
+        "provider_timeout": 0,
+        "provider_unavailable": 0,
+        "unreadable_document": 0,
+        "missing_fields": 0,
+        "invalid_values": 0,
+        "inconsistent_values": 0,
+        "processing_error": 0
+      },
+      "recoverableFailures": {
+        "recoverable": 0,
+        "failures": 0
+      },
+      "latencyMs": {
+        "p50": 13217,
+        "p95": 13904
+      },
+      "verifiedRecordWrites": 0,
+      "vendorCostUsdPerAttempt": 0,
+      "vendorCostUsdPerAllRequiredExact": 0
+    }
+  ]
+}

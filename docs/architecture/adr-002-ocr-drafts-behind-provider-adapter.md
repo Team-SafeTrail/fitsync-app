@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted for M4 implementation on 2026-09-28. The provider remains unselected until the consented benchmark passes.
+Accepted for M4 implementation on 2026-09-28. The provider remains unselected after the 2026-10-10 synthetic benchmark because independent two-person ground-truth reconciliation is still pending.
 
 ## Context
 
