@@ -1,11 +1,9 @@
 "use client";
 
-import { useState, useMemo, useRef } from "react";
+import { useEffect, useState, useMemo, useRef } from "react";
 import { useApp } from "@/lib/context";
-import { dashboardMetrics, scanFixtures } from "@/lib/mock-data";
+import { scanFixtures } from "@/lib/mock-data";
 import {
-  formatVND,
-  formatCompact,
   getGoalLabel,
   getStatusColor,
   computeNutrition,
@@ -15,7 +13,6 @@ import type { Client, BiometricReading, ComputedNutrition } from "@/types";
 import {
   Users,
   AlertTriangle,
-  DollarSign,
   Clock,
   Search,
   ScanLine,
@@ -52,6 +49,9 @@ export default function DashboardPage() {
   }, [clients, search, statusFilter]);
 
   const warningClients = clients.filter((c) => c.days_inactive >= 3);
+  const activeClients = clients.filter((c) => c.status === "active").length;
+  const remainingSessions = clients.reduce((total, c) => total + c.sessions_remaining, 0);
+  const inbodyProfiles = clients.filter((c) => c.latest_biometrics).length;
 
   const openScanModal = (client?: Client) => {
     setSelectedClientForScan(client || null);
@@ -61,26 +61,22 @@ export default function DashboardPage() {
   const handleZaloNudge = (client: Client) => {
     const text = `Chào ${client.name}, Coach Nam (FitSync) đây! Thấy em đã ${client.days_inactive} ngày chưa log bữa ăn/check-in. Hôm nay lịch tập thế nào em ơi?`;
     navigator.clipboard.writeText(text);
-    setToastMessage(
-      `Đã sao chép tin nhắn Zalo cho ${client.name}! Đang mở Zalo...`,
-    );
-    setTimeout(() => {
-      window.open("https://zalo.me", "_blank");
-    }, 500);
+    setToastMessage(`Đã sao chép lời nhắc cho ${client.name}.`);
     setTimeout(() => {
       setToastMessage(null);
     }, 4500);
   };
 
   return (
-    <div className="p-4 sm:p-6 max-w-[1400px] mx-auto">
+    <div className="fs-tour-page fs-tour-dashboard p-4 sm:p-6 lg:p-8">
       {/* Toast Notice */}
       {toastMessage && (
-        <div className="fixed top-16 right-4 sm:right-6 z-50 flex items-center gap-2 px-4 py-3 bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)] border border-[var(--color-border-strong)] text-[13px] rounded-[var(--radius-md)] shadow-[var(--shadow-lg)] animate-bounce">
+        <div role="status" className="fixed top-20 right-4 sm:right-6 z-50 flex items-center gap-2 px-4 py-3 bg-[var(--color-surface-elevated)] text-[var(--color-text-primary)] border border-[var(--color-border-strong)] text-[13px] rounded-[var(--radius-md)] shadow-[var(--shadow-lg)]">
           <CheckCircle2 size={16} className="text-emerald-400 shrink-0" />
           <span>{toastMessage}</span>
           <button
             onClick={() => setToastMessage(null)}
+            aria-label="Đóng thông báo"
             className="ml-2 text-[var(--color-text-muted)] hover:text-[var(--color-text-primary)] border-none bg-transparent cursor-pointer"
           >
             ✕
@@ -92,10 +88,10 @@ export default function DashboardPage() {
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
         <div>
           <h1 className="text-[26px] sm:text-[28px] font-bold tracking-[-0.02em] text-[var(--color-text-primary)]">
-            Smart PT Hub
+            Tổng quan học viên
           </h1>
           <p className="text-[13px] sm:text-[14px] text-[var(--color-text-secondary)] mt-0.5">
-            Welcome back, Coach Nam. Here&apos;s your practice at a glance.
+            Một lượt xem nhanh roster, tín hiệu cần theo dõi và bản ghi InBody mẫu.
           </p>
         </div>
         <button
@@ -103,7 +99,7 @@ export default function DashboardPage() {
           onClick={() => openScanModal()}
         >
           <ScanLine size={16} />
-          Scan InBody
+          Xem luồng InBody
         </button>
       </div>
 
@@ -111,29 +107,29 @@ export default function DashboardPage() {
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
         <KPICard
           icon={<Users size={18} />}
-          label="Active Clients"
-          value={dashboardMetrics.active_clients.toString()}
+          label="Đang theo dõi"
+          value={activeClients.toString()}
           iconColor="text-[var(--color-brand)]"
           bgColor="bg-[var(--color-brand-light)]"
         />
         <KPICard
           icon={<AlertTriangle size={18} />}
-          label="Urgent Alerts"
-          value={`${dashboardMetrics.urgent_alerts} Inactive`}
+          label="Cần theo dõi"
+          value={`${warningClients.length} học viên`}
           iconColor="text-[var(--color-warning)]"
           bgColor="bg-[var(--color-warning-light)]"
         />
         <KPICard
-          icon={<DollarSign size={18} />}
-          label="Month Revenue"
-          value={`${formatCompact(dashboardMetrics.month_revenue_vnd)} ₫`}
+          icon={<Clock size={18} />}
+          label="Buổi còn lại"
+          value={`${remainingSessions} buổi`}
           iconColor="text-[var(--color-success)]"
           bgColor="bg-[var(--color-success-light)]"
         />
         <KPICard
-          icon={<Clock size={18} />}
-          label="Time Saved This Week"
-          value={`${dashboardMetrics.time_saved_hours}h`}
+          icon={<ScanLine size={18} />}
+          label="Hồ sơ có InBody"
+          value={`${inbodyProfiles} hồ sơ`}
           iconColor="text-[var(--color-accent)]"
           bgColor="bg-[var(--color-accent-light)]"
         />
@@ -145,7 +141,7 @@ export default function DashboardPage() {
           <div className="flex items-center gap-2 mb-3">
             <AlertTriangle size={16} className="text-[var(--color-warning)]" />
             <span className="text-[13px] font-semibold text-[var(--color-warning)]">
-              Inactivity Alerts | Clients with ≥ 3 days without check-in
+              Cần theo dõi, từ 3 ngày chưa check-in
             </span>
           </div>
           <div className="space-y-2">
@@ -163,7 +159,7 @@ export default function DashboardPage() {
                       {client.name}
                     </span>
                     <span className="text-[12px] text-[var(--color-warning)] ml-2 font-medium">
-                      | {client.days_inactive} days without check-in
+                      <span aria-hidden="true"> · </span>{client.days_inactive} ngày chưa check-in
                     </span>
                   </div>
                 </div>
@@ -175,7 +171,7 @@ export default function DashboardPage() {
                     size={13}
                     className="text-[var(--color-brand)]"
                   />
-                  Nudge on Zalo
+                  Sao chép lời nhắc
                 </button>
               </div>
             ))}
@@ -188,10 +184,10 @@ export default function DashboardPage() {
         <div className="flex flex-col sm:flex-row sm:items-center justify-between p-4 border-b border-[var(--color-border-default)] gap-3">
           <div className="flex items-center gap-2">
             <h2 className="text-[15px] font-semibold text-[var(--color-text-primary)]">
-              Client Roster
+              Danh sách học viên
             </h2>
             <span className="badge bg-[var(--color-surface-muted)] text-[var(--color-text-secondary)] text-[11px]">
-              {filteredClients.length} clients
+              {filteredClients.length} hồ sơ
             </span>
           </div>
           <div className="flex flex-wrap items-center gap-3">
@@ -208,7 +204,7 @@ export default function DashboardPage() {
                       : "bg-[var(--color-surface-muted)] text-[var(--color-text-muted)] border-[var(--color-border-default)] hover:bg-[var(--color-surface-elevated)]",
                   )}
                 >
-                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                  {status === "all" ? "Tất cả" : status === "active" ? "Đang hoạt động" : "Cần theo dõi"}
                 </button>
               ))}
             </div>
@@ -222,10 +218,10 @@ export default function DashboardPage() {
                 id="dashboard-search-clients"
                 name="searchClients"
                 type="text"
-                placeholder="Search clients..."
+                placeholder="Tìm học viên"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                aria-label="Search clients"
+                aria-label="Tìm học viên"
                 className="input h-[32px] pl-8 pr-3 text-[13px] w-full sm:w-[200px]"
               />
             </div>
@@ -237,14 +233,14 @@ export default function DashboardPage() {
           <table className="data-table">
             <thead>
               <tr>
-                <th>Client</th>
-                <th>Goal</th>
-                <th className="text-right">Weight</th>
-                <th className="text-right">Body Fat</th>
-                <th className="text-right">Sessions</th>
-                <th>Status</th>
-                <th className="text-right">Compliance</th>
-                <th>Actions</th>
+                <th>Học viên</th>
+                <th>Mục tiêu</th>
+                <th className="text-right">Cân nặng</th>
+                <th className="text-right">Mỡ cơ thể</th>
+                <th className="text-right">Buổi tập</th>
+                <th>Trạng thái</th>
+                <th className="text-right">Tuân thủ</th>
+                <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
@@ -263,8 +259,7 @@ export default function DashboardPage() {
                           </p>
                           <p className="text-[11px] text-[var(--color-text-muted)]">
                             {client.profile.gender === "male" ? "♂" : "♀"}{" "}
-                            {client.profile.age}yo • {client.profile.height_cm}
-                            cm
+                            {client.profile.age} tuổi<span aria-hidden="true"> · </span>{client.profile.height_cm} cm
                           </p>
                         </div>
                       </div>
@@ -315,8 +310,8 @@ export default function DashboardPage() {
                           className={`w-1.5 h-1.5 rounded-full ${statusColors.dot}`}
                         />
                         {client.status === "active"
-                          ? "Active"
-                          : `${client.days_inactive}d Inactive`}
+                          ? "Đang hoạt động"
+                          : `${client.days_inactive} ngày chưa check-in`}
                       </span>
                     </td>
                     <td className="numeric">
@@ -344,7 +339,7 @@ export default function DashboardPage() {
                         className="btn-secondary h-[28px] px-2.5 text-[11px] hover:border-[var(--color-brand)] hover:text-[var(--color-brand)]"
                       >
                         <ScanLine size={12} />
-                        Scan
+                        Xem InBody
                       </button>
                     </td>
                   </tr>
@@ -356,7 +351,7 @@ export default function DashboardPage() {
 
         {filteredClients.length === 0 && (
           <div className="py-12 text-center text-[14px] text-[var(--color-text-muted)]">
-            No clients found matching your search.
+            Không tìm thấy học viên phù hợp.
           </div>
         )}
       </div>
@@ -449,6 +444,16 @@ function ScanModal({
     client?.id || (clients[0]?.id ?? ""),
   );
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  useEffect(() => {
+    closeButtonRef.current?.focus();
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") onClose();
+    };
+    document.addEventListener("keydown", closeOnEscape);
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [onClose]);
 
   const handleSelectFixture = (idx: number) => {
     setSelectedFixture(idx);
@@ -520,12 +525,12 @@ function ScanModal({
       <div
         className="fixed inset-0 bg-black/70"
         role="button"
-        tabIndex={0}
+        tabIndex={-1}
         onClick={onClose}
         onKeyDown={(e) =>
           (e.key === "Escape" || e.key === "Enter") && onClose()
         }
-        aria-label="Close dialog overlay"
+        aria-label="Đóng khi chạm ra ngoài"
       />
       <div className="modal-content relative z-10 max-w-[720px] p-6">
         <div className="flex items-center justify-between mb-4">
@@ -534,17 +539,18 @@ function ScanModal({
               id="scan-modal-title"
               className="text-[18px] font-semibold text-[var(--color-text-primary)]"
             >
-              Scan InBody &amp; Scale
+              Rà soát bản ghi InBody
             </h3>
             <p className="text-[12px] text-[var(--color-text-muted)]">
               {client
-                ? `Scanning for ${client.name}`
-                : "Assign scan results directly to a trainee record"}
+                ? `Dữ liệu minh họa cho ${client.name}`
+                : "Chọn học viên, rà soát số liệu rồi mới xác nhận"}
             </p>
           </div>
           <button
+            ref={closeButtonRef}
             onClick={onClose}
-            aria-label="Close modal"
+            aria-label="Đóng hộp thoại"
             className="p-1.5 hover:bg-[var(--color-canvas)] rounded-[var(--radius-base)] transition-colors border-none bg-transparent cursor-pointer"
           >
             <X size={18} className="text-[var(--color-text-muted)]" />
@@ -558,7 +564,7 @@ function ScanModal({
               htmlFor="target-client-select"
               className="block text-[12px] font-medium text-[var(--color-text-secondary)] mb-1.5 cursor-pointer"
             >
-              Assign to Trainee
+              Gán cho học viên
             </label>
             <select
               id="target-client-select"
@@ -570,7 +576,7 @@ function ScanModal({
               {clients.map((c) => (
                 <option key={c.id} value={c.id}>
                   {c.name} ({getGoalLabel(c.profile.goal)} •{" "}
-                  {c.sessions_remaining}/{c.sessions_total} sessions)
+                  {c.sessions_remaining}/{c.sessions_total} buổi)
                 </option>
               ))}
             </select>
@@ -639,7 +645,7 @@ function ScanModal({
                     className="text-[var(--color-brand)] shrink-0"
                   />
                 )}
-                <span className="truncate">{fixture.fixture_name}</span>
+                <span className="truncate">{fixture.fixture_name.replace(/\s+\u2014\s+/, ", ")}</span>
               </button>
             ))}
           </div>
@@ -670,30 +676,30 @@ function ScanModal({
                 <span>Dữ liệu minh họa đã sẵn sàng để kiểm tra</span>
               </div>
               <span className="text-[11px] text-[var(--color-success)] font-mono">
-                {currentClientName ? `Target: ${currentClientName}` : ""}
+                {currentClientName ? `Học viên: ${currentClientName}` : ""}
               </span>
             </div>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-5">
               <div>
                 <h4 className="section-caption mb-2 flex items-center gap-1.5">
-                  <Edit3 size={11} /> Biometrics (Editable)
+                  <Edit3 size={11} /> Chỉ số có thể chỉnh sửa
                 </h4>
                 <div className="space-y-1.5">
                   {[
-                    { label: "Weight", key: "weight_kg" as const, unit: "kg" },
+                    { label: "Cân nặng", key: "weight_kg" as const, unit: "kg" },
                     {
-                      label: "SMM (Skeletal Muscle)",
+                      label: "Khối lượng cơ xương",
                       key: "skeletal_muscle_mass_kg" as const,
                       unit: "kg",
                     },
                     {
-                      label: "BFM (Body Fat)",
+                      label: "Khối lượng mỡ",
                       key: "body_fat_mass_kg" as const,
                       unit: "kg",
                     },
                     {
-                      label: "PBF (Body Fat %)",
+                      label: "Tỷ lệ mỡ cơ thể",
                       key: "percent_body_fat" as const,
                       unit: "%",
                     },
@@ -735,33 +741,33 @@ function ScanModal({
 
               <div>
                 <h4 className="section-caption mb-2">
-                  Vietnamese Macro Engine
+                  Mục tiêu dinh dưỡng tham khảo
                 </h4>
                 <div className="space-y-1.5">
                   {[
                     {
-                      label: "Daily Target Cal",
+                      label: "Năng lượng mỗi ngày",
                       value: nutrition.target_calories_kcal,
                       unit: "kcal",
                       bold: true,
                     },
                     {
-                      label: "BMR (Basal Metabolic)",
+                      label: "Chuyển hóa cơ bản",
                       value: nutrition.bmr_kcal,
                       unit: "kcal",
                     },
                     {
-                      label: "Protein Target",
+                      label: "Mục tiêu protein",
                       value: nutrition.protein_grams,
                       unit: "g",
                     },
                     {
-                      label: "Carbs Target",
+                      label: "Mục tiêu tinh bột",
                       value: nutrition.carbohydrate_grams,
                       unit: "g",
                     },
                     {
-                      label: "Fat Target",
+                      label: "Mục tiêu chất béo",
                       value: nutrition.fat_grams,
                       unit: "g",
                     },
@@ -795,8 +801,7 @@ function ScanModal({
               <div className="flex items-center justify-center gap-2 py-3 bg-[var(--color-success-light)] rounded-[var(--radius-base)] border border-[var(--color-border-default)]">
                 <Check size={16} className="text-[var(--color-success)]" />
                 <span className="text-[13px] font-medium text-[var(--color-success)]">
-                  Saved successfully to {currentClientName || "client"}!
-                  Closing...
+                  Đã lưu vào hồ sơ mẫu của {currentClientName || "học viên"}.
                 </span>
               </div>
             ) : (
@@ -806,7 +811,7 @@ function ScanModal({
                   onClick={onClose}
                   className="btn-secondary w-1/3"
                 >
-                  Cancel
+                  Hủy
                 </button>
                 <button
                   type="button"
@@ -815,7 +820,7 @@ function ScanModal({
                   disabled={!targetClient}
                 >
                   <CheckCircle2 size={16} />
-                  Save Biometrics to Client Record
+                  Xác nhận vào hồ sơ mẫu
                 </button>
               </div>
             )}
