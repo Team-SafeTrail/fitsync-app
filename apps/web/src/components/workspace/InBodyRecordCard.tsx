@@ -29,7 +29,13 @@ export default function InBodyRecordCard({
           <span className="workspace-badge is-verified"><CheckCircle2 size={14} /> Đã xác minh</span>
           <h3>{dateFormatter.format(new Date(record.recorded_at))}</h3>
         </div>
-        <span className="workspace-record-source">Nhập thủ công</span>
+        <span className="workspace-record-source">
+          {record.source === "ocr"
+            ? record.is_manually_edited
+              ? "OCR, đã được PT chỉnh và xác nhận"
+              : "OCR, đã được PT xác nhận"
+            : "PT nhập và xác nhận thủ công"}
+        </span>
       </header>
       <dl className="workspace-record-metrics">
         <div><dt>Cân nặng</dt><dd>{record.weight_kg} kg</dd></div>
@@ -47,16 +53,16 @@ export default function InBodyRecordCard({
       {editableNutrition ? (
         <form action={updateAction} className="workspace-nutrition-form">
           <label><span>Kcal</span><input name="targetCalories" type="number" min={800} max={6000} defaultValue={record.target_calories ?? ""} /></label>
-          <label><span>Protein (g)</span><input name="targetProteinGrams" type="number" min={0} max={500} defaultValue={record.target_protein_grams ?? ""} /></label>
-          <label><span>Carb (g)</span><input name="targetCarbGrams" type="number" min={0} max={1000} defaultValue={record.target_carb_grams ?? ""} /></label>
+          <label><span>Đạm (g)</span><input name="targetProteinGrams" type="number" min={0} max={500} defaultValue={record.target_protein_grams ?? ""} /></label>
+          <label><span>Tinh bột (g)</span><input name="targetCarbGrams" type="number" min={0} max={1000} defaultValue={record.target_carb_grams ?? ""} /></label>
           <label><span>Chất béo (g)</span><input name="targetFatGrams" type="number" min={0} max={300} defaultValue={record.target_fat_grams ?? ""} /></label>
           <button className="workspace-button workspace-button-secondary" type="submit">Lưu bản nháp</button>
         </form>
       ) : (
         <dl className="workspace-nutrition-values">
           <div><dt>Năng lượng</dt><dd>{value(record.target_calories, "kcal")}</dd></div>
-          <div><dt>Protein</dt><dd>{value(record.target_protein_grams, "g")}</dd></div>
-          <div><dt>Carb</dt><dd>{value(record.target_carb_grams, "g")}</dd></div>
+          <div><dt>Đạm</dt><dd>{value(record.target_protein_grams, "g")}</dd></div>
+          <div><dt>Tinh bột</dt><dd>{value(record.target_carb_grams, "g")}</dd></div>
           <div><dt>Chất béo</dt><dd>{value(record.target_fat_grams, "g")}</dd></div>
         </dl>
       )}

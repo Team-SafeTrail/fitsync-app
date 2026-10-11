@@ -20,9 +20,9 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await expect(ptPage.getByRole("link", { name: "Xem bản mẫu" }).first()).toHaveAttribute("href", "/app/dashboard");
   const demoResponse = await ptPage.goto("/app/dashboard");
   expect(demoResponse?.ok()).toBe(true);
-  await expect(ptPage.getByRole("heading", { name: "Smart PT Hub" })).toBeVisible();
-  await expect(ptPage.getByText("Bản mẫu công khai").first()).toBeVisible();
-  await expect(ptPage.locator("aside")).toHaveCSS("background-color", "rgb(17, 17, 21)");
+  await expect(ptPage.getByRole("heading", { name: "Tổng quan học viên" })).toBeVisible();
+  await expect(ptPage.locator(".fs-tour-disclosure").getByText("Bản mẫu công khai")).toBeVisible();
+  await expect(ptPage.getByRole("navigation", { name: "Góc nhìn bản mẫu" })).toBeVisible();
 
   await ptPage.goto("/register");
   await ptPage.getByLabel("Tên hiển thị").fill("PT E2E Minh");
@@ -30,7 +30,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.getByLabel("Mật khẩu").fill(password);
   await ptPage.getByRole("button", { name: "Tạo workspace PT" }).click();
   await expect(ptPage).toHaveURL(/\/workspace$/);
-  await expect(ptPage.getByText("Roster đang trống")).toBeVisible();
+  await expect(ptPage.getByText("Chưa có học viên")).toBeVisible();
 
   await ptPage.getByLabel("Tên hiển thị").fill("Học viên E2E Lan");
   await ptPage.getByLabel("Email nhận lời mời").fill(traineeEmail);
@@ -42,6 +42,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
 
   const invitationUrl = await ptPage.getByTestId("invitation-link").inputValue();
   expect(invitationUrl).toMatch(/\/invite\/[A-Za-z0-9_-]{43}$/);
+  const invitationPath = new URL(invitationUrl).pathname;
   await ptPage.getByRole("button", { name: "Sao chép link" }).click();
   await expect(ptPage.getByRole("button", { name: "Đã sao chép" })).toBeVisible();
   const traineeRow = ptPage.getByRole("link", { name: /Học viên E2E Lan/ });
@@ -52,7 +53,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   const traineeContext = await browser.newContext({ viewport: { width: 430, height: 932 } });
   const traineePage = await traineeContext.newPage();
   traineePage.on("pageerror", (error) => runtimeErrors.push(error.message));
-  await traineePage.goto(invitationUrl);
+  await traineePage.goto(invitationPath);
   await expect(traineePage.getByRole("heading", { name: "Chào Học viên E2E Lan." })).toBeVisible();
   await traineePage.getByLabel("Tạo mật khẩu").fill(password);
   await traineePage.getByRole("button", { name: "Chấp nhận lời mời" }).click();
@@ -65,7 +66,14 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.setViewportSize({ width: 390, height: 844 });
   await ptPage.reload();
   await expect(ptPage.getByRole("link", { name: /Học viên E2E Lan/ })).toBeVisible();
+  await expect(ptPage.getByText("Dữ liệu thật", { exact: true })).toBeVisible();
   expect(await ptPage.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  const mobileTargets = ptPage.locator("a:visible:not(.sr-only), button:visible:not(.sr-only), summary:visible");
+  for (let index = 0; index < await mobileTargets.count(); index += 1) {
+    const target = mobileTargets.nth(index);
+    const box = await target.boundingBox();
+    if (box) expect(box.height, `workspace mobile target ${index}`).toBeGreaterThanOrEqual(44);
+  }
   await ptPage.setViewportSize({ width: 1440, height: 1000 });
   await ptPage.goto(traineePath!);
   await expect(ptPage.getByText("Đã kết nối tài khoản")).toBeVisible();
@@ -76,8 +84,8 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.getByLabel("Tỷ lệ mỡ (%)").fill("40");
   await ptPage.getByLabel("Tổng nước cơ thể (L)").fill("40");
   await ptPage.getByLabel("Năng lượng (kcal)").fill("2100");
-  await ptPage.getByLabel("Protein (g)").fill("126");
-  await ptPage.getByLabel("Carb (g)").fill("245");
+  await ptPage.getByLabel("Đạm (g)").fill("126");
+  await ptPage.getByLabel("Tinh bột (g)").fill("245");
   await ptPage.getByLabel("Chất béo (g)").fill("62");
   await ptPage.getByLabel(/Tôi đã đối chiếu các chỉ số/).check();
   await ptPage.getByRole("button", { name: "Xác nhận và lưu" }).click();

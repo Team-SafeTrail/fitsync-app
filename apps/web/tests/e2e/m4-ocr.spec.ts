@@ -35,9 +35,10 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
 
     // 3. Trainee Accepts Invitation
     const invitationUrl = await ptPage.getByTestId("invitation-link").inputValue();
+    const invitationPath = new URL(invitationUrl).pathname;
     const traineeContext = await browser.newContext({ viewport: { width: 430, height: 932 } });
     const traineePage = await traineeContext.newPage();
-    await traineePage.goto(invitationUrl);
+    await traineePage.goto(invitationPath);
     await traineePage.getByLabel("Tạo mật khẩu").fill(password);
     await traineePage.getByRole("button", { name: "Chấp nhận lời mời" }).click();
     await expect(traineePage).toHaveURL(/\/workspace$/);
@@ -68,7 +69,7 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
 
     // We passed a clean scenario, so we wait for success
     await expect(ptPage.locator('text=Tải ảnh thành công')).toBeVisible({ timeout: 10000 });
-    await expect(ptPage.getByText('(Bản nháp OCR)', { exact: true })).toBeVisible();
+    await expect(ptPage.getByText('Bản nháp OCR cần kiểm tra', { exact: true })).toBeVisible();
 
     // 5. Correction (verify draft data populated and edit it)
     const weightInput = ptPage.locator('input[name="weightKg"]');
