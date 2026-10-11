@@ -18,7 +18,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
             <Activity size={22} strokeWidth={2.2} />
             <span>fit<strong>sync</strong></span>
           </Link>
-          <span className="workspace-product-label">{isPt ? "Coach workspace" : "Trainee workspace"}</span>
+          <span className="workspace-product-label">{isPt ? "Không gian huấn luyện viên" : "Không gian học viên"}</span>
         </div>
 
         <nav className="workspace-nav" aria-label="Điều hướng workspace">
@@ -28,7 +28,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
           </Link>
           <Link href="/app/dashboard" target="_blank">
             <LayoutDashboard size={18} />
-            <span>Bản mẫu công khai</span>
+            <span>Mở bản mẫu công khai</span>
             <ArrowUpRight size={14} />
           </Link>
         </nav>
@@ -53,6 +53,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
           <Link href="/workspace" className="workspace-brand" aria-label="FitSync Workspace, về tổng quan">
             <Activity size={21} strokeWidth={2.2} /><span>fit<strong>sync</strong></span>
           </Link>
+          <span className="workspace-live-label">Dữ liệu thật</span>
           <div className="workspace-account">
             <span className="workspace-account-avatar">{viewer.profile.display_name.trim().charAt(0).toUpperCase()}</span>
             <form action={logout}><button type="submit" aria-label="Đăng xuất"><LogOut size={17} /></button></form>

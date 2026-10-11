@@ -31,7 +31,7 @@ export default function FollowUpActions({ message, zaloUrl }: { message: string;
       </button>
       {zaloUrl ? (
         <a className="workspace-button workspace-button-secondary" href={zaloUrl} target="_blank" rel="noreferrer" data-testid="open-zalo">
-          <ExternalLink size={16} /> Mở Zalo có chủ đích
+          <ExternalLink size={16} /> Mở Zalo để tự gửi
         </a>
       ) : <span className="workspace-muted-copy">Thêm số điện thoại để mở Zalo.</span>}
     </div>

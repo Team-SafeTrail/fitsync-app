@@ -41,7 +41,7 @@ export default async function TraineeDetailPage({
 
   return (
     <main id="main-content" className="workspace-main">
-      <Link href="/workspace" className="workspace-back"><ArrowLeft size={16} /> Quay lại roster</Link>
+      <Link href="/workspace" className="workspace-back"><ArrowLeft size={16} /> Quay lại danh sách</Link>
       <header className="workspace-page-heading trainee-detail-heading">
         <div>
           <p className="workspace-kicker">Hồ sơ học viên</p>
@@ -83,7 +83,7 @@ export default async function TraineeDetailPage({
       {trainee.profile_id ? (
         <InBodyForm traineeId={trainee.id} />
       ) : (
-        <section className="workspace-empty compact"><CircleUserRound size={28} /><h2>Đang chờ học viên kết nối</h2><p>Gửi link mời đã tạo cho học viên. Biểu mẫu InBody sẽ mở ngay sau khi họ tạo mật khẩu.</p><Link href="/workspace#new-trainee" className="workspace-inline-link"><ArrowLeft size={15} /> Về roster</Link></section>
+        <section className="workspace-empty compact"><CircleUserRound size={28} /><h2>Đang chờ học viên kết nối</h2><p>Gửi link mời đã tạo cho học viên. Biểu mẫu InBody sẽ mở ngay sau khi họ tạo mật khẩu.</p><Link href="/workspace#new-trainee" className="workspace-inline-link"><ArrowLeft size={15} /> Về danh sách</Link></section>
       )}
 
       <section className="workspace-record-list" aria-labelledby="checkin-history-title">

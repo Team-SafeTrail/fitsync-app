@@ -112,7 +112,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         setAttemptId("");
         setDraftData(null);
       }
-    } catch (err) {
+    } catch {
       setOcrStatus("error");
       setOcrMessage("Lỗi kết nối. Vui lòng nhập thủ công.");
       setOcrImageUrl("");
@@ -136,64 +136,65 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
       
       {currentState.message && <p className={`workspace-alert is-${currentState.status}`} role={currentState.status === "error" ? "alert" : "status"}>{currentState.message}</p>}
 
-      {/* OCR Upload Section */}
-      <div className="workspace-fieldset workspace-field-wide" style={{ marginBottom: '2rem', padding: '1rem', backgroundColor: 'var(--surface-sunken)', borderRadius: 'var(--radius-md)' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-          <Camera size={18} /> <strong>Quét ảnh InBody (Thử nghiệm)</strong>
+      <div className="workspace-ocr-panel workspace-field-wide">
+        <div className="workspace-ocr-heading">
+          <Camera size={18} />
+          <div><strong>Nhận diện phiếu InBody</strong><span>Thử nghiệm</span></div>
         </div>
-        <p className="workspace-helper" style={{ marginBottom: '1rem' }}>
-          Tải lên ảnh chụp phiếu InBody để máy trích xuất số liệu tự động. (Hỗ trợ JPG, PNG, WEBP)
+        <p className="workspace-helper">
+          Khi dịch vụ khả dụng, ảnh chỉ tạo bản nháp. PT vẫn phải rà soát và xác nhận; nhập thủ công luôn sẵn sàng.
         </p>
         
         {ocrStatus === "uploading" ? (
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", color: "var(--text-muted)" }}>
-            <Loader2 size={16} className="animate-spin" /> Đang tải lên và xử lý ảnh...
+          <div className="workspace-ocr-progress" role="status">
+            <Loader2 size={16} className="animate-spin" /> Đang tải và chuẩn bị bản nháp...
           </div>
         ) : (
-          <label className="workspace-field" style={{ display: "inline-block", width: "auto", cursor: "pointer" }}>
-            <span className="sr-only">Tải ảnh lên</span>
-            <input type="file" accept="image/jpeg, image/png, image/webp" capture="environment" onChange={handleFileUpload} />
+          <label className="workspace-upload-field workspace-ocr-upload" htmlFor="inbody-photo">
+            <Camera size={20} />
+            <span><strong>Chọn ảnh phiếu InBody</strong><small>JPG, PNG hoặc WebP, tối đa 10 MB.</small></span>
+            <input id="inbody-photo" name="inbodyPhoto" type="file" accept="image/jpeg, image/png, image/webp" capture="environment" onChange={handleFileUpload} />
           </label>
         )}
 
         {ocrStatus === "error" && (
-          <p className="workspace-alert is-error" style={{ marginTop: '1rem' }} aria-live="assertive"><AlertTriangle size={15}/> {ocrMessage}</p>
+          <p className="workspace-alert is-error workspace-ocr-message" aria-live="assertive"><AlertTriangle size={15}/> {ocrMessage}</p>
         )}
 
         {ocrStatus === "success" && (
-          <div aria-live="polite" className="sr-only">Tải ảnh thành công, vui lòng kiểm tra lại số liệu.</div>
+          <p aria-live="polite" className="workspace-alert is-success workspace-ocr-message"><CheckCircle2 size={15} /> Tải ảnh thành công. Vui lòng kiểm tra lại từng chỉ số.</p>
         )}
 
         {ocrWarnings.length > 0 && (
-          <div className="workspace-alert is-warning" style={{ marginTop: '1rem' }}>
-            <ul style={{ margin: 0, paddingLeft: '1.2rem' }}>
+          <div className="workspace-alert is-warning workspace-ocr-message">
+            <ul>
               {ocrWarnings.map((w, i) => <li key={i}>{w}</li>)}
             </ul>
           </div>
         )}
 
         {ocrImageUrl && (
-          <div style={{ marginTop: '1rem', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', overflow: 'hidden' }}>
-            <div style={{ padding: '0.5rem', backgroundColor: 'var(--surface-raised)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+          <figure className="workspace-ocr-source">
+            <figcaption>
               <ImageIcon size={14} /> Ảnh nguồn (bảo mật)
-            </div>
+            </figcaption>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={ocrImageUrl} alt="Bản chụp InBody" style={{ display: 'block', width: '100%', maxHeight: '400px', objectFit: 'contain', backgroundColor: '#000' }} />
-          </div>
+            <img src={ocrImageUrl} alt="Bản chụp InBody cần rà soát" />
+          </figure>
         )}
       </div>
 
       <form ref={formRef} action={action} className="workspace-form-grid">
         <input type="hidden" name="ocrAttemptId" value={attemptId} />
         {attemptId && (
-          <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
-            <button type="button" onClick={clearOcrDraft} className="workspace-btn workspace-btn-secondary" style={{ fontSize: '0.8rem' }}>
-              Hủy bản nháp OCR / Nhập thủ công
+          <div className="workspace-ocr-clear workspace-field-wide">
+            <button type="button" onClick={clearOcrDraft} className="workspace-button workspace-button-secondary">
+              Bỏ bản nháp và nhập thủ công
             </button>
           </div>
         )}
         <fieldset className="workspace-fieldset workspace-field-wide">
-          <legend><Ruler size={16} /> Chỉ số đo {ocrStatus === "success" && <span style={{fontSize: '0.8rem', color: 'var(--accent-primary)'}}>(Bản nháp OCR)</span>}</legend>
+          <legend><Ruler size={16} /> Chỉ số đo {ocrStatus === "success" && <span className="workspace-badge is-draft">Bản nháp OCR cần kiểm tra</span>}</legend>
           <p className="workspace-helper">FitSync sẽ đối chiếu giới hạn và sự nhất quán giữa cân nặng, khối mỡ và tỷ lệ mỡ.</p>
           <div className="workspace-metric-fields" key={attemptId || 'manual'}>
             <label className="workspace-field" htmlFor="weight-kg">
@@ -212,8 +213,8 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
               <ErrorText error={currentState.fieldErrors?.bodyFatMassKg} />
             </label>
             <label className="workspace-field" htmlFor="body-fat-percent">
-              <span>Tỷ lệ mỡ (%) {ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) && <AlertTriangle size={14} color="var(--intent-warning)" style={{display: 'inline', verticalAlign: 'middle', marginLeft: '0.3rem'}}/>}</span>
-              <input id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" defaultValue={draftData?.metrics?.percent_body_fat ?? ""} required style={ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) ? { borderColor: 'var(--intent-warning)', backgroundColor: 'color-mix(in srgb, var(--intent-warning) 10%, transparent)' } : {}}/>
+              <span>Tỷ lệ mỡ (%) {ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) && <AlertTriangle className="workspace-warning-icon" size={14} />}</span>
+              <input className={ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) ? "is-warning" : undefined} id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" defaultValue={draftData?.metrics?.percent_body_fat ?? ""} required />
               <ErrorText error={currentState.fieldErrors?.percentBodyFat} />
             </label>
             <label className="workspace-field" htmlFor="body-water-liters">
@@ -229,8 +230,8 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
           <p className="workspace-helper">Các giá trị này có thể chỉnh lại sau. Đây không phải chỉ định y khoa.</p>
           <div className="workspace-metric-fields nutrition">
             <label className="workspace-field" htmlFor="target-calories"><span>Năng lượng (kcal)</span><input id="target-calories" name="targetCalories" type="number" min={800} max={6000} step={1} /></label>
-            <label className="workspace-field" htmlFor="target-protein"><span>Protein (g)</span><input id="target-protein" name="targetProteinGrams" type="number" min={0} max={500} step={1} /></label>
-            <label className="workspace-field" htmlFor="target-carbs"><span>Carb (g)</span><input id="target-carbs" name="targetCarbGrams" type="number" min={0} max={1000} step={1} /></label>
+            <label className="workspace-field" htmlFor="target-protein"><span>Đạm (g)</span><input id="target-protein" name="targetProteinGrams" type="number" min={0} max={500} step={1} /></label>
+            <label className="workspace-field" htmlFor="target-carbs"><span>Tinh bột (g)</span><input id="target-carbs" name="targetCarbGrams" type="number" min={0} max={1000} step={1} /></label>
             <label className="workspace-field" htmlFor="target-fat"><span>Chất béo (g)</span><input id="target-fat" name="targetFatGrams" type="number" min={0} max={300} step={1} /></label>
           </div>
         </fieldset>

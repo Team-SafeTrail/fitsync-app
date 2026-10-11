@@ -120,11 +120,11 @@ export default async function WorkspacePage() {
 
       <section className="workspace-roster" aria-labelledby="roster-title">
         <div className="workspace-section-heading">
-          <div><p className="workspace-kicker">Roster</p><h2 id="roster-title">Học viên của bạn</h2></div>
-          <p>{trainees.length === 0 ? "Tạo hồ sơ đầu tiên để bắt đầu." : `${linkedCount}/${trainees.length} tài khoản đã kết nối · ${pendingCount} đang chờ`}</p>
+          <div><p className="workspace-kicker">Danh sách</p><h2 id="roster-title">Học viên của bạn</h2></div>
+          <p>{trainees.length === 0 ? "Tạo hồ sơ đầu tiên để bắt đầu." : `${linkedCount}/${trainees.length} tài khoản đã kết nối, ${pendingCount} đang chờ`}</p>
         </div>
         {trainees.length === 0 ? (
-          <div className="workspace-empty compact"><Users size={28} /><h3>Roster đang trống</h3><p>Thêm học viên, sao chép link mời rồi gửi qua kênh bạn đang dùng.</p><OpenCreateTraineeButton compact /></div>
+          <div className="workspace-empty compact"><Users size={28} /><h3>Chưa có học viên</h3><p>Thêm học viên, sao chép link mời rồi gửi qua kênh bạn đang dùng.</p><OpenCreateTraineeButton compact /></div>
         ) : (
           <div className="workspace-roster-list">
             <div className="workspace-roster-labels" aria-hidden="true"><span>Học viên</span><span>Trạng thái</span><span>Gói tập</span><span>InBody</span><span /></div>
@@ -136,7 +136,7 @@ export default async function WorkspacePage() {
               return (
                 <Link key={trainee.id} href={`/workspace/trainees/${trainee.id}`} className="workspace-roster-row">
                   <span className="workspace-avatar">{trainee.display_name.split(/\s+/).slice(-2).map((part) => part[0]).join("").toUpperCase()}</span>
-                  <span className="workspace-roster-identity"><strong>{trainee.display_name}</strong><small>{goalLabels[trainee.primary_goal]}{trainee.phone ? ` · ${trainee.phone}` : ""}</small></span>
+                  <span className="workspace-roster-identity"><strong>{trainee.display_name}</strong><small>{goalLabels[trainee.primary_goal]}{trainee.phone ? `, ${trainee.phone}` : ""}</small></span>
                   <span className={`workspace-badge ${trainee.profile_id ? "is-verified" : "is-pending"}`}>{status}</span>
                   <span className="workspace-session-inline"><strong>{trainee.remaining_sessions}</strong> / {trainee.total_sessions} buổi</span>
                   <span className="workspace-record-count"><CheckCircle2 size={14} /> {recordCount}</span>

@@ -59,6 +59,7 @@ test("trainee check-in reaches the PT with private media, session updates, and m
   await ptPage.getByRole("button", { name: "Tạo học viên" }).click();
 
   const invitationUrl = await ptPage.getByTestId("invitation-link").inputValue();
+  const invitationPath = new URL(invitationUrl).pathname;
   const traineeRow = ptPage.getByRole("link", { name: /Học viên M3 Lan/ });
   const traineePath = await traineeRow.getAttribute("href");
   expect(traineePath).toMatch(/^\/workspace\/trainees\/[0-9a-f-]+$/);
@@ -68,7 +69,7 @@ test("trainee check-in reaches the PT with private media, session updates, and m
   const traineePage = await traineeContext.newPage();
   traineePage.on("pageerror", (error) => runtimeErrors.push(error.message));
   traineePage.on("request", (request) => networkRequests.push(request.url()));
-  await traineePage.goto(invitationUrl);
+  await traineePage.goto(invitationPath);
   await traineePage.getByLabel("Tạo mật khẩu").fill(password);
   await traineePage.getByRole("button", { name: "Chấp nhận lời mời" }).click();
   await expect(traineePage).toHaveURL(/\/workspace$/);

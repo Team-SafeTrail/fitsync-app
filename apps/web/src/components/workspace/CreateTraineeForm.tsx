@@ -119,7 +119,7 @@ export default function CreateTraineeForm({ defaultOpen = false }: { defaultOpen
           <FieldError error={state.fieldErrors?.remainingSessions} />
         </label>
         <div className="workspace-form-action workspace-field-wide">
-          <SubmitButton idle="Tạo học viên & link mời" pending="Đang tạo..." />
+          <SubmitButton idle="Tạo học viên và link mời" pending="Đang tạo..." />
         </div>
       </form>
       </div>

@@ -1,7 +1,20 @@
 import { expect, test } from "@playwright/test";
 
-function luminance(hex: string) {
-  const channels = hex.slice(1).match(/../g)!.map((channel) => Number.parseInt(channel, 16) / 255);
+function colorChannels(color: string) {
+  if (color.startsWith("#")) {
+    const normalized = color.length === 4
+      ? color.slice(1).split("").map((channel) => channel.repeat(2)).join("")
+      : color.slice(1);
+    return normalized.match(/../g)!.map((channel) => Number.parseInt(channel, 16) / 255);
+  }
+
+  const channels = color.match(/[\d.]+/g)?.slice(0, 3).map(Number);
+  if (!channels || channels.length !== 3) throw new Error(`Unsupported color format: ${color}`);
+  return channels.map((channel) => channel / 255);
+}
+
+function luminance(color: string) {
+  const channels = colorChannels(color);
   const [red, green, blue] = channels.map((channel) => channel <= 0.04045
     ? channel / 12.92
     : ((channel + 0.055) / 1.055) ** 2.4);
