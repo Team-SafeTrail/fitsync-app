@@ -1,7 +1,9 @@
 # ADR 003: Android Packaging Path for Play Store
 
 ## Status
-Proposed
+Narrowed by [ADR-004](adr-004-unified-coaching-timeline-and-mobile-client.md)
+
+This ADR now covers only a short-term TWA evaluation for Android/Play evidence. It does not define the long-term FitSync mobile architecture. The approved long-term client is Expo/React Native for iOS and Android, with Next.js retained for the full PT web workspace.
 
 ## Context
 As part of the M4 milestone (OC1), there is a course requirement to distribute the FitSync application via the Google Play Store. 
@@ -42,9 +44,9 @@ Rebuilding the mobile application natively using Expo.
 - **Effort**: Very High. Requires rewriting the entire UI and maintaining a parallel codebase (or setting up complex React Native Web configurations). Violates the "smallest viable path" constraint for the current milestone.
 
 ## Decision
-We will evaluate Option 1: Trusted Web Activity (TWA) as the primary candidate.
+We may evaluate Option 1: Trusted Web Activity (TWA) as the smallest short-term Android packaging candidate.
 
-TWA preserves our Next.js Server Actions and SSR architecture without requiring a massive refactor. It has the potential to fulfill the Play Store distribution requirement with minimal overhead, allowing the team to focus on the OCR business logic.
+TWA preserves the current Next.js Server Actions and SSR architecture without requiring a large refactor. It may fulfill an early Play Store evidence requirement with minimal overhead. Chat, push notifications, secure mobile sessions, deep links, bounded offline retry, and the phone-first trainee experience remain responsibilities of the Expo client selected in ADR-004.
 
 ### Evidence Requirements & Next Steps
 Before TWA can be confirmed as the final solution for OC1, the following evidence must be demonstrated:
@@ -53,4 +55,4 @@ Before TWA can be confirmed as the final solution for OC1, the following evidenc
 3. **Hardware Integration Proof**: Conduct physical device testing to verify that `<input type="file" capture="environment">` correctly triggers the native camera within the TWA shell.
 4. **Play Console Pipeline Proof**: Deploy the packaged TWA to the Play Store Internal Testing track. 
 
-Only upon successful installation and verification of camera integration from the Internal Testing track will TWA be confirmed as satisfying the OC1 constraint. No alternative empty native mobile projects (Expo, Capacitor, Flutter) will be scaffolded until this evaluation fails.
+Only successful installation and camera verification from the Internal Testing track can establish TWA as evidence for the short-term Android packaging constraint. Do not present that result as proof that the long-term mobile companion is complete. `apps/mobile` is added only with its first Expo vertical slice; no empty mobile project is scaffolded.

@@ -1,57 +1,90 @@
 # FitSync MVP execution plan
 
 **Status:** Active implementation baseline
-**Version:** 1.5
-**Updated:** 2026-10-10
+**Version:** 2.0
+**Updated:** 2026-10-11
 **Owner:** SafeTrail
 **Supersedes for implementation:** conflicting scope, status, price, platform, and outcome statements in earlier FitSync coursework documents
 
 ## 1. Product outcome
 
-FitSync is a mobile-first coaching workspace for independent Vietnamese personal trainers who manage approximately 5–20 active trainees. PTs use a responsive web workspace on laptops, tablets, and phones. Trainees use a focused phone experience in the web app first and a store-distributed mobile app later.
+FitSync is a unified coaching workspace for independent Vietnamese personal trainers who manage approximately 5–20 active trainees. It replaces the fragmented combination of Zalo or Messenger, spreadsheets, notes, paper InBody reports, and separate workout trackers with one private PT–trainee relationship.
 
-The MVP is working when a real PT can create a trainee, record and verify an InBody result, and have that trainee sign in and see the same record. A trainee can then submit a check-in that appears in the PT workspace. Data must persist and remain isolated from other PTs and trainees.
+Each linked PT and trainee shares one **Unified Coaching Timeline**. Ordinary messages and structured coaching events appear together, while meals, daily check-ins, workouts, InBody records, nutrition targets, and session balances remain authoritative domain records rather than unstructured chat text.
 
-## 2. Platform boundaries
+The product is successful when a PT can onboard a trainee, communicate, assign work, review adherence, verify progress, and intervene without leaving FitSync for the core coaching loop. Trainees use a phone-first Expo application; PTs use both the full responsive web workspace and the mobile application. Data persists, synchronizes across clients, and remains isolated from every unrelated account.
 
-| Surface | MVP responsibility | Delivery |
+## 2. Product and platform boundaries
+
+| Surface | Responsibility | Delivery |
 | --- | --- | --- |
-| Public website | Product explanation, verified M2 product evidence, secondary fixture-backed tour, pricing hypothesis, legal pages, signup entry | `apps/web`, Next.js |
-| PT web workspace | Roster, trainee profiles, manual InBody entry, OCR review, sessions, alerts, check-ins | `apps/web`, responsive Next.js |
-| Trainee web experience | Invitation, targets, check-ins, meals, progress | `apps/web`, mobile-first Next.js |
-| Mobile app | Camera-first PT actions, trainee daily companion, push notifications | Expo/React Native after web vertical slice |
-| Backend | Auth, PostgreSQL, RLS, private storage, server operations | Supabase plus server-only application code |
+| Public website | Product explanation, verified evidence, fixture-backed tour, legal pages, signup entry | `apps/web`, Next.js |
+| PT web workspace | Full roster, trainee records, conversation history, workouts, InBody review, sessions, alerts, analytics-ready operations | `apps/web`, responsive Next.js |
+| Transitional trainee web | Invitation, existing verified records, and browser fallback while mobile is built | `apps/web`, mobile-first Next.js |
+| Mobile application | Primary trainee companion plus PT on-the-go inbox, camera actions, workouts, push notifications, and deep links | `apps/mobile`, Expo/React Native |
+| Backend | Auth, PostgreSQL, RLS, private storage, realtime delivery, domain operations, notification dispatch | Supabase plus server-only application code |
 
-Web and mobile use the same identities, database, storage policies, domain rules, and API contracts. Marketing pages and the authenticated web app remain one deployment because they share signup, analytics, branding, and routing.
+Web and mobile share identities, database rules, storage policies, domain validation, and versioned contracts. Mobile must not depend on Next.js Server Components or browser cookies. Safe reads may use Supabase with RLS; privileged or multi-record writes use reviewed RPCs or server endpoints.
+
+### Unified Coaching Timeline contract
+
+- One private conversation exists for each active PT–trainee relationship in the first release.
+- Human-authored text and media are messages. Meal logs, check-ins, workout assignments/completions, verified InBody records, nutrition updates, and session changes are structured records presented as timeline cards.
+- Timeline cards reference their authoritative domain record; message payloads do not duplicate biometric or nutrition data.
+- Realtime updates improve responsiveness but do not replace durable database writes.
+- Push notifications contain only a generic prompt and pseudonymous routing identifier. They never contain biometric values, meal notes, private media URLs, tokens, or message bodies.
+- Zalo sharing remains an optional fallback/export action, not the primary coaching workflow and never an automatic send.
 
 ### Public acquisition boundary
 
-- `/workspace` is the real authenticated product surface and is the destination after signup.
-- `/app/*` is a public, fixture-backed product tour. It must remain clearly labeled as sample data and must never be presented as persisted user work.
-- The landing page's primary action leads to real PT activation through `/register`; the public tour is a secondary evaluation path.
-- Real, synthetic M2 screens should provide the main product proof. OCR, check-ins, payments, and mobile-app concepts must be labeled by their actual capability status.
-- Do not advertise a free trial, pilot participation, support response time, or final price until the corresponding operational flow and evidence exist.
+- `/workspace` is the real authenticated web product.
+- `/app/*` is a fixture-backed tour and must stay labeled as sample data.
+- The primary landing action leads to real PT activation through `/register`; the tour is secondary.
+- Capabilities may be marketed as working only after they are verified or released. Chat, workouts, payments, analytics, OCR quality, and mobile-store availability must retain truthful status labels until their exit evidence exists.
 
-## 3. Frozen MVP scope
+## 3. Frozen first-release scope
 
 ### PT capabilities
 
-- Register, sign in, sign out, and reset a password.
+- Register, sign in, sign out, reset a password, and manage a profile.
 - Create, edit, archive, search, and filter trainees.
 - Invite a trainee through a single-use link.
+- Open one private conversation and unified history for each assigned trainee.
+- Send text and private images; see delivery failure, unread state, and read state without presence surveillance.
+- Review structured daily check-ins and multiple meal entries from the same timeline.
+- Assign a basic workout with title, scheduled date, instructions, exercises, sets, reps, optional load, rest, and notes.
+- Review workout completion and trainee feedback.
 - Record total and remaining package sessions.
 - Enter the five core biometric fields manually.
-- Upload an InBody image, review draft extraction, correct every field, and explicitly confirm before saving.
+- Upload an InBody image, review untrusted extraction, correct every field, and explicitly confirm before saving.
 - View biometric history and simple weight/body-fat trends.
-- See a warning after at least three calendar days without a trainee check-in.
-- Review trainee check-ins and prepare a Zalo follow-up message.
+- See a warning after at least three calendar days without meaningful trainee activity and message the trainee inside FitSync.
 
 ### Trainee capabilities
 
 - Accept an invitation and create credentials.
-- View only their own profile, verified biometrics, draft nutrition targets, and session balance.
-- Submit a daily check-in with optional note and meal photo.
-- View their own check-in and biometric history.
+- Use FitSync primarily from the Expo mobile application, with a browser fallback.
+- Open the private conversation with the assigned PT and receive push notifications that deep-link to the relevant item.
+- Send text or private images.
+- Create a daily check-in and separate meal entries through structured actions in the conversation composer.
+- View assigned workouts, record completion, and send feedback.
+- View only their own profile, verified biometrics, coaching nutrition targets, session balance, check-in history, meal history, and workout history.
+- Retry safe queued text/check-in submissions after a temporary network failure.
+
+### Communication V1 boundary
+
+- Private one-to-one PT–trainee conversations only.
+- Durable paginated history, unread counts, read markers, retry, notification preferences, and deep links.
+- Text, validated private images, and structured coaching cards.
+- No group chat, voice/video calls, typing indicators, online-presence tracking, arbitrary files, message forwarding, or admin impersonation.
+- Messages are not a medical channel or emergency service. Product copy must set that expectation clearly.
+
+### Workout V1 boundary
+
+- PT-created one-off workout assignments and reusable simple templates.
+- Ordered exercises with sets, reps, optional load, rest, and coaching notes.
+- Trainee completion status, actual load/reps when supplied, and a short feedback note.
+- No exercise-video hosting, adaptive periodization, live timers, motion analysis, marketplace programming, or studio-wide program builder in V1.
 
 ### Commercial baseline
 
@@ -62,147 +95,163 @@ Web and mobile use the same identities, database, storage policies, domain rules
 
 ## 4. Deferred scope
 
-The following are not required for the MVP vertical slice: App Store release, automated VietQR webhooks, studio administration, voice transcription, wearables, meal recognition, prescribed meal plans, anonymous leaderboards, rewards marketplace, before/after photos, medical-risk alerts, complex offline mutation queues, and automated workout-motion analysis.
+Deferred work includes group/studio chat, voice and video calling, App Store public release, automated VietQR webhooks, studio administration, voice transcription, wearables, meal recognition, prescribed meal plans, anonymous leaderboards, rewards marketplace, before/after photos, medical-risk alerts, complex multi-device offline conflict resolution, and automated workout-motion analysis.
 
-Android distribution is an EXE201 delivery milestone after the web MVP is stable. iOS follows after privacy, Apple developer, and review requirements are ready.
+Android internal distribution is the first store milestone. iOS development and physical-device testing are part of the Expo client, while public App Store release follows privacy, Apple Developer, TestFlight, and review readiness.
 
 ## 5. Core workflows and acceptance criteria
 
 ### A. PT onboarding and trainee creation
 
 1. A visitor creates a PT account and reaches an empty roster.
-2. The PT creates a trainee with name, goal, optional phone number, and session package.
-3. The system generates a one-time invitation link.
-4. The invited trainee creates credentials and becomes linked to that PT.
+2. The PT creates a trainee and generates a one-time invitation.
+3. The trainee accepts, creates credentials, and becomes linked.
+4. The system creates the private conversation for that relationship.
 
-**Accepted when:** the data survives reload; the PT sees the trainee; the trainee sees their own home screen; unrelated authenticated users receive no record.
+**Accepted when:** the roster and conversation survive reload; both authorized users see the relationship; unrelated users cannot discover either record.
 
-### B. Manual InBody record
+### B. Conversation and structured timeline
 
-1. The PT opens a trainee and chooses manual entry.
-2. The PT enters weight, skeletal muscle mass, body fat mass, body-fat percentage, and optional total body water.
-3. The system checks physiological bounds and highlights cross-field inconsistencies.
-4. Nutrition values are presented as editable coaching drafts, not medical prescriptions.
-5. The PT confirms and saves the record.
+1. Either participant sends a text or validated private image.
+2. The durable write succeeds before realtime delivery is acknowledged.
+3. The recipient sees the item on web or mobile and receives a generic push when permitted.
+4. A deep link opens the correct conversation and item.
 
-**Accepted when:** invalid values cannot be silently saved; the verified record appears in both authorized views; the audit record identifies the PT and timestamp.
+**Accepted when:** ordering is stable, retries are idempotent, unread/read state is user-specific, pagination does not duplicate entries, and no unrelated account can read, subscribe to, sign, or mutate conversation data.
 
-### C. OCR-assisted entry
+### C. Meal and daily check-in through the conversation
 
-1. The PT uploads JPEG, PNG, or WebP up to 10 MB.
-2. Server-side validation checks content type and file signature.
-3. The OCR service returns draft fields or a recoverable failure.
-4. Low-confidence or inconsistent fields are clearly marked.
-5. The PT can correct and confirm or continue with manual entry.
+1. The trainee selects a structured action from the composer.
+2. A daily check-in records the application-local date and optional note; meal entries record meal type, optional note, capture time, and optional private photo.
+3. The domain record and timeline card are created atomically or fail together.
+4. The PT reviews and replies in context.
 
-**Accepted when:** no OCR result is automatically committed; failures never block manual entry; benchmark results exist before accuracy or latency is advertised.
+**Accepted when:** multiple meals can exist on one day, the daily check-in rule remains deterministic, media remains private, and analytics rely on domain records rather than parsing messages.
 
-### D. Trainee check-in and PT intervention
+### D. Basic workout coaching
 
-1. The trainee records a daily check-in and optional meal photo.
-2. The PT can see the update in the trainee activity view.
-3. After three full calendar days without check-in, the trainee enters the warning queue.
-4. The PT can copy a prepared message or intentionally open Zalo.
+1. The PT creates or reuses a simple workout and assigns it to a trainee.
+2. The assignment appears in the conversation and the trainee's current-workout view.
+3. The trainee records completion and optional actual performance/feedback.
+4. The PT sees the result and replies in context.
 
-**Accepted when:** no automatic message is sent; warning dates use the application timezone consistently; unauthorized users cannot fetch the check-in or media.
+**Accepted when:** assignment and completion remain structured and auditable, edits do not rewrite completed history, and only the assigned pair can access the workout.
 
-**Verified M3 calendar rule:** the application timezone is `Asia/Ho_Chi_Minh`. The reference is the latest local check-in date, or the local invitation-acceptance date when no check-in exists. A reference date of Monday becomes warning-eligible Friday at 00:00 application time, after Tuesday, Wednesday, and Thursday have fully elapsed.
+### E. Manual and OCR-assisted InBody
 
-## 6. Initial data model
+1. The PT enters five metrics manually or uploads a supported image.
+2. OCR returns an untrusted draft or recoverable failure.
+3. The PT reviews, corrects, and explicitly confirms; manual entry remains available.
+4. A verified event appears in the shared timeline without exposing the private source image in a notification.
 
-| Table | Essential fields |
+**Accepted when:** invalid or unconfirmed results cannot become verified records, authorization remains tenant-isolated, and benchmark evidence exists before OCR claims are published.
+
+### F. Inactivity intervention
+
+1. The application evaluates meaningful activity using the `Asia/Ho_Chi_Minh` calendar rule.
+2. After three full inactive dates, the trainee enters the PT warning queue.
+3. The PT opens the same FitSync conversation and sends a contextual follow-up.
+4. Optional external sharing is deliberate and secondary.
+
+**Accepted when:** no message is sent automatically, warning dates are deterministic, and intervention can be completed inside FitSync.
+
+## 6. Data model direction
+
+Existing migrations remain authoritative for implemented tables. Planned concepts require focused migrations and RLS tests before they become implementation claims.
+
+| Domain | Essential model direction |
 | --- | --- |
-| `profiles` | auth user id, role (`pt`, `trainee`, `admin`), display name, phone, timestamps |
-| `pt_profiles` | profile id, gym affiliation, plan, plan expiry |
-| `trainee_profiles` | profile id, assigned PT id, goal, status, total sessions, remaining sessions, engagement start, last check-in |
-| `trainee_invitations` | PT id, normalized invitee contact, token hash, expiry, accepted timestamp |
-| `inbody_records` | trainee id, PT id, five metrics, draft nutrition fields, source, manual-edit flag, verified-by, recorded timestamp |
-| `checkins` | trainee id, application-local check-in date, optional note, submitted timestamp |
-| `meal_logs` | check-in id, trainee id, private photo path, validated MIME type and size, timestamp |
-| `ocr_attempts` | PT id, trainee id, private source path, provider status, field confidences, error code, timestamp |
-| `subscriptions` | PT id, plan, status, period dates, payment verification mode |
-| `payment_records` | subscription id, amount, reference, evidence path, verification actor and timestamp |
+| Identity | `profiles`, `pt_profiles`, `trainee_profiles`, invitations, role and relationship state |
+| Conversation | one `conversations` row per PT–trainee relationship; durable `messages`; user-specific read state |
+| Timeline | append-only presentation events referencing messages or authoritative domain records; no sensitive duplicated payload |
+| Engagement | one daily summary check-in plus independent multiple `meal_logs` with meal type and captured time |
+| Workouts | reusable simple templates, assignments, ordered exercises, completion records, and trainee feedback |
+| InBody | verified manual/OCR records plus private OCR attempts and source media |
+| Notifications | device installations, preferences, delivery attempts, generic routing metadata, and revocation timestamps |
+| Commercial | subscriptions and manually verified payment evidence before automated reconciliation |
 
-Database migrations are authoritative. Generated TypeScript database types must be refreshed after every schema change.
+## 7. Authorization, privacy, and safety
 
-## 7. Authorization and privacy rules
+- Deny access by default and enable RLS on every user-data table.
+- Conversation membership derives from the active assigned PT–trainee relationship; client-supplied participant IDs are never trusted.
+- PTs access only assigned trainees. Trainees access only their own relationship and records.
+- Realtime subscriptions must obey the same membership boundary as ordinary reads.
+- Private message, meal, workout, and InBody media use isolated paths, validated signatures, and short-lived signed URLs.
+- Service-role credentials and notification provider secrets never enter web or mobile bundles.
+- Mobile session tokens use platform secure storage, not unencrypted general-purpose storage.
+- Notification bodies and analytics exclude message text, notes, biometrics, nutrition values, filenames, signed URLs, and raw device tokens.
+- Message/media retention, account deletion, device revocation, abuse handling, consent, incident response, and Vietnam Decree 13 responsibilities require named owners before real pilot data.
+- There is no hidden admin access to private conversations; any future audited support access requires a separate decision and user-visible policy.
 
-- Deny database access by default and enable RLS on every user-data table.
-- A PT may access only trainees assigned to that PT and records belonging to those trainees.
-- A trainee may access only their own profile and records; they cannot write verified biometrics or subscription state.
-- Administrative access must be explicit, audited, and separated from ordinary support activity.
-- InBody and meal images use private buckets and short-lived signed URLs.
-- Service-role credentials never enter browser or mobile bundles.
-- Validate file size, MIME type, and binary signature server-side.
-- Do not accept real health data until consent, retention, deletion, incident response, and Vietnam Decree 13 responsibilities have been reviewed.
-- Logs and analytics must exclude biometric values, meal images, tokens, passwords, and private signed URLs.
-
-Required isolation tests: PT A cannot read or mutate PT B’s trainee; trainee A cannot read trainee B; unauthenticated requests cannot retrieve profiles or media; expired invitation tokens fail; repeated payment callbacks cannot create duplicate entitlement.
+Required isolation tests include cross-PT denial, cross-trainee denial, conversation subscription denial, private-media denial, forged timeline-reference rejection, idempotent retry, revoked-device notification denial, expired invitation denial, and duplicate payment-callback denial.
 
 ## 8. Architecture decisions
 
-- Use an npm monorepo with `apps/web`, future `apps/mobile`, and only proven shared packages.
-- Keep the MVP as a modular monolith: Next.js plus Supabase, with server-only adapters around OCR, storage, and payment providers.
-- Use database migrations and RLS as the authorization foundation.
-- Start with responsive web to validate the full workflow; add Expo mobile against the same backend.
-- Start with manual biometric entry, then attach OCR to the same validation and confirmation form.
-- Start with manually verified VietQR payment evidence, then add signed webhook reconciliation.
+- Keep a modular monolith around Supabase/PostgreSQL and server-only provider adapters; do not introduce microservices or a separate message broker for the initial scale.
+- Use database commits as the source of truth and Supabase Realtime as delivery acceleration.
+- Keep domain records separate from timeline presentation. Never calculate adherence, nutrition, workouts, or biometric progress by parsing chat text.
+- Add `apps/mobile` only with its first working vertical slice. Extract shared validation/types only when web and mobile both consume them.
+- Use Expo/React Native as the long-term iOS/Android client. Next.js remains the complete PT web client.
+- Treat TWA as an optional short-term Android distribution experiment, not the product's long-term mobile architecture.
+- Do not place `xtool` on the critical path. It currently targets SwiftPM-native applications; upstream React Native build and App Store upload workflows are not complete.
+- Preserve manual biometric entry and explicit OCR confirmation.
+- Start with manually verified VietQR evidence, then add signed webhook reconciliation.
+
+See [ADR-004](architecture/adr-004-unified-coaching-timeline-and-mobile-client.md) for rationale and trade-offs.
 
 ## 9. Delivery milestones
 
 | Milestone | Status | Deliverable | Exit evidence |
 | --- | --- | --- | --- |
 | M0 Foundation | Verified | Monorepo, active plan, staging conventions | Root checks pass; plan and ADR reviewed |
-| M1 Identity | Verified | Supabase local project, migrations, auth, profiles, RLS | Automated cross-role isolation tests pass |
-| M2 First vertical slice | Verified | PT creates trainee and verified manual InBody record; trainee sees it | Desktop and mobile-browser E2E demonstration |
-| M3 Engagement | Verified | Check-ins, meal upload, session balance, three-day warning | Desktop/mobile E2E plus RLS and timezone-boundary tests pass |
-| M4 OCR | In progress | InBody 270 extraction behind mandatory review | Consented benchmark and failure tests pass |
-| M5 Pilot funnel | Planned | Real signup CTA, analytics, support and deletion flow | Acquisition-to-activation events visible |
-| M6 Paid pilot | Planned | Manual VietQR evidence and entitlement | Reconciled real transactions with consent |
-| M7 Android | Planned | Expo app or justified store-ready wrapper using production backend | Play testing-track listing and install evidence |
+| M1 Identity | Verified | Auth, profiles, invitations, and RLS | Cross-role isolation tests pass |
+| M2 First vertical slice | Verified | PT creates trainee and verified manual InBody record; trainee sees it | Desktop/mobile-browser E2E |
+| M3 Engagement | Verified | Daily check-in, one optional meal image, sessions, three-day warning | E2E plus RLS/timezone tests |
+| M4 OCR | In progress | InBody 270 extraction behind mandatory review | Approved benchmark and failure evidence |
+| M5 Unified timeline | Planned | Private 1:1 messages, read state, structured timeline cards, web inbox | Realtime, pagination, retry, and RLS E2E |
+| M6 Coaching actions | Planned | Multiple meal entries and basic workout assignment/completion | Atomic domain/timeline tests and PT–trainee E2E |
+| M7 Mobile companion | Planned | Expo trainee app, PT mobile inbox, camera, secure session, push/deep links, bounded retry | Physical Android/iPhone evidence plus Play Internal Testing |
+| M8 Pilot operations | Planned | Safe analytics, support, deletion, retention, and notification operations | Acquisition-to-activation evidence without sensitive properties |
+| M9 Paid pilot | Planned | Manual VietQR evidence and entitlement | Reconciled consented transactions |
 
-### EXE201 schedule overlay
-
-The repository planning cycle is currently Week 5, following the team's confirmed Week 4 checkpoint; official LMS dates remain authoritative. OC1 is assessed during Weeks 5–7, and OC2 plus OC3 during Weeks 13–14. Trello is required for course tracking. The week-by-week ownership, Trello contract, Discord routing, and evidence gates are in [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md).
-
-This schedule does not change the dependency order above. M4 must retain mandatory PT review and its privacy gate; M5 must define safe measurement before analytics evidence; M6 must reconcile genuine payments before revenue is claimed; and the Android path must be chosen from the current application constraints before scaffolding a mobile client.
+M4 safety gates remain mandatory. Planning M5–M7 does not claim those capabilities exist and does not permit real health/message data before governance is ready. Architecture and contract work may be prepared in parallel; release claims follow verified exit evidence only.
 
 ## 10. EXE201 evidence model
 
 ### Outcome 1
 
-- Public production and staging URLs, release identifier, Play testing/public listing, working core workflow, test report, project board, and a recorded demo.
+- Public production and staging URLs, release identifier, Play testing/public listing, working core workflow, test report, project board, and recorded demo.
 
 ### Outcome 2
 
-- Two named acquisition channels with UTM links; source-level visits, signups, activations, and installs; funnel definitions; dated exports from analytics and Play Console.
+- Two named acquisition channels with UTM links; source-level visits, signups, activations, and installs; funnel definitions; dated analytics and Play Console exports.
 
 ### Outcome 3
 
-- Required count confirmed against the current course rubric; unique paying PT accounts; transaction references and reconciled subscription rows; consented feedback; usage evidence; final report and demo.
+- Required count confirmed against the current rubric; unique paying PT accounts; reconciled transaction references and subscription rows; consented feedback; usage evidence; final report and demo.
 
-Targets, fabricated contacts, draft scripts, and planned channel results are not evidence. Personal information and bank records must be redacted in academic deliverables.
+Targets, fabricated contacts, draft scripts, and planned results are not evidence. Personal information, private messages, health records, and bank records must be redacted from academic deliverables.
 
 ## 11. Analytics events
 
-Minimum events: `signup_started`, `signup_completed`, `trainee_created`, `invitation_accepted`, `inbody_manual_started`, `ocr_attempted`, `inbody_verified`, `checkin_submitted`, `warning_viewed`, `zalo_message_copied`, `upgrade_viewed`, and `payment_verified`.
+Minimum safe events: `signup_started`, `signup_completed`, `trainee_created`, `invitation_accepted`, `conversation_opened`, `message_sent`, `meal_logged`, `checkin_submitted`, `workout_assigned`, `workout_completed`, `inbody_manual_started`, `ocr_attempted`, `inbody_verified`, `warning_viewed`, `notification_opened`, `upgrade_viewed`, and `payment_verified`.
 
-Each event needs a documented owner, trigger, allowed properties, and test. Use pseudonymous IDs; do not attach health values or user-entered notes.
+Events use pseudonymous IDs and bounded enums. They never include message bodies, notes, health values, meal images, filenames, signed URLs, tokens, or raw notification identifiers.
 
 ## 12. Environments and quality gates
 
-- **Local:** Supabase local services and seeded synthetic data.
-- **Staging:** production-like policies with synthetic or explicitly consented test data.
-- **Production:** separate project, secrets, storage, analytics, backup, and access controls.
+- **Local:** Supabase local services and synthetic users/content.
+- **Staging:** production-like policies with synthetic or explicitly consented data and isolated notification credentials.
+- **Production:** separate project, secrets, storage, analytics, backups, device revocation, monitoring, and access controls.
 
-Every milestone must pass lint, TypeScript, focused unit tests for domain rules, RLS integration tests, and E2E tests for the changed critical flow. Production releases require migration review, rollback notes, privacy-impact review for new data, and post-deploy smoke tests.
+Every milestone requires lint, TypeScript, domain tests, RLS integration tests, and relevant E2E flows. Mobile releases additionally require physical low-end Android and supported iPhone testing, poor-network/retry checks, notification/deep-link evidence, accessibility checks, and store-track installation. Production releases require migration review, rollback notes, privacy-impact review, and post-deploy smoke tests.
 
 ## 13. Immediate implementation backlog
 
-M0 through M3 and the post-M2 landing conversion checkpoint are complete. Their verified outcomes are consolidated in `docs/HANDOFF.md`; the removed implementation checklists remain available in Git history.
+M4 OCR remains the active implementation milestone. Complete its provider benchmark, governance approval, production adapter decision, and measured failure/accuracy/latency evidence without weakening manual fallback or explicit PT confirmation.
 
-M4 OCR is in progress. Private storage, normalized-attempt persistence, the server-only write boundary, atomic confirmation, and the review/correction interface are implemented. A deterministic test-only adapter now verifies upload, draft correction, explicit confirmation, signature rejection, and manual fallback in Chromium. Provider benchmarking, production adapter selection, approved-data governance, measured failure/accuracy/latency evidence, and OCR-specific desktop/mobile proof remain outstanding. Follow `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`; keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
+After M4, create focused issues in this order: conversation/timeline data contract and RLS; web inbox vertical slice; structured meal evolution; basic workout vertical slice; Expo mobile vertical slice; push/deep links and bounded retry; pilot operations; paid pilot. Do not implement all milestones in one branch or one pull request.
 
 ## 14. Change control
 
-New scope enters this document only when it supports a measured pilot need or a mandatory course outcome. Capability status must be one of `prototype`, `implemented`, `verified`, or `released`. Only `verified` or `released` capabilities may be described publicly as working.
+New scope enters this document only when it supports a measured PT/trainee need or mandatory delivery outcome. Capability status must be `prototype`, `implemented`, `verified`, or `released`. Only `verified` or `released` capabilities may be described publicly as working.

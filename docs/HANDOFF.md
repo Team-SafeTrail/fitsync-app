@@ -11,6 +11,8 @@ This file is the compact starting point for a new development chat. It records t
 
 FitSync is a mobile-first coaching workspace for independent Vietnamese personal trainers who manage roughly 5–20 active trainees. PTs use a responsive web workspace on desktop, tablet, or phone. Trainees start with a focused mobile web experience; a shared-backend Expo app comes after the web workflow is validated. The verified web flow now covers secure trainee invitation and InBody confirmation plus one daily trainee check-in, optional private meal media, PT activity/session review, and a manual inactivity follow-up queue.
 
+The approved next product direction is a private Unified Coaching Timeline for every assigned PT–trainee pair. Text and media messages will appear beside structured meal, daily check-in, workout, InBody, nutrition, and session events so the core coaching loop no longer depends on leaving FitSync for Zalo. This direction is planned, not implemented; [ADR-004](architecture/adr-004-unified-coaching-timeline-and-mobile-client.md) and `MVP_EXECUTION_PLAN.md` define its boundaries.
+
 ## Source-of-truth order
 
 When documents disagree, use this order:
@@ -133,7 +135,7 @@ Useful survey aggregates:
 - Added responsive upload, pending, recoverable-failure, private-image preview, normalized-draft review, correction, cancellation/manual fallback, and explicit confirmation states to the existing InBody form.
 - Image preprocessing applies orientation correction and WebP conversion server-side. Browser-side MIME/size feedback supplements, but does not replace, the server-side content and signature checks.
 - The synthetic Chromium flow verifies a private upload, a populated draft, a PT edit before confirmation, a persisted OCR-sourced record, signature rejection, and continued manual entry. It does not establish production provider quality.
-- ADR-003 records TWA as the proposed smallest Android packaging candidate. It is not accepted until PWA, Digital Asset Links, physical camera/upload, signed build, and Play Internal Testing evidence exist.
+- ADR-003 now covers only an optional short-term TWA evaluation for Android evidence. ADR-004 selects Expo/React Native as the long-term iOS/Android client and keeps Next.js as the full PT web workspace.
 
 ## Last verified product state
 
@@ -195,7 +197,7 @@ The local database contains only synthetic accounts created by the final E2E run
 - Store invitation token hashes, set expirations, and prevent reuse.
 - Use server-side validation for all writes; client validation is for feedback only.
 - Use synthetic data until consent, retention, deletion, and incident-response responsibilities are ready.
-- Follow the active milestone order: validate M4 OCR before payments or Expo/mobile work.
+- Follow the active milestone order: validate M4 OCR before feature delivery for the unified timeline, workouts, payments, or Expo mobile. Architecture and contract planning may proceed without claiming those capabilities work.
 
 ## Repository checkpoint
 
@@ -206,6 +208,7 @@ The landing redesign, monorepo move, and verified M1/M2 slice are recorded befor
 - `npm audit` reports 13 dependency findings (two moderate, ten high, and one critical). Triage and upgrade them as a focused task; do not run `npm audit fix --force` inside an active feature milestone.
 - Password reset remains listed in the broader frozen MVP scope but is not part of the completed M1–M3 slices.
 - App Store and Play Store applications do not exist yet. The mobile app remains a later milestone using the same backend and identities.
+- Private in-app conversation, multiple daily meal entries, structured workouts, push notifications, and deep links are approved plan scope but are not implemented yet. The current Zalo action remains only a transitional manual fallback.
 - Public pricing remains a hypothesis until a payment flow and pilot evidence exist.
 - The OCR provider remains unselected until the consented benchmark passes. Production therefore returns a recoverable unavailable state rather than synthetic metrics.
 - The deterministic OCR browser flow covers the clean draft, a PT correction, explicit confirmation, invalid-signature rejection, and manual fallback. Additional benchmark-driven low-confidence, missing-field, timeout, and provider-failure evidence remains part of M4 exit work.
