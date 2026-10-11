@@ -12,7 +12,6 @@ export default function PricingSection() {
   return (
     <section id="pricing" className="fs-section fs-offer fs-container">
       <div className="fs-offer-heading">
-        <p className="fs-eyebrow">TRẠNG THÁI SẢN PHẨM</p>
         <h2>
           Bắt đầu với điều đã chạy.
           <br />

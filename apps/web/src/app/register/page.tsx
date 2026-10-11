@@ -10,7 +10,7 @@ export default function RegisterPage({ searchParams }: { searchParams: { error?:
       {configured ? (
         <AuthForm mode="register" action={signup} error={searchParams.error} />
       ) : (
-        <p role="status" className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">
+        <p role="status" className="auth-alert is-warning">
           Supabase chưa được cấu hình. Dùng tệp <code>apps/web/.env.example</code> để thiết lập môi trường local trước.
         </p>
       )}

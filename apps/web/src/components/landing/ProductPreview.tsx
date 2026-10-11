@@ -24,7 +24,7 @@ const people = [
     goal: "Giảm mỡ bền vững",
     status: "Đã xác minh",
     sessions: 8,
-    summary: "59,8 kg · 28,4% mỡ · Xác nhận 27/09/2026",
+    summary: "59,8 kg, 28,4% mỡ, xác nhận 27/09/2026",
   },
   {
     name: "Minh Khoa",

@@ -32,7 +32,6 @@ export default function VerifiedWorkflowSection() {
       aria-labelledby="workflow-title"
     >
       <div className="fs-workflow-heading">
-        <p>LUỒNG ĐÃ ĐƯỢC KIỂM THỬ</p>
         <h2 id="workflow-title">
           Từ một lời mời.
           <br />
@@ -46,10 +45,9 @@ export default function VerifiedWorkflowSection() {
         </div>
       </div>
       <div className="fs-workflow-steps">
-        {steps.map(({ number, title, description, icon: Icon }, index) => (
-          <article key={number}>
+        {steps.map(({ title, description, icon: Icon }, index) => (
+          <article key={title}>
             <div className="fs-workflow-step-top">
-              <span>{number}</span>
               <Icon size={22} aria-hidden="true" />
             </div>
             <h3>{title}</h3>

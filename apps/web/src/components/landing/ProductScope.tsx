@@ -46,7 +46,6 @@ export default function ProductScope() {
   return (
     <section className="fs-section fs-scope fs-container" aria-labelledby="scope-title">
       <div className="fs-scope-heading">
-        <p className="fs-eyebrow">LỘ TRÌNH SẢN PHẨM RÕ RÀNG</p>
         <h2 id="scope-title">
           Biết điều gì đang có.
           <br />

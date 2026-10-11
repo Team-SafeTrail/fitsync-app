@@ -2,9 +2,6 @@ import Link from "next/link";
 import {
   ArrowUpRight,
   ArrowRight,
-  BadgeCheck,
-  Send,
-  UserPlus,
 } from "lucide-react";
 import ProductPreview from "./ProductPreview";
 
@@ -16,16 +13,11 @@ export default function HeroSection() {
           <span className="fs-eyebrow-line" /> DÀNH CHO HUẤN LUYỆN VIÊN VIỆT NAM
         </p>
         <h1>
-          Bớt việc quản lý.
-          <br />
-          <span>
-            Thêm giờ
-            <br className="fs-desktop-break" /> huấn luyện.
-          </span>
+          Bớt việc quản lý. <span>Thêm giờ huấn luyện.</span>
         </h1>
         <p className="fs-hero-description">
-          Tạo hồ sơ, mời học viên và xác nhận 5 chỉ số InBody trong một
-          workspace rõ ràng cho PT Việt và học viên của họ.
+          Tạo hồ sơ, mời học viên và xác nhận InBody trong một workspace rõ
+          ràng cho cả hai.
         </p>
         <div className="fs-actions">
           <Link className="fs-button" href="/register">
@@ -38,20 +30,6 @@ export default function HeroSection() {
       </div>
       <div className="fs-hero-product">
         <ProductPreview />
-      </div>
-      <div className="fs-hero-bottom">
-        <span>MỘT LUỒNG. HAI GÓC NHÌN.</span>
-        <div>
-          <span>
-            <UserPlus size={17} /> Tạo hồ sơ
-          </span>
-          <span>
-            <Send size={17} /> Mời an toàn
-          </span>
-          <span>
-            <BadgeCheck size={17} /> Xác nhận InBody
-          </span>
-        </div>
       </div>
     </section>
   );
