@@ -1,8 +1,9 @@
 # FitSync project handoff
 
-**Updated:** 2026-10-04
-**Target branch:** `main`
-**Current milestone:** M4 OCR review in final approval — M3 engagement remains verified
+**Updated:** 2026-10-11  
+**Target branch:** `main`  
+**Current cycle:** Week 5 (W05 Active Sprint / Outcome OC1 Focus)  
+**Trello Board State:** 83 active cards across 8 lists synchronized ([TRELLO_BOARD_STATE.md](file:///c:/LEARNING/FPT_NVH/FAL2026/EXE201/project/fitsync-app/docs/TRELLO_BOARD_STATE.md))  
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
 
@@ -23,13 +24,28 @@ When documents disagree, use this order:
 
 Earlier coursework claims about features, pricing, platforms, or outcomes do not override the active MVP plan.
 
-## Live delivery state
+## Live delivery state (Week 5 Active Status)
 
-- `main` is currently at `c863954`, with both [PR #12](https://github.com/Team-SafeTrail/fitsync-app/pull/12) (Huy — Issue #3) and corrective [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) (Hưng — M4 backend security gates) merged and accepted. The local database suite passes all 111 pgTAP security and RLS tests.
-- [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11) (Khai — Issue #4) completed Round 3 polish at commit `f41187c`. All blockers (mock adapter wiring, E2E assertion, test env, strict types) were resolved. All 4 quality gates pass locally (Vitest 33/33, typecheck 0, lint 0, build 13/13).
-- PR #11 is marked **APPROVED** by Tech Lead Việt; awaiting Hưng's final sign-off before merging into `main` and closing Issue #4.
-- W05 Lecturer presentation slot is frozen for **16:00 – 16:30 Thursday, 2026-10-08**.
-- Immediate handoff: Hưng confirms review on PR #11; merge into `main` and close Issue #4. Team focuses on the W05 30-minute Google Slides deck and script, while supporting Hưng on the OCR benchmark (Issue #2).
+- **Trạng thái mã nguồn GitHub & Kết quả Review PRs (2026-10-11):**
+  - `main` đã merge thành công [PR #12](https://github.com/Team-SafeTrail/fitsync-app/pull/12) (Issue #3), [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) (M4 backend security gates) và [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11) (Issue #4: Khai — OCR Review UI & Playwright E2E ở commit `21c55ce`). Toàn bộ 111 bài test pgTAP RLS pass 100%.
+  - Tech Lead Việt (`Am2uocVi3t`) đã hoàn tất rà soát kỹ thuật độc lập và submit review chính thức trên GitHub cho toàn bộ 7 Pull Requests đang mở của Hưng (`hei1sme`):
+    - **[PR #14](https://github.com/Team-SafeTrail/fitsync-app/pull/14) (`fix/m4-verification-docs`): APPROVED ✅** — Căn chỉnh Playwright expectations sau đợt merge M4 và cập nhật tài liệu trung thực. Là prerequisite P0 chuẩn bị merge vào `main`.
+    - **[PR #25](https://github.com/Team-SafeTrail/fitsync-app/pull/25) (`docs/unified-coaching-plan`): APPROVED ✅** — Định hướng sản phẩm sang Unified Coaching Timeline 1:1 và Mobile Companion app (Expo/React Native) theo ADR-004.
+    - **[PR #17](https://github.com/Team-SafeTrail/fitsync-app/pull/17) (`feat/ui-16-design-foundation`): APPROVED ✅** — UI Foundation v4.0.0, primitives accessible, contrast $\ge 4.5:1$, dialog trap focus.
+    - **[PR #18 $\rightarrow$ PR #19](https://github.com/Team-SafeTrail/fitsync-app/pull/19) (`feat/ui-18-public-surfaces`): APPROVED ✅** — Remake landing, login, register, loại bỏ 3,744 dòng CSS legacy.
+    - **[PR #20 $\rightarrow$ PR #21](https://github.com/Team-SafeTrail/fitsync-app/pull/21) (`feat/ui-20-public-tour`): APPROVED ✅** — Remake tour mẫu `/app/*` cho PT & Trainee, giao diện responsive.
+    - **[PR #22 $\rightarrow$ PR #23](https://github.com/Team-SafeTrail/fitsync-app/pull/23) (`feat/ui-22-workspace-surfaces`): APPROVED ✅** — Remake workspace xác thực (`/workspace/*`), 11/11 Playwright tests pass.
+    - **[PR #15](https://github.com/Team-SafeTrail/fitsync-app/pull/15) (`feat/m4-ocr-benchmark`): COMMENTED / HELD IN DRAFT ⏳** — Đánh giá Tesseract vs EasyOCR. Giữ nguyên `provider_unavailable` (manual fallback). Chờ buổi đối soát độc lập 30 ảnh ground-truth giữa Hưng & Việt trước khi kích hoạt.
+- **Thứ tự Merge đề xuất (Merge Execution Order):**
+  1. Merge PR #14 vào `main` $\rightarrow$ gỡ blocker test suite.
+  2. Retarget và merge PR #25 vào `main` $\rightarrow$ chốt chiến lược Unified Coaching & Expo.
+  3. Merge lần lượt chuỗi UI: PR #17 $\rightarrow$ PR #19 $\rightarrow$ PR #21 $\rightarrow$ PR #23 vào `main`.
+  4. Rebase PR #15 trên `main` mới và hoàn tất reconciliation ground-truth.
+- **Trello Board Sync:** Bảng Trello [FitSync — EXE201 Delivery](https://trello.com/b/nkyUhT5E/fitsync-exe201-delivery) hiện đạt 83 thẻ hoạt động (5 Guide, 41 Backlog, 0 To Do, 5 Doing, 7 Review, 4 Done, 3 Blocked, 18 Reports & Evidence). Phân định rõ ràng giữa Trello (tiến độ/cam kết), GitHub (kỹ thuật/mã nguồn), Discord (giao tiếp), và Repo (hành vi thực tế).
+- **Google Form Báo cáo Tuần 4:** Đã chuẩn hóa toàn bộ 6 câu trả lời nộp Biểu mẫu Tuần 4 ([Week4_EXE201.pdf](file:///c:/LEARNING/FPT_NVH/FAL2026/EXE201/project/docs/lecture/Week4_EXE201.pdf)) trong [outputs/Week4_EXE201.txt](file:///c:/LEARNING/FPT_NVH/FAL2026/EXE201/project/outputs/Week4_EXE201.txt) và [outputs/EXE201_Full_Guide.md](file:///c:/LEARNING/FPT_NVH/FAL2026/EXE201/project/outputs/EXE201_Full_Guide.md).
+- **Tiến độ Báo cáo Giảng viên Tuần 5:**
+  - Khung giờ thuyết trình 30 phút chính thức: **16:00 – 16:30 Thứ Năm, 08/10/2026**.
+  - Thiết kế bộ 17 Slide (`docs/W05_SLIDE_DESIGN_BRIEF_FOR_TOAN.md`), Kịch bản chi tiết (`docs/W05_PRESENTATION_SCRIPT_30MIN.md`), và Cẩm nang tổng hợp (`docs/W05_SLIDE_AND_SCRIPT_HANDBOOK_17SLIDES.md`) đã được hoàn thiện phục vụ Toàn và cả nhóm luyện tập.
 
 ## Repository map
 
@@ -202,16 +218,16 @@ The local database contains only synthetic accounts created by the final E2E run
 
 ## Repository checkpoint
 
-The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, and the initial M4 backend merge is `6036053`. The corrective branch `fix/m4-ocr-backend-gates` and [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) restore its install, authorization, and verification gates. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status`, open pull requests, and the latest `main` before beginning work. The live-delivery section above is a snapshot, so verify GitHub again if work resumes after 2026-10-02.
+The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 backend merge is `6036053`, corrective PR #13 is `c863954`, and PR #11 (OCR Review UI & Playwright E2E) is merged at `21c55ce`. PRs #14, #25, #17, #19, #21, #23 have been approved by Tech Lead Việt, and PR #15 benchmark is reviewed in Draft. The shared private repository is `Team-SafeTrail/fitsync-app`.
 
 ## Known debt and risks
 
-- `npm audit` previously reported five dependency findings (four high and one critical). The suggested blanket fix includes a breaking Next.js major upgrade. Handle this as a focused dependency-upgrade task rather than running `npm audit fix --force` during feature milestones.
+- `npm audit` currently reports 13 findings (2 moderate, 10 high, 1 critical), primarily in Next.js 14 and Tailwind/PostCSS dependencies. Suggested comprehensive fixes require major upgrades to Next.js 16 and Tailwind 4; dependency migration should be handled in a dedicated chore rather than mixed into feature milestones.
 - Password reset remains listed in the broader frozen MVP scope but is not part of the completed M1–M3 slices.
-- App Store and Play Store applications do not exist yet. The mobile app remains a later milestone using the same backend and identities.
+- App Store and Play Store applications do not exist yet. As decided in ADR-004, the mobile companion will use Expo/React Native against the same Supabase backend and auth.
 - Public pricing remains a hypothesis until a payment flow and pilot evidence exist.
-- The OCR provider remains unselected until the consented benchmark passes. Production therefore returns a recoverable unavailable state rather than synthetic metrics.
-- PR #11 still contains a duplicate OCR schema and storage contract. It must rebase on the corrected Issue #3 backend, remove overlapping migrations/actions, and pass its real browser flow before merge.
+- The OCR provider remains unselected pending independent 2-person reconciliation on the synthetic InBody benchmark dataset. Production returns `provider_unavailable` with manual fallback.
+- PR #11 has been successfully merged (`21c55ce`). Pending PR #14 must be merged next to restore green Playwright assertions on `main`.
 
 ## Resume commands
 
