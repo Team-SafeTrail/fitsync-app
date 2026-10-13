@@ -1,281 +1,302 @@
 ---
-version: 3.1.0
-name: FitSync Carbon Interface
-description: Dark data-forward design system for FitSync. Rich anthracite background, amber-gold accent, warm ivory typography, oversized hero type, asymmetric layouts, scroll-driven animations. Premium health-tech aesthetic that communicates trust and technical capability.
+version: 4.0.0
+name: FitSync Adaptive Interface
+description: Calm, direct, adaptive interface system for a trust-sensitive Vietnamese coaching workspace. Warm neutral surfaces, restrained amber action color, system-led UI typography, honest state language, and accessible motion/material fallbacks.
 colors:
-  background: "#0E0E12"
-  surface: "#18181D"
-  surface_elevated: "#1F1F25"
-  surface_muted: "#13131A"
-  border: "#28282E"
-  border_strong: "#3A3A42"
-  border_accent: "rgba(245, 166, 35, 0.2)"
-  text_primary: "#ECEAE6"
-  text_secondary: "#9A968F"
-  text_muted: "#5C5A55"
-  primary: "#F5A623"
-  primary_hover: "#FFB83D"
-  primary_light: "rgba(245, 166, 35, 0.1)"
-  primary_foreground: "#0E0E12"
-  accent: "#34D399"
-  accent_light: "rgba(52, 211, 153, 0.1)"
-  success: "#34D399"
-  success_light: "rgba(52, 211, 153, 0.08)"
-  warning: "#F59E0B"
-  warning_light: "rgba(245, 158, 11, 0.08)"
-  destructive: "#EF4444"
-  destructive_light: "rgba(239, 68, 68, 0.08)"
-  glow_primary: "rgba(245, 166, 35, 0.05)"
-  glow_accent: "rgba(52, 211, 153, 0.05)"
+  light-canvas: "#F7F4EE"
+  light-surface: "#FFFEFA"
+  light-surface-raised: "#FFFFFF"
+  light-surface-muted: "#EEEAE2"
+  light-text-primary: "#211F1B"
+  light-text-secondary: "#554F46"
+  light-text-muted: "#6B6358"
+  light-border: "#C9C1B5"
+  light-border-strong: "#82786B"
+  light-brand: "#8A4F00"
+  light-brand-hover: "#6E3E00"
+  light-brand-soft: "#F5E4C7"
+  light-on-brand: "#FFFFFF"
+  light-success: "#217A4A"
+  light-success-soft: "#E4F2E9"
+  light-warning: "#805600"
+  light-warning-soft: "#F8EBCB"
+  light-danger: "#B42318"
+  light-danger-soft: "#FBE8E5"
+  light-on-danger: "#FFFFFF"
+  dark-canvas: "#11110F"
+  dark-surface: "#1C1B18"
+  dark-surface-raised: "#26231F"
+  dark-surface-muted: "#171613"
+  dark-text-primary: "#F5F1E8"
+  dark-text-secondary: "#CBC3B7"
+  dark-text-muted: "#A79E91"
+  dark-border: "#474139"
+  dark-border-strong: "#81786B"
+  dark-brand: "#F2A33A"
+  dark-brand-hover: "#FFB85C"
+  dark-brand-soft: "#332412"
+  dark-on-brand: "#211406"
+  dark-success: "#62CF8D"
+  dark-success-soft: "#173323"
+  dark-warning: "#F5BD55"
+  dark-warning-soft: "#382B13"
+  dark-danger: "#FF9389"
+  dark-danger-soft: "#3B1D1A"
+  dark-on-danger: "#21110F"
 typography:
-  font_family_display: "'Space Grotesk', 'Inter', sans-serif"
-  font_family: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-  font_family_mono: "'JetBrains Mono', 'SF Mono', Consolas, monospace"
-  headings:
-    hero: { size: "clamp(40px, 7vw, 72px)", weight: 700, line_height: 1.05, letter_spacing: "-0.04em" }
-    h1: { size: "36px", weight: 700, line_height: "44px", letter_spacing: "-0.03em" }
-    h2: { size: "28px", weight: 700, line_height: "36px", letter_spacing: "-0.025em" }
-    h3: { size: "20px", weight: 600, line_height: "28px", letter_spacing: "-0.015em" }
-    h4: { size: "16px", weight: 600, line_height: "24px", letter_spacing: "-0.01em" }
-  body:
-    base: { size: "15px", weight: 400, line_height: "24px" }
-    medium: { size: "15px", weight: 500, line_height: "24px" }
-    small: { size: "13px", weight: 400, line_height: "20px" }
-    small_medium: { size: "13px", weight: 500, line_height: "20px" }
-    caption: { size: "11px", weight: 700, line_height: "14px", text_transform: "uppercase", letter_spacing: "0.08em" }
+  display-lg:
+    fontFamily: "Space Grotesk, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 3.5rem
+    fontWeight: 650
+    lineHeight: 1.04
+    letterSpacing: -0.035em
+  display-md:
+    fontFamily: "Space Grotesk, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 2.5rem
+    fontWeight: 650
+    lineHeight: 1.08
+    letterSpacing: -0.025em
+  heading-lg:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 2rem
+    fontWeight: 700
+    lineHeight: 1.15
+    letterSpacing: -0.02em
+  heading-md:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 1.5rem
+    fontWeight: 650
+    lineHeight: 1.2
+    letterSpacing: -0.015em
+  heading-sm:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 1.125rem
+    fontWeight: 650
+    lineHeight: 1.3
+    letterSpacing: -0.008em
+  body-lg:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 1.0625rem
+    fontWeight: 400
+    lineHeight: 1.55
+    letterSpacing: 0em
+  body-md:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 1rem
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: 0em
+  body-sm:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 0.875rem
+    fontWeight: 400
+    lineHeight: 1.5
+    letterSpacing: 0.005em
+  label-md:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 0.875rem
+    fontWeight: 650
+    lineHeight: 1.35
+    letterSpacing: 0.005em
+  label-sm:
+    fontFamily: "system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, sans-serif"
+    fontSize: 0.8125rem
+    fontWeight: 650
+    lineHeight: 1.4
+    letterSpacing: 0.012em
+  data-md:
+    fontFamily: "JetBrains Mono, SFMono-Regular, Consolas, monospace"
+    fontSize: 0.9375rem
+    fontWeight: 600
+    lineHeight: 1.4
+    letterSpacing: 0em
 spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "12px"
-  base: "16px"
-  lg: "24px"
-  xl: "32px"
-  2xl: "48px"
-  3xl: "64px"
-  4xl: "96px"
+  2xs: 0.25rem
+  xs: 0.5rem
+  sm: 0.75rem
+  md: 1rem
+  lg: 1.5rem
+  xl: 2rem
+  2xl: 3rem
+  3xl: 4rem
+  section: 6rem
 rounded:
-  none: "0px"
-  sm: "4px"
-  base: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "20px"
-  full: "9999px"
-shadows:
-  xs: "0 1px 2px 0 rgba(0, 0, 0, 0.3)"
-  sm: "0 2px 4px 0 rgba(0, 0, 0, 0.25)"
-  md: "0 4px 12px -2px rgba(0, 0, 0, 0.3)"
-  lg: "0 8px 24px -4px rgba(0, 0, 0, 0.4)"
-  glow: "0 0 40px rgba(245, 166, 35, 0.08)"
-  glow_accent: "0 0 30px rgba(52, 211, 153, 0.06)"
+  none: 0px
+  sm: 0.375rem
+  md: 0.625rem
+  lg: 0.875rem
+  xl: 1.25rem
+  full: 9999px
+components:
+  button-primary-light:
+    backgroundColor: "{colors.light-brand}"
+    textColor: "{colors.light-on-brand}"
+    typography: "{typography.label-md}"
+    rounded: "{rounded.md}"
+    height: 2.75rem
+    padding: 0.75rem
+  button-primary-dark:
+    backgroundColor: "{colors.dark-brand}"
+    textColor: "{colors.dark-on-brand}"
+    typography: "{typography.label-md}"
+    rounded: "{rounded.md}"
+    height: 2.75rem
+    padding: 0.75rem
+  field-light:
+    backgroundColor: "{colors.light-surface}"
+    textColor: "{colors.light-text-primary}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
+    height: 2.75rem
+    padding: 0.75rem
+  field-dark:
+    backgroundColor: "{colors.dark-surface}"
+    textColor: "{colors.dark-text-primary}"
+    typography: "{typography.body-md}"
+    rounded: "{rounded.md}"
+    height: 2.75rem
+    padding: 0.75rem
 ---
 
-# FitSync Design Specification — Carbon Interface v3.1
+# FitSync Design Specification — Adaptive Interface v4.0
 
-> **Design Theme:** Carbon Interface — Dark Data-Forward
-> **Aesthetic Philosophy:** Premium warmth via amber-gold on dark anthracite. Oversized typography-first hero. Asymmetric layouts. Scroll-driven reveals. Product-led composition, readable contrast, and locally served editorial imagery.
-> **Benchmark Invocations:** Linear.app (density), Vercel.com (dark craft), Stripe Terminal (data aesthetic), Raycast (warm dark).
+## Overview
 
----
+FitSync is a mobile-first coaching workspace for independent Vietnamese PTs managing roughly 5–20 trainees. It should feel calm, precise, trustworthy, and physically responsive. It is not a fitness social network, a medical product, or an Apple website clone.
 
-## 1. Overview & Core Design Principles
+The interface follows eight priorities: purpose, agency, responsibility, familiarity, flexibility, simplicity, craft, and earned delight. Product truth and health-data legibility outrank decoration.
 
-1. **Dark ≠ Gloomy:** Rich anthracite `#0E0E12` with warm undertones — never cold blue-black or pure `#000000`. The warmth comes from amber accents and off-white ivory text.
-2. **Product and people lead:** Pair strong Space Grotesk headings with readable, interactive sample product views and editorial coaching imagery. Mark generated illustrations and sample data honestly.
-3. **Amber Gold as Trust Signal:** `#F5A623` conveys warmth, trustworthiness, and premium quality — appropriate for a health-data platform. Reserved for CTAs, active states, and data highlights.
-4. **Depth Without Blur:** Grain texture overlays, subtle radial glows at 5% opacity, and elevation through border + shadow — never `backdrop-filter: blur()`.
-5. **Motion as Narrative:** Scroll-driven CSS animations (GPU-accelerated) with spring easing. Every section reveals on scroll. `prefers-reduced-motion` always respected.
+Design dials:
 
----
+- `DESIGN_VARIANCE: 4/10` — preserve verified information architecture and brand recognition.
+- `MOTION_INTENSITY: 3/10` — immediate task feedback, no ornamental motion.
+- `VISUAL_DENSITY: 5/10` — efficient PT workflows with readable labels and progressive disclosure on phones.
 
-## 2. Color System & Semantic Usage
+The public tour remains visibly fixture-backed. The authenticated workspace remains real and role-aware. OCR remains an experimental, untrusted draft until a PT reviews, corrects, and explicitly confirms it.
 
-### 2.1 Backgrounds & Surfaces
-* **Base Background (`#0E0E12`):** The foundational anthracite. All pages start here.
-* **Surface (`#18181D`):** Card backgrounds, modal surfaces, input fields.
-* **Surface Elevated (`#1F1F25`):** Hovered cards, active states, dropdown menus.
-* **Surface Muted (`#13131A`):** Subtle recessed areas, code blocks, OCR terminal view.
-* **Border Default (`#28282E`):** 1px crisp dividers between cards and sections.
-* **Border Strong (`#3A3A42`):** Active input borders, focused elements.
-* **Border Accent (`rgba(245, 166, 35, 0.2)`):** Highlighted/recommended card borders.
+### Carbon v3.1 reconciliation
 
-### 2.2 Brand & Interaction Accents
-* **Amber Gold (`#F5A623`):** The signature accent. Used for primary CTAs, active indicators, progress bars, slider thumbs, and key metric highlights.
-* **Amber Hover (`#FFB83D`):** Immediate interactive feedback.
-* **Amber Glow (`rgba(245, 166, 35, 0.05)`):** Subtle radial behind hero headline and recommended pricing card.
-* **Seafoam (`#34D399`):** Health metrics, biometric data, success states, feature checkmarks.
+| Carbon v3.1 rule | v4.0 decision | Reason |
+|---|---|---|
+| Dark-only anthracite canvas | Superseded by light, dark, and system themes | PTs use FitSync across bright and dark environments; accessibility needs both |
+| Inter for all body/UI text | Superseded by the platform system stack | Faster, more native, and better matched to the approved direction |
+| Space Grotesk for headings broadly | Narrowed to brand/display moments | Keeps continuity without making operational UI feel promotional |
+| Amber `#F5A623` everywhere | Replaced by accessible theme-specific amber tokens | One hue cannot provide reliable contrast on both themes |
+| Muted text `#5C5A55` | Removed | Audit ratios around 2.56–2.73:1 fail normal-text contrast |
+| No `backdrop-filter` | Superseded only for functional floating navigation/sheets | Material may communicate hierarchy, but must have opaque fallbacks |
+| Every section reveals on scroll | Removed | Mandatory entrance motion delays reading and conflicts with restraint |
+| Hover scale/glow as default | Replaced by immediate press feedback and restrained hover | Pointer-down response matters more than decorative expansion |
+| Grain overlay on every page | Removed from the foundation | Texture must not reduce health-data clarity or add paint cost |
+| Monospace for every number | Narrowed to comparable metrics and tabular data | Dates and prose numbers should inherit readable UI typography |
 
-### 2.3 Semantic Status Colors
-* **Success (`#34D399`):** Healthy/compliant. BG: `rgba(52, 211, 153, 0.08)`.
-* **Warning (`#F59E0B`):** Attention needed. BG: `rgba(245, 158, 11, 0.08)`.
-* **Destructive (`#EF4444`):** Critical/error. BG: `rgba(239, 68, 68, 0.08)`.
+## Colors
 
-### 2.4 Text Hierarchy
-* **Primary (`#ECEAE6`):** Warm ivory. Headlines and body text. Never pure `#FFFFFF`.
-* **Secondary (`#9A968F`):** Warm mid-gray. Subtitles, descriptions, labels.
-* **Muted (`#5C5A55`):** Low-emphasis. Captions, timestamps, tertiary info.
+The warm-neutral light theme uses parchment canvas and ink text. The dark theme uses warm graphite rather than blue-black. CSS media queries follow `prefers-color-scheme`; explicit `data-theme="light|dark"` is allowed for future user preference controls.
 
----
+- Primary, secondary, and muted text meet WCAG AA on their intended canvases.
+- Strong control borders meet at least 3:1 against adjacent surfaces.
+- Theme-specific brand colors remain amber but change luminance to retain contrast.
+- Amber means primary action, active selection, or focus. It is not decorative wallpaper.
+- Green, ochre, and red remain semantic success, warning, and danger colors.
+- Never use status color alone; pair it with text, icon, or shape.
 
-## 3. Typography
+The legacy `--color-*` Carbon aliases remain temporarily available only to prevent unfinished route migrations. New work uses `--fs-*` semantic variables. Each later route issue removes its legacy dependencies.
 
-### 3.1 Font Stack
-* **Display / Headlines:** Space Grotesk (Google Fonts) — tech-forward, geometric, sharp character.
-* **Body / UI:** Inter — crisp, professional, excellent tabular numerals.
-* **Monospace / Data:** JetBrains Mono — for pricing, metrics, biometric values.
+## Typography
 
-### 3.2 Scale
-```
-Hero:  clamp(40px,7vw,72px) / 1.05  | Bold (700)   | Page Hero Headline
-H1:   36px / 44px                   | Bold (700)    | Section Headers
-H2:   28px / 36px                   | Bold (700)    | Card Titles
-H3:   20px / 28px                   | SemiBold (600)| Subsections
-H4:   16px / 24px                   | SemiBold (600)| Small Headers
-Body: 15px / 24px                   | Regular (400) | Standard Body
-Small:13px / 20px                   | Medium (500)  | Labels, Meta
-Cap:  11px / 14px                   | Bold (700) UC | Section Tags, Badges
-Mono: 14px / 20px                   | SemiBold (600)| Metrics, Prices, Data
-```
+UI and body text use the platform system stack. Space Grotesk is reserved for the FitSync wordmark, selected landing display lines, and rare campaign-level statements. JetBrains Mono is reserved for side-by-side biometrics, prices, session counts, and other values where tabular comparison helps.
 
----
+- Default body: 16px/1.5. Do not shrink operational text below 14px.
+- Labels: 14px/1.35 with modest positive tracking.
+- Large headings tighten leading and tracking as size increases.
+- Use `rem`, `em`, and `clamp()` so browser zoom and larger text reflow naturally.
+- Use `font-variant-numeric: tabular-nums` only for comparable data columns.
+- Vietnamese diacritics must remain clear at every supported weight.
 
-## 4. Layout Architecture
+## Layout
 
-### 4.1 Landing Page Flow
-```
-┌─────────────────────────────────────────────────────┐
-│ STICKY NAV: Dark transparent → solid on scroll      │
-│ FitSync | Product  How it works  Evidence | CTA     │
-├─────────────────────────────────────────────────────┤
-│ HERO: Specific PT outcome + real activation CTA     │
-│ + Verified M2 coach and trainee product proof       │
-├─────────────────────────────────────────────────────┤
-│ HOW IT WORKS: Create trainee → invite → verify      │
-│ Three concrete steps using synthetic product data   │
-├─────────────────────────────────────────────────────┤
-│ PRODUCT PROOF: PT roster + confirmed InBody record  │
-│ Paired with the trainee's read-only mobile view     │
-├─────────────────────────────────────────────────────┤
-│ EVIDENCE: Qualified survey findings and boundaries  │
-│ No fabricated testimonials or outcome claims        │
-├─────────────────────────────────────────────────────┤
-│ SECONDARY TOUR / ROADMAP: Clearly labeled fixtures  │
-│ OCR and pricing remain prototypes or hypotheses     │
-├─────────────────────────────────────────────────────┤
-│ FINAL CTA: Create a real PT workspace               │
-│ Secondary link: view the public sample              │
-├─────────────────────────────────────────────────────┤
-│ FOOTER: Minimal dark, FitSync branding              │
-└─────────────────────────────────────────────────────┘
-```
+- Base spacing is 4px; the primary rhythm is 8px.
+- Touch targets are at least 44×44 CSS px even when the visible icon is smaller.
+- Marketing can breathe; PT workspaces prioritize scanning and comparison; trainee mobile surfaces prioritize one clear action at a time.
+- Desktop is not a stretched phone. Mobile is not a compressed desktop table.
+- Prefer `100dvh` for viewport shells and include safe-area insets for fixed mobile chrome.
+- Preserve information on mobile through compact secondary lines or disclosure; do not hide decision-critical counts.
+- Main content has a stable skip-link target and one primary landmark.
 
-### 4.2 Max Widths & Spacing
-* **Container:** `max-width: 1200px` with `padding: 0 24px`
-* **Section padding:** `96px 0` (desktop) / `64px 0` (mobile)
-* **Card padding:** `24px` (desktop) / `20px` (mobile)
-* **Card gap:** `20px`
+## Elevation & Depth
 
----
+Hierarchy comes first from spacing, tonal surfaces, and borders. Shadows are quiet and limited to floating layers.
 
-## 5. UI Component Specifications
+- Cards do not automatically elevate on hover.
+- Modal tasks use a scrim and one raised surface.
+- Translucency is allowed only for functional floating navigation, toolbars, or sheets.
+- `prefers-reduced-transparency: reduce` removes blur and uses opaque surfaces.
+- `prefers-contrast: more` uses opaque surfaces, stronger borders, and more prominent focus rings.
+- Content must remain legible when blur, animation, or advanced effects are unavailable.
 
-### 5.1 Primary Buttons
-* **Base:** Background `#F5A623`, Text `#0E0E12`, Border-radius `8px`, Height `44px`, Padding `0 24px`, Font `15px SemiBold`.
-* **Hover:** Background `#FFB83D`, Box-shadow `0 0 20px rgba(245, 166, 35, 0.15)`.
-* **Focus:** `2px outline #F5A623`, offset `2px`.
-* **Disabled:** Background `#28282E`, Text `#5C5A55`, Cursor `not-allowed`.
+## Shapes
 
-### 5.2 Secondary / Ghost Buttons
-* **Base:** Background `transparent`, Text `#ECEAE6`, Border `1px solid #3A3A42`, Height `44px`, Padding `0 24px`, Border-radius `8px`.
-* **Hover:** Background `#1F1F25`, Border-color `#5C5A55`.
+- Controls use a sober 10px radius.
+- Panels use 14px; large sheets may use 20px where the size communicates a separate layer.
+- Pills are reserved for statuses, filters, and compact segmented controls.
+- Avoid nested rounded-card soup. Prefer grouping by spacing and dividers.
 
-### 5.3 Cards (Landing Page)
-* **Base:** Background `#18181D`, Border `1px solid #28282E`, Border-radius `12px`, Padding `24px`.
-* **Hover:** Border-color `#3A3A42`, Box-shadow `0 4px 12px -2px rgba(0,0,0,0.3)`.
-* **Highlighted:** Border `1px solid rgba(245, 166, 35, 0.3)`, Box-shadow `0 0 40px rgba(245, 166, 35, 0.06)`.
+## Components
 
-### 5.4 Input Fields
-* **Base:** Background `#13131A`, Border `1px solid #28282E`, Border-radius `8px`, Height `44px`, Color `#ECEAE6`.
-* **Focus:** Border-color `#F5A623`, Box-shadow `0 0 0 2px rgba(245, 166, 35, 0.1)`.
-* **Placeholder:** Color `#5C5A55`.
+### Button and icon button
 
-### 5.5 Section Tags (Captions)
-* **Style:** `11px`, `700 weight`, `uppercase`, `0.08em letter-spacing`, Color `#F5A623`.
+- Minimum target: 44×44px.
+- Primary actions use theme-specific amber with a tested foreground.
+- Secondary actions use a strong border; ghost actions retain a visible hover/focus state.
+- Press feedback begins on pointer-down with a restrained `scale(0.98)` and remains interruptible.
+- Disabled state is conveyed by native `disabled`, reduced emphasis, and cursor behavior.
+- Icon-only buttons require an accessible name.
 
-### 5.6 Status Badges
-* **Pill:** Height `24px`, Padding `4px 10px`, Rounded `9999px`, Font `11px SemiBold`.
-* **Success:** Text `#34D399`, BG `rgba(52, 211, 153, 0.1)`, Border `1px solid rgba(52, 211, 153, 0.2)`.
-* **Warning:** Text `#F59E0B`, BG `rgba(245, 158, 11, 0.1)`, Border `1px solid rgba(245, 158, 11, 0.2)`.
-* **Destructive:** Text `#EF4444`, BG `rgba(239, 68, 68, 0.1)`, Border `1px solid rgba(239, 68, 68, 0.2)`.
+### Field and file upload
 
----
+- Every control has a persistent label.
+- Hint and error text use stable IDs through `aria-describedby`; errors use `aria-invalid`.
+- File upload names accepted formats and size limits before selection and exposes the selected filename.
+- Focus uses a high-contrast outer ring, not only a border-color change.
 
-## 6. Animation & Motion System
+### Alert and status
 
-### 6.1 Scroll-Driven Reveals
-```css
-.reveal {
-  animation: revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-timeline: view();
-  animation-range: entry 10% cover 30%;
-}
-@keyframes revealUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-```
+- `status` is polite; validation/fatal errors use `alert` only when interruption is warranted.
+- Status color is paired with a heading or direct message.
+- Copy states what happened and the next safe action.
 
-### 6.2 Staggered Reveals
-Children use `animation-delay` at `150ms` intervals for triptych/pricing cards.
+### Dialog and sheet
 
-### 6.3 Micro-Interactions
-* **Button hover:** `scale(1.02)` + subtle glow, `0.2s ease-out`
-* **Card hover:** border-color transition + elevation increase, `0.25s ease`
-* **Slider interaction:** thumb scales up, track fills with amber gradient
-* **Number counters:** CSS `@property` animated count-up on viewport entry
+- Initial focus enters the task, Tab/Shift+Tab remain inside, Escape dismisses when permitted, and focus returns to the trigger.
+- Background scrolling is contained while a modal is open.
+- Entry and exit share the same spatial path; ordinary dialogs use restrained opacity/translate transitions, not springs.
+- Sheets may use translucent material only with opaque reduced-transparency and increased-contrast fallbacks.
 
-### 6.4 Reduced Motion
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
+### Empty, loading, recoverable error, and fatal error
 
----
+- Empty states explain what belongs here and offer one truthful next step.
+- Loading preserves layout where possible and never invents progress.
+- Recoverable errors keep entered data and offer retry or fallback.
+- Fatal errors provide a safe exit and do not expose internal details.
 
-## 7. Strict Do's and Don'ts
+## Do's and Don'ts
 
-### ❌ Strict Don'ts (Banned Patterns)
-* **NO Pure White Background:** Do not use `#FFFFFF` as any section background.
-* **NO Purple/Violet:** No `#8B5CF6`, no indigo, no magenta. Not even as a subtle tint.
-* **NO Glassmorphism:** Do not use `backdrop-filter: blur()` on any landing page element.
-* **Asset integrity:** Use local product captures or functional sample views. Coaching imagery may be original or generated editorial illustration, never presented as a customer endorsement.
-* **NO Equal-Width Feature Cards:** The 3-column equal grid is a template trap. Use asymmetric widths.
-* **NO Cold Blue-Black Background:** Background must be warm-tinted anthracite, never cold.
-* **NO Mesh/Aurora Gradients:** No floating colored blobs.
+### Do
 
-### ✅ Strict Do's
-* **DO Use Warm Ivory Text:** `#ECEAE6` for primary text, never pure `#FFFFFF`.
-* **DO Add Grain Texture:** Subtle noise overlay at 3-5% opacity for tactile depth.
-* **DO Animate on Scroll:** Every section must reveal with scroll-driven animation.
-* **DO Use Amber for Focus States:** All interactive focus indicators use the amber accent.
-* **DO Support `prefers-reduced-motion`:** All animations must be disabled for accessibility.
-* **DO Use Monospace for Data:** All numbers, prices, and biometric values in JetBrains Mono.
+- Keep Vietnamese product language natural and consistent.
+- Preserve explicit real-data versus fixture-data labeling.
+- Keep OCR labeled experimental and draft until confirmation.
+- Use immediate press feedback, visible keyboard focus, and direct labels.
+- Respect `prefers-reduced-motion`, `prefers-reduced-transparency`, and `prefers-contrast`.
+- Use local assets, Lucide icons, and existing dependencies unless a documented need proves otherwise.
+- Keep Server Components as the default and isolate interactive client primitives.
 
+### Don't
 
-## Landing implementation v4 — post-M2 acquisition alignment
-
-The 2026-09-27 research report and verified M2 workflow guide this revision. The marketing page uses scoped `.fs-landing` styles so product styling remains isolated. Keep charcoal and amber, 1240px containers, 20px mobile gutters, 44–80px responsive display type, and 16–18px marketing body copy. Green remains semantic status only. Existing fonts and Lucide icons remain.
-
-All marketing copy is Vietnamese. The primary action is “Tạo workspace PT” linking to `/register`, because this is the real activation path available today. The secondary action is “Xem bản mẫu” linking to the clearly labeled fixture-backed `/app/dashboard`. Do not call registration a free trial or pilot until those operations are defined and supported.
-
-The hero and first product story must show the verified M2 loop: a PT roster, a secure invitation, manual entry and confirmation of five InBody metrics, and the trainee's read-only verified record. Use synthetic data and keep product text readable at mobile and desktop sizes. `/app/*` remains useful as an optional interactive tour, but it must not visually compete with the primary activation action.
-
-Simulated OCR, the assumption-based ROI estimator, and proposed pricing may remain as lower-priority prototype or roadmap material only when their status is unmistakable. They must not be the first proof of a working product. Do not show payment QR codes, invented customer proof, unsupported accuracy claims, implied automatic OCR, or fake submission success.
-
-Research evidence must show its denominator and describe the source as survey submissions, never customers or verified coaches. Publish aggregate counts only unless a separate consent record explicitly permits a named quotation, image, or testimonial. Survey evidence establishes the problem; it does not establish product outcomes.
-
-Use CSS for control transitions and a short initial entrance, with reduced-motion support. Content remains visible without animation. Images require responsive sizes and dimensions. Interactive previews must either reflect verified M2 behavior or be labeled as fixtures. Prefer sanitized product captures or faithful UI compositions from `/workspace` over screenshots of nonexistent capabilities.
+- Do not fabricate outcomes, customers, pricing, trials, OCR capability, Zalo automation, medical advice, or mobile-app availability.
+- Do not use decorative glass, aurora/mesh gradients, fake device mockups, or mandatory page-entry animation.
+- Do not use `transition-all`, looping bounce, or motion that locks input.
+- Do not rely on hover or color alone.
+- Do not hide critical PT decision data on mobile.
+- Do not expose tokens, private paths, signed URLs, provider payloads, or real health information in UI evidence.
+- Do not change authorization, RLS, server validation, domain rules, or database behavior for visual convenience.
