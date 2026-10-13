@@ -26,6 +26,7 @@ Executable code, migrations, and tests take precedence over prose when they disa
 
 - [ADR-001: Monorepo with a modular monolith backend](architecture/adr-001-monorepo-and-modular-monolith.md)
 - [ADR-002: OCR drafts behind a server-only provider adapter](architecture/adr-002-ocr-drafts-behind-provider-adapter.md)
+- [ADR-003: Proposed Android packaging path](architecture/adr-003-android-packaging-path.md)
 
 ## Research and evidence
 
