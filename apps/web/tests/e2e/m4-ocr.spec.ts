@@ -68,11 +68,11 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
 
     // We passed a clean scenario, so we wait for success
     await expect(ptPage.locator('text=Tải ảnh thành công')).toBeVisible({ timeout: 10000 });
-    await expect(ptPage.locator('text=Bản nháp OCR')).toBeVisible();
+    await expect(ptPage.getByText('(Bản nháp OCR)', { exact: true })).toBeVisible();
 
     // 5. Correction (verify draft data populated and edit it)
     const weightInput = ptPage.locator('input[name="weightKg"]');
-    await expect(weightInput).toHaveValue('70.5'); // clean scenario default
+    await expect(weightInput).toHaveValue('70'); // deterministic clean scenario default
     await weightInput.fill('71.5');
 
     // Confirmation
@@ -89,7 +89,9 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
       buffer: badJpeg,
     });
     
-    await expect(ptPage.locator('text=Chữ ký nhị phân của tệp không khớp')).toBeVisible();
+    await expect(
+      ptPage.getByText('Nội dung tệp không khớp với phần mở rộng hoặc định dạng ảnh đã khai báo.'),
+    ).toBeVisible();
 
     // Manual fallback
     await ptPage.locator('input[name="weightKg"]').fill('80');

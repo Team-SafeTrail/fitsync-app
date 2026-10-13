@@ -1,8 +1,8 @@
 # FitSync MVP execution plan
 
 **Status:** Active implementation baseline
-**Version:** 1.4
-**Updated:** 2026-10-02
+**Version:** 1.5
+**Updated:** 2026-10-10
 **Owner:** SafeTrail
 **Supersedes for implementation:** conflicting scope, status, price, platform, and outcome statements in earlier FitSync coursework documents
 
@@ -163,7 +163,7 @@ Required isolation tests: PT A cannot read or mutate PT B’s trainee; trainee A
 
 ### EXE201 schedule overlay
 
-The team confirmed that it is currently in Week 4, OC1 is assessed during Weeks 5–7, and OC2 plus OC3 are assessed during Weeks 13–14. Trello is required for course tracking. The week-by-week ownership, Trello contract, Discord routing, and evidence gates are in [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md).
+The repository planning cycle is currently Week 5, following the team's confirmed Week 4 checkpoint; official LMS dates remain authoritative. OC1 is assessed during Weeks 5–7, and OC2 plus OC3 during Weeks 13–14. Trello is required for course tracking. The week-by-week ownership, Trello contract, Discord routing, and evidence gates are in [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md).
 
 This schedule does not change the dependency order above. M4 must retain mandatory PT review and its privacy gate; M5 must define safe measurement before analytics evidence; M6 must reconcile genuine payments before revenue is claimed; and the Android path must be chosen from the current application constraints before scaffolding a mobile client.
 
@@ -201,7 +201,7 @@ Every milestone must pass lint, TypeScript, focused unit tests for domain rules,
 
 M0 through M3 and the post-M2 landing conversion checkpoint are complete. Their verified outcomes are consolidated in `docs/HANDOFF.md`; the removed implementation checklists remain available in Git history.
 
-M4 OCR is in progress. Its private storage, normalized-attempt persistence, server-only write boundary, and atomic confirmation foundation are implemented, while provider benchmarking and the complete review UI/browser flow remain outstanding. Follow `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`; keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
+M4 OCR is in progress. Private storage, normalized-attempt persistence, the server-only write boundary, atomic confirmation, and the review/correction interface are implemented. A deterministic test-only adapter now verifies upload, draft correction, explicit confirmation, signature rejection, and manual fallback in Chromium. Provider benchmarking, production adapter selection, approved-data governance, measured failure/accuracy/latency evidence, and OCR-specific desktop/mobile proof remain outstanding. Follow `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`; keep mandatory PT review, consented benchmark evidence, recoverable failure behavior, and the existing manual-entry path as its gates. Do not pull payment, analytics, or Expo work forward with OCR.
 
 ## 14. Change control
 

@@ -1,6 +1,6 @@
 # Paste-ready prompt: refresh the FitSync EXE201 Trello board
 
-Paste everything inside the prompt block into the ChatGPT conversation connected to Trello. It refreshes the existing board into a Kanban workflow while preserving its history.
+Paste everything inside the prompt block into the ChatGPT conversation connected to Trello. It audits and aligns the existing Kanban board with the verified Week 5 repository state while preserving its history.
 
 ```text
 You are operating my connected Trello account for the FitSync EXE201 project. Refresh the existing FitSync board into a Kanban board that the team can operate daily and the lecturer can audit weekly. Execute the changes; do not only describe them.
@@ -115,8 +115,8 @@ W03 candidates:
    Evidence candidates: landing checkpoint `8c0ee7e`, pull requests #6–#8, README and team playbook.
    Evidence owner: Việt. Contributors: Khai, Toàn. Reviewer: Hưng.
 
-CURRENT WEEK 4
-Reuse matching existing cards and place ready work in TO DO THIS WEEK. Preserve actual in-progress/review status when evidence supports it.
+WEEK 4 CLOSEOUT
+Reuse matching existing cards and preserve their history. Update status only from the evidence below; do not rewrite original dates or comments.
 
 1. `[W04][OC1] Freeze OC1 scope and evidence matrix`
    Owner: Việt. Contributors: all. Reviewer: Hưng.
@@ -129,25 +129,30 @@ Reuse matching existing cards and place ready work in TO DO THIS WEEK. Preserve 
 3. `[W04][OC1] Build private OCR data foundation`
    Owner: Huy. Corrective contributor: Hưng. Independent reviewer: Việt. Link Issue #3 and corrective PR #13.
    Checklist: versioned migration; private bucket; bounded statuses/errors; assigned-PT RLS; server file validation; generated types; cross-tenant pgTAP.
-   Current state: Issue #3 is reopened; PR #13 has green CI and is waiting for independent review. Keep the card in REVIEW until the corrective PR is accepted and merged.
+   Verified state: PR #13 was independently accepted and merged at `c863954` on 2026-10-03, and Issue #3 is closed. Move to DONE only when the card links that merge and its database/security evidence.
    Done when: extraction cannot create a verified InBody record, all security checks pass, and the independently reviewed correction is on `main`.
 4. `[W04][OC1] Prototype OCR review and decide Android constraints`
    Owner: Khai. Contributor: Huy. Reviewer: Huy. Link Issue #4.
    Checklist: upload/loading/success/low-confidence/failure states; correction; explicit confirmation; manual fallback; responsive layouts; auth/upload/camera/server/Play/build comparison.
+   Verified state: PR #11 merged at `21c55ce` on 2026-10-05 and Issue #4 is closed. The core deterministic browser flow passes after assertion maintenance; ADR-003 keeps TWA proposed until device, signed-build, Digital Asset Links, and Play Internal Testing evidence exist.
    Done when: reviewed UX states and a written packaging recommendation exist without an empty mobile scaffold.
 5. `[W04][OC1] Review truthful UI and evidence assets`
    Owner: Toàn. Contributor: Khai. Reviewer: Khai. Link Issue #5.
    Checklist: design review; Vietnamese copy audit; screenshot/store asset checklist; planned/verified labels; synthetic data; account blocker recorded.
+   Current state: Issue #5 is open and labeled BLOCKED. Keep the card in BLOCKED until its dependency and reviewer evidence are recorded.
    Done when: reviewed assets contain no unsupported claim or private data.
 
-FUTURE DELIVERABLE BACKLOG
-Create the following cards in PRODUCT BACKLOG with NOT-YET-STARTED checklists. Do not mark them complete, create fictional evidence, or assign calendar dates until official dates are known.
+CURRENT WEEK 5
+Move only ready Week 5 work into TO DO THIS WEEK. Issue #2 is ready; Issue #5 remains BLOCKED. Reuse matching cards instead of creating duplicates.
 
 W05 — M4 integration:
 - `[W05][OC1] Select OCR provider or manual-only fallback` — Owner Hưng; contributor Việt; reviewer Việt. Benchmark, denominators, failures, latency, cost, go/no-go record.
-- `[W05][OC1] Integrate secure server-only OCR draft lifecycle` — Owner Huy; contributor Hưng; reviewer Hưng. Adapter, bounded failure, private signed access, normalized draft, idempotent confirmation, RLS/storage tests.
-- `[W05][OC1] Complete OCR correction and confirmation browser flow` — Owner Khai; contributor Huy; reviewer Huy. Upload, flags, edits, fallback, reload, desktop/mobile E2E.
-- `[W05][OC1] Finalize truthful OCR copy and visuals` — Owner Toàn; contributor Khai; reviewer Khai. Accessibility, screenshots, capability labels, no unmeasured claims.
+- `[W05][OC1] Integrate secure server-only OCR draft lifecycle` — Owner Huy; contributor Hưng; reviewer Hưng. Backend foundation and synthetic adapter are implemented; keep this in REVIEW or DONE only with linked PR #13/#11 security evidence, and create no production-provider claim before Issue #2.
+- `[W05][OC1] Complete OCR correction and confirmation browser evidence` — Owner Khai; contributor Huy; reviewer Huy. Core clean draft/edit/confirm/signature-failure/manual-fallback flow passes; remaining evidence includes benchmark-driven failure states and the M4 plan's desktop/mobile proof.
+- `[W05][OC1] Finalize truthful OCR copy and visuals` — Owner Toàn; contributor Khai; reviewer Khai. Keep BLOCKED under Issue #5 until provider/fallback evidence is reviewable; then verify accessibility, screenshots, capability labels, and no unmeasured claims.
+
+FUTURE DELIVERABLE BACKLOG
+Keep Week 6 onward in PRODUCT BACKLOG with NOT-YET-STARTED checklists. Do not mark them complete, create fictional evidence, or assign calendar dates until official dates are known.
 
 W06 — OC1 release candidate:
 - `[W06][OC1] Prepare production and staging operations` — Owner Huy; contributor Hưng; reviewer Hưng. Environments, migration, secrets, backup, monitoring, rollback, smoke test.

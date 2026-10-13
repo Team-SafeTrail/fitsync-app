@@ -1,8 +1,8 @@
 # FitSync project handoff
 
-**Updated:** 2026-10-02
+**Updated:** 2026-10-10
 **Target branch:** `main`
-**Active corrective branch:** `fix/m4-ocr-backend-gates`
+**Active verification branch:** `fix/m4-verification-docs`
 **Current milestone:** M4 in progress — M3 engagement remains verified
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
@@ -26,11 +26,12 @@ Earlier coursework claims about features, pricing, platforms, or outcomes do not
 
 ## Live delivery state
 
-- `main` is currently at `6036053`, the initial Issue #3 backend merge. Do not treat its M4 security and verification gates as accepted until the corrective pull request is merged.
-- [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) at corrective commit `12d48bf` restores those gates. Its hosted CI is green and it is waiting for independent review; it must not be self-approved or merged by its author.
-- [Issue #3](https://github.com/Team-SafeTrail/fitsync-app/issues/3) is reopened and remains the tracking issue until PR #13 is independently accepted and merged.
-- PR #11 remains changes-requested at `9866324`. Do not merge it in its current form: it must first rebase on the accepted Issue #3 backend, remove the duplicate schema/server contract, and rerun its real browser workflow.
-- Immediate handoff: Việt reviews PR #13 against Issue #3 and this handoff; after acceptance, an authorized teammate merges it and closes Issue #3. Khai then rebases the OCR review work before requesting another review.
+- `main` is currently at `21c55ce`, the merge commit for [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11). There are no open pull requests as of 2026-10-10.
+- [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) merged at `c863954` on 2026-10-03 and closed Issue #3 after restoring the M4 backend security and verification gates.
+- PR #11 rebased onto that accepted backend, removed its overlapping contract, added the OCR review workflow, and merged at `21c55ce` on 2026-10-05, closing Issue #4.
+- [Issue #2](https://github.com/Team-SafeTrail/fitsync-app/issues/2) is the next ready M4 task. It remains open and assigned to Hưng and Việt for the consented-or-synthetic InBody 270 provider benchmark.
+- [Issue #5](https://github.com/Team-SafeTrail/fitsync-app/issues/5) remains open and blocked; truthful UI/evidence assets depend on the provider decision and current review evidence.
+- The active local branch repairs stale M2/M4 Playwright expectations and aligns active documentation with the merged state. The unrelated untracked `.agents/` and `skills-lock.json` are local skill configuration and must not be included without an explicit decision.
 
 ## Repository map
 
@@ -122,20 +123,28 @@ Useful survey aggregates:
 - Added M3 pgTAP/RLS, domain, and Chromium coverage for persistence, private media, cross-tenant isolation, session updates, calendar/timezone boundaries, no automatic messaging, and desktop/mobile rendering.
 - Updated the landing capability-status copy only, without changing the verified CTA hierarchy or repeating the landing redesign.
 
-### M4 — OCR backend foundation in progress
+### M4 — OCR review workflow in progress
 
 - Added the private `inbody-media` bucket, persisted normalized OCR attempts, assigned-PT read isolation, generated types, and an atomic idempotent confirmation function. M4 is not verified or user-complete yet.
 - Corrected the initial backend merge so ordinary authenticated clients cannot forge or rewrite provider output. Validated attempts are written only through the server-only service-role client after the Server Action repeats authentication, role, assignment, file-size, MIME, and binary-signature checks.
 - Added bounded provider timing, best-effort source-image cleanup when attempt persistence fails, and a 12 MB Server Action envelope for the documented 10 MB image limit.
 - The provider remains intentionally unselected. The production/default adapter returns a recoverable `provider_unavailable` result and preserves manual entry; deterministic synthetic results require explicit test-only adapter construction.
-- Replaced the broken M4 pgTAP plan with executable privilege, RLS, storage, confirmation, and cross-tenant behavior checks. PR #11 must rebase on this backend contract and remove its duplicate schema before it can be reconsidered.
+- Replaced the broken M4 pgTAP plan with executable privilege, RLS, storage, confirmation, and cross-tenant behavior checks.
+- Added responsive upload, pending, recoverable-failure, private-image preview, normalized-draft review, correction, cancellation/manual fallback, and explicit confirmation states to the existing InBody form.
+- Image preprocessing applies orientation correction and WebP conversion server-side. Browser-side MIME/size feedback supplements, but does not replace, the server-side content and signature checks.
+- The synthetic Chromium flow verifies a private upload, a populated draft, a PT edit before confirmation, a persisted OCR-sourced record, signature rejection, and continued manual entry. It does not establish production provider quality.
+- ADR-003 records TWA as the proposed smallest Android packaging candidate. It is not accepted until PWA, Digital Asset Links, physical camera/upload, signed build, and Play Internal Testing evidence exist.
 
 ## Last verified product state
 
-The following checks passed on 2026-09-28 with Node `v20.20.2` and npm `10.8.2`:
+The current M1–M4 implementation was rechecked locally on 2026-10-10 with Node `v20.20.2` and npm `10.8.2`:
 
 ```bash
-sg docker -c 'npm run db:reset && npm run db:test && npm run db:types && npx supabase db lint --local'
+npm ci
+npm run db:reset
+npm run db:test
+npx supabase db lint --local
+# Generate to a temporary stream and compare with apps/web/src/types/database.ts.
 npm run test
 npm run lint
 npm run typecheck
@@ -143,31 +152,18 @@ npm run build
 npm run test:e2e
 ```
 
-The database suite passed 82 of 82 pgTAP checks across M1–M3, and Supabase schema lint reported no errors. The domain suite passed 12 of 12 Vitest checks. Three Playwright flows passed in Chromium and demonstrated:
+Verification evidence for this checkpoint:
 
-- the landing primary CTA opens `/register`, while “Xem bản mẫu” opens the explicitly labeled fixture tour;
-- the first landing proof shows the verified M2 workflow with synthetic data rather than leading with M3 or OCR concepts;
-- the landing actions remain visible at 1440px and 390px, expose an amber keyboard focus state, and render without horizontal overflow;
-- `/app/dashboard` uses the Carbon palette on desktop and mobile without horizontal overflow;
-- PT registration, empty roster, trainee creation, and a single-use invitation;
-- trainee credential creation and account linking;
-- server rejection of physiologically inconsistent metrics without creating a record;
-- successful confirmation, persistence after reload, and PT editing of nutrition drafts;
-- trainee access to the same verified record at 430px and 390px mobile widths with no horizontal overflow;
-- PT roster access at both 1440px desktop and 390px mobile widths with no horizontal overflow;
-- invitation copy feedback, including the browser fallback used when modern clipboard permission is unavailable;
-- an unrelated PT receiving a 404 for the protected trainee route;
-- an authorized trainee submitting a note and signature-valid meal photo, with both persisting after reload;
-- the assigned PT seeing the same check-in and private image while an unrelated PT cannot read, mutate, download, or create a signed URL for them;
-- PT remaining-session updates persisting and appearing in the trainee view;
-- no warning after only two full intervening dates, then a warning on the fourth local date after three full dates have elapsed;
-- prepared-message copy feedback and an intentional Zalo link without any automatic messaging request;
-- the M3 trainee and PT activity surfaces rendering without horizontal overflow at 390px and at the 1440px desktop viewport;
-- no captured browser runtime errors.
+- Supabase reset and schema lint pass; all 111 pgTAP checks pass, including OCR privileges, RLS, private storage, confirmation idempotency, and cross-tenant denial.
+- Generated database types match the local schema.
+- All 33 Vitest domain checks pass.
+- Lint, typecheck, and the production build pass; the build contains 13 routes.
+- All four Chromium workflows pass: public activation/tour, M2 manual InBody and tenant isolation, M3 engagement/private media/timezone warnings, and the deterministic M4 OCR review flow.
+- The M4 browser test uses a deterministic adapter that is enabled only by the E2E environment. The production/default adapter still returns a recoverable unavailable state.
+- The full OCR browser path requires the server-only `SUPABASE_SERVICE_ROLE_KEY` in the local test process. Keep its value out of source control, browser bundles, logs, documentation, and chat.
+- `npm audit` currently reports 13 findings: two moderate, ten high, and one critical. No blanket or forced dependency upgrade was applied during this checkpoint.
 
-The landing component accessibility scan found no statically detectable issues across 13 files. The production build completes with the landing and fixture tour statically rendered and the invitation/workspace routes dynamically rendered. `npm audit --audit-level=high` still reports the previously documented five findings (four high and one critical); the automated fix requires a breaking Next.js major upgrade and was intentionally not run in this checkpoint.
-
-The M4 backend corrective checkpoint was verified on 2026-10-02 with Node `v20.20.2` and npm `10.8.2`. A clean `npm ci` completed on Linux; database reset and schema lint passed; all 111 pgTAP checks and 33 Vitest checks passed; lint, typecheck, and production build passed; and the three existing Chromium E2E flows passed. This proves the corrected backend foundation does not regress M1–M3, but it does not mark M4 complete because provider benchmarking and the real OCR review browser flow remain outstanding.
+These checks verify the merged backend and the synthetic review workflow; they do not complete M4. Provider benchmarking, governance approval for any real reports, a production adapter, measured provider evidence, and Android/Play proof remain open.
 
 Local Supabase endpoints when running:
 
@@ -179,9 +175,9 @@ The current shell may need `sg docker -c '<command>'` until it inherits the user
 
 ## Active milestone: M4
 
-M3 engagement is complete and verified. M4 OCR-assisted InBody entry is now in progress behind mandatory PT review and a consented benchmark. The corrected persistence and authorization foundation is implemented, but provider selection and the real OCR review UI/browser flow are not verified. Do not infer that payments, analytics, or Expo/mobile have started.
+M3 engagement is complete and verified. M4 OCR-assisted InBody entry is in progress behind mandatory PT review and a consented-or-synthetic benchmark. The corrected persistence/authorization foundation and review interface are implemented, and the deterministic synthetic browser flow is verified locally. Provider selection and production extraction remain deliberately unavailable. Do not infer that payments, analytics, or a mobile/store release have started.
 
-The team is currently in EXE201 Week 4. OC1 is assessed during Weeks 5–7, OC2 plus OC3 during Weeks 13–14, and Trello is required for course tracking. [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md) maps those deadlines to the verified product sequence, existing GitHub issues, the team's Discord channels, and evidence gates. [`trello-weekly-refresh-prompt.md`](../trello-weekly-refresh-prompt.md) contains the detailed Week 4–14 owner cards and safe instructions for refreshing the existing board around weekly lecturer review. Course targets do not override the active milestone dependencies or establish that planned capabilities already work.
+The repository planning cycle is currently EXE201 Week 5, following the confirmed Week 4 checkpoint; official LMS dates remain authoritative. OC1 is assessed during Weeks 5–7, OC2 plus OC3 during Weeks 13–14, and Trello is required for course tracking. [`EXE201-delivery-plan.md`](../EXE201-delivery-plan.md) maps those deadlines to the verified product sequence, existing GitHub issues, the team's Discord channels, and evidence gates. [`trello-weekly-refresh-prompt.md`](../trello-weekly-refresh-prompt.md) contains the Week 1–14 owner cards and safe instructions for refreshing the existing board around weekly lecturer review. Course targets do not override active milestone dependencies or establish that planned capabilities already work.
 
 M4 planning is captured in `docs/plans/m4-ocr-architecture-and-benchmark-plan.md`, `docs/plans/m4-ocr-benchmark-protocol.md`, and `docs/architecture/adr-002-ocr-drafts-behind-provider-adapter.md`. The accepted direction is a server-only provider adapter in the modular monolith, a dedicated private source-image bucket, persisted normalized drafts, and a separate atomic confirmation step that reuses the existing five-field validation. Provider selection is intentionally open until at least two candidates are measured on a locked, consented-or-synthetic InBody 270 benchmark.
 
@@ -203,16 +199,16 @@ The local database contains only synthetic accounts created by the final E2E run
 
 ## Repository checkpoint
 
-The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, and the initial M4 backend merge is `6036053`. The corrective branch `fix/m4-ocr-backend-gates` and [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) restore its install, authorization, and verification gates. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status`, open pull requests, and the latest `main` before beginning work. The live-delivery section above is a snapshot, so verify GitHub again if work resumes after 2026-10-02.
+The landing redesign, monorepo move, and verified M1/M2 slice are recorded before the post-M2 landing checkpoint `8c0ee7e`. M3 is committed at `82f9c1b`, M4 planning at `5dd2756`, the initial M4 backend merge at `6036053`, the accepted backend correction at `c863954`, and the OCR review UI merge at `21c55ce`. The shared private repository is `Team-SafeTrail/fitsync-app`; inspect `git status`, open pull requests, and the latest `main` before beginning work. This live-delivery snapshot was checked on 2026-10-10.
 
 ## Known debt and risks
 
-- `npm audit` previously reported five dependency findings (four high and one critical). The suggested blanket fix includes a breaking Next.js major upgrade. Handle this as a focused dependency-upgrade task rather than running `npm audit fix --force` during feature milestones.
+- `npm audit` reports 13 dependency findings (two moderate, ten high, and one critical). Triage and upgrade them as a focused task; do not run `npm audit fix --force` inside an active feature milestone.
 - Password reset remains listed in the broader frozen MVP scope but is not part of the completed M1–M3 slices.
 - App Store and Play Store applications do not exist yet. The mobile app remains a later milestone using the same backend and identities.
 - Public pricing remains a hypothesis until a payment flow and pilot evidence exist.
 - The OCR provider remains unselected until the consented benchmark passes. Production therefore returns a recoverable unavailable state rather than synthetic metrics.
-- PR #11 still contains a duplicate OCR schema and storage contract. It must rebase on the corrected Issue #3 backend, remove overlapping migrations/actions, and pass its real browser flow before merge.
+- The deterministic OCR browser flow covers the clean draft, a PT correction, explicit confirmation, invalid-signature rejection, and manual fallback. Additional benchmark-driven low-confidence, missing-field, timeout, and provider-failure evidence remains part of M4 exit work.
 
 ## Resume commands
 

@@ -13,7 +13,7 @@ The web baseline is implemented and verified through M3:
 - PT activity review, remaining-session updates, and a deterministic inactivity queue;
 - responsive browser coverage for PT and trainee workflows.
 
-M4 OCR-assisted InBody entry is in progress. Its private-storage, persistence, authorization, and server-boundary foundation is being corrected in [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13), which still requires independent review before it reaches `main`. No OCR provider or user-complete OCR workflow is live, and every future extraction must remain a draft until explicit PT confirmation. Payment processing, analytics, an installable Android application, and Play Store distribution are also not implemented.
+M4 OCR-assisted InBody entry is in progress. [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) merged the corrected private-storage, persistence, authorization, and server-boundary foundation, and [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11) merged the upload, draft-review, correction, explicit-confirmation, and manual-fallback interface. The core synthetic browser workflow is locally verified, but the production adapter intentionally remains unavailable until [Issue #2](https://github.com/Team-SafeTrail/fitsync-app/issues/2) benchmarks at least two candidates on an approved corpus. No OCR accuracy or latency claim, installable Android application, Play Store release, payment processing, or analytics implementation is verified yet.
 
 ## Quick start
 
@@ -83,7 +83,7 @@ Start with [the documentation index](docs/README.md). The most important documen
 - [Design specification](DESIGN.md) — visual system and interface rules
 - [Contributing guide](CONTRIBUTING.md) — branches, checks, security, and ownership
 - [Team and agent playbook](docs/TEAM_PLAYBOOK.md) — identity-based task discovery and reviewed delivery
-- [EXE201 delivery plan](EXE201-delivery-plan.md) — Week 4–14 ownership, Trello workflow, Discord routing, and evidence gates
+- [EXE201 delivery plan](EXE201-delivery-plan.md) — Week 4–14 ownership, current-week status, Trello workflow, Discord routing, and evidence gates
 - [Trello refresh prompt](trello-weekly-refresh-prompt.md) — paste-ready instructions for a Kanban board with Week 1–3 backfill and weekly lecturer reports
 
 When documents disagree, executable behavior and tests come first, followed by the MVP execution plan and accepted architecture decisions.
