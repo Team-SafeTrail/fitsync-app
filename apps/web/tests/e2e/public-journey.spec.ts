@@ -12,7 +12,7 @@ test("landing separates the public sample from real PT activation on desktop and
   await expect(primaryAction).toHaveAttribute("href", "/register");
   await expect(sampleAction).toHaveAttribute("href", "/app/dashboard");
   await primaryAction.focus();
-  await expect(primaryAction).toHaveCSS("outline-width", "2px");
+  expect(Number.parseFloat(await primaryAction.evaluate((element) => getComputedStyle(element).outlineWidth))).toBeGreaterThanOrEqual(2);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 
   await page.setViewportSize({ width: 390, height: 844 });

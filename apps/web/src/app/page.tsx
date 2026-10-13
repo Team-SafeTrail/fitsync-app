@@ -10,6 +10,7 @@ import SurveyEvidence from "@/components/landing/SurveyEvidence";
 import ProductScope from "@/components/landing/ProductScope";
 import VerifiedWorkflowSection from "@/components/landing/VerifiedWorkflowSection";
 import "./landing.css";
+import "./landing-product.css";
 
 export const metadata: Metadata = {
   title: "FitSync | Bớt việc quản lý. Thêm giờ huấn luyện.",

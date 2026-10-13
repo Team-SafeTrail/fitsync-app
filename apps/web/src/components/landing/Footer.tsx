@@ -38,7 +38,6 @@ export function ClosingSections() {
     <>
       <section id="faq" className="fs-section fs-container fs-faq">
         <div>
-          <p className="fs-eyebrow">TRƯỚC KHI BẠN BẮT ĐẦU</p>
           <h2>
             Một vài điều
             <br />

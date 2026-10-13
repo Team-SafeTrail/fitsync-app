@@ -10,7 +10,7 @@ export default function LoginPage({ searchParams }: { searchParams: { error?: st
       {configured ? (
         <AuthForm mode="login" action={login} error={searchParams.error} message={searchParams.message} />
       ) : (
-        <p role="status" className="rounded-md border border-amber-200 bg-amber-50 px-4 py-3 text-sm leading-6 text-amber-900">
+        <p role="status" className="auth-alert is-warning">
           Supabase chưa được cấu hình. Sao chép <code>apps/web/.env.example</code> thành <code>apps/web/.env.local</code> và thêm khóa dự án để bật đăng nhập.
         </p>
       )}

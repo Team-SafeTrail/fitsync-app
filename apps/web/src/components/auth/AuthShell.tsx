@@ -15,10 +15,10 @@ export default function AuthShell({ eyebrow, title, description, children }: {
             <Activity size={27} strokeWidth={2.4} />
             <span>fit<strong>sync</strong></span>
           </Link>
-          <span className="auth-status"><i /> WORKSPACE SECURE</span>
+          <span className="auth-status"><i /> Phiên bảo mật</span>
         </div>
         <div className="auth-story-copy">
-          <p>COACH &amp; CLIENT, IN SYNC.</p>
+          <p>PT VÀ HỌC VIÊN, CÙNG MỘT NHỊP</p>
           <h2>Mỗi học viên.<br /><span>Một nhịp rõ ràng.</span></h2>
           <p className="auth-story-description">
             Từ chỉ số InBody đến lần check-in gần nhất. Quản lý công việc trên laptop và tiếp tục ngay trên điện thoại.

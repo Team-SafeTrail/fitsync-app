@@ -16,7 +16,6 @@ export default function FeaturesSection() {
   return (
     <section id="product" className="fs-section fs-features fs-container">
       <div className="fs-section-heading">
-        <p className="fs-eyebrow">MỘT BẢN GHI, HAI GÓC NHÌN</p>
         <h2>
           PT xác nhận một lần.
           <br />
@@ -68,7 +67,7 @@ export default function FeaturesSection() {
             <div className="fs-message-example">
               <Scale size={17} />
               <p>
-                59,8 kg cân nặng · 22,1 kg cơ xương · 28,4% mỡ cơ thể
+                59,8 kg cân nặng, 22,1 kg cơ xương, 28,4% mỡ cơ thể
               </p>
             </div>
             <span className="fs-message-caption">
