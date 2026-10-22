@@ -99,6 +99,8 @@ export default function Footer() {
           <a href="#workflow">Cách hoạt động</a>
           <a href="#evidence">Bằng chứng</a>
           <a href="#demo">Bản mẫu OCR</a>
+          <a href="#team">Đội ngũ SafeTrail</a>
+          <a href="#contact-app">Tải Android APK & Liên hệ</a>
         </div>
         <div>
           <strong>Truy cập</strong>
@@ -107,6 +109,9 @@ export default function Footer() {
           </Link>
           <Link href="/login">
             Đăng nhập workspace <ArrowUpRight size={13} />
+          </Link>
+          <Link href="/admin">
+            Quản trị Admin <ArrowUpRight size={13} />
           </Link>
           <Link href="/app/dashboard">
             Bản mẫu PT <ArrowUpRight size={13} />
