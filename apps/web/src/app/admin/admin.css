@@ -248,7 +248,7 @@
 /* KPI Grid */
 .admin-kpi-grid {
   display: grid;
-  grid-templateColumns: repeat(auto-fit, minmax(240px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   gap: 20px;
 }
 
@@ -272,14 +272,19 @@
 
 .admin-kpi-header {
   display: flex;
-  align-items: center;
-  justifyContent: space-between;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  min-width: 0;
 }
 
 .admin-kpi-icon {
-  width: 42px;
-  height: 42px;
-  border-radius: 10px;
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  min-height: 44px;
+  flex-shrink: 0;
+  border-radius: 12px;
   display: flex;
   align-items: center;
   justifyContent: center;
@@ -291,6 +296,10 @@
   color: #94a3b8;
   text-transform: uppercase;
   letter-spacing: 0.5px;
+  line-height: 1.4;
+  flex: 1;
+  min-width: 0;
+  word-break: break-word;
 }
 
 .admin-kpi-value {
