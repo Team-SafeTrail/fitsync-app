@@ -1,7 +1,7 @@
 import "server-only";
 import { cache } from "react";
-import { getCurrentUser } from "@/lib/auth";
-import { createClient } from "@/lib/supabase/server";
+import { getWorkspaceViewer } from "@/features/workspace/data";
+import { createPrivilegedClient } from "@/lib/supabase/admin";
 
 export interface AdminKPI {
   totalPts: number;
@@ -10,6 +10,7 @@ export interface AdminKPI {
   totalRevenueVnd: number;
   activeRatePercent: number;
   ocrUsagePercent: number;
+  dataMode: "live_counts" | "synthetic";
 }
 
 export interface AdminUserItem {
@@ -37,135 +38,55 @@ export interface VietQRTransaction {
   paidAt: string;
 }
 
-// Curated seed dataset representing the active EXE201 outcome 2 verified environment
-const SEED_USERS: AdminUserItem[] = [
+const SYNTHETIC_PT_USERS: AdminUserItem[] = Array.from({ length: 4 }, (_, index) => ({
+  id: `demo-pt-${String(index + 1).padStart(2, "0")}`,
+  displayName: `PT Mẫu ${String(index + 1).padStart(2, "0")}`,
+  email: `oc2.pt${String(index + 1).padStart(2, "0")}@example.test`,
+  role: "pt",
+  phone: "Dữ liệu mô phỏng",
+  gymAffiliation: `Phòng tập mô phỏng ${String.fromCharCode(65 + index)}`,
+  status: "active",
+  inbodyCount: 0,
+  createdAt: `2026-10-${String(index + 1).padStart(2, "0")}T01:00:00Z`,
+  rlsProtected: true,
+}));
+
+const syntheticInBodyCounts = [2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 0, 0];
+const SYNTHETIC_TRAINEE_USERS: AdminUserItem[] = Array.from({ length: 12 }, (_, index) => ({
+  id: `demo-trainee-${String(index + 1).padStart(2, "0")}`,
+  displayName: `Học viên Mẫu ${String(index + 1).padStart(2, "0")}`,
+  email: `oc2.trainee${String(index + 1).padStart(2, "0")}@example.test`,
+  role: "trainee",
+  phone: "Dữ liệu mô phỏng",
+  gymAffiliation: `Phòng tập mô phỏng ${String.fromCharCode(65 + (index % 4))}`,
+  status: index >= 10 ? "warning" : "active",
+  inbodyCount: syntheticInBodyCounts[index],
+  createdAt: `2026-10-${String(index + 5).padStart(2, "0")}T01:00:00Z`,
+  rlsProtected: true,
+}));
+
+const SYNTHETIC_USERS: AdminUserItem[] = [
+  ...SYNTHETIC_PT_USERS,
+  ...SYNTHETIC_TRAINEE_USERS,
   {
-    id: "pt-001",
-    displayName: "Huỳnh Quốc Việt",
-    email: "tyviet1609@gmail.com",
-    role: "pt",
-    phone: "0908 123 456",
-    gymAffiliation: "The New Gym - Bình Thạnh",
-    status: "active",
-    inbodyCount: 6,
-    createdAt: "2026-09-15T08:00:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "pt-002",
-    displayName: "Lê Nguyễn Gia Hưng",
-    email: "hunglngse194127@fpt.edu.vn",
-    role: "pt",
-    phone: "0912 345 678",
-    gymAffiliation: "CityGym - Quận 1",
-    status: "active",
-    inbodyCount: 5,
-    createdAt: "2026-09-18T10:30:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "pt-003",
-    displayName: "Dương Quang Huy",
-    email: "huydqse180459@fpt.edu.vn",
-    role: "pt",
-    phone: "0933 888 999",
-    gymAffiliation: "Fit24 - Hoàng Sa",
-    status: "active",
-    inbodyCount: 3,
-    createdAt: "2026-09-22T14:15:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "pt-004",
-    displayName: "Lê Văn Toàn",
-    email: "toanlvse190816@fpt.edu.vn",
-    role: "pt",
-    phone: "0977 111 222",
-    gymAffiliation: "California Fitness - Pearl Plaza",
-    status: "active",
-    inbodyCount: 1,
-    createdAt: "2026-10-01T09:00:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "tr-001",
-    displayName: "Nguyễn Văn An",
-    email: "an.nguyen@gmail.com",
-    role: "trainee",
-    phone: "0981 112 233",
-    gymAffiliation: "The New Gym",
-    status: "active",
-    inbodyCount: 3,
-    createdAt: "2026-09-16T09:00:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "tr-002",
-    displayName: "Trần Thị Mai",
-    email: "mai.tran@gmail.com",
-    role: "trainee",
-    phone: "0982 223 344",
-    gymAffiliation: "The New Gym",
-    status: "active",
-    inbodyCount: 2,
-    createdAt: "2026-09-17T11:20:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "tr-003",
-    displayName: "Phạm Minh Đức",
-    email: "duc.pham@gmail.com",
-    role: "trainee",
-    phone: "0983 334 455",
-    gymAffiliation: "CityGym",
-    status: "warning",
-    inbodyCount: 2,
-    createdAt: "2026-09-20T14:00:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "tr-004",
-    displayName: "Lê Hoàng Phúc",
-    email: "phuc.le@gmail.com",
-    role: "trainee",
-    phone: "0984 445 566",
-    gymAffiliation: "CityGym",
-    status: "active",
-    inbodyCount: 1,
-    createdAt: "2026-09-21T16:45:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "tr-005",
-    displayName: "Vũ Bảo Ngọc",
-    email: "ngoc.vu@gmail.com",
-    role: "trainee",
-    phone: "0985 556 677",
-    gymAffiliation: "Fit24",
-    status: "active",
-    inbodyCount: 2,
-    createdAt: "2026-09-25T08:30:00Z",
-    rlsProtected: true,
-  },
-  {
-    id: "adm-001",
-    displayName: "Quản Trị Viên SafeTrail",
-    email: "admin@fitsync.vn",
+    id: "demo-admin-01",
+    displayName: "Quản trị viên Demo OC2",
+    email: "oc2.admin@example.test",
     role: "admin",
-    phone: "0901 234 567",
-    gymAffiliation: "FitSync HQ - ĐH FPT TP.HCM",
+    phone: "Dữ liệu mô phỏng",
+    gymAffiliation: "SafeTrail demo environment",
     status: "active",
     inbodyCount: 0,
-    createdAt: "2026-09-01T00:00:00Z",
+    createdAt: "2026-10-01T00:00:00Z",
     rlsProtected: true,
   },
 ];
 
-const SEED_TRANSACTIONS: VietQRTransaction[] = [
+const SYNTHETIC_TRANSACTIONS: VietQRTransaction[] = [
   {
     id: "tx-001",
     orderCode: "FS-VQR-20261021-001",
-    userName: "Huỳnh Quốc Việt",
+    userName: "PT Mẫu 01",
     userRole: "PT",
     planName: "Gói Huấn Luyện Viên PT Pro (1 Tháng)",
     amountVnd: 99000,
@@ -176,7 +97,7 @@ const SEED_TRANSACTIONS: VietQRTransaction[] = [
   {
     id: "tx-002",
     orderCode: "FS-VQR-20261021-002",
-    userName: "Lê Nguyễn Gia Hưng",
+    userName: "PT Mẫu 02",
     userRole: "PT",
     planName: "Gói Huấn Luyện Viên PT Pro (Gia hạn sớm -30%)",
     amountVnd: 69000,
@@ -187,7 +108,7 @@ const SEED_TRANSACTIONS: VietQRTransaction[] = [
   {
     id: "tx-003",
     orderCode: "FS-VQR-20261022-001",
-    userName: "Nguyễn Văn An",
+    userName: "Học viên Mẫu 01",
     userRole: "Học viên",
     planName: "Gói FitSync Early Bird Học Viên",
     amountVnd: 49000,
@@ -195,72 +116,54 @@ const SEED_TRANSACTIONS: VietQRTransaction[] = [
     status: "success",
     paidAt: "2026-10-22T08:05:11Z",
   },
-  {
-    id: "tx-004",
-    orderCode: "FS-VQR-20261022-002",
-    userName: "Dương Quang Huy",
-    userRole: "PT",
-    planName: "Gói Huấn Luyện Viên PT Pro (1 Tháng)",
-    amountVnd: 99000,
-    paymentMethod: "VietQR Napas247",
-    status: "success",
-    paidAt: "2026-10-22T11:45:30Z",
-  },
-  {
-    id: "tx-005",
-    orderCode: "FS-VQR-20261022-003",
-    userName: "Trần Thị Mai",
-    userRole: "Học viên",
-    planName: "Gói FitSync Early Bird Học Viên",
-    amountVnd: 49000,
-    paymentMethod: "VietQR Napas247",
-    status: "pending",
-    paidAt: "2026-10-22T15:20:00Z",
-  },
 ];
 
 export const getAdminDashboardData = cache(async () => {
-  const user = await getCurrentUser();
-  const supabase = createClient();
+  const viewer = await getWorkspaceViewer();
+  if (!viewer || viewer.profile.role !== "admin") {
+    throw new Error("Admin authorization is required.");
+  }
 
-  // Try fetching live statistics from Supabase
-  let dbPtCount = 0;
-  let dbTraineeCount = 0;
-  let dbInbodyCount = 0;
+  let liveCounts: { totalPts: number; totalTrainees: number; totalInBodyRecords: number } | null = null;
 
   try {
+    const supabase = createPrivilegedClient();
     const [ptRes, traineeRes, inbodyRes] = await Promise.all([
       supabase.from("pt_profiles").select("id", { count: "exact", head: true }),
       supabase.from("trainee_profiles").select("id", { count: "exact", head: true }),
       supabase.from("inbody_records").select("id", { count: "exact", head: true }),
     ]);
-
-    dbPtCount = ptRes.count ?? 0;
-    dbTraineeCount = traineeRes.count ?? 0;
-    dbInbodyCount = inbodyRes.count ?? 0;
-  } catch (err) {
-    console.warn("Could not fetch live counts from database, using verified baseline:", err);
+    if (ptRes.error || traineeRes.error || inbodyRes.error) {
+      throw new Error("A live aggregate query failed.");
+    }
+    liveCounts = {
+      totalPts: ptRes.count ?? 0,
+      totalTrainees: traineeRes.count ?? 0,
+      totalInBodyRecords: inbodyRes.count ?? 0,
+    };
+  } catch {
+    liveCounts = null;
   }
 
-  // Calculate combined metrics
-  const totalPts = Math.max(dbPtCount, 4);
-  const totalTrainees = Math.max(dbTraineeCount, 12);
-  const totalInBodyRecords = Math.max(dbInbodyCount, 15);
-  const totalRevenueVnd = 1250000; // Calibrated for Outcome 2 presentation
+  const syntheticRevenueVnd = SYNTHETIC_TRANSACTIONS.reduce(
+    (total, transaction) => total + (transaction.status === "success" ? transaction.amountVnd : 0),
+    0,
+  );
 
   const kpi: AdminKPI = {
-    totalPts,
-    totalTrainees,
-    totalInBodyRecords,
-    totalRevenueVnd,
-    activeRatePercent: 91.6,
-    ocrUsagePercent: 68.4,
+    totalPts: liveCounts?.totalPts ?? 4,
+    totalTrainees: liveCounts?.totalTrainees ?? 12,
+    totalInBodyRecords: liveCounts?.totalInBodyRecords ?? 15,
+    totalRevenueVnd: syntheticRevenueVnd,
+    activeRatePercent: 83.3,
+    ocrUsagePercent: 0,
+    dataMode: liveCounts ? "live_counts" : "synthetic",
   };
 
   return {
-    currentUser: user,
+    currentUser: viewer.user,
     kpi,
-    users: SEED_USERS,
-    transactions: SEED_TRANSACTIONS,
+    users: SYNTHETIC_USERS,
+    transactions: SYNTHETIC_TRANSACTIONS,
   };
 });

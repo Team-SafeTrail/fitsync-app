@@ -19,7 +19,7 @@ import "./admin.css";
 
 export const metadata = {
   title: "FitSync Admin Portal | Hệ Thống Quản Trị SafeTrail",
-  description: "Trang quản trị toàn diện hệ thống FitSync B2B SaaS CRM: KPI, người dùng, bản ghi InBody và doanh thu VietQR.",
+  description: "Trang kiểm tra quản trị FitSync cho KPI hệ thống và bộ dữ liệu demo OC2 được gắn nhãn rõ ràng.",
 };
 
 export default async function AdminLayout({
@@ -32,6 +32,10 @@ export default async function AdminLayout({
   // If not logged in, redirect to login page with return URL
   if (!viewer) {
     redirect("/login?next=/admin");
+  }
+
+  if (viewer.profile.role !== "admin") {
+    redirect("/workspace");
   }
 
   const displayName = viewer.profile.display_name || "Quản trị viên";
@@ -80,15 +84,15 @@ export default async function AdminLayout({
           <div className="admin-system-health">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 600, color: "#FFFFFF" }}>
               <span className="admin-system-health-dot" />
-              <span>Hạ Tầng Hoạt Động 100%</span>
+              <span>Phiên quản trị đã được xác thực</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <Server size={12} color="#10B981" />
-              <span>Supabase Cloud (ap-southeast-1)</span>
+              <span>Supabase: kiểm tra theo môi trường triển khai</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
               <ShieldCheck size={12} color="#10B981" />
-              <span>RLS Row-Level Security: Active</span>
+              <span>RLS: được khai báo trong migrations</span>
             </div>
           </div>
 

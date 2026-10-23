@@ -16,7 +16,9 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
-    "db:types": "supabase gen types typescript --local > apps/web/src/types/database.ts"
+    "db:types": "supabase gen types typescript --local > apps/web/src/types/database.ts",
+    "seed:oc2:plan": "node scripts/seed-oc2-demo.mjs",
+    "seed:oc2:apply": "node scripts/seed-oc2-demo.mjs --apply"
   },
   "engines": {
     "node": ">=20"
