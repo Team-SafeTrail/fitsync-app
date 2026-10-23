@@ -79,6 +79,23 @@ export default function AdminDashboardClient({
 
   return (
     <div className="admin-content">
+      <div
+        role="status"
+        style={{
+          border: "1px solid rgba(245, 158, 11, 0.45)",
+          background: "rgba(245, 158, 11, 0.1)",
+          borderRadius: "12px",
+          padding: "14px 18px",
+          color: "#FDE68A",
+          lineHeight: 1.5,
+        }}
+      >
+        <strong>Dữ liệu demo OC2:</strong>{" "}
+        {kpi.dataMode === "live_counts"
+          ? "ba KPI người dùng/InBody được đọc từ Supabase; bảng chi tiết và VietQR bên dưới vẫn là dữ liệu tổng hợp mô phỏng."
+          : "toàn bộ KPI và bảng bên dưới là dữ liệu synthetic để kiểm thử giao diện, không phải người dùng hay doanh thu thực."}
+      </div>
+
       {/* KPI Cards Grid */}
       <section className="admin-kpi-grid">
         {/* KPI 1: Tổng PT */}
@@ -91,8 +108,8 @@ export default function AdminDashboardClient({
           </div>
           <p className="admin-kpi-value">{kpi.totalPts}</p>
           <div className="admin-kpi-meta">
-            <span className="admin-kpi-badge positive">+2 tuần này</span>
-            <span>• 3 gói Pro | 1 gói Free</span>
+            <span className="admin-kpi-badge positive">{kpi.dataMode === "live_counts" ? "Live" : "Synthetic"}</span>
+            <span>• Không chứa danh tính thật</span>
           </div>
         </div>
 
@@ -107,7 +124,7 @@ export default function AdminDashboardClient({
           <p className="admin-kpi-value">{kpi.totalTrainees}</p>
           <div className="admin-kpi-meta">
             <span className="admin-kpi-badge positive">{kpi.activeRatePercent}%</span>
-            <span>• Tỷ lệ chuyên cần cao</span>
+            <span>• Tỷ lệ của bộ dữ liệu demo</span>
           </div>
         </div>
 
@@ -121,15 +138,15 @@ export default function AdminDashboardClient({
           </div>
           <p className="admin-kpi-value">{kpi.totalInBodyRecords}</p>
           <div className="admin-kpi-meta">
-            <span className="admin-kpi-badge positive">100% logic</span>
-            <span>• 5 chỉ số thể hình chuẩn hóa</span>
+            <span className="admin-kpi-badge positive">Đã gắn nhãn nguồn</span>
+            <span>• 5 chỉ số được kiểm tra miền giá trị</span>
           </div>
         </div>
 
         {/* KPI 4: Doanh thu VietQR */}
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
-            <span className="admin-kpi-title">Doanh Thu Thuê Bao VietQR</span>
+            <span className="admin-kpi-title">Kịch Bản VietQR Mô Phỏng</span>
             <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(168, 85, 247, 0.15)", color: "#A855F7" }}>
               <CreditCard size={22} />
             </div>
@@ -138,8 +155,8 @@ export default function AdminDashboardClient({
             {kpi.totalRevenueVnd.toLocaleString("vi-VN")} đ
           </p>
           <div className="admin-kpi-meta">
-            <span className="admin-kpi-badge positive">Napas247</span>
-            <span>• 5 đơn hàng đã đối soát</span>
+            <span className="admin-kpi-badge positive">Synthetic</span>
+            <span>• 3 giao dịch mẫu, chưa đối soát thật</span>
           </div>
         </div>
       </section>
@@ -162,7 +179,7 @@ export default function AdminDashboardClient({
           <ShieldCheck size={24} color="#10B981" />
           <div>
             <div style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "0.95rem" }}>
-              Bảo Mật Cơ Sở Dữ Liệu Đa Tầng (Supabase RLS Policy: Active)
+              Ranh giới bảo mật dữ liệu (được kiểm chứng bằng migration/pgTAP)
             </div>
             <div style={{ color: "#94A3B8", fontSize: "0.82rem" }}>
               Mỗi PT chỉ có quyền truy cập học viên được phân công. Bản ghi sức khỏe InBody và ảnh bữa ăn cách ly hoàn toàn theo Tenant ID.
@@ -180,7 +197,7 @@ export default function AdminDashboardClient({
         <div className="admin-section-header">
           <div className="admin-section-title">
             <Users size={22} color="#FF6B00" />
-            <h2>Bảng Quản Trị Người Dùng & Phân Quyền</h2>
+            <h2>Tài Khoản Mẫu & Phân Quyền</h2>
             <span>{filteredUsers.length} tài khoản</span>
           </div>
 
@@ -324,7 +341,7 @@ export default function AdminDashboardClient({
         <div className="admin-section-header">
           <div className="admin-section-title">
             <CreditCard size={22} color="#10B981" />
-            <h2>Bảng Quản Trị Đơn Hàng & Giao Dịch VietQR Napas247</h2>
+            <h2>Kịch Bản Đơn Hàng & VietQR Mô Phỏng</h2>
             <span>{filteredTransactions.length} giao dịch</span>
           </div>
 
