@@ -16,7 +16,7 @@
 
 ## External acceptance still pending
 
-- Supabase CLI authentication was confirmed on 2026-10-24. The account currently exposes only `pickleball-app`; no FitSync project exists and this repository is not linked. Create a separate team-owned FitSync project before linking, pushing five migrations, applying seed, inspecting buckets, testing admin incognito login, or inviting the instructor.
+- Supabase production `fitsync-prod` is active in Singapore (`ap-southeast-1`). Five migrations are applied and matched, all eight requested tables have RLS and policies, both media buckets are private, and the synthetic seed was independently counted: 1 admin, 4 PTs, 12 trainees, 15 InBody records, 8 check-ins/meals/objects, and 2 warning trainees. Admin incognito login and the instructor invitation remain pending.
 - No GitHub deployment exists for the reviewed frontend commit. The documented target `https://fitsync-safetrail.vercel.app` returned HTTP 404 during the 2026-10-24 check.
 - ERD PNG/PDF export and its view-only link are not yet available.
 - A real 03:00–05:00 walkthrough has not been recorded, uploaded to YouTube Unlisted/Drive, or watched end to end.
