@@ -10,7 +10,7 @@
 
 PR #26 và PR #29 đã được reviewer độc lập approve, CI xanh và squash-merge đúng thứ tự. Cây mã nguồn cuối của `main` khớp nội dung mong muốn của PR #28 gốc nhưng không còn merge nhầm #28 vào head #26.
 
-Supabase production, migrations, RLS, private storage và synthetic seed đã có bằng chứng. Outcome 2 vẫn **chưa hoàn tất nghiệm thu** vì URL Vercel dự kiến còn trả HTTP 404 tại lần kiểm tra ngày 24/10/2026; browser smoke test, invitation giảng viên, ERD PNG/PDF, video và email vẫn đang chờ bằng chứng ngoài repository.
+Supabase production, migrations, RLS, private storage và synthetic seed đã có bằng chứng. Draft ERD SVG và PNG 5610×8192 đã được lưu trong repository. Outcome 2 vẫn **chưa hoàn tất nghiệm thu** vì URL Vercel dự kiến còn trả HTTP 404 tại lần kiểm tra ngày 24/10/2026; browser smoke test, invitation giảng viên, ERD final/PDF, video và email vẫn đang chờ bằng chứng ngoài repository.
 
 ## Ma trận tiến độ
 
@@ -20,7 +20,7 @@ Supabase production, migrations, RLS, private storage và synthetic seed đã c�
 | Landing và `/admin` | Implemented, đã merge | Team/contact/APK CTA, role guard, KPI và bảng synthetic | Deploy production và test trình duyệt thật |
 | Supabase production | Hoàn thành kỹ thuật | 5/5 migrations; 8/8 bảng RLS; 2 private buckets | Invitation giảng viên và acceptance receipt đã redact |
 | Synthetic seed | Hoàn thành | 1 admin, 4 PT, 12 trainee, 2 warning, 15 InBody, 8 meal/check-in | Admin/non-admin smoke test trên deployment |
-| ERD/Data Dictionary | Source hoàn thành | Mermaid từ migrations và Data Dictionary | PNG ≥2560 px, PDF, review chéo, Drive view-only |
+| ERD/Data Dictionary | Draft export đã lưu | Mermaid từ migrations, Data Dictionary, SVG và PNG 5610×8192 | Bổ sung title/footer/Auth/storage/callout; PDF, review chéo, Drive view-only |
 | Vercel production | P0 — bị chặn | Commit deploy đã khóa | HTTPS/HTTP 200 cho `e1b03ad`; URL ổn định |
 | Video 3–5 phút | Chưa quay final | Script 04:15 và runbook | Chờ Vercel + ERD; quay, upload, signed-out QA |
 | Email nghiệm thu | Chưa gửi | Template đã làm sạch | Link thật, reviewer QA, Sent receipt |
@@ -47,7 +47,7 @@ Chi tiết nằm trong [`SUPABASE_PRODUCTION_EVIDENCE.md`](SUPABASE_PRODUCTION_E
 
 1. **Huy:** deploy `e1b03ad`, cấu hình secrets qua kênh riêng, gửi URL HTTPS/HTTP 200 và commit SHA.
 2. **Việt + Huy:** test Incognito admin/non-admin, landing, `/workspace`, `/admin`; test desktop và thiết bị thật.
-3. **Toàn + Hưng/Huy:** tạo ERD từ [`FITSYNC_OC2_ERD.mmd`](FITSYNC_OC2_ERD.mmd), xuất PNG/PDF và review với migrations.
+3. **Toàn + Hưng/Huy:** hoàn thiện [draft ERD SVG/PNG](assets/erd/README.md): thêm title/footer/Auth/storage/callout, xuất PDF và review với migrations.
 4. **Việt:** mời email chính thức của giảng viên bằng least privilege; lưu receipt đã redact.
 5. **Việt:** quay video final sau khi Vercel và ERD pass; upload YouTube Unlisted + Drive và kiểm tra khi signed out.
 6. **Việt + reviewer:** kiểm tra toàn bộ link, gửi email và lưu Sent receipt.

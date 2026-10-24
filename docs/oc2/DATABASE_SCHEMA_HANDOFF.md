@@ -99,7 +99,7 @@ erDiagram
 
 ## Export acceptance checklist
 
-- [ ] PNG is at least 2560 px wide and legible at 100% zoom.
+- [x] Draft PNG is 5610×8192 and legible at 100% zoom.
 - [ ] PDF text remains selectable or vector-based.
 - [ ] PK, FK, unique, optional, and one-to-many relationships match this source.
 - [ ] No password, token, connection string, signed URL, real health report, or private object path appears.

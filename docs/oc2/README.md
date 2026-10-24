@@ -18,6 +18,7 @@ The canonical live checklist, ownership matrix, evidence, and closing order are 
 
 - [`DATABASE_SCHEMA_HANDOFF.md`](DATABASE_SCHEMA_HANDOFF.md): migration-derived ERD source and relationship notes for Toàn.
 - [`FITSYNC_OC2_ERD.mmd`](FITSYNC_OC2_ERD.mmd): standalone Mermaid source ready for Mermaid Live or draw.io.
+- [`assets/erd/`](assets/erd/): versioned draft SVG/PNG exports and their completion notes.
 - [`DATA_DICTIONARY.md`](DATA_DICTIONARY.md): field, key, constraint, and access dictionary for the eight OC2 tables.
 - [`SUPABASE_CLOUD_RUNBOOK.md`](SUPABASE_CLOUD_RUNBOOK.md): safe Cloud creation, migration, synthetic seed, and evidence procedure.
 - [`SUPABASE_PRODUCTION_EVIDENCE.md`](SUPABASE_PRODUCTION_EVIDENCE.md): redacted production verification results for migrations, RLS, buckets, and synthetic seed.

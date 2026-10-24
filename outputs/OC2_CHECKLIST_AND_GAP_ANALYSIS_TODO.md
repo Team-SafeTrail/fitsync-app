@@ -13,13 +13,14 @@
 - [x] TypeScript, 33/33 unit tests, production build, and 2/2 OC2 E2E passed on the recovered final tree.
 - [x] Supabase production migrations, RLS, private buckets, and synthetic seed verified.
 - [x] ERD Mermaid source and Data Dictionary match the five migrations.
+- [x] Draft ERD SVG and 5610×8192 PNG are versioned under [`docs/oc2/assets/erd/`](../docs/oc2/assets/erd/README.md).
 
 ## P0 gaps
 
 - [ ] Deploy `e1b03ad` to Vercel and capture HTTPS/HTTP 200 evidence.
 - [ ] Verify admin access and non-admin denial in Incognito on production.
 - [ ] Invite the official instructor email with least privilege; retain redacted evidence.
-- [ ] Export ERD PNG ≥2560 px and PDF; cross-review and publish view-only.
+- [ ] Add the required title/footer/Auth/storage/security callouts to the ERD draft; export PDF, cross-review, and publish view-only.
 - [ ] Record and upload the 03:00–05:00 final video; verify YouTube and Drive while signed out.
 - [ ] Send the sanitized submission email and retain the Sent receipt.
 

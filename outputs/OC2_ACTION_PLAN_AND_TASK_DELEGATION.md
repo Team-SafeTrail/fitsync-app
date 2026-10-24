@@ -13,12 +13,13 @@
 - [x] Original #28 incremental changes reapplied through PR #29 and squash-merged at `e1b03ad`.
 - [x] Supabase production: 5 migrations, 8 RLS tables, 2 private buckets, synthetic seed.
 - [x] Migration-derived ERD source and Data Dictionary prepared.
+- [x] Draft ERD SVG and 5610×8192 PNG stored under [`docs/oc2/assets/erd/`](../docs/oc2/assets/erd/README.md).
 
 ## Critical path
 
 1. **Huy:** deploy `e1b03ad` to Vercel and return an HTTPS URL with HTTP 200 evidence.
 2. **Việt + Huy:** test admin/non-admin authorization in Incognito and responsive behavior on production.
-3. **Toàn + Hưng/Huy:** export [`docs/oc2/FITSYNC_OC2_ERD.mmd`](../docs/oc2/FITSYNC_OC2_ERD.mmd) as PNG ≥2560 px and PDF, review against migrations, publish view-only.
+3. **Toàn + Hưng/Huy:** finish the stored [draft ERD](../docs/oc2/assets/erd/README.md) with the required title/footer/Auth/storage/security callouts, export PDF, review against migrations, and publish view-only.
 4. **Việt:** invite the official instructor email to Supabase using least privilege; retain a redacted receipt.
 5. **Việt:** record the 03:00–05:00 final walkthrough, upload YouTube Unlisted + Drive, and run signed-out link QA.
 6. **Việt + reviewer:** send the sanitized submission email and retain the Sent receipt.
@@ -32,7 +33,7 @@
 ## Do not claim as complete yet
 
 - Vercel production: expected URL still returned HTTP 404 at the latest 2026-10-24 check.
-- Admin/non-admin production acceptance, instructor invitation, final ERD export, final video, link QA, and submission email remain pending.
+- Admin/non-admin production acceptance, instructor invitation, final ERD/PDF and review, final video, link QA, and submission email remain pending.
 - VietQR rows are synthetic UI examples; Android, production OCR, payment reconciliation, and Whisper remain planned unless separately evidenced.
 
 See [`docs/oc2/DEMO_SUBMISSION_RUNBOOK.md`](../docs/oc2/DEMO_SUBMISSION_RUNBOOK.md) for the recording/email sequence and [`docs/oc2/DATA_DICTIONARY.md`](../docs/oc2/DATA_DICTIONARY.md) for schema details.

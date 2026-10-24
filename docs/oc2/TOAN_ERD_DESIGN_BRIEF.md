@@ -1,5 +1,12 @@
 # Brief thiết kế ERD Outcome 2 gửi Toàn
 
+## Draft đã nhận ngày 24/10/2026
+
+- [SVG vector](assets/erd/fitsync-oc2-data-model-draft.svg)
+- [PNG 5610×8192](assets/erd/fitsync-oc2-data-model-draft.png)
+
+Draft đã thể hiện đủ tám bảng và các quan hệ chính, đồng thời vượt yêu cầu độ phân giải PNG. Trước khi đổi tên thành bản final, vẫn cần bổ sung title/footer, `auth.users`, hai private bucket, năm security callout bên dưới, xuất PDF, review chéo với migrations và tạo link Drive view-only.
+
 ## Deliverable
 
 - Một PNG rộng tối thiểu 2560 px, đọc rõ ở zoom 100%.
