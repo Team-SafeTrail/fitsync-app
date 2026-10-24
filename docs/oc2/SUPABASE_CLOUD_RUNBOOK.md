@@ -14,14 +14,14 @@ Do not paste these values into Trello, Discord, GitHub, screenshots, shell histo
 
 ## 1. Authenticate interactively
 
-Run this in a normal interactive terminal owned by Việt:
+Authentication was confirmed on Việt's workstation on 2026-10-24. If the session expires, run this in a normal interactive terminal owned by Việt:
 
 ```powershell
 npx supabase login --name oc2-viet
 npx supabase projects list -o table
 ```
 
-The automated agent environment is non-TTY and cannot complete this login. Do not send the resulting access token in chat.
+Do not send the resulting access token in chat. Before linking, inspect the project list carefully: the currently visible `pickleball-app` project is unrelated and must not receive FitSync migrations or seed data.
 
 ## 2. Create or select the project
 
