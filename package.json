@@ -16,7 +16,10 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
-    "db:types": "supabase gen types typescript --local > apps/web/src/types/database.ts"
+    "db:types": "supabase gen types typescript --local > apps/web/src/types/database.ts",
+    "seed:oc2:plan": "node scripts/seed-oc2-demo.mjs",
+    "seed:oc2:apply": "node scripts/seed-oc2-demo.mjs --apply",
+    "seed:oc2:cloud": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/seed-oc2-cloud.ps1"
   },
   "engines": {
     "node": ">=20"
