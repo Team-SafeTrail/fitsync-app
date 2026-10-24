@@ -19,7 +19,7 @@ Không đánh dấu Trello DONE hoặc tuyên bố production hoàn tất chỉ 
 | --- | --- | --- | --- | --- |
 | Chuyển giao task Database từ Hưng sang Việt | Việt | Hoàn thành | Trello ghi rõ chủ sở hữu mới, lý do và reviewer | Không |
 | Landing page và `/admin` | Khai + Việt | Code complete, chờ review/deploy | Landing, TeamSection, CTA/APK, dashboard admin, guard role và nhãn synthetic/live | Review/merge PR #26 và #28; deploy rồi smoke test |
-| Quality gates repository | Việt | Hoàn thành ở commit hiện tại | Build 14 routes, TypeScript, ESLint, Vitest 33/33, Playwright OC2 2/2; GitHub `Web quality gates` xanh | Chạy lại trên commit merge cuối nếu có thay đổi |
+| Quality gates repository | Việt | Hoàn thành trên implementation đã kiểm tra | Build 14 routes, TypeScript, ESLint, Vitest 33/33, Playwright OC2 2/2; GitHub `Web quality gates` xanh tại lần kiểm tra | Check mới phải xanh sau mỗi push và trên commit merge cuối |
 | Supabase production | Việt | Hoàn thành kỹ thuật | Project Singapore healthy; 5/5 migrations; 8/8 bảng RLS; policies; 2 bucket private | pgTAP khi có Docker/Podman là bằng chứng bổ sung, không thay thế smoke test ứng dụng |
 | Synthetic seed | Việt | Hoàn thành | 1 admin, 4 PT, 12 trainee, 2 warning, 15 InBody, 8 check-in/meal/object | Không seed payment vì schema không có `payment_records` |
 | Quyền truy cập Database cho giảng viên | Việt | Đang chờ | Runbook và tài khoản admin đã chuẩn bị an toàn | Cần email chính thức, mời least privilege và lưu bằng chứng đã che thông tin |
@@ -38,7 +38,7 @@ Không đánh dấu Trello DONE hoặc tuyên bố production hoàn tất chỉ 
 - Bảng demo và VietQR được gắn nhãn synthetic; fixture không được mô tả là người dùng thật hoặc doanh thu đã đối soát.
 - Service-role key chỉ dùng phía server và không được lưu trong GitHub, Trello hoặc tài liệu.
 - PR #26 tại commit `7dbfd70`: mở, chưa merge, CI xanh, chưa có review phê duyệt và GitHub báo trạng thái merge `blocked` khi kiểm tra.
-- PR #28 tại commit `567fc8d`: mở, chưa merge, CI xanh, chưa có review phê duyệt và merge state `clean` khi kiểm tra.
+- PR #28: mở, chưa merge, chưa có review phê duyệt; merge state `clean` và CI xanh tại lần kiểm tra live trước bản cập nhật tài liệu này. Mỗi push mới vẫn phải chờ check tương ứng hoàn tất.
 
 ### Supabase production
 
