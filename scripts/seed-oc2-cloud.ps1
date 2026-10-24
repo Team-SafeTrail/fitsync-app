@@ -13,12 +13,39 @@ $repoRoot = Split-Path -Parent $PSScriptRoot
 $passwordPointer = [IntPtr]::Zero
 $plainPassword = $null
 
+function Invoke-SupabaseJson {
+  param(
+    [Parameter(Mandatory = $true)]
+    [string[]]$CliArguments,
+
+    [Parameter(Mandatory = $true)]
+    [string]$FailureMessage
+  )
+
+  # Windows PowerShell 5 surfaces harmless native stderr notices as
+  # NativeCommandError when ErrorActionPreference is Stop. Preserve the real
+  # exit code while suppressing only CLI notices from the JSON capture.
+  $previousErrorActionPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = 'Continue'
+    $output = & npx.cmd supabase @CliArguments 2>$null
+    $exitCode = $LASTEXITCODE
+  }
+  finally {
+    $ErrorActionPreference = $previousErrorActionPreference
+  }
+
+  if ($exitCode -ne 0) {
+    throw $FailureMessage
+  }
+  return ($output -join [Environment]::NewLine)
+}
+
 Push-Location -LiteralPath $repoRoot
 try {
-  $projectsJson = npx supabase projects list -o json 2>$null
-  if ($LASTEXITCODE -ne 0) {
-    throw 'Could not list Supabase projects with the authenticated CLI session.'
-  }
+  $projectsJson = Invoke-SupabaseJson `
+    -CliArguments @('projects', 'list', '-o', 'json') `
+    -FailureMessage 'Could not list Supabase projects with the authenticated CLI session.'
 
   $projects = $projectsJson | ConvertFrom-Json
   $project = $projects | Where-Object { $_.ref -eq $ProjectRef } | Select-Object -First 1
@@ -35,10 +62,9 @@ try {
     throw "Refusing to seed project status '$($project.status)'; expected ACTIVE_HEALTHY."
   }
 
-  $keysJson = npx supabase projects api-keys --project-ref $ProjectRef -o json 2>$null
-  if ($LASTEXITCODE -ne 0) {
-    throw 'Could not read API key metadata from Supabase.'
-  }
+  $keysJson = Invoke-SupabaseJson `
+    -CliArguments @('projects', 'api-keys', '--project-ref', $ProjectRef, '-o', 'json') `
+    -FailureMessage 'Could not read API key metadata from Supabase.'
 
   $keys = $keysJson | ConvertFrom-Json
   $serviceRole = $keys |
