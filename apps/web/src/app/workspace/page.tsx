@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { AlertTriangle, ArrowRight, CheckCircle2, Dumbbell, UserRoundCheck, Users } from "lucide-react";
 import CheckinActivityList from "@/components/workspace/CheckinActivityList";
 import CheckinForm from "@/components/workspace/CheckinForm";
@@ -19,6 +20,10 @@ const goalLabels = {
 export default async function WorkspacePage() {
   const viewer = await getWorkspaceViewer();
   if (!viewer) return null;
+
+  if (viewer.profile.role === "admin") {
+    redirect("/admin");
+  }
 
   if (viewer.profile.role === "trainee") {
     const { trainee, records, checkins } = await getTraineeHome(viewer.user.id);

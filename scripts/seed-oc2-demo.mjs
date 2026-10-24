@@ -1,5 +1,31 @@
 import { randomBytes } from "node:crypto";
+import { existsSync, readFileSync } from "node:fs";
 import { createRequire } from "node:module";
+
+// Automatically load apps/web/.env.local and apps/web/.env if present
+function loadEnvFile(fileUrl) {
+  try {
+    if (!existsSync(fileUrl)) return;
+    const content = readFileSync(fileUrl, "utf-8");
+    for (const line of content.split("\n")) {
+      const trimmed = line.trim();
+      if (!trimmed || trimmed.startsWith("#")) continue;
+      const eqIdx = trimmed.indexOf("=");
+      if (eqIdx === -1) continue;
+      const key = trimmed.slice(0, eqIdx).trim();
+      let val = trimmed.slice(eqIdx + 1).trim();
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1);
+      }
+      if (process.env[key] === undefined) {
+        process.env[key] = val;
+      }
+    }
+  } catch { }
+}
+
+loadEnvFile(new URL("../apps/web/.env.local", import.meta.url));
+loadEnvFile(new URL("../apps/web/.env", import.meta.url));
 
 const requireFromWebWorkspace = createRequire(
   new URL("../apps/web/package.json", import.meta.url),
@@ -47,7 +73,7 @@ if (process.env.OC2_SEED_CONFIRM !== "synthetic-only") {
 const supabaseUrl = process.env.SUPABASE_URL ?? process.env.NEXT_PUBLIC_SUPABASE_URL;
 const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
 const adminEmail = process.env.OC2_ADMIN_EMAIL ?? "oc2.admin@example.test";
-const adminPassword = process.env.OC2_ADMIN_PASSWORD;
+const adminPassword = process.env.OC2_ADMIN_PASSWORD ?? "FitSync-Admin-2026!";
 
 if (!supabaseUrl || !serviceRoleKey) {
   throw new Error("SUPABASE_URL (or NEXT_PUBLIC_SUPABASE_URL) and SUPABASE_SERVICE_ROLE_KEY are required.");

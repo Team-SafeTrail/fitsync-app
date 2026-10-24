@@ -104,9 +104,14 @@
 .auth-input:focus-within svg { color: var(--auth-amber); }
 .auth-input input { width: 100%; height: 100%; border: 0; outline: 0; background: transparent; color: var(--auth-text); font-size: 0.86rem; }
 .auth-input input::placeholder { color: #656662; opacity: 1; }
-.auth-submit { min-height: 3.35rem; display: flex; align-items: center; justify-content: space-between; margin-top: 0.45rem; padding: 0 1.05rem; border: 1px solid var(--auth-amber); border-radius: 0.42rem; background: var(--auth-amber); color: #201a0e; font-size: 0.79rem; font-weight: 700; cursor: pointer; transition: background 160ms ease, transform 160ms ease; }
-.auth-submit:hover { background: #ffca6b; transform: translateY(-1px); }
-.auth-submit:active { transform: translateY(1px); }
+.auth-password-toggle { background: transparent; border: none; cursor: pointer; padding: 0.25rem; display: flex; align-items: center; justify-content: center; color: #8e908c; border-radius: 0.25rem; transition: color 150ms ease; }
+.auth-password-toggle:hover { color: var(--auth-amber); }
+.auth-submit { min-height: 3.35rem; display: flex; align-items: center; justify-content: space-between; gap: 0.5rem; margin-top: 0.45rem; padding: 0 1.05rem; border: 1px solid var(--auth-amber); border-radius: 0.42rem; background: var(--auth-amber); color: #201a0e; font-size: 0.79rem; font-weight: 700; cursor: pointer; transition: background 160ms ease, transform 160ms ease, opacity 160ms ease; }
+.auth-submit:hover:not(:disabled) { background: #ffca6b; transform: translateY(-1px); }
+.auth-submit:active:not(:disabled) { transform: translateY(1px); }
+.auth-submit:disabled { opacity: 0.65; cursor: not-allowed; }
+.auth-submit .animate-spin { animation: spin 1s linear infinite; }
+@keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 .auth-switch { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 1.5rem; padding-top: 1.4rem; border-top: 1px solid #2d2e31; color: #777873; font-size: 0.74rem; }
 .auth-switch a { gap: 0.45rem; color: #e6e4de; font-weight: 600; }
 .auth-switch a:hover { color: var(--auth-amber); }

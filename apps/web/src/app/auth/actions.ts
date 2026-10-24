@@ -19,9 +19,20 @@ export async function login(formData: FormData) {
 
   const supabase = createClient();
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error || !data.user) authRedirect("/login", "error", "Không thể đăng nhập với thông tin này.");
+  if (error || !data.user) {
+    authRedirect("/login", "error", error?.message || "Không thể đăng nhập với thông tin này.");
+  }
 
-  // If user role is admin, route directly to Admin Portal
+  // Fast path: if role is in user metadata, redirect immediately without waiting for extra database query
+  const metaRole = data.user.user_metadata?.role;
+  if (metaRole === "admin") {
+    redirect("/admin");
+  }
+  if (metaRole === "pt" || metaRole === "trainee") {
+    redirect("/workspace");
+  }
+
+  // Fallback to database check only if role not in metadata
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")
@@ -53,7 +64,16 @@ export async function signup(formData: FormData) {
     },
   });
 
-  if (error) authRedirect("/register", "error", "Không thể tạo tài khoản. Kiểm tra thông tin và thử lại.");
+  if (error) {
+    if (error.status === 429 || error.message.toLowerCase().includes("rate limit")) {
+      authRedirect(
+        "/register",
+        "error",
+        "Hệ thống gửi email của Supabase đang bị giới hạn (Rate Limit). Bạn hãy tắt 'Confirm email' trong Supabase Dashboard để đăng ký ngay.",
+      );
+    }
+    authRedirect("/register", "error", error.message || "Không thể tạo tài khoản. Kiểm tra thông tin và thử lại.");
+  }
   if (data.session) redirect("/workspace");
   authRedirect("/login", "message", "Kiểm tra email để xác nhận tài khoản, sau đó đăng nhập.");
 }
