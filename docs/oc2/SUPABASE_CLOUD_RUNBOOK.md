@@ -73,6 +73,14 @@ $env:OC2_SEED_CONFIRM='synthetic-only'
 npm run seed:oc2:apply
 ```
 
+On the approved Windows workstation, prefer the guarded helper. It verifies the project name, Singapore region, and healthy status; retrieves the service-role key only in memory; prompts for the admin password with hidden input; and clears all secret environment variables afterward:
+
+```powershell
+powershell -NoProfile -ExecutionPolicy Bypass -File scripts/seed-oc2-cloud.ps1 `
+  -ProjectRef <PROJECT_REF> `
+  -AdminEmail admin@fitsync.vn
+```
+
 Clear terminal-scoped variables after use. Never copy their values into a report.
 
 ## 5. Instructor access
