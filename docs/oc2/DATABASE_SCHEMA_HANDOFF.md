@@ -7,6 +7,8 @@
 
 ## Relationship diagram source
 
+The standalone source is [`FITSYNC_OC2_ERD.mmd`](FITSYNC_OC2_ERD.mmd). Paste that file into [Mermaid Live](https://mermaid.live/) for a quick SVG/PNG export, or use **Arrange → Insert → Mermaid** in [draw.io](https://app.diagrams.net/) when the final Carbon-style diagram needs editable shapes and PDF export.
+
 Toàn can import or redraw this Mermaid ERD into the final Carbon-style PNG/PDF. The exported image must be checked against the migrations, not against screenshots or planning documents.
 
 ```mermaid
@@ -26,20 +28,20 @@ erDiagram
   inbody_records o|--o| ocr_attempts : "optional confirmation"
 
   profiles {
-    uuid id PK
+    uuid id PK, FK
     user_role role
     text display_name
     text phone
   }
   pt_profiles {
-    uuid id PK_FK
+    uuid id PK, FK
     text gym_affiliation
     subscription_plan subscription_plan
     timestamptz subscription_valid_until
   }
   trainee_profiles {
     uuid id PK
-    uuid profile_id FK
+    uuid profile_id FK, UK
     uuid assigned_pt_id FK
     text display_name
     fitness_goal primary_goal
@@ -71,7 +73,7 @@ erDiagram
   }
   meal_logs {
     uuid id PK
-    uuid checkin_id FK_UK
+    uuid checkin_id FK, UK
     uuid trainee_id FK
     text private_photo_path UK
     text photo_mime_type
@@ -83,7 +85,7 @@ erDiagram
     text private_image_path UK
     ocr_attempt_status status
     jsonb raw_draft
-    uuid inbody_record_id FK_UK
+    uuid inbody_record_id FK, UK
   }
 ```
 
@@ -102,3 +104,4 @@ erDiagram
 - [ ] PK, FK, unique, optional, and one-to-many relationships match this source.
 - [ ] No password, token, connection string, signed URL, real health report, or private object path appears.
 - [ ] A second reviewer compares the export to the five migrations before the Drive link is shared.
+- [ ] The editable `.drawio` or Mermaid source is retained beside the exported files.

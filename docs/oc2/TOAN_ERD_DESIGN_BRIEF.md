@@ -19,7 +19,9 @@
 
 ## Sơ đồ nguồn chính xác
 
-Copy đoạn Mermaid này vào Mermaid Live, draw.io hoặc công cụ Toàn dùng để dựng visual:
+Nguồn độc lập là [`FITSYNC_OC2_ERD.mmd`](FITSYNC_OC2_ERD.mmd). Cách nhanh: dán vào [Mermaid Live](https://mermaid.live/) và export SVG/PNG. Cách khuyến nghị cho bản Carbon Dark: mở [draw.io](https://app.diagrams.net/), chọn **Arrange → Insert → Mermaid → Diagram**, sau đó chỉnh màu/layout và export PNG ≥2560 px + PDF. Giữ file `.drawio` để sửa về sau.
+
+Copy đoạn Mermaid này vào công cụ nếu không mở file `.mmd` trực tiếp:
 
 ```mermaid
 erDiagram

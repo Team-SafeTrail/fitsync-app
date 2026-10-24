@@ -1,83 +1,66 @@
 # Trạng thái tổng hợp Outcome 2
 
 - **Cập nhật:** 24/10/2026 (Asia/Ho_Chi_Minh)
-- **Chủ sở hữu phần Việt + Hưng:** Huỳnh Quốc Việt (`Am2uocVi3t`)
-- **Reviewer độc lập:** Dương Quang Huy (`huydqse180459-art`)
 - **Issue điều phối:** [GitHub Issue #27](https://github.com/Team-SafeTrail/fitsync-app/issues/27)
-- **PR frontend gốc:** [PR #26](https://github.com/Team-SafeTrail/fitsync-app/pull/26)
-- **PR handoff Việt + Hưng:** [PR #28](https://github.com/Team-SafeTrail/fitsync-app/pull/28)
+- **Frontend:** [PR #26](https://github.com/Team-SafeTrail/fitsync-app/pull/26) → `094c5ee`
+- **Khôi phục thứ tự #28:** [PR #29](https://github.com/Team-SafeTrail/fitsync-app/pull/29) → `e1b03ad`
+- **Production revision phải deploy:** `e1b03ad95b4fa5306ec7c2a4d9f5ca443e22cffd`
 
 ## Kết luận hiện tại
 
-Outcome 2 **chưa hoàn thành nghiệm thu toàn bộ**. Phần mã nguồn, tài liệu và hạ tầng Supabase production đã sẵn sàng; các bước còn lại phụ thuộc review/merge, Vercel của Huy, bản ERD xuất bởi Toàn, kiểm thử trình duyệt thật và việc quay/nộp video của Việt.
+PR #26 và PR #29 đã được reviewer độc lập approve, CI xanh và squash-merge đúng thứ tự. Cây mã nguồn cuối của `main` khớp nội dung mong muốn của PR #28 gốc nhưng không còn merge nhầm #28 vào head #26.
 
-Không đánh dấu Trello DONE hoặc tuyên bố production hoàn tất chỉ dựa trên local build, dữ liệu fixture, URL dự kiến hay file thiết kế chưa xuất bản.
+Supabase production, migrations, RLS, private storage và synthetic seed đã có bằng chứng. Outcome 2 vẫn **chưa hoàn tất nghiệm thu** vì URL Vercel dự kiến còn trả HTTP 404 tại lần kiểm tra ngày 24/10/2026; browser smoke test, invitation giảng viên, ERD PNG/PDF, video và email vẫn đang chờ bằng chứng ngoài repository.
 
 ## Ma trận tiến độ
 
-| Hạng mục | Chủ trì | Trạng thái | Đã có | Còn thiếu để DONE |
-| --- | --- | --- | --- | --- |
-| Chuyển giao task Database từ Hưng sang Việt | Việt | Hoàn thành | Trello ghi rõ chủ sở hữu mới, lý do và reviewer | Không |
-| Landing page và `/admin` | Khai + Việt | Code complete, chờ review/deploy | Landing, TeamSection, CTA/APK, dashboard admin, guard role và nhãn synthetic/live | Review/merge PR #26 và #28; deploy rồi smoke test |
-| Quality gates repository | Việt | Hoàn thành trên implementation đã kiểm tra | Build 14 routes, TypeScript, ESLint, Vitest 33/33, Playwright OC2 2/2; GitHub `Web quality gates` xanh tại lần kiểm tra | Check mới phải xanh sau mỗi push và trên commit merge cuối |
-| Supabase production | Việt | Hoàn thành kỹ thuật | Project Singapore healthy; 5/5 migrations; 8/8 bảng RLS; policies; 2 bucket private | pgTAP khi có Docker/Podman là bằng chứng bổ sung, không thay thế smoke test ứng dụng |
-| Synthetic seed | Việt | Hoàn thành | 1 admin, 4 PT, 12 trainee, 2 warning, 15 InBody, 8 check-in/meal/object | Không seed payment vì schema không có `payment_records` |
-| Quyền truy cập Database cho giảng viên | Việt | Đang chờ | Runbook và tài khoản admin đã chuẩn bị an toàn | Cần email chính thức, mời least privilege và lưu bằng chứng đã che thông tin |
-| ERD và Data Dictionary | Việt → Toàn | Source hoàn thành, visual đang chờ | Source 8 bảng, cardinality, Data Dictionary, design brief Mermaid đã sửa | Toàn xuất PNG 4K/≥2560 px + PDF và Drive view-only; Việt/Huy review |
-| Slide W4–W5 và 5+ kênh MXH | Toàn | Chưa có bằng chứng hoàn thành | Phạm vi đã ghi trên Trello | Cần 16–17 slide final và link các kênh TikTok, Facebook, Instagram, Zalo OA, YouTube Shorts |
-| Vercel production | Huy | Đang chờ | Supabase URL và danh sách env đã bàn giao; secrets phải gửi riêng | Cấu hình env, deploy commit đã review, HTTPS/HTTP 200 và URL ổn định |
-| Kiểm thử nghiệm thu | Huy + Việt | Bị chặn bởi Vercel | Checklist desktop/mobile/incognito đã có | Admin vào `/admin`; non-admin bị redirect; test landing/workspace trên thiết bị thật |
-| Video walkthrough 3–5 phút | Việt | Script hoàn thành, video final đang chờ | Kịch bản/lời thoại 04:15, timeline, caption và checklist | Chờ Vercel HTTP 200 + ERD final; quay, dựng, xem lại, upload YouTube/Drive |
-| Email nghiệm thu | Việt | Chưa thực hiện | Mẫu email đã được chuẩn bị | Cần production URL, ERD, video, reviewer smoke test, email giảng viên và Sent receipt |
+| Hạng mục | Trạng thái | Đã xác minh | Còn thiếu để DONE |
+| --- | --- | --- | --- |
+| GitHub integration | Hoàn thành | #26 → `094c5ee`; #29 → `e1b03ad`; CI xanh | Không |
+| Landing và `/admin` | Implemented, đã merge | Team/contact/APK CTA, role guard, KPI và bảng synthetic | Deploy production và test trình duyệt thật |
+| Supabase production | Hoàn thành kỹ thuật | 5/5 migrations; 8/8 bảng RLS; 2 private buckets | Invitation giảng viên và acceptance receipt đã redact |
+| Synthetic seed | Hoàn thành | 1 admin, 4 PT, 12 trainee, 2 warning, 15 InBody, 8 meal/check-in | Admin/non-admin smoke test trên deployment |
+| ERD/Data Dictionary | Source hoàn thành | Mermaid từ migrations và Data Dictionary | PNG ≥2560 px, PDF, review chéo, Drive view-only |
+| Vercel production | P0 — bị chặn | Commit deploy đã khóa | HTTPS/HTTP 200 cho `e1b03ad`; URL ổn định |
+| Video 3–5 phút | Chưa quay final | Script 04:15 và runbook | Chờ Vercel + ERD; quay, upload, signed-out QA |
+| Email nghiệm thu | Chưa gửi | Template đã làm sạch | Link thật, reviewer QA, Sent receipt |
 
-## Bằng chứng đã xác minh
+## Bằng chứng repository
 
-### Repository và bảo mật
+- `/admin` yêu cầu session có `profiles.role = admin`; non-admin được chuyển về `/workspace`.
+- Bảng demo và VietQR có nhãn synthetic; không được mô tả là user thật hoặc doanh thu đã đối soát.
+- Main tại `e1b03ad`; GitHub `Web quality gates` hoàn thành với kết luận `success`.
+- Recovery tree sau #29 khớp chính xác tree mong muốn của PR #28 gốc.
+- Local recovery validation: TypeScript pass, Vitest 33/33, production build pass và OC2 E2E 2/2.
 
-- `/admin` yêu cầu phiên đăng nhập có profile role `admin`; non-admin được chuyển về `/workspace`.
-- Bảng demo và VietQR được gắn nhãn synthetic; fixture không được mô tả là người dùng thật hoặc doanh thu đã đối soát.
-- Service-role key chỉ dùng phía server và không được lưu trong GitHub, Trello hoặc tài liệu.
-- PR #26 tại commit `7dbfd70`: mở, chưa merge, CI xanh, chưa có review phê duyệt và GitHub báo trạng thái merge `blocked` khi kiểm tra.
-- PR #28: mở, chưa merge, chưa có review phê duyệt; merge state `clean` và CI xanh tại lần kiểm tra live trước bản cập nhật tài liệu này. Mỗi push mới vẫn phải chờ check tương ứng hoàn tất.
+## Bằng chứng Supabase production
 
-### Supabase production
-
-- Project: `fitsync-prod` — ref `uqjqkvalzdrcvxayhtre` — Singapore `ap-southeast-1` — `ACTIVE_HEALTHY`.
-- Năm migration local/remote khớp.
-- RLS và policy đã được kiểm tra trên `profiles`, `pt_profiles`, `trainee_profiles`, `trainee_invitations`, `inbody_records`, `checkins`, `meal_logs`, `ocr_attempts` và `storage.objects`.
-- `meal-media` và `inbody-media` là private bucket; seed chỉ dùng dữ liệu synthetic.
-- Admin demo đã email-confirmed và có role `admin`; credential không nằm trong evidence pack.
+- Project `fitsync-prod`, Singapore `ap-southeast-1`, trạng thái `ACTIVE_HEALTHY`.
+- Năm migrations local/remote khớp.
+- RLS/policies đã kiểm tra trên tám bảng OC2 và `storage.objects`.
+- `meal-media` và `inbody-media` là private bucket.
+- Seed chỉ dùng dữ liệu synthetic; không có payment row vì schema chưa có payment table.
 
 Chi tiết nằm trong [`SUPABASE_PRODUCTION_EVIDENCE.md`](SUPABASE_PRODUCTION_EVIDENCE.md).
 
-## Những việc đang phải đợi
+## Việc còn lại theo đường găng
 
-1. **Huy:** review quy trình merge PR #26/#28, cấu hình Vercel secrets qua kênh riêng, deploy và gửi URL trả HTTP 200.
-2. **Toàn:** hoàn thiện ERD Carbon Dark, xuất PNG/PDF và gửi link Drive view-only.
-3. **Toàn:** bàn giao bản final slide W4–W5 và bằng chứng 5+ kênh MXH theo card Design.
-4. **Giảng viên/nhóm:** cung cấp hoặc xác nhận email chính thức và mức quyền Supabase phù hợp.
-5. **Sau khi Huy deploy:** Việt và Huy kiểm thử Incognito bằng admin và non-admin, sau đó test responsive/thiết bị thật.
-6. **Sau khi Vercel + ERD pass:** Việt quay video final, upload YouTube Unlisted + Drive, kiểm tra link ẩn danh và gửi email nghiệm thu.
+1. **Huy:** deploy `e1b03ad`, cấu hình secrets qua kênh riêng, gửi URL HTTPS/HTTP 200 và commit SHA.
+2. **Việt + Huy:** test Incognito admin/non-admin, landing, `/workspace`, `/admin`; test desktop và thiết bị thật.
+3. **Toàn + Hưng/Huy:** tạo ERD từ [`FITSYNC_OC2_ERD.mmd`](FITSYNC_OC2_ERD.mmd), xuất PNG/PDF và review với migrations.
+4. **Việt:** mời email chính thức của giảng viên bằng least privilege; lưu receipt đã redact.
+5. **Việt:** quay video final sau khi Vercel và ERD pass; upload YouTube Unlisted + Drive và kiểm tra khi signed out.
+6. **Việt + reviewer:** kiểm tra toàn bộ link, gửi email và lưu Sent receipt.
 
-URL dự kiến `https://fitsync-safetrail.vercel.app` vẫn trả HTTP 404 tại lần kiểm tra ngày 24/10/2026; chưa được dùng làm production evidence.
+## Điều kiện DONE
 
-## Thứ tự đóng Outcome 2
+- [x] PR #26 và #29 được approve, CI xanh và merge đúng thứ tự.
+- [x] Supabase production migration/RLS/storage/seed được xác minh.
+- [ ] Vercel deploy `e1b03ad`, HTTPS trả HTTP 200.
+- [ ] Admin vào `/admin`; non-admin bị redirect trên deployment thật.
+- [ ] Invitation giảng viên có receipt đã redact.
+- [ ] ERD PNG/PDF và Data Dictionary mở được qua link view-only.
+- [ ] Video YouTube/Drive dài 03:00–05:00 mở được khi signed out.
+- [ ] Email đã gửi và có Sent receipt.
 
-1. Review và merge đúng thứ tự PR #26, PR #28; ghi lại commit SHA cuối.
-2. Huy deploy SHA đó lên Vercel với Supabase production env.
-3. Việt/Huy smoke test landing, login, `/workspace`, `/admin`, admin và non-admin ở Incognito.
-4. Việt mời email giảng viên theo least privilege và lưu bằng chứng đã redact.
-5. Nhận ERD PNG/PDF của Toàn, review chéo với migrations rồi khóa bản final.
-6. Quay và xuất video 03:00–05:00; xem lại từ đầu đến cuối.
-7. Upload YouTube Unlisted và Drive, kiểm tra toàn bộ link bằng phiên không đăng nhập.
-8. Gửi email nghiệm thu, lưu Sent receipt, cập nhật Trello sang DONE.
-
-## Điều kiện được phép đánh dấu DONE
-
-- PR cần thiết đã được reviewer độc lập phê duyệt và merge.
-- Production URL HTTPS trả HTTP 200 và trỏ tới commit đã ghi nhận.
-- Admin/non-admin authorization test đạt trên deployment thật.
-- Supabase instructor invitation có trạng thái/bằng chứng đã che thông tin nhạy cảm.
-- ERD PNG/PDF và Data Dictionary mở được bằng link view-only.
-- Video 3–5 phút và Drive backup mở được ở Incognito.
-- Email nghiệm thu đã gửi và có bằng chứng trong Sent.
+Không lưu password, token, API key, connection string, signed URL hoặc dữ liệu sức khỏe thật trong evidence pack.
