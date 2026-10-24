@@ -2,6 +2,17 @@
 
 This folder is the repository-owned handoff for GitHub Issue #27 and the Trello ownership transfer from Hưng to Việt on 2026-10-24.
 
+## Current outcome
+
+Outcome 2 is **implementation-ready but not yet accepted as complete**. Repository quality gates and the Supabase production migration/seed are verified. The remaining critical path is:
+
+1. independent review and merge of PR #26 and PR #28;
+2. Huy's Vercel production deployment and browser authorization smoke test;
+3. Toàn's final ERD PNG/PDF, W4–W5 slide deck, and social-channel evidence;
+4. Việt's final recording, link QA, instructor invitation, and submission email.
+
+The canonical live checklist, ownership matrix, evidence, and closing order are in [`STATUS.md`](STATUS.md).
+
 ## Contents
 
 - [`DATABASE_SCHEMA_HANDOFF.md`](DATABASE_SCHEMA_HANDOFF.md): migration-derived ERD source and relationship notes for Toàn.
@@ -11,7 +22,7 @@ This folder is the repository-owned handoff for GitHub Issue #27 and the Trello 
 - [`DEMO_SUBMISSION_RUNBOOK.md`](DEMO_SUBMISSION_RUNBOOK.md): 04:15 recording plan, captions, link QA, and sanitized email template.
 - [`VIDEO_WALKTHROUGH_SCRIPT_VI.md`](VIDEO_WALKTHROUGH_SCRIPT_VI.md): complete Vietnamese screen direction and narration for the 04:15 walkthrough.
 - [`TOAN_ERD_DESIGN_BRIEF.md`](TOAN_ERD_DESIGN_BRIEF.md): exact diagram source, visual grouping, and export brief for Toàn.
-- [`STATUS.md`](STATUS.md): verified completion state and external acceptance blockers as of 2026-10-24.
+- [`STATUS.md`](STATUS.md): canonical OC2 completion matrix, verified evidence, external blockers, owners, and closing order as of 2026-10-24.
 
 ## Evidence rule
 
