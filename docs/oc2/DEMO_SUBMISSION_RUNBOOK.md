@@ -7,6 +7,17 @@
 **Required format:** 1920×1080, 16:9, readable cursor and captions
 **Truth rule:** say “synthetic demo data” whenever the admin dataset or VietQR scenario is shown.
 
+## Start gate for the final recording
+
+Do not record the final submission until all four conditions are true:
+
+- [ ] PR #26 and PR #28 have completed the required independent review/merge flow.
+- [ ] Huy provides a stable Vercel HTTPS URL returning HTTP 200 for the recorded commit.
+- [ ] Admin and non-admin Incognito authorization tests pass against Supabase production.
+- [ ] Toàn provides the reviewed ERD PNG/PDF link with view-only access.
+
+The narration and a scratch recording may be rehearsed before these gates pass. As of the 2026-10-24 check, the expected Vercel URL returns HTTP 404 and the final ERD export is pending.
+
 ## Recording timeline
 
 | Time | Screen actions | Voice-over boundary |
@@ -82,3 +93,14 @@ Huỳnh Quốc Việt — Team SafeTrail
 - Supabase instructor invitation acceptance.
 - Vercel production deployment and post-deploy smoke test.
 - Sending the official email and capturing the Sent receipt.
+
+## Closing sequence
+
+1. Record the final production commit SHA and Vercel URL.
+2. Complete the desktop Incognito admin/non-admin tests.
+3. Complete Android Chrome and iOS Safari link checks where devices are available.
+4. Review Toàn's ERD against the five migrations and attach its view-only link.
+5. Record, edit, caption, export, and watch the entire video once.
+6. Upload YouTube Unlisted and Drive backup; verify both while signed out.
+7. Send the submission email only after every referenced link passes.
+8. Capture the Sent receipt, update Trello, and archive the final evidence list in Issue #27.
