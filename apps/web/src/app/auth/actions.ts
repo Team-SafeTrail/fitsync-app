@@ -18,8 +18,20 @@ export async function login(formData: FormData) {
   if (!email || !password) authRedirect("/login", "error", "Nhập email và mật khẩu để tiếp tục.");
 
   const supabase = createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) authRedirect("/login", "error", "Không thể đăng nhập với thông tin này.");
+  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+  if (error || !data.user) authRedirect("/login", "error", "Không thể đăng nhập với thông tin này.");
+
+  // If user role is admin, route directly to Admin Portal
+  const { data: profile } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", data.user.id)
+    .maybeSingle();
+
+  if (profile?.role === "admin") {
+    redirect("/admin");
+  }
+
   redirect("/workspace");
 }
 

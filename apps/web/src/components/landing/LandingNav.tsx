@@ -8,6 +8,8 @@ const links = [
   ["Sản phẩm", "#product"],
   ["Cách hoạt động", "#workflow"],
   ["Bằng chứng", "#evidence"],
+  ["Đội ngũ", "#team"],
+  ["Tải App & Hỗ trợ", "#contact-app"],
   ["Câu hỏi", "#faq"],
 ];
 

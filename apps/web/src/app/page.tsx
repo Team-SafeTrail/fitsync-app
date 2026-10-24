@@ -9,6 +9,8 @@ import Footer, { ClosingSections } from "@/components/landing/Footer";
 import SurveyEvidence from "@/components/landing/SurveyEvidence";
 import ProductScope from "@/components/landing/ProductScope";
 import VerifiedWorkflowSection from "@/components/landing/VerifiedWorkflowSection";
+import TeamSection from "@/components/landing/TeamSection";
+import ContactAndAppSection from "@/components/landing/ContactAndAppSection";
 import "./landing.css";
 
 export const metadata: Metadata = {
@@ -37,6 +39,8 @@ export default function LandingPage() {
         <OCRDemoSection />
         <PricingSection />
         <ROICalculator />
+        <TeamSection />
+        <ContactAndAppSection />
         <ClosingSections />
       </main>
       <Footer />
