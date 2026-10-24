@@ -71,4 +71,5 @@ No payment rows were seeded because the accepted schema has no payment table. UI
 - [ ] Confirm a non-admin user is redirected away from `/admin`.
 - [ ] Invite the official instructor email with the approved least-privilege role and record redacted acceptance status.
 - [ ] Run the repository pgTAP suite when Docker or Podman is available; the current workstation lacks both. Direct production catalog checks above passed.
-- [ ] Add the Vercel deployment URL and commit SHA after Huy completes production deployment.
+- [x] Production revision locked to `e1b03ad` after PR #26 and PR #29 merged in the required order.
+- [ ] Add the Vercel deployment URL and HTTP 200 evidence after Huy deploys `e1b03ad`.

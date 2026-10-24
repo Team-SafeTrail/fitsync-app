@@ -11,12 +11,12 @@
 
 Do not record the final submission until all four conditions are true:
 
-- [ ] PR #26 and PR #28 have completed the required independent review/merge flow.
+- [x] PR #26 (`094c5ee`) and recovery PR #29 (`e1b03ad`) completed independent review, CI, and the required merge order.
 - [ ] Huy provides a stable Vercel HTTPS URL returning HTTP 200 for the recorded commit.
 - [ ] Admin and non-admin Incognito authorization tests pass against Supabase production.
 - [ ] Toàn provides the reviewed ERD PNG/PDF link with view-only access.
 
-The narration and a scratch recording may be rehearsed before these gates pass. As of the 2026-10-24 check, the expected Vercel URL returns HTTP 404 and the final ERD export is pending.
+The narration and a scratch recording may be rehearsed before the remaining gates pass. As of the latest 2026-10-24 check, the expected Vercel URL still returns HTTP 404 and the final ERD export is pending. The production recording must use commit `e1b03ad` or a later explicitly reviewed fix.
 
 ## Recording timeline
 

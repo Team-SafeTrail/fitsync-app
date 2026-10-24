@@ -4,18 +4,21 @@ This folder is the repository-owned handoff for GitHub Issue #27 and the Trello 
 
 ## Current outcome
 
-Outcome 2 is **implementation-ready but not yet accepted as complete**. Repository quality gates and the Supabase production migration/seed are verified. The remaining critical path is:
+Outcome 2 is **merged and implementation-ready, but not yet accepted as complete**. Repository quality gates and the Supabase production migration/seed are verified. The frontend sequence was repaired and merged as PR #26 (`094c5ee`) followed by recovery PR #29 (`e1b03ad`), which reapplied only the incremental changes from original PR #28.
 
-1. independent review and merge of PR #26 and PR #28;
-2. Huy's Vercel production deployment and browser authorization smoke test;
-3. Toàn's final ERD PNG/PDF, W4–W5 slide deck, and social-channel evidence;
-4. Việt's final recording, link QA, instructor invitation, and submission email.
+The remaining critical path is:
+
+1. Huy's Vercel production deployment of `e1b03ad` and browser authorization smoke test;
+2. Toàn's final ERD PNG/PDF generated from the migration-derived Mermaid source;
+3. Việt's instructor invitation, final recording, signed-out link QA, and submission email.
 
 The canonical live checklist, ownership matrix, evidence, and closing order are in [`STATUS.md`](STATUS.md).
 
 ## Contents
 
 - [`DATABASE_SCHEMA_HANDOFF.md`](DATABASE_SCHEMA_HANDOFF.md): migration-derived ERD source and relationship notes for Toàn.
+- [`FITSYNC_OC2_ERD.mmd`](FITSYNC_OC2_ERD.mmd): standalone Mermaid source ready for Mermaid Live or draw.io.
+- [`assets/erd/`](assets/erd/): versioned draft SVG/PNG exports and their completion notes.
 - [`DATA_DICTIONARY.md`](DATA_DICTIONARY.md): field, key, constraint, and access dictionary for the eight OC2 tables.
 - [`SUPABASE_CLOUD_RUNBOOK.md`](SUPABASE_CLOUD_RUNBOOK.md): safe Cloud creation, migration, synthetic seed, and evidence procedure.
 - [`SUPABASE_PRODUCTION_EVIDENCE.md`](SUPABASE_PRODUCTION_EVIDENCE.md): redacted production verification results for migrations, RLS, buckets, and synthetic seed.
