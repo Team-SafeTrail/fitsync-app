@@ -9,9 +9,9 @@ const config: Config = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-inter)", "-apple-system", "BlinkMacSystemFont", "Segoe UI", "Roboto", "sans-serif"],
-        display: ["var(--font-space-grotesk)", "var(--font-inter)", "sans-serif"],
-        mono: ["var(--font-mono)", "SF Mono", "Consolas", "monospace"],
+        sans: ["var(--fs-font-ui)"],
+        display: ["var(--fs-font-display)"],
+        mono: ["var(--fs-font-data)"],
       },
       colors: {
         canvas: "#0E0E12",
