@@ -44,14 +44,14 @@ erDiagram
     text phone
   }
   pt_profiles {
-    uuid id PK_FK
+    uuid id PK, FK
     text gym_affiliation
     subscription_plan subscription_plan
     timestamptz subscription_valid_until
   }
   trainee_profiles {
     uuid id PK
-    uuid profile_id FK_UK
+    uuid profile_id FK, UK
     uuid assigned_pt_id FK
     text display_name
     fitness_goal primary_goal
@@ -83,7 +83,7 @@ erDiagram
   }
   meal_logs {
     uuid id PK
-    uuid checkin_id FK_UK
+    uuid checkin_id FK, UK
     uuid trainee_id FK
     text private_photo_path UK
     text photo_mime_type
@@ -95,7 +95,7 @@ erDiagram
     text private_image_path UK
     ocr_attempt_status status
     jsonb raw_draft
-    uuid inbody_record_id FK_UK
+    uuid inbody_record_id FK, UK
   }
 ```
 
@@ -106,9 +106,3 @@ erDiagram
 3. `Private media`: object path được scope bằng `trainee_id`; ứng dụng dùng signed URL ngắn hạn.
 4. `OCR is a draft`: OCR attempt không phải InBody record; chỉ PT confirmation mới liên kết tới bản ghi đã xác minh.
 5. `Server boundary`: service-role key không được gửi xuống browser.
-
-## Tin nhắn gửi Toàn
-
-```text
-Toàn ơi, đây là source ERD OC2 đã đối chiếu với 5 migration của repo. Nhờ Toàn dựng bản Carbon/dark theme theo 4 nhóm màu Identity, Coaching, Engagement và OCR boundary; giữ nguyên cardinality, PK/FK/UK trong source. Xuất giúp Việt PNG tối thiểu 2560 px và PDF vector/text-selectable, rồi gửi link Drive view-only. Tuyệt đối không đưa key, password, token, connection string, signed URL hoặc dữ liệu sức khỏe thật vào hình. Khi xong nhờ Huy/Việt review chéo với migrations trước khi chốt.
-```
