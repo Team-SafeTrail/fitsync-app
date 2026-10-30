@@ -26,7 +26,7 @@ test("handoff web: profile context, membership revisions, private/shared notes a
   await a.getByRole("tab",{name:"Ghi chú",exact:true}).click();
   let note=a.getByRole("form",{name:"Thêm ghi chú",exact:true});
   const intakePrivate=`Synthetic intake private ${run}`;await note.getByLabel("Nội dung ghi chú").fill(intakePrivate);await note.getByRole("button",{name:"Lưu ghi chú",exact:true}).click();await expect(a.getByTestId("coaching-note")).toContainText(intakePrivate);
-  await b.goto(invitation);await b.getByLabel("Tạo mật khẩu").fill(password);await b.getByRole("button",{name:"Chấp nhận lời mời",exact:true}).click();await expect(b).toHaveURL(/\/workspace$/);
+  await b.goto(invitation);await b.screenshot({path:`${root}/handoff-invitation.png`,fullPage:true});await b.getByLabel("Tạo mật khẩu").fill(password);await b.getByRole("button",{name:"Chấp nhận lời mời",exact:true}).click();await expect(b).toHaveURL(/\/workspace$/);
   await a.reload();note=a.getByRole("form",{name:"Thêm ghi chú",exact:true});
   console.info("[handoff-acceptance] membership date versions and explicit note visibility");
   await a.getByRole("tab",{name:"Membership & buổi",exact:true}).click();
@@ -64,6 +64,17 @@ test("handoff web: profile context, membership revisions, private/shared notes a
   await c.goto("/register");await c.getByLabel("Tên hiển thị").fill("Other synthetic PT");await c.getByLabel("Email",{exact:true}).fill(`handoff-other-${run}@example.test`);await c.getByLabel("Mật khẩu",{exact:true}).fill(password);await c.getByRole("button",{name:"Tạo workspace PT",exact:true}).click();await expect(c).toHaveURL(/\/workspace$/);const denied=await c.goto(dossier!);expect(denied?.status()).toBe(404);await expect(c.getByTestId("coaching-note")).toHaveCount(0);
   expect(runtime).toEqual([]);
  } catch(error) {await Promise.allSettled([a.screenshot({path:`${root}/handoff-failure-pt.png`,timeout:1000}),b.screenshot({path:`${root}/handoff-failure-trainee.png`,timeout:1000})]);throw error;} finally {await Promise.allSettled([pt.close(),learner.close(),other.close()]);}
+});
+
+test("handoff admin is a guarded system/demo surface on desktop and phone",async({page})=>{
+ const email=`handoff-admin-${Date.now()}@example.test`,password="Synthetic-Admin-2026-Only!";
+ // This test-only privilege is restricted by beforeAll to the disposable local DB.
+ const setup=createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY!,{auth:{persistSession:false,autoRefreshToken:false}});
+ const user=await setup.auth.admin.createUser({email,password,email_confirm:true,user_metadata:{display_name:"Admin synthetic handoff",role:"trainee"}});expect(user.error).toBeNull();
+ const role=await setup.from("profiles").update({role:"admin"}).eq("id",user.data.user!.id);expect(role.error).toBeNull();
+ await page.goto("/login");await page.getByLabel("Email",{exact:true}).fill(email);await page.getByLabel("Mật khẩu",{exact:true}).fill(password);await page.getByRole("button",{name:"Đăng nhập",exact:true}).click();await expect(page).toHaveURL(/\/(workspace|admin)/);
+ await mkdir("test-results/chat-proof",{recursive:true});
+ for(const width of [1440,390]) {await page.setViewportSize({width,height:900});await page.goto("/admin");await expect(page.getByText("Dữ liệu demo OC2:",{exact:true})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await page.screenshot({path:`test-results/chat-proof/handoff-admin-${width}.png`,fullPage:true});}
 });
 
 test("handoff public page inventory renders at desktop and phone widths",async({page})=>{
