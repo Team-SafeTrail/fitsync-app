@@ -1,6 +1,6 @@
 # FitSync — xem xét mô hình kinh doanh cho Việt Nam
 
-Ngày 2026-10-30. Dùng skill pricing; đề xuất để thảo luận, không phải giá mới đã duyệt hoặc dự báo lợi nhuận. Chủ sản phẩm cho biết đã có mô hình cũ, mentor đặt vấn đề và nay yêu cầu xem xét lại. Baseline tìm thấy trong tài liệu: Free 3 học viên/3 OCR, Pro 199.000đ/tháng. Không khẳng định baseline này vẫn là quyết định cuối.
+Ngày 2026-10-30. Dùng skill pricing; đề xuất để thảo luận, không phải giá mới đã duyệt hoặc dự báo lợi nhuận. Chủ sản phẩm cho biết đã có mô hình cũ, mentor đặt vấn đề và nay yêu cầu xem xét lại. Cập nhật owner xác nhận: đã khảo sát sơ bộ mức 199.000đ/tháng. Đây là mức tham chiếu hiện hành để làm rõ offer, không phải chưa từng chọn mô hình. Free 3 học viên/3 OCR là cấu trúc trong tài liệu cũ; hạn mức và phạm vi hiện hành cần được xác nhận riêng.
 
 ## Khuyến nghị
 
@@ -26,7 +26,7 @@ Không dùng việc Free thiếu chat hoặc đọc dữ liệu để buộc mua
 - Mở rộng: cùng core cho roster lớn hơn, thí dụ tối đa 30; thêm năng lực tổ chức khi thật sự cần. Không tạo feature giả để đủ hai cột.
 - AI: hạn mức OCR/food/voice riêng theo chi phí và giá trị từng loại; không một credit mơ hồ cho ba tác vụ khác chi phí. Tác vụ lỗi kỹ thuật có quy tắc hoàn lượt, hết mức vẫn nhập tay/gửi ảnh được.
 - Học viên active: quan hệ coaching đang mở do PT chủ động quản lý; archived giữ lịch sử theo retention nhưng không chiếm active seat. Không tự tăng phí vì học viên đăng nhập hoặc gia hạn.
-- 199k baseline so với phương án 299k cho cùng gói là hai mức để phỏng vấn/test offer, không phải đề nghị tăng giá ngay. Dải 30 học viên chưa gán giá trước khi biết chi phí và giá trị. Không tạo giá gạch ngang, sale hoặc annual-lock giả.
+- Ưu tiên làm rõ gói 199k đã có khảo sát sơ bộ trước. 299k chỉ là phương án nghiên cứu thay thế từng được đề xuất, chưa được chọn và không thay mức tham chiếu199k. Dải 30 học viên chưa gán giá trước khi biết chi phí và giá trị. Không tạo giá gạch ngang, sale hoặc annual-lock giả.
 
 ## Lợi nhuận: điều kiện cần đo
 

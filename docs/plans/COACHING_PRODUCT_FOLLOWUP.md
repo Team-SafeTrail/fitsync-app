@@ -85,3 +85,7 @@ Chủ sản phẩm yêu cầu cùng xem xét lại baseline đã có. Xem [phân
 Đã làm các increment giao diện: landing minh họa/offer có trạng thái; public PT mở hồ sơ mẫu, danh sách mobile, nhãn tiếng Việt, clipboard có báo lỗi; public trainee đúng vai trò/ngữ cảnh PT; brand/navigation đồng bộ; workspace navigation riêng theo vai trò; admin dùng tokens chung, trang pháp lý phân biệt sample/account. Có tìm kiếm/tiến trình workspace từ increment trước, nhưng chưa có authenticated runtime evidence. Báo cáo chi tiết: ../reviews/ALL_PAGES_ALIGNMENT_REVIEW.md.
 
 Chưa hoàn thành các gói chat/calendar/membership/PDF/native; không tick done bằng các màn mẫu. Môi trường hiện thiếu cấu hình Supabase và không tìm thấy Docker/Supabase CLI trong PATH. Bước backend tiếp cần môi trường synthetic test có thể chạy, không gửi secret qua chat; không tự cài cloud/provider hay chạy migration production. Mô hình PT subscription đang được cân nhắc theo yêu cầu owner, chưa thay giá chính thức.
+
+## Checkpoint owner mới nhất
+
+Xem ../PRODUCT_DECISIONS.md: mức199k/tháng đã có khảo sát sơ bộ; ưu tiên implementation workspace thật, tour chỉ là phụ. Chưa xác định URL deployed hay có Supabase test; không tiếp tục xem đổi giao diện mẫu là hoàn thành remake core.
