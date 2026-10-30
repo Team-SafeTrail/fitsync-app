@@ -16,14 +16,16 @@ export default function InBodyRecordCard({
   record,
   traineeId,
   editableNutrition,
+  compact = false,
 }: {
   record: InBodyRecord;
   traineeId: string;
   editableNutrition: boolean;
+  compact?: boolean;
 }) {
   const updateAction = updateNutritionDraft.bind(null, record.id, traineeId);
   return (
-    <article className="workspace-record" data-testid="verified-record">
+    <article className={compact ? "workspace-record is-compact" : "workspace-record"} data-testid="verified-record">
       <header>
         <div>
           <span className="workspace-badge is-verified"><CheckCircle2 size={14} /> Đã xác minh</span>

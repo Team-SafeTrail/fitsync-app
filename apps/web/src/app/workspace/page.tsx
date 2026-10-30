@@ -58,10 +58,10 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
             <ProgressHistory records={records} />
             <Suspense fallback={<p role="status">Đang tải membership và ghi chú…</p>}><CoachingProfileContext traineeId={trainee.id}/></Suspense>
             <section className="workspace-record-list" aria-labelledby="trainee-records-title">
-              <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody đã xác minh</h2></div><p>{records.length} lần đo được PT xác nhận</p></div>
+              <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody gần nhất</h2></div><Link href="/workspace/progress">Xem đủ {records.length} bản ghi</Link></div>
               {records.length === 0
                 ? <div className="workspace-empty compact"><Dumbbell size={28} /><h3>Chưa có bản ghi đã xác minh</h3><p>PT của bạn sẽ nhập và xác nhận kết quả trước khi nó xuất hiện tại đây.</p></div>
-                : records.map((record) => <InBodyRecordCard key={record.id} record={record} traineeId={trainee.id} editableNutrition={false} />)}
+                : records.slice(0,1).map((record) => <InBodyRecordCard key={record.id} record={record} traineeId={trainee.id} editableNutrition={false} compact />)}
             </section>
           </>
         )}

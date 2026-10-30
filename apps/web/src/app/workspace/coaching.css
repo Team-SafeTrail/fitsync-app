@@ -74,6 +74,10 @@
 .progress-metric-picker button { font:inherit; font-size:14px; min-height:44px; padding:10px 16px; border:1px solid var(--color-border-default); border-radius:22px; background:var(--color-surface); color:var(--color-text-secondary); cursor:pointer; }
 .progress-metric-picker button[aria-pressed=true] { background:var(--color-brand-light); color:var(--color-text-primary); border-color:var(--color-brand); }
 .progress-axis-labels { display:flex; justify-content:space-between; gap:12px; padding-left:56px; font-size:12px; color:var(--color-text-secondary); margin-top:8px; }
+.workspace-record.is-compact .workspace-record-metrics { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.workspace-record.is-compact .workspace-record-metrics>div { border:0; padding:14px; }
+.workspace-record.is-compact .workspace-record-metrics dd { font-size:18px; }
+.workspace-record.is-compact .workspace-nutrition-values { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 .chat-page .workspace-page-heading { grid-template-columns:minmax(0,1fr) auto; gap:24px; margin-bottom:20px; }
 .chat-page .workspace-page-heading h1 { font-size:clamp(24px,2.4vw,34px); max-width:none; }
 .chat-history { height:clamp(240px,44dvh,520px); min-height:240px; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; align-content:start; margin-block:16px; }
