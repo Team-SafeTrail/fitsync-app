@@ -44,6 +44,7 @@ test.describe('M4 OCR Workflow (End-to-End)', () => {
 
     // 4. PT navigates to Trainee Profile
     await ptPage.goto(traineePath!);
+    await ptPage.getByRole("tab", {name:"Nhập số đo",exact:true}).click();
     await expect(ptPage.getByRole("heading", { name: "Xác nhận năm chỉ số InBody" })).toBeVisible();
 
     // Inject mockScenario

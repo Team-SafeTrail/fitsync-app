@@ -36,6 +36,9 @@
 .dossier-section-nav { display:flex; align-items:center; gap:10px 24px; overflow-x:auto; padding:12px 0; border-bottom:1px solid var(--color-border-default); margin-bottom:28px; scrollbar-width:thin; }
 .dossier-section-nav>a { display:inline-flex; align-items:center; min-height:44px; white-space:nowrap; font-size:14px; text-decoration:none; }
 .dossier-section-nav>a:hover { text-decoration:underline; text-underline-offset:6px; }
+.dossier-section-nav [role=tab] { flex:none; min-height:46px; padding:12px 4px; border:0; border-bottom:2px solid transparent; background:transparent; font:inherit; font-size:14px; color:var(--color-text-secondary); cursor:pointer; white-space:nowrap; }
+.dossier-section-nav [aria-selected=true] { border-bottom-color:var(--color-brand); color:var(--color-text-primary); font-weight:600; }
+.dossier-tabs>[role=tabpanel] { outline-offset:4px; }
 .workspace-main [id] { scroll-margin-top:100px; }
 .coaching-context-section { border-top:1px solid var(--color-border-default); padding:28px 0; margin:24px 0; }
 .coaching-context-section>.workspace-section-heading { align-items:center; }

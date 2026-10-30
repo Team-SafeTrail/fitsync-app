@@ -23,22 +23,35 @@ test("handoff web: profile context, membership revisions, private/shared notes a
   const invitation=await a.getByTestId("invitation-link").inputValue();
   const row=a.getByRole("link",{name:/Học viên synthetic handoff/});await expect(row).toBeVisible();const dossier=await row.getAttribute("href");expect(dossier).toMatch(/^\/workspace\/trainees\/[0-9a-f-]{36}$/);
   await a.screenshot({path:`${root}/handoff-pt-roster.png`,fullPage:true});await row.click();await expect(a).toHaveURL(new RegExp(dossier!+"$"));
+  await a.getByRole("tab",{name:"Ghi chú",exact:true}).click();
   let note=a.getByRole("form",{name:"Thêm ghi chú",exact:true});
   const intakePrivate=`Synthetic intake private ${run}`;await note.getByLabel("Nội dung ghi chú").fill(intakePrivate);await note.getByRole("button",{name:"Lưu ghi chú",exact:true}).click();await expect(a.getByTestId("coaching-note")).toContainText(intakePrivate);
   await b.goto(invitation);await b.getByLabel("Tạo mật khẩu").fill(password);await b.getByRole("button",{name:"Chấp nhận lời mời",exact:true}).click();await expect(b).toHaveURL(/\/workspace$/);
   await a.reload();note=a.getByRole("form",{name:"Thêm ghi chú",exact:true});
   console.info("[handoff-acceptance] membership date versions and explicit note visibility");
+  await a.getByRole("tab",{name:"Membership & buổi",exact:true}).click();
   const today=getApplicationDate();const end=addCalendarDays(today,30);
   let membership=a.getByRole("form",{name:"Điều chỉnh membership",exact:true});
   await membership.getByLabel("Tên membership",{exact:true}).fill("Membership synthetic");await membership.getByLabel("Ngày bắt đầu",{exact:true}).fill(today);await membership.getByLabel("Ngày kết thúc",{exact:true}).fill(end);await membership.getByRole("button",{name:"Lưu membership",exact:true}).click();await expect(a.getByTestId("membership-summary")).toContainText("Membership synthetic");await expect(a.getByTestId("membership-summary")).toContainText("31");
   await a.getByText("Điều chỉnh thời hạn",{exact:true}).click();membership=a.getByRole("form",{name:"Điều chỉnh membership",exact:true});await membership.getByLabel("Ngày kết thúc",{exact:true}).fill(addCalendarDays(today,60));await membership.getByRole("button",{name:"Lưu membership",exact:true}).click();await expect(a.getByTestId("membership-summary")).toContainText("61");
+  await a.getByRole("tab",{name:"Ghi chú",exact:true}).click();
   const shared=`Synthetic shared guidance ${run}`;await note.getByLabel("Nội dung ghi chú").fill(shared);await note.getByLabel("Ai có thể đọc?").selectOption("shared");await note.getByRole("button",{name:"Lưu ghi chú",exact:true}).click();await expect(a.getByTestId("coaching-note")).toHaveCount(2);
+  await note.getByLabel("Nội dung ghi chú").fill("Synthetic unsaved note");
+  await a.getByRole("tab",{name:"Tổng quan",exact:true}).click();await a.getByRole("tab",{name:"Ghi chú",exact:true}).click();await expect(note.getByLabel("Nội dung ghi chú")).toHaveValue("Synthetic unsaved note");await note.getByLabel("Nội dung ghi chú").fill("");
+  await a.getByRole("tab",{name:"Ghi chú",exact:true}).focus();await a.keyboard.press("ArrowLeft");await expect(a.getByRole("tab",{name:"Membership & buổi",exact:true})).toHaveAttribute("aria-selected","true");await a.keyboard.press("ArrowRight");
   const privateBody=`Synthetic PT private ${run}`;await note.getByLabel("Nội dung ghi chú").fill(privateBody);await note.getByLabel("Ai có thể đọc?").selectOption("private");await note.getByRole("button",{name:"Lưu ghi chú",exact:true}).click();await expect(a.getByTestId("coaching-note")).toHaveCount(3);
   await b.reload();await expect(b.getByTestId("coaching-note")).toHaveCount(1);await expect(b.getByTestId("coaching-note")).toContainText(shared);await expect(b.getByText(intakePrivate,{exact:true})).toHaveCount(0);await expect(b.getByText(privateBody,{exact:true})).toHaveCount(0);await expect(b.getByTestId("membership-summary")).toContainText("61");
   console.info("[handoff-acceptance] verified records, metric switch and phone dossier");
-  const intake=a.locator("#intake");if(!await intake.getAttribute("open")) {if(!await intake.locator('input[name="weightKg"]').isVisible())await intake.locator("summary").first().click();}
+  await a.getByRole("tab",{name:"Nhập số đo",exact:true}).click();
+  const intake=a.locator("#intake");await expect(intake.locator('input[name="weightKg"]')).toBeVisible();
   await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("70");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("14");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await intake.getByRole("button",{name:"Xác nhận và lưu",exact:true}).click();await expect(a.getByTestId("verified-record")).toHaveCount(1);
+  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("69");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30.2");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("13.8");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await intake.getByRole("button",{name:"Xác nhận và lưu",exact:true}).click();await expect(a.getByTestId("verified-record")).toHaveCount(2);
   await b.reload();await b.getByRole("button",{name:"Khối cơ xương",exact:true}).click();await expect(b.getByRole("button",{name:"Khối cơ xương",exact:true})).toHaveAttribute("aria-pressed","true");
+  await a.getByRole("tab",{name:"Tiến trình",exact:true}).click();await expect(a.getByTestId("verified-record").first()).toBeVisible();
+  await a.screenshot({path:`${root}/handoff-pt-progress.png`,fullPage:true});
+  await a.getByRole("tab",{name:"Membership & buổi",exact:true}).click();await a.screenshot({path:`${root}/handoff-pt-membership.png`,fullPage:true});
+  await a.getByRole("tab",{name:"Ghi chú",exact:true}).click();await a.screenshot({path:`${root}/handoff-pt-notes.png`,fullPage:true});
+  await a.getByRole("tab",{name:"Tổng quan",exact:true}).click();
   await a.screenshot({path:`${root}/handoff-pt-dossier.png`,fullPage:true});await b.screenshot({path:`${root}/handoff-trainee-home.png`,fullPage:true});
   for(const width of [768,390,320]) {await a.setViewportSize({width,height:900});expect(await a.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);}
   await expect(a.getByRole("navigation",{name:"Điều hướng chính trên điện thoại"})).toBeVisible();await a.screenshot({path:`${root}/handoff-pt-dossier-mobile.png`,fullPage:true});

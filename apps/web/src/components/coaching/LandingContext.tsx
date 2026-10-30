@@ -16,8 +16,9 @@ const capabilities = [
   ["Có trong workspace", "Hồ sơ và kết nối", "Tạo, sửa, tra cứu học viên; lời mời kết nối tài khoản và lịch sử chỉ số đã xác nhận."],
   ["Có trong workspace", "Cập nhật và số buổi", "Check-in, ghi chú, ảnh bữa ăn riêng tư và PT cập nhật số buổi còn lại. Chưa phải sổ ghi nhận từng buổi PT."],
   ["Chưa sẵn sàng đọc tự động", "Đọc phiếu InBody", "Có upload ảnh và bước PT kiểm duyệt. Đọc tự động cần dịch vụ được kết nối; PDF và chỉ số theo vùng chưa được hỗ trợ đầy đủ."],
-  ["Đang lên kế hoạch", "Chat và lịch chung", "Trao đổi trực tiếp, cùng xem cuộc hẹn và đề nghị đổi lịch. Chat và cuộc hẹn trên landing hiện là minh họa."],
-  ["Đang lên kế hoạch", "Membership và buổi PT", "Thời hạn gói riêng với số buổi PT. Đặt lịch hoặc tự check-in không đồng nghĩa đã sử dụng một buổi PT."],
+  ["Đang kiểm thử", "Chat và lịch chung", "Đã có luồng chat riêng và xếp lịch trên web, kiểm thử bằng dữ liệu giả. Khả năng sử dụng phụ thuộc môi trường được mở; hình trên landing vẫn là minh họa."],
+  ["Đang kiểm thử", "Membership", "Ghi nhận ngày bắt đầu/kết thúc và lịch sử điều chỉnh, tách khỏi số buổi PT. Chưa mở thanh toán hoặc tự động gia hạn."],
+  ["Đang lên kế hoạch", "Đổi lịch và sổ buổi PT", "Đề nghị đổi/hủy, xác nhận hoàn thành và sổ ghi từng buổi. Đặt lịch hoặc tự check-in không tự trừ buổi PT."],
   ["Hướng phát triển", "Điện thoại và trợ lý nhập liệu", "Ưu tiên Android, iPhone về sau. Ghi âm tư vấn, AI bữa ăn và thư viện bài tập cần được kiểm chứng trước khi phát hành."]
 ];
 export function CapabilityStatus() {

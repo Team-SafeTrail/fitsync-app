@@ -9,7 +9,7 @@ export default function ProgressHistory({records}:{records:InBodyRecord[]}) {
   const heading=useId(); const {readings,latest}=progressData(records);
   const metric=metrics.find(item=>item.key===selected)!;
   const date=(value:string)=>new Intl.DateTimeFormat("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Asia/Ho_Chi_Minh"}).format(new Date(value));
-  if(!latest) return <section id="progress" className="workspace-progress" aria-labelledby={heading}><h2 id={heading}>Tiến trình của học viên</h2><p>Chưa có số đo được PT xác nhận. Biểu đồ sẽ xuất hiện khi có dữ liệu; không dùng số mẫu để thay thế.</p></section>;
+  if(!latest) return <section id="progress" className="workspace-progress" aria-labelledby={heading}><h2 id={heading}>Tiến trình qua các lần đo</h2><p>Chưa có số đo được PT xác nhận. Biểu đồ sẽ xuất hiện khi có ít nhất hai bản ghi.</p></section>;
   const {points,ceiling}=measurementPoints(readings,selected);
   const difference=latest[selected]-readings[0][selected];
   const chartLabel=metric.label+" qua "+readings.length+" lần ghi nhận. Trục dọc từ 0 đến "+ceiling+" "+metric.unit+"; trục ngang theo thời gian. Chi tiết ở bảng bên dưới.";

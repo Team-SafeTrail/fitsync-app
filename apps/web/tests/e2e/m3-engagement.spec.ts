@@ -102,6 +102,7 @@ test("trainee check-in reaches the PT with private media, session updates, and m
   await ptPage.goto(traineePath!);
   await expect(ptPage.getByRole("heading", { name: "Check-in của học viên" })).toBeVisible();
   await expect(ptPage.getByTestId("checkin-activity")).toContainText("Năng lượng tốt");
+  await ptPage.getByRole("tab", {name:"Membership & buổi",exact:true}).click();
   await expect(ptPage.getByTestId("private-meal-photo")).toBeVisible();
   await ptPage.getByRole("spinbutton", { name: /Số buổi còn lại/ }).fill("8");
   await ptPage.getByRole("button", { name: "Cập nhật số buổi" }).click();

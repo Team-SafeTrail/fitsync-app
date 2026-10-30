@@ -69,6 +69,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.setViewportSize({ width: 1440, height: 1000 });
   await ptPage.goto(traineePath!);
   await expect(ptPage.getByText("Đã kết nối tài khoản")).toBeVisible();
+  await ptPage.getByRole("tab", {name:"Nhập số đo",exact:true}).click();
 
   await ptPage.getByLabel("Cân nặng (kg)").fill("70");
   await ptPage.getByLabel("Khối cơ xương (kg)").fill("30");
@@ -93,6 +94,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
 
   await ptPage.reload();
   await expect(ptPage.getByTestId("verified-record")).toContainText("70 kg");
+  await ptPage.getByRole("tab", {name:"Tiến trình",exact:true}).click();
   const nutritionForm = ptPage.getByTestId("verified-record").locator("form");
   await nutritionForm.getByLabel("Kcal").fill("2200");
   await nutritionForm.getByRole("button", { name: "Lưu bản nháp" }).click();

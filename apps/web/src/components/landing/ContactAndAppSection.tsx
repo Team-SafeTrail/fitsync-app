@@ -27,7 +27,7 @@ export default function ContactAndAppSection() {
           Hỗ Trợ Trực Tiếp & <span style={{ color: "#FF6B00" }}>Tải Ứng Dụng Android</span>
         </h2>
         <p style={{ color: "#94A3B8", maxWidth: "620px", margin: "12px auto 0", fontSize: "1rem" }}>
-          Đội ngũ SafeTrail sẵn sàng hỗ trợ huấn luyện viên 24/7 và cung cấp bản cài đặt thử nghiệm nội bộ dành cho điện thoại Android.
+          Android là nền tảng ứng dụng được ưu tiên. Chưa công bố bản cài đặt, thời gian phát hành hoặc cam kết hỗ trợ 24/7.
         </p>
       </div>
 
