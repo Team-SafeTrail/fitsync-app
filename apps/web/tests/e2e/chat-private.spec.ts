@@ -1,5 +1,8 @@
 import { expect, test } from "@playwright/test";
 import { mkdir } from "node:fs/promises";
+import { randomUUID } from "node:crypto";
+import { createClient } from "@supabase/supabase-js";
+import type { Database } from "../../src/types/database";
 
 test.use({actionTimeout:15000});
 
@@ -42,6 +45,7 @@ test("linked PT and trainee exchange persisted messages; outsider cannot open th
     console.info("[chat-acceptance] open thread and send PT message");
     await a.goto("/workspace/chat");
     await a.getByRole("link", {name:/Chat learner synthetic/}).click();
+    await expect(a).toHaveURL(/\/workspace\/chat\/[0-9a-f-]{36}$/);
     const thread = new URL(a.url()).pathname;
     const message = `Synthetic hello ${run}`;
     await a.getByLabel("Tin nhắn", {exact:true}).fill(message);
@@ -55,14 +59,62 @@ test("linked PT and trainee exchange persisted messages; outsider cannot open th
     await b.getByLabel("Tin nhắn", {exact:true}).fill(reply);
     await b.getByRole("button", {name:"Gửi tin nhắn",exact:true}).click();
     await expect(b.getByText(reply,{exact:true})).toBeVisible();
+    await a.bringToFront();
+    await expect(a.getByText(reply,{exact:true})).toBeVisible({timeout:20000});
     await a.reload();
     await expect(a.getByText(reply,{exact:true})).toBeVisible();
     await expect(a.getByText(message,{exact:true})).toHaveCount(1);
+    console.info("[chat-acceptance] retry after a committed response is lost");
+    const retryMessage = `Synthetic retry ${run}`;
+    let dropped = false;
+    const loseAcknowledgment = async (route: import("@playwright/test").Route) => {
+      if (!dropped && route.request().method() === "POST" && route.request().headers()["next-action"]) {
+        dropped = true;
+        await route.fetch();
+        await route.abort("failed");
+      } else await route.continue();
+    };
+    await a.route("**/workspace/chat/**", loseAcknowledgment);
+    await a.getByLabel("Tin nhắn", {exact:true}).fill(retryMessage);
+    const retryNonce = await a.locator('input[name="clientMessageId"]').inputValue();
+    await a.getByRole("button", {name:"Gửi tin nhắn",exact:true}).click();
+    await expect(a.getByRole("alert")).toContainText("Kết nối bị gián đoạn");
+    await expect(a.getByLabel("Tin nhắn", {exact:true})).toHaveValue(retryMessage);
+    await expect(a.locator('input[name="clientMessageId"]')).toHaveValue(retryNonce);
+    await a.unroute("**/workspace/chat/**", loseAcknowledgment);
+    await a.getByRole("button", {name:"Gửi tin nhắn",exact:true}).click();
+    await expect(a.getByLabel("Tin nhắn", {exact:true})).toHaveValue("");
+    await expect(a.getByText(retryMessage,{exact:true})).toHaveCount(1);
+    await b.reload();
     console.info("[chat-acceptance] persisted exchange verified; test outsider denial");
     expect(await b.evaluate(()=>document.documentElement.scrollWidth <= innerWidth)).toBe(true);
     await mkdir("test-results/chat-proof", {recursive:true});
     await a.screenshot({path:"test-results/chat-proof/pt.png",fullPage:true});
     await b.screenshot({path:"test-results/chat-proof/trainee.png",fullPage:true});
+    console.info("[chat-acceptance] same-timestamp keyset history and send from older page");
+    const api = createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,{auth:{persistSession:false,autoRefreshToken:false}});
+    const login = await api.auth.signInWithPassword({email:`chat-pt-${run}@example.test`,password});
+    expect(login.error).toBeNull();
+    const traineeId = thread.split("/").at(-1)!;
+    const relation = await api.from("trainee_profiles").select("profile_id").eq("id",traineeId).single();
+    expect(relation.error).toBeNull();
+    const bulk = await api.from("coaching_messages").insert(Array.from({length:53},(_,i)=>({trainee_id:traineeId,pt_id:login.data.user!.id,learner_id:relation.data!.profile_id!,sender_id:login.data.user!.id,client_message_id:randomUUID(),body:`Synthetic history ${run}-${i}`})));
+    expect(bulk.error).toBeNull();
+    await a.reload();
+    await expect(a.locator(".chat-message p")).toHaveCount(50);
+    const recent = await a.locator(".chat-message p").allTextContents();
+    await a.getByRole("link",{name:"Xem tin nhắn cũ hơn",exact:true}).click();
+    await expect(a.locator(".chat-message p")).toHaveCount(6);
+    const older = await a.locator(".chat-message p").allTextContents();
+    expect(new Set([...recent,...older]).size).toBe(56);
+    expect(older).toContain(message);
+    expect(older).toContain(reply);
+    expect(older).toContain(retryMessage);
+    const fromHistory = `Synthetic from history ${run}`;
+    await a.getByLabel("Tin nhắn",{exact:true}).fill(fromHistory);
+    await a.getByRole("button",{name:"Gửi tin nhắn",exact:true}).click();
+    await expect(a).toHaveURL(new RegExp(thread+"$"));
+    await expect(a.getByText(fromHistory,{exact:true})).toBeVisible();
     await c.goto("/register");
     await c.getByLabel("Tên hiển thị").fill("Other PT synthetic");
     await c.getByLabel("Email", {exact:true}).fill(`chat-other-${run}@example.test`);
@@ -72,6 +124,8 @@ test("linked PT and trainee exchange persisted messages; outsider cannot open th
     const denied = await c.goto(thread);
     expect(denied?.status()).toBe(404);
     await expect(c.getByText(message,{exact:true})).toHaveCount(0);
+    await expect(c.locator(".chat-message")).toHaveCount(0);
+    await expect(c.getByLabel("Tin nhắn",{exact:true})).toHaveCount(0);
   } catch (error) {
     await mkdir("test-results/chat-proof", {recursive:true});
     await Promise.allSettled([a.screenshot({path:"test-results/chat-proof/failure-pt.png",timeout:1000}),b.screenshot({path:"test-results/chat-proof/failure-learner.png",timeout:1000})]);

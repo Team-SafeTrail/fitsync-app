@@ -18,9 +18,11 @@ export default function ChatComposer({ traineeId, refreshAutomatically }: { trai
   useEffect(() => setNonce(crypto.randomUUID()), []);
   useEffect(() => {
     if (state.status === "success" && state.nonce === nonce) {
-      setBody(""); setNonce(crypto.randomUUID()); router.refresh();
+      setBody(""); setNonce(crypto.randomUUID());
+      if (refreshAutomatically) router.refresh();
+      else router.replace(`/workspace/chat/${traineeId}`);
     }
-  }, [state, nonce, router]);
+  }, [state, nonce, router, refreshAutomatically, traineeId]);
   useEffect(() => {
     if (!refreshAutomatically) return;
     const timer = setInterval(() => { if (document.visibilityState === "visible") router.refresh(); }, 15000);
