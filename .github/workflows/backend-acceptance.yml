@@ -40,8 +40,13 @@ jobs:
       - name: Install Chromium
         working-directory: apps/web
         run: npx --no-install playwright install --with-deps chromium
+      - name: Build application against disposable test stack
+        working-directory: apps/web
+        run: npm run build
       - name: Test real synthetic coaching flows
         working-directory: apps/web
+        env:
+          PLAYWRIGHT_PRODUCTION_SERVER: "true"
         run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts
       - name: Retain schema and synthetic chat screenshots
         if: always()

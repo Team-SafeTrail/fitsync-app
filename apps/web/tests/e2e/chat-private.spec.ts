@@ -78,7 +78,7 @@ test("linked PT and trainee exchange persisted messages; outsider cannot open th
     await a.getByLabel("Tin nhắn", {exact:true}).fill(retryMessage);
     const retryNonce = await a.locator('input[name="clientMessageId"]').inputValue();
     await a.getByRole("button", {name:"Gửi tin nhắn",exact:true}).click();
-    await expect(a.getByRole("alert")).toContainText("Kết nối bị gián đoạn");
+    await expect(a.locator(".chat-composer").getByRole("alert")).toContainText("Kết nối bị gián đoạn");
     await expect(a.getByLabel("Tin nhắn", {exact:true})).toHaveValue(retryMessage);
     await expect(a.locator('input[name="clientMessageId"]')).toHaveValue(retryNonce);
     await a.unroute("**/workspace/chat/**", loseAcknowledgment);

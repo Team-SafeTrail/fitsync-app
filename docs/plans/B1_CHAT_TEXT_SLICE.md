@@ -39,3 +39,7 @@ Feature flag FITSYNC_CHAT_ENABLED=false đến khi DB test và flow hai tài kho
 Cần kiểm: PT và learner gửi/đọc/reload; đúng tác giả; người thứ ba/admin/anon không đọc/gửi; forged sender/PT/learner bị chặn; retry không trùng;50+ tin và cùng microsecond; archive/unlink/reassign đổi quyền; mất mạng/draft; routeback và mobile keyboard. 29 pgTAP cases đã viết, chưa chạy. Unit validation/server action kiểm các boundary nhưng không chứng minh SQL/RLS thực thi.
 
 Chưa gồm media, read receipt, edit/delete, notification, voice, booking. Rate limit và retention/abuse handling cần hoàn tất trước pilot; không hứa sẵn sàng production. Tài liệu nền: [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [column grants](https://supabase.com/docs/guides/database/postgres/column-level-security), [OR filters](https://supabase.com/docs/reference/javascript/using-filters-or).
+
+## Cập nhật bằng chứng sau bản contract ban đầu
+
+Các câu “chưa áp dụng/chưa chạy/types thủ công” ở mục phát hành phía trên là trạng thái lúc soạn contract. Sau đó migration đã được áp trên Supabase tạm trong CI;29 chat assertions và111 assertions nền đã qua ở các lượt41059690048,41061261782,41074069082. Types public đã sinh từ DB thật của runner và có CI diff. Chat browser acceptance mới đang chạy ở41075370536, chưa nghiệm thu; xem checkpoint hiện hành trong COACHING_PRODUCT_FOLLOWUP.md và CHAT_TEXT_01_IMPLEMENTATION.md. Chưa áp migration hoặc bật cờ tại production.
