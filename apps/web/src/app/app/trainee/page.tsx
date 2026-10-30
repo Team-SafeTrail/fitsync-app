@@ -1,5 +1,6 @@
 "use client";
 
+import AccessibleModal from "@/components/app/AccessibleModal";
 import { useState, useRef } from "react";
 import { todayMeals } from "@/lib/mock-data";
 import type { MealEntry } from "@/types";
@@ -56,12 +57,12 @@ export default function TraineePage() {
   };
 
   return (
-    <div className="max-w-[480px] mx-auto p-4 pb-20">
+    <div className="demo-trainee max-w-[780px] mx-auto p-4 pb-20">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-[22px] font-bold tracking-[-0.015em] text-[var(--color-text-primary)]">
-            Xin chào, Linh 👋
+            Hôm nay của Linh
           </h1>
           <p className="text-[13px] text-[var(--color-text-secondary)] mt-0.5">
             Hôm nay |{" "}
@@ -79,7 +80,7 @@ export default function TraineePage() {
             {STREAK_DAYS}
           </span>
           <span className="text-[11px] text-amber-600 font-semibold uppercase tracking-wider">
-            Days Active
+            ngày trong mẫu
           </span>
         </div>
       </div>
@@ -89,10 +90,10 @@ export default function TraineePage() {
         <div className="flex items-center justify-between mb-3">
           <div>
             <h2 className="text-[15px] font-semibold text-[var(--color-text-primary)]">
-              Daily Nutrition Target
+              Mục tiêu dinh dưỡng mẫu
             </h2>
             <p className="text-[11px] text-[var(--color-text-muted)]">
-              Prescribed by Coach Nam
+              PT gợi ý · Dữ liệu minh họa
             </p>
           </div>
           <span className="font-mono text-[13px] font-bold text-[var(--color-brand)] bg-[var(--color-brand-light)] px-2 py-0.5 rounded">
@@ -152,14 +153,14 @@ export default function TraineePage() {
         </div>
       </div>
 
-      {/* Body Recomposition Delta */}
+      {/* Thay đổi trong mẫu */}
       <div className="card mb-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-[15px] font-semibold text-[var(--color-text-primary)]">
-            Body Recomposition Delta
+            Thay đổi trong mẫu
           </h2>
           <span className="text-[11px] text-[var(--color-text-muted)]">
-            Verified InBody 270
+            Số liệu minh họa
           </span>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -167,28 +168,28 @@ export default function TraineePage() {
             <div className="flex items-center gap-1.5 mb-1">
               <TrendingDown size={14} className="text-[var(--color-success)]" />
               <span className="text-[11px] text-[var(--color-success)] font-semibold uppercase tracking-wider">
-                Weight
+                Cân nặng
               </span>
             </div>
             <span className="font-mono text-[22px] font-bold text-[var(--color-success)]">
               -1.8 kg
             </span>
             <p className="text-[11px] text-[var(--color-success)] font-medium mt-0.5">
-              Last 30 days (Fat Loss)
+              30 ngày · Dữ liệu mẫu
             </p>
           </div>
           <div className="bg-[var(--color-brand-light)] border border-[var(--color-border-accent)] rounded-[var(--radius-md)] p-3">
             <div className="flex items-center gap-1.5 mb-1">
               <TrendingUp size={14} className="text-[var(--color-brand)]" />
               <span className="text-[11px] text-[var(--color-brand)] font-semibold uppercase tracking-wider">
-                SMM Muscle
+                Khối cơ xương
               </span>
             </div>
             <span className="font-mono text-[22px] font-bold text-[var(--color-brand)]">
               +0.6 kg
             </span>
             <p className="text-[11px] text-[var(--color-brand)] font-medium mt-0.5">
-              Last 30 days (Lean Gain)
+              30 ngày · Dữ liệu mẫu
             </p>
           </div>
         </div>
@@ -199,19 +200,19 @@ export default function TraineePage() {
         <div className="flex items-center justify-between p-4 border-b border-[var(--color-border-default)]">
           <div>
             <h2 className="text-[15px] font-semibold text-[var(--color-text-primary)]">
-              Today&apos;s Meals
+              Bữa ăn hôm nay
             </h2>
             <span className="text-[12px] text-[var(--color-text-muted)]">
-              {meals.length} meals recorded
+              {meals.length} bữa đã ghi
             </span>
           </div>
 
-          {/* Rapid Meal Check-in Button (+ Log Lunch) */}
+          {/* Rapid Meal Check-in Button (+ Ghi bữa trưa) */}
           <button
             onClick={() => openLogWithSlot("lunch")}
             className="btn-secondary h-[32px] px-3 text-[12px] gap-1 font-semibold hover:border-[var(--color-brand)] hover:text-[var(--color-brand)]"
           >
-            <Plus size={13} />+ Log Lunch
+            <Plus size={13} />+ Ghi bữa trưa
           </button>
         </div>
 
@@ -228,7 +229,7 @@ export default function TraineePage() {
         className="btn-primary w-full h-12 text-[15px] shadow-sm"
       >
         <Plus size={18} />
-        Log Another Meal
+        Ghi thêm bữa ăn
       </button>
 
       {/* Log Modal */}
@@ -382,22 +383,7 @@ function LogMealModal({
   };
 
   return (
-    <div
-      className="modal-overlay"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="log-meal-title"
-    >
-      <div
-        className="fixed inset-0 bg-black/70"
-        role="button"
-        tabIndex={0}
-        onClick={onClose}
-        onKeyDown={(e) =>
-          (e.key === "Escape" || e.key === "Enter") && onClose()
-        }
-        aria-label="Close dialog overlay"
-      />
+    <AccessibleModal labelId="log-meal-title" onClose={onClose} width={480}>
       <div className="modal-content relative z-10 max-w-[420px] p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -623,6 +609,6 @@ function LogMealModal({
           </button>
         </form>
       </div>
-    </div>
+    </AccessibleModal>
   );
 }

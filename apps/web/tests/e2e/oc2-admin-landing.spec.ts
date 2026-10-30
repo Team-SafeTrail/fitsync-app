@@ -1,32 +1,24 @@
 import { expect, test } from "@playwright/test";
 
 test.describe("Outcome 2: Admin Portal & Landing Enhancements", () => {
-  test("landing displays SafeTrail team members, contact info and Android APK download CTA", async ({ page }) => {
+  test("landing separates coursework from customer value and does not promise an unavailable APK", async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 1000 });
     await page.goto("/");
-
-    // 1. Check TeamSection presence and members
+    await page.locator("#team summary").click();
     const teamSection = page.locator("#team");
-    await expect(teamSection).toBeVisible();
-    await expect(teamSection.getByText("Team SafeTrail")).toBeVisible();
-    await expect(teamSection.getByText("Huỳnh Quốc Việt")).toBeVisible();
-    await expect(teamSection.getByText("Lê Văn Toàn")).toBeVisible();
-    await expect(teamSection.getByText("Dương Quang Huy")).toBeVisible();
-    await expect(teamSection.getByText("Lê Nguyễn Gia Hưng")).toBeVisible();
-    await expect(teamSection.getByText("Diệp Khai")).toBeVisible();
-
-    // 2. Check Contact & Android APK CTA
-    const contactAppSection = page.locator("#contact-app");
-    await expect(contactAppSection).toBeVisible();
-    await expect(contactAppSection.getByText("FitSync Android App")).toBeVisible();
-    await expect(contactAppSection.getByText("Tải Bản Cài Đặt Android APK")).toBeVisible();
-    await expect(contactAppSection.getByText("0901.234.567")).toBeVisible();
-
-    // 3. Check responsiveness on mobile viewport (no horizontal overflow)
+    for (const name of ["Team SafeTrail", "Huỳnh Quốc Việt", "Lê Văn Toàn", "Dương Quang Huy", "Lê Nguyễn Gia Hưng", "Diệp Khai"]) {
+      await expect(teamSection).toContainText(name);
+    }
+    await expect(teamSection).toContainText("EXE201");
+    await page.locator("#contact-app summary").click();
+    await expect(page.locator("#contact-app")).toContainText("Chưa công bố APK");
+    await expect(page.getByRole("link", {name:/Tải.*APK/})).toHaveCount(0);
+    await expect(page.locator("body")).not.toContainText("0901.234.567");
+    await expect(page.locator("body")).not.toContainText("hỗ trợ 24/7");
     await page.setViewportSize({ width: 390, height: 844 });
     await page.reload();
-    await expect(page.locator("#team")).toBeVisible();
-    await expect(page.locator("#contact-app")).toBeVisible();
+    await expect(page.locator("#team summary")).toBeVisible();
+    await expect(page.locator("#contact-app summary")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
   });
 

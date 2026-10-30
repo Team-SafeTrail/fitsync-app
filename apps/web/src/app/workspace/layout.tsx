@@ -1,6 +1,7 @@
 import Link from "next/link";
+import Brand from "@/components/brand/Brand";
 import { redirect } from "next/navigation";
-import { Activity, ArrowUpRight, LayoutDashboard, LogOut, ShieldCheck, UsersRound } from "lucide-react";
+import { ArrowUpRight, LayoutDashboard, LogOut, ShieldCheck, UsersRound } from "lucide-react";
 import { logout } from "../auth/actions";
 import { getWorkspaceViewer } from "@/features/workspace/data";
 import "./workspace.css";
@@ -15,10 +16,9 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
       <aside className="workspace-sidebar">
         <div>
           <Link href="/workspace" className="workspace-brand" aria-label="FitSync Workspace, về tổng quan">
-            <Activity size={22} strokeWidth={2.2} />
-            <span>fit<strong>sync</strong></span>
+            <Brand />
           </Link>
-          <span className="workspace-product-label">{isPt ? "Coach workspace" : "Trainee workspace"}</span>
+          <span className="workspace-product-label">{isPt ? "Không gian PT" : "Không gian học viên"}</span>
         </div>
 
         <nav className="workspace-nav" aria-label="Điều hướng workspace">
@@ -51,7 +51,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
       <div className="workspace-surface">
         <header className="workspace-mobile-header">
           <Link href="/workspace" className="workspace-brand" aria-label="FitSync Workspace, về tổng quan">
-            <Activity size={21} strokeWidth={2.2} /><span>fit<strong>sync</strong></span>
+            <Brand />
           </Link>
           <div className="workspace-account">
             <span className="workspace-account-avatar">{viewer.profile.display_name.trim().charAt(0).toUpperCase()}</span>

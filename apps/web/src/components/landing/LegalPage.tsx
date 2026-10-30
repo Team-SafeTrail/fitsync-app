@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowLeft, Activity } from "lucide-react";
+import Brand from "@/components/brand/Brand";
+import { ArrowLeft } from "lucide-react";
 
 type Section = {
   title: string;
@@ -21,17 +22,14 @@ export default function LegalPage({
     <div className="fs-landing fs-legal-page">
       <header className="fs-legal-nav fs-container">
         <Link href="/" className="fs-brand" aria-label="FitSync, trang chủ">
-          <Activity size={26} strokeWidth={2.5} aria-hidden="true" />
-          <span>
-            fit<span>sync</span>
-          </span>
+          <Brand />
         </Link>
         <Link href="/" className="fs-text-link">
           <ArrowLeft size={16} aria-hidden="true" /> Trở về trang chủ
         </Link>
       </header>
       <main id="main-content" className="fs-container fs-legal-content">
-        <p className="fs-eyebrow">THÔNG TIN BẢN MẪU</p>
+        <p className="fs-eyebrow">Thông tin FitSync</p>
         <h1>{title}</h1>
         <p className="fs-legal-updated">Cập nhật: {updated}</p>
         <p className="fs-legal-summary">{summary}</p>

@@ -4,8 +4,8 @@ test("landing separates the public sample from real PT activation on desktop and
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.goto("/");
 
-  await expect(page.getByRole("heading", { name: /Bớt việc quản lý/ })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /Từ một lời mời/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Cùng tập/ })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /Một người/ })).toBeVisible();
   const hero = page.locator(".fs-hero");
   const primaryAction = hero.getByRole("link", { name: "Tạo workspace PT" });
   const sampleAction = hero.getByRole("link", { name: "Xem bản mẫu" });
@@ -26,11 +26,11 @@ test("landing separates the public sample from real PT activation on desktop and
   await expect(page).toHaveURL(/\/app\/dashboard$/);
   await expect(page.getByText("Bản mẫu công khai").first()).toBeVisible();
   await expect(page.getByRole("link", { name: /Tạo workspace PT thật/ })).toHaveAttribute("href", "/register");
-  await expect(page.locator("aside")).toHaveCSS("background-color", "rgb(17, 17, 21)");
+  await expect(page.locator("aside")).toHaveCSS("background-color", "rgb(234, 240, 235)");
 
   await page.setViewportSize({ width: 390, height: 844 });
   await page.reload();
-  await expect(page.getByRole("heading", { name: "Smart PT Hub" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "Không gian học viên" })).toBeVisible();
   await expect(page.getByText("Bản mẫu công khai").first()).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 

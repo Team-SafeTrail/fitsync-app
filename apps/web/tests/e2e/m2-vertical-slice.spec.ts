@@ -20,9 +20,9 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await expect(ptPage.getByRole("link", { name: "Xem bản mẫu" }).first()).toHaveAttribute("href", "/app/dashboard");
   const demoResponse = await ptPage.goto("/app/dashboard");
   expect(demoResponse?.ok()).toBe(true);
-  await expect(ptPage.getByRole("heading", { name: "Smart PT Hub" })).toBeVisible();
+  await expect(ptPage.getByRole("heading", { name: "Không gian học viên" })).toBeVisible();
   await expect(ptPage.getByText("Bản mẫu công khai").first()).toBeVisible();
-  await expect(ptPage.locator("aside")).toHaveCSS("background-color", "rgb(17, 17, 21)");
+  await expect(ptPage.locator("aside")).toHaveCSS("background-color", "rgb(234, 240, 235)");
 
   await ptPage.goto("/register");
   await ptPage.getByLabel("Tên hiển thị").fill("PT E2E Minh");

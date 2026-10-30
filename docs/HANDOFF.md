@@ -7,6 +7,24 @@
 
 This file is the compact starting point for a new development chat. It records the current state and the decisions that should survive conversation resets. Read it before changing the repository, then use `docs/MVP_EXECUTION_PLAN.md` for detailed product scope and acceptance criteria.
 
+## Owner-approved visual direction — 2026-10-30
+
+The owner approved `docs/prototypes/coaching-specimen/` and explicitly requested
+application to main pages. Root [`DESIGN.md`](../DESIGN.md) v4 is now the visual
+source of truth. Carbon v3.1 is archived under `docs/archive/landing/`.
+This approves the visual language, not old pricing/persona/B2B assumptions or new
+chat/calendar/OCR provider capability. Earlier implementation checkpoints below
+remain historical evidence. Preserve actual server guards and mandatory OCR review.
+
+Landing, auth/invitation, public PT/trainee tours, legal reading surfaces and
+workspace/admin presentation now share the coaching system. Real server actions,
+data queries, middleware, SQL and RLS were not changed. Public samples stay labeled;
+unsupported 24/7/APK/ROI promises are no longer part of the landing composition.
+Current local checkout has no Supabase configuration, so authenticated CRUD/OCR,
+valid-invite and admin-data rendering were not exercised in this rollout.
+
+Current verification and scope: [`reviews/APPROVED_DESIGN_ROLLOUT.md`](reviews/APPROVED_DESIGN_ROLLOUT.md).
+
 ## Product in one paragraph
 
 FitSync is a mobile-first coaching workspace for independent Vietnamese personal trainers who manage roughly 5–20 active trainees. PTs use a responsive web workspace on desktop, tablet, or phone. Trainees start with a focused mobile web experience; a shared-backend Expo app comes after the web workflow is validated. The verified web flow now covers secure trainee invitation and InBody confirmation plus one daily trainee check-in, optional private meal media, PT activity/session review, and a manual inactivity follow-up queue.

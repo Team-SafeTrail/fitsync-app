@@ -1,0 +1,206 @@
+.coaching-app {
+  --shadow-xs: none;
+  --shadow-sm: none;
+}
+.coaching-app>aside {
+  border: 0;
+  padding-top: 12px;
+}
+.coaching-app main {
+  margin-top: 12px;
+  margin-right: 12px;
+  background: var(--color-surface);
+  border-radius: 24px;
+  min-height: calc(100dvh - 12px);
+  overflow: hidden;
+}
+.coaching-app main>div:first-child {
+  font-size: 13px;
+  min-height: 48px;
+  padding-block: 10px;
+  background: var(--color-surface-muted);
+  border: 0;
+}
+.coaching-app h1 {
+  font-weight: 500;
+  line-height: 1.35;
+  letter-spacing: -.04em;
+}
+.coaching-app .demo-dashboard {
+  padding: 32px;
+}
+.coaching-app .demo-stats {
+  background: var(--color-surface-muted);
+  border-radius: 18px;
+  gap: 0;
+  margin: 24px 0;
+}
+.coaching-app .demo-stat {
+  padding: 24px;
+  border-right: 1px solid var(--color-border-default);
+}
+.coaching-app .demo-stat:last-child {
+  border: 0;
+}
+.coaching-app .demo-stat>div:first-child {
+  display: none;
+}
+.coaching-app .demo-stat>div>p:first-child {
+  font-size: 13px;
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--color-text-secondary);
+}
+.coaching-app .demo-stat>div>p:last-child {
+  font-size: 30px;
+  font-weight: 500;
+  margin-top: 12px;
+}
+.coaching-app .card {
+  box-shadow: none;
+}
+.coaching-app .demo-trainee {
+  padding: 32px;
+}
+.coaching-app .demo-trainee .card {
+  border: 0;
+  background: var(--color-canvas);
+  padding: 24px;
+}
+.coaching-app .demo-trainee h1 {
+  font-size: 30px;
+}
+.coaching-app .demo-trainee .card>div:first-child {
+  border-color: var(--color-border-default);
+}
+.coaching-app button {
+  min-height: 44px;
+}
+.coaching-app .text-emerald-400 {
+  color: var(--color-success);
+}
+.coaching-app .text-amber-400 {
+  color: var(--color-warning);
+}
+.coaching-app .text-rose-400 {
+  color: var(--color-destructive);
+}
+.coaching-app .text-\[11px\],.coaching-app .text-\[12px\] {
+  font-size: 13px;
+}
+.coaching-app .uppercase {
+  text-transform: none;
+  letter-spacing: 0;
+}
+.coaching-app .data-table {
+  min-width: 840px;
+}
+.coaching-app .animate-bounce {
+  animation: none;
+}
+.coaching-app .font-mono {
+  font-family: var(--font-sans);
+  font-variant-numeric: tabular-nums;
+}
+.coaching-app input {
+  font-size: 15px;
+}
+.coaching-app aside nav a {
+  min-height: 44px;
+}
+.coaching-app aside>div:first-child {
+  border: 0;
+}
+.coaching-app aside button {
+  font-size: 13px;
+}
+.coaching-app .rounded-\[var\(--radius-base\)\] {
+  border-radius: 12px;
+}
+@media(max-width:768px) {
+  .coaching-app main {
+    border-radius: 0;
+    margin: 0;
+  }
+  .coaching-app .demo-dashboard,.coaching-app .demo-trainee {
+    padding: 24px 20px;
+  }
+  .coaching-app .demo-stat {
+    padding: 20px;
+  }
+  .coaching-app .demo-stat>div>p:last-child {
+    font-size: 27px;
+  }
+  .coaching-app header,.coaching-app>nav {
+    background: var(--color-surface-muted);
+  }
+  .coaching-app>nav {
+    height: 68px;
+    padding-bottom: env(safe-area-inset-bottom);
+    font-size: 13px;
+  }
+  .coaching-app main {
+    padding-bottom: 100px;
+  }
+  .coaching-app .demo-trainee .card {
+    padding: 20px;
+  }
+  .coaching-app .demo-trainee h1 {
+    font-size: 28px;
+  }
+  .coaching-app input {
+    font-size: 16px;
+  }
+}
+.app-modal {
+  padding: 0;
+  margin: 0 0 0 auto;
+  width: calc(100vw - 24px);
+  height: 100dvh;
+  max-height: 100dvh;
+  border: 0;
+  border-radius: 24px 0 0 24px;
+  overflow: auto;
+  background: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-lg);
+  overscroll-behavior: contain;
+}
+.app-modal::backdrop {
+  background: #102e2a80;
+  backdrop-filter: blur(3px);
+}
+.app-modal .modal-content {
+  border: 0;
+  box-shadow: none;
+  max-height: none;
+  overflow: visible;
+  border-radius: 0;
+  width: 100%;
+  max-width: none;
+}
+.app-modal button {
+  min-height: 44px;
+}
+.app-modal input,.app-modal select {
+  font-size: 15px;
+}
+.app-modal:focus {
+  outline: none;
+}
+@media(max-width:600px) {
+  .app-modal {
+    max-width: none!important;
+    width: 100%;
+    height: auto;
+    max-height: 90dvh;
+    margin: auto 0 0;
+    border-radius: 24px 24px 0 0;
+  }
+  .app-modal input,.app-modal select {
+    font-size: 16px;
+  }
+}
+.coaching-app .text-amber-600,.coaching-app .text-amber-700 {
+  color: var(--color-warning);
+}

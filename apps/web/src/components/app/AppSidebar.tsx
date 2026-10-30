@@ -1,10 +1,10 @@
 'use client';
 
 import Link from 'next/link';
+import { BrandMark } from '@/components/brand/Brand';
 import { usePathname } from 'next/navigation';
 import { useApp } from '@/lib/context';
 import {
-  Activity,
   LayoutDashboard,
   Users,
   ChevronLeft,
@@ -14,8 +14,8 @@ import {
 import { cn } from '@/lib/utils';
 
 const sidebarLinks = [
-  { href: '/app/dashboard', label: 'Dashboard', icon: LayoutDashboard },
-  { href: '/app/trainee', label: 'Trainee Portal', icon: Users },
+  { href: '/app/dashboard', label: 'Học viên', icon: LayoutDashboard },
+  { href: '/app/trainee', label: 'Góc học viên', icon: Users },
 ];
 
 export default function AppSidebar() {
@@ -25,7 +25,7 @@ export default function AppSidebar() {
   return (
     <aside
       className={cn(
-        'fixed left-0 top-0 bottom-0 bg-[#111115] border-r border-[var(--color-border-default)] z-30 hidden md:flex flex-col transition-[width] duration-200',
+        'fixed left-0 top-0 bottom-0 bg-[var(--color-surface-muted)] border-r border-[var(--color-border-default)] z-30 hidden md:flex flex-col transition-[width] duration-200',
         collapsed ? 'w-[60px]' : 'w-[240px]'
       )}
     >
@@ -33,7 +33,7 @@ export default function AppSidebar() {
       <div className="h-14 flex items-center gap-2 px-4 border-b border-[var(--color-border-default)] shrink-0">
         <Link href="/" className="flex items-center gap-2 no-underline">
           <div className="w-8 h-8 bg-[var(--color-brand)] rounded-[var(--radius-base)] flex items-center justify-center shrink-0">
-            <Activity size={18} className="text-[var(--color-brand-foreground)]" />
+            <BrandMark className="w-6 h-6 text-[var(--color-brand-foreground)]" />
           </div>
           {!collapsed && (
             <span className="text-[16px] font-bold tracking-tight text-[var(--color-text-primary)]">
@@ -69,15 +69,16 @@ export default function AppSidebar() {
         })}
       </nav>
 
-      {/* Collapse Toggle */}
+      {/* Thu gọn Toggle */}
       <div className="p-2 border-t border-[var(--color-border-default)]">
         <button
           onClick={() => setCollapsed(!collapsed)}
+          aria-label={collapsed ? "Mở rộng điều hướng" : "Thu gọn điều hướng"}
           className="w-full h-[34px] flex items-center justify-center gap-2 rounded-[var(--radius-base)] text-[var(--color-text-muted)] hover:bg-[var(--color-canvas)] hover:text-[var(--color-text-secondary)] transition-colors border-none bg-transparent cursor-pointer"
         >
           {collapsed ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
           {!collapsed && (
-            <span className="text-[12px]">Collapse</span>
+            <span className="text-[12px]">Thu gọn</span>
           )}
         </button>
       </div>
@@ -94,7 +95,7 @@ export default function AppSidebar() {
                 Coach Nam
               </p>
               <p className="text-[11px] text-[var(--color-text-muted)]">
-                Pro Plan
+                Không gian mẫu
               </p>
             </div>
           )}
