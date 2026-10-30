@@ -55,6 +55,37 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"coaching_membership_versions": {
+                  Row: {
+                    "client_request_id": string,"created_at": string,"ends_on": string,"id": string,"label": string,"learner_id": string,"pt_id": string,"revision": number,"starts_on": string,"trainee_id": string
+                  }
+                  Insert: {
+                    "client_request_id": string,"created_at"?: string,"ends_on": string,"id"?: string,"label": string,"learner_id": string,"pt_id": string,"revision": number,"starts_on": string,"trainee_id": string
+                  }
+                  Update: {
+                    "client_request_id"?: string,"created_at"?: string,"ends_on"?: string,"id"?: string,"label"?: string,"learner_id"?: string,"pt_id"?: string,"revision"?: number,"starts_on"?: string,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "coaching_membership_versions_learner_id_fkey"
+      columns: ["learner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_membership_versions_pt_id_fkey"
+      columns: ["pt_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_membership_versions_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"coaching_messages": {
                   Row: {
                     "body": string,"client_message_id": string,"created_at": string,"id": string,"learner_id": string,"pt_id": string,"sender_id": string,"trainee_id": string
@@ -86,6 +117,37 @@ isOneToOne: false
       referencedColumns: ["id"]
     },{
       foreignKeyName: "coaching_messages_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"coaching_notes": {
+                  Row: {
+                    "body": string,"client_request_id": string,"created_at": string,"id": string,"learner_id": string | null,"pt_id": string,"trainee_id": string,"visibility": string
+                  }
+                  Insert: {
+                    "body": string,"client_request_id": string,"created_at"?: string,"id"?: string,"learner_id"?: string | null,"pt_id": string,"trainee_id": string,"visibility"?: string
+                  }
+                  Update: {
+                    "body"?: string,"client_request_id"?: string,"created_at"?: string,"id"?: string,"learner_id"?: string | null,"pt_id"?: string,"trainee_id"?: string,"visibility"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "coaching_notes_learner_id_fkey"
+      columns: ["learner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_notes_pt_id_fkey"
+      columns: ["pt_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_notes_trainee_id_fkey"
       columns: ["trainee_id"]
 isOneToOne: false
       referencedRelation: "trainee_profiles"
@@ -302,6 +364,9 @@ isOneToOne: false
                            },
 "is_checkin_warning_due":
 { Args: { "at_time": string,"reference_date": string }; Returns: boolean
+                           },
+"save_coaching_membership":
+{ Args: { "ends_on": string,"expected_revision": number,"membership_label": string,"request_id": string,"starts_on": string,"target_trainee": string }; Returns: string
                            },
 "submit_daily_checkin":
 { Args: { "checkin_note": string,"meal_photo_mime_type"?: string,"meal_photo_path"?: string,"meal_photo_size_bytes"?: number }; Returns: {

@@ -16,6 +16,7 @@ export function localTestEnvironment(status) {
     NEXT_PUBLIC_SITE_URL: "http://127.0.0.1:3000",
     FITSYNC_CHAT_ENABLED: "true",
     FITSYNC_CALENDAR_ENABLED: "true",
+    FITSYNC_COACHING_CONTEXT_ENABLED: "true",
     FITSYNC_E2E_LOCAL_DB: "true",
     NEXT_TELEMETRY_DISABLED: "1",
   };

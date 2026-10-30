@@ -27,3 +27,5 @@ Keep membership dates, appointment attendance and PT-session ledger separate. Ex
 ## Current checkpoint
 
 Inventory in progress. Historical baseline at28a9e9a:87 unit tests,169 SQL/RLS checks and4 authenticated browser scenarios passed in CI. Those are previous results, not new checks for this handoff delivery. See COACHING_PRODUCT_FOLLOWUP.md for their run IDs.
+
+Implementation checkpoint: migration20261030210000 adds append-only membership versions and private/shared notes. Run41083161012 initially failed two incorrectly overloaded has_table assertions; corrected at1c2a91d. Run41083771704 then passed202 SQL/RLS checks; stopped at schema diff until generated types were adopted. PT Today, shared upcoming appointments, dossier section navigation/intake disclosure, multi-metric dated charts, bounded chat history, membership/note forms and four-item phone navigation are implemented. Local typecheck/lint and102 unit tests PASS. New authenticated handoff and public page inventory browser checks are written; fresh UI acceptance and screenshots are still pending.

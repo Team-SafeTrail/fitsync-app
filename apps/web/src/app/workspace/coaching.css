@@ -1,0 +1,87 @@
+/* Handoff v1 composition. Tokens remain in globals.css; no second palette. */
+.workspace-page-heading h1 { font-size:clamp(28px,2.8vw,40px); line-height:1.22; max-width:none; overflow-wrap:anywhere; }
+.workspace-primary-actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; margin:20px 0; }
+.workspace-primary-actions>a { min-height:44px; display:inline-flex; align-items:center; }
+.coaching-page-header { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:36px; }
+.coaching-page-header h1 { font:600 clamp(28px,3vw,40px)/1.2 var(--font-display); letter-spacing:-.04em; margin:14px 0; }
+.coaching-page-header p { color:var(--color-text-secondary); line-height:1.7; max-width:65ch; }
+.coaching-page-header>.workspace-button { flex:none; gap:10px; }
+.coaching-today-layout { display:grid; grid-template-columns:minmax(0,1fr) minmax(260px,310px); gap:36px; }
+.coaching-schedule-summary { padding:24px 0; margin:0 0 28px; border-block:1px solid var(--color-border-default); }
+.coaching-schedule-summary h2,.coaching-attention h2,.coaching-context-section h2 { font-size:24px; font-weight:600; letter-spacing:-.03em; }
+.coaching-schedule-summary .workspace-section-heading { margin-bottom:20px; }
+.coaching-schedule-summary .workspace-section-heading>a { display:inline-flex; align-items:center; gap:6px; min-height:40px; font-size:14px; }
+.coaching-upcoming-list { display:grid; gap:0; }
+.coaching-upcoming-list>a { display:grid; grid-template-columns:24px minmax(0,1fr) 20px; align-items:center; gap:18px; padding:20px 16px; text-decoration:none; border-radius:14px; }
+.coaching-upcoming-list>a:hover { background:var(--color-surface-muted); }
+.coaching-upcoming-list>a>div { display:grid; gap:8px; }
+.coaching-upcoming-list time { font-size:13px; color:var(--color-brand); }
+.coaching-upcoming-list strong { font-size:20px; font-weight:500; overflow-wrap:anywhere; }
+.coaching-upcoming-list span,.coaching-empty-line p { color:var(--color-text-secondary); font-size:14px; line-height:1.7; }
+.coaching-empty-line { padding:12px 0; }
+.coaching-empty-line>a { display:inline-flex; min-height:44px; align-items:center; }
+.coaching-attention ul { padding:0; list-style:none; }
+.coaching-attention li+li { border-top:1px solid var(--color-border-default); }
+.coaching-attention li a { display:grid; grid-template-columns:42px minmax(0,1fr) 20px; gap:16px; align-items:center; padding:20px 0; text-decoration:none; }
+.coaching-attention li a>div { display:grid; gap:8px; overflow-wrap:anywhere; }
+.coaching-attention li a>div>span { color:var(--color-text-secondary); font-size:13px; line-height:1.7; }
+.coaching-day-context { align-self:start; background:var(--color-surface-muted); border-radius:24px 24px 24px 6px; padding:28px; }
+.coaching-day-context h2 { font-size:26px; line-height:1.35; letter-spacing:-.03em; margin:20px 0; }
+.coaching-day-context p { font-size:15px; color:var(--color-text-secondary); line-height:1.85; }
+.coaching-day-context>a { display:inline-flex; gap:10px; align-items:center; min-height:44px; font-size:14px; }
+.coaching-day-context dl { border-top:1px solid var(--color-border-default); padding-top:20px; }
+.coaching-day-context dl>div { display:flex; justify-content:space-between; gap:16px; margin-bottom:18px; }
+.coaching-day-context dt { font-size:14px; line-height:1.7; color:var(--color-text-secondary); }
+.coaching-day-context dd { font-size:22px; font-variant-numeric:tabular-nums; margin:0; }
+.dossier-section-nav { display:flex; align-items:center; gap:10px 24px; overflow-x:auto; padding:12px 0; border-bottom:1px solid var(--color-border-default); margin-bottom:28px; scrollbar-width:thin; }
+.dossier-section-nav>a { display:inline-flex; align-items:center; min-height:44px; white-space:nowrap; font-size:14px; text-decoration:none; }
+.dossier-section-nav>a:hover { text-decoration:underline; text-underline-offset:6px; }
+.workspace-main [id] { scroll-margin-top:100px; }
+.coaching-context-section { border-top:1px solid var(--color-border-default); padding:28px 0; margin:24px 0; }
+.coaching-context-section>.workspace-section-heading { align-items:center; }
+.coaching-context-section .workspace-section-heading>span { color:var(--color-text-secondary); font-size:13px; }
+.coaching-context-section p { line-height:1.8; color:var(--color-text-secondary); }
+.coaching-membership-summary { display:flex; justify-content:space-between; align-items:center; gap:24px; padding:24px; background:var(--color-surface-muted); border-radius:18px; }
+.coaching-membership-summary h3 { font-size:22px; margin:14px 0 8px; overflow-wrap:anywhere; }
+.coaching-membership-summary p { margin:0; font-variant-numeric:tabular-nums; }
+.membership-days { display:grid; gap:6px; }
+.membership-days strong { font-size:32px; font-weight:500; }
+.membership-days span { font-size:13px; color:var(--color-text-secondary); max-width:18ch; line-height:1.6; }
+.coaching-edit-disclosure,.coaching-membership-history { margin-top:20px; }
+.coaching-edit-disclosure>summary,.coaching-membership-history>summary { cursor:pointer; font-weight:500; min-height:44px; padding:12px 0; }
+.coaching-context-form { margin:20px 0; max-width:680px; }
+.coaching-context-form fieldset { display:grid; gap:12px; min-width:0; border:0; margin:0; padding:0; }
+.coaching-context-form label { font-size:14px; font-weight:500; }
+.coaching-context-form input,.coaching-context-form textarea,.coaching-context-form select { font:inherit; font-size:16px; min-height:46px; width:100%; min-width:0; padding:12px 14px; border:1px solid var(--color-border-strong); border-radius:12px; background:var(--color-surface); color:var(--color-text-primary); }
+.coaching-context-form p { font-size:13px; margin:0 0 12px; }
+.coaching-date-fields { display:grid; grid-template-columns:1fr 1fr; gap:20px; }
+.coaching-date-fields label { display:grid; gap:10px; }
+.coaching-notes-list { padding:0; list-style:none; }
+.coaching-notes-list>li { border-left:2px solid var(--color-border-default); padding:4px 0 4px 20px; margin:24px 0; }
+.coaching-notes-list>li>div { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
+.coaching-notes-list time { font-size:12px; color:var(--color-text-secondary); }
+.coaching-notes-list p { white-space:pre-wrap; overflow-wrap:anywhere; }
+.coaching-membership-history li { padding:12px 0; }
+.coaching-membership-history li>span { display:block; margin-top:8px; font-size:13px; color:var(--color-text-secondary); }
+.coaching-intake-disclosure { margin:36px 0; border-block:1px solid var(--color-border-default); padding:20px 0; }
+.coaching-intake-disclosure>summary { cursor:pointer; font-size:22px; font-weight:600; padding:12px 0; }
+.coaching-intake-scope { color:var(--color-text-secondary); line-height:1.8; max-width:75ch; font-size:14px; }
+.progress-metric-picker { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.progress-metric-picker button { font:inherit; font-size:14px; min-height:44px; padding:10px 16px; border:1px solid var(--color-border-default); border-radius:22px; background:var(--color-surface); color:var(--color-text-secondary); cursor:pointer; }
+.progress-metric-picker button[aria-pressed=true] { background:var(--color-brand-light); color:var(--color-text-primary); border-color:var(--color-brand); }
+.progress-axis-labels { display:flex; justify-content:space-between; gap:12px; padding-left:56px; font-size:12px; color:var(--color-text-secondary); margin-top:8px; }
+.chat-page .workspace-page-heading { grid-template-columns:minmax(0,1fr) auto; gap:24px; margin-bottom:20px; }
+.chat-page .workspace-page-heading h1 { font-size:clamp(24px,2.4vw,34px); max-width:none; }
+.chat-history { height:clamp(240px,44dvh,520px); min-height:240px; overflow-y:auto; overscroll-behavior:contain; scrollbar-gutter:stable; align-content:start; margin-block:16px; }
+.chat-history:focus-visible { outline:2px solid var(--color-brand); outline-offset:4px; }
+.chat-composer textarea { min-height:84px; }
+@media(max-width:1100px) { .coaching-today-layout { grid-template-columns:minmax(0,1fr); } .coaching-day-context { max-width:680px; } }
+@media(max-width:700px) {
+ .coaching-page-header { display:block; margin-bottom:24px; }.coaching-page-header>.workspace-button { margin-top:12px; }
+ .coaching-page-header h1 { font-size:30px; }.coaching-upcoming-list>a { padding-inline:0; gap:12px; }
+ .coaching-membership-summary { align-items:start; flex-direction:column; gap:16px; padding:20px; }
+ .membership-days { display:flex; align-items:center; gap:16px; }.coaching-date-fields { grid-template-columns:1fr; gap:16px; }
+ .workspace-progress { padding:20px; }.workspace-section-heading { flex-wrap:wrap; }.progress-latest strong { font-size:28px; }
+ .chat-page .workspace-page-heading { grid-template-columns:minmax(0,1fr); gap:12px; }.chat-history { height:36dvh; }
+ .coaching-context-section .workspace-section-heading>span { max-width:100%; }.coaching-intake-disclosure>summary { font-size:20px; }
+}

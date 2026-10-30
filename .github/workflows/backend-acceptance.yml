@@ -47,7 +47,7 @@ jobs:
         working-directory: apps/web
         env:
           PLAYWRIGHT_PRODUCTION_SERVER: "true"
-        run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts tests/e2e/calendar-private.spec.ts
+        run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts tests/e2e/calendar-private.spec.ts tests/e2e/web-handoff.spec.ts tests/e2e/approved-design.spec.ts tests/e2e/public-journey.spec.ts tests/e2e/oc2-admin-landing.spec.ts
       - name: Retain schema and synthetic chat screenshots
         if: always()
         uses: actions/upload-artifact@v4

@@ -91,11 +91,17 @@ Tách câu chuyện khách hàng khỏi yêu cầu EXE201 và demo. Không tự 
 
 ### Lịch dùng chung trong workspace — CALENDAR-01
 
-Agenda tuần là bố cục đầu tiên: rail giờ bên trái, nội dung và ngữ cảnh học viên bên phải; desktop đặt form xếp lịch cạnh agenda, phone xếp theo chiều dọc. Không thu nhỏ lịch lưới desktop lên điện thoại. Heading tác vụ khoảng30–42px, không dùng heading hero cho mọi màn hình. Tên cuộc hẹn có thể dài và phải xuống dòng.
+Agenda tuần là bố cục đầu tiên: rail giờ bên trái, nội dung và ngữ cảnh học viên bên phải; desktop đặt form xếp lịch cạnh agenda, phone xếp theo chiều dọc. Không thu nhỏ lịch lưới desktop lên điện thoại. Heading tác vụ khoảng28–40px, không dùng heading hero cho mọi màn hình. Tên cuộc hẹn có thể dài và phải xuống dòng.
 
-Giữ forest/jade, Be Vietnam Pro và các token hiện có; dùng nhịp ngày/giờ và đường phân chia làm cấu trúc, không thêm gradient hoặc card thống kê trang trí. Mobile workspace có3 lối đi thường trực: Học viên/Hôm nay, Lịch, Trao đổi; dành chỗ dưới nội dung cho thanh điều hướng và safe area. Chưa coi đây là navigation cuối cho toàn bộ các miền tương lai.
+Giữ forest/jade, Be Vietnam Pro và các token hiện có; dùng nhịp ngày/giờ và đường phân chia làm cấu trúc, không thêm gradient hoặc card thống kê trang trí. Mobile workspace có4 lối đi thường trực: PT dùng Hôm nay, Học viên, Lịch, Trao đổi; học viên dùng Hôm nay, Tiến trình, Lịch, Trao đổi. Dành chỗ dưới nội dung cho thanh điều hướng và safe area. Tour công khai là trợ giúp phụ ở sidebar, không nằm trong navigation chính của app.
 
 UI chỉ hiển thị lịch đã lưu dưới quyền hai bên. Không tạo appointment mẫu, nút hoàn thành/đổi lịch giả hoặc ám chỉ membership đã triển khai. Tách đặt lịch, check-in và trừ buổi bằng hành vi thật. Form có pending/error/retry; không xóa dữ liệu đang nhập khi mất phản hồi. Các cờ rollout không thay authorization/RLS.
+
+### Hồ sơ và trang Hôm nay — web handoff v1
+
+PT Today gom lịch sắp tới, nhóm cần xem check-in và trạng thái kết nối; không tạo badge tin chưa đọc khi chưa có read-state. Hồ sơ dùng liên kết theo phần, đặt ngữ cảnh/tiến trình trước biểu mẫu nhập. Biểu mẫu InBody thu gọn ở lần vào sau khi đã có record, nhưng giữ mở khi người dùng vừa lưu để không che xác nhận. Ghi chú riêng/chia sẻ có nhãn chữ, mặc định riêng tư. Membership hiển thị ngày bao gồm cả ngày kết thúc; buổi PT là đối tượng riêng.
+
+Biểu đồ có ba lựa chọn cân nặng/cơ xương/tỷ lệ mỡ; trục thời gian dùng khoảng cách ngày thực, đơn vị rõ và có bảng số. Không đổi mỡ giảm thành kết luận tốt/xấu hoặc hiển thị số mẫu trong hồ sơ. Chat dùng vùng lịch sử có cuộn, cập nhật cuối khi người dùng đang ở cuối; không kéo người đang đọc tin cũ. Tất cả giữ token từ globals.css; các alias màu cũ của form OCR đã được thay bằng token hiện hành.
 
 Đọc tài liệu này, AGENTS.md và product alignment trước khi sửa UI. Lead frontend-design;
 React/Next.js dùng guideline đúng version, giữ page/server boundary gọn. Xem render

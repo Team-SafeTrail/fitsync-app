@@ -6,6 +6,7 @@ import { getChatContext } from "@/features/chat/data";
 import { isChatEnabled } from "@/features/chat/config";
 import { parseChatCursor, makeChatCursor } from "@/features/chat/validation";
 import ChatComposer from "@/components/workspace/ChatComposer";
+import ChatHistoryViewport from "@/components/workspace/ChatHistoryViewport";
 
 export const dynamic = "force-dynamic";
 
@@ -42,8 +43,8 @@ async function MessageHistory({context, cursor}: {context: NonNullable<Awaited<R
     {cursor && <Link href={`/workspace/chat/${trainee.id}`}>Về tin nhắn mới nhất</Link>}
     {hasOlder && olderCursor && <Link href={{pathname:`/workspace/chat/${trainee.id}`,query:{before:olderCursor}}}>Xem tin nhắn cũ hơn</Link>}
     {hasOlder && !olderCursor && <p role="alert">Chưa mở được phần lịch sử cũ hơn. Hãy cập nhật lại cuộc trò chuyện.</p>}
-    <section className="chat-history" aria-label="Lịch sử tin nhắn">
+    <ChatHistoryViewport revision={messages.at(-1)?.id} latest={!cursor}>
       {error ? <p role="alert">Chưa tải được cuộc trò chuyện. Hãy cập nhật lại; tin đang soạn vẫn được giữ.</p> : messages.length ? messages.map(message => <article key={message.id} className={message.sender_id === viewer.user.id ? "chat-message is-own" : "chat-message"}><span>{message.sender_id === viewer.user.id ? "Bạn" : viewer.profile.role === "pt" ? trainee.display_name : "PT của bạn"}</span><p>{message.body}</p><time dateTime={message.created_at}>{date.format(new Date(message.created_at))}</time></article>) : <p>Chưa có tin nhắn. Bắt đầu trao đổi về lịch sinh hoạt hoặc việc tập luyện của bạn.</p>}
-    </section>
+    </ChatHistoryViewport>
   </>;
 }

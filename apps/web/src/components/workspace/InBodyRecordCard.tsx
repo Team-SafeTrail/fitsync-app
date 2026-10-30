@@ -29,7 +29,7 @@ export default function InBodyRecordCard({
           <span className="workspace-badge is-verified"><CheckCircle2 size={14} /> Đã xác minh</span>
           <h3>{dateFormatter.format(new Date(record.recorded_at))}</h3>
         </div>
-        <span className="workspace-record-source">Nhập thủ công</span>
+        <span className="workspace-record-source">{record.source === "ocr" ? "OCR · PT đã kiểm tra" : "Nhập thủ công"}</span>
       </header>
       <dl className="workspace-record-metrics">
         <div><dt>Cân nặng</dt><dd>{record.weight_kg} kg</dd></div>

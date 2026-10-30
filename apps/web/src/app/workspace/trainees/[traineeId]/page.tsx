@@ -1,3 +1,7 @@
+import {Suspense} from "react";
+import CoachingScheduleSummary from "@/components/workspace/CoachingScheduleSummary";
+import CoachingProfileContext from "@/components/workspace/CoachingProfileContext";
+import IntakeDisclosure from "@/components/workspace/IntakeDisclosure";
 import ProgressHistory from "@/components/workspace/ProgressHistory";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
@@ -42,30 +46,38 @@ export default async function TraineeDetailPage({
 
   return (
     <main id="main-content" className="workspace-main">
-      <Link href="/workspace" className="workspace-back"><ArrowLeft size={16} /> Quay lại roster</Link>
+      <Link href="/workspace" className="workspace-back"><ArrowLeft size={16} /> Danh sách học viên</Link>
       <header className="workspace-page-heading trainee-detail-heading">
         <div>
           <p className="workspace-kicker">Hồ sơ học viên</p>
           <h1>{trainee.display_name}</h1>
-          <p>Theo dõi kết quả đã xác minh và tạo bản ghi mới cho học viên này.</p>
+          <p>Bối cảnh coaching, tiến trình và những việc cần làm cùng học viên.</p>
         </div>
         <span className={`workspace-badge ${trainee.profile_id ? "is-verified" : "is-pending"}`}>
           <CircleUserRound size={14} /> {trainee.profile_id ? "Đã kết nối tài khoản" : "Đang chờ lời mời"}
         </span>
       </header>
 
-      <dl className="workspace-profile-summary">
+      <div className="workspace-primary-actions">
+        {trainee.profile_id && trainee.status !== "archived" && <><Link className="workspace-button" href={`/workspace/chat/${trainee.id}`}>Trao đổi với học viên</Link><Link className="workspace-button workspace-button-secondary" href={`/workspace/calendar?trainee=${trainee.id}`}>Xếp lịch với học viên</Link></>}
+        <a className="workspace-inline-link" href="#coaching-notes">Ghi chú tư vấn</a><a className="workspace-inline-link" href="#intake">Thêm số đo</a>
+      </div>
+      <nav className="dossier-section-nav" aria-label="Nội dung hồ sơ"><a href="#overview">Tổng quan</a><a href="#progress">Tiến trình</a><a href="#membership">Membership</a><a href="#pt-sessions">Buổi PT</a><a href="#coaching-notes">Ghi chú</a><a href="#intake">Nhập số đo</a><a href="#checkin-history-title">Hoạt động</a></nav>
+      <dl id="overview" className="workspace-profile-summary">
         <div><dt><Target size={15} /> Mục tiêu</dt><dd>{goalLabels[trainee.primary_goal]}</dd></div>
         <div><dt><TicketCheck size={15} /> Gói tập</dt><dd>{trainee.remaining_sessions}/{trainee.total_sessions} buổi còn lại</dd></div>
         <div><dt><Phone size={15} /> Liên hệ</dt><dd>{trainee.phone ?? "Chưa thêm"}</dd></div>
         <div><dt><Activity size={15} /> InBody</dt><dd>{records.length} bản ghi</dd></div>
       </dl>
 
-      <section className="workspace-panel workspace-session-panel" aria-labelledby="session-balance-title">
+      <Suspense fallback={<p role="status">Đang tải lịch liên quan…</p>}><CoachingScheduleSummary isPt traineeId={trainee.id}/></Suspense>
+      <ProgressHistory records={records}/>
+      <Suspense fallback={<p role="status">Đang tải membership và ghi chú…</p>}><CoachingProfileContext traineeId={trainee.id}/></Suspense>
+      <section id="pt-sessions" className="workspace-panel workspace-session-panel" aria-labelledby="session-balance-title">
         <div>
-          <p className="workspace-kicker">Gói tập</p>
+          <p className="workspace-kicker">Buổi PT</p>
           <h2 id="session-balance-title">Số buổi còn lại</h2>
-          <p>Điều chỉnh rõ ràng sau khi hai bên xác nhận một buổi đã sử dụng.</p>
+          <p>Điều chỉnh số dư thủ công sau khi hai bên đối chiếu. Membership và đặt lịch không tự thay đổi số này.</p>
         </div>
         <SessionBalanceForm traineeId={trainee.id} remainingSessions={trainee.remaining_sessions} totalSessions={trainee.total_sessions} />
       </section>
@@ -81,15 +93,14 @@ export default async function TraineeDetailPage({
       {searchParams.created && <p className="workspace-alert is-success" role="status">Bản ghi đã được xác minh và lưu.</p>}
       {nutritionMessage && <p className={`workspace-alert is-${searchParams.nutrition === "updated" ? "success" : "error"}`} role="status">{nutritionMessage}</p>}
 
+      <IntakeDisclosure defaultOpen={records.length===0}>
+        <p className="coaching-intake-scope">Biểu mẫu hiện lưu năm chỉ số nền. PDF và báo cáo chi tiết theo vùng chưa được mở; không thay phần thiếu bằng số ước tính.</p>
       {trainee.profile_id ? (
         <InBodyForm traineeId={trainee.id} />
       ) : (
         <section className="workspace-empty compact"><CircleUserRound size={28} /><h2>Đang chờ học viên kết nối</h2><p>Gửi link mời đã tạo cho học viên. Biểu mẫu InBody sẽ mở ngay sau khi họ tạo mật khẩu.</p><Link href="/workspace#new-trainee" className="workspace-inline-link"><ArrowLeft size={15} /> Về roster</Link></section>
       )}
-
-      {trainee.profile_id && trainee.status !== "archived" && <Link className="workspace-button workspace-button-secondary" href={`/workspace/chat/${trainee.id}`}>Trao đổi với học viên</Link>}
-      {trainee.profile_id && trainee.status !== "archived" && <Link className="workspace-button workspace-button-secondary" href={`/workspace/calendar?trainee=${trainee.id}`}>Xếp lịch với học viên</Link>}
-      <ProgressHistory records={records} />
+      </IntakeDisclosure>
       <section className="workspace-record-list" aria-labelledby="checkin-history-title">
         <div className="workspace-section-heading"><div><p className="workspace-kicker">Hoạt động</p><h2 id="checkin-history-title">Check-in của học viên</h2></div><p>{checkins.length} ngày đã ghi nhận</p></div>
         <CheckinActivityList checkins={checkins} emptyMessage="Check-in của học viên sẽ xuất hiện ở đây sau khi gửi." />

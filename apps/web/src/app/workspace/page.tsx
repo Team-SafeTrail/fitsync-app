@@ -1,5 +1,8 @@
 import Link from "next/link";
 import ProgressHistory from "@/components/workspace/ProgressHistory";
+import {Suspense} from "react";
+import CoachingProfileContext from "@/components/workspace/CoachingProfileContext";
+import CoachingScheduleSummary from "@/components/workspace/CoachingScheduleSummary";
 import { AlertTriangle, ArrowRight, CheckCircle2, Dumbbell, UserRoundCheck, Users } from "lucide-react";
 import CheckinActivityList from "@/components/workspace/CheckinActivityList";
 import CheckinForm from "@/components/workspace/CheckinForm";
@@ -17,7 +20,7 @@ const goalLabels = {
   recomp: "Tái cấu trúc",
 };
 
-export default async function WorkspacePage({ searchParams }: {searchParams: {q?: string; filter?: string}}) {
+export default async function WorkspacePage({ searchParams }: {searchParams: {q?: string; filter?: string;create?:string}}) {
   const viewer = await getWorkspaceViewer();
   if (!viewer) return null;
 
@@ -32,16 +35,18 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
             <h1>Chào {viewer.profile.display_name}</h1>
             <p>Theo dõi gói tập và những kết quả đã được PT xác nhận.</p>
           </div>
-          {trainee && <div className="workspace-session-stat"><strong>{trainee.remaining_sessions}</strong><span>buổi còn lại / {trainee.total_sessions}</span></div>}
+          {trainee && <div className="workspace-session-stat"><strong>{trainee.remaining_sessions}</strong><span>buổi PT còn lại / {trainee.total_sessions}</span></div>}
         </header>
 
         {!trainee ? (
           <section className="workspace-empty"><UserRoundCheck size={30} /><h2>Chưa liên kết hồ sơ</h2><p>Mở lại liên kết mời từ PT để hoàn tất kết nối.</p></section>
         ) : (
           <>
+            <Suspense fallback={<p role="status">Đang tải cuộc hẹn…</p>}><CoachingScheduleSummary isPt={false} traineeId={trainee.id}/></Suspense>
+            <nav className="dossier-section-nav" aria-label="Nội dung của bạn"><a href="#daily-checkin-title">Check-in hôm nay</a><a href="#progress">Tiến trình</a><a href="#trainee-records-title">Số đo và dinh dưỡng</a><a href="#membership">Membership</a><a href="#coaching-notes">Ghi chú PT chia sẻ</a></nav>
             {checkedInToday ? (
               <section className="workspace-complete-today" data-testid="checkin-complete-today">
-                <CheckCircle2 size={24} /><div><h2>Đã check-in hôm nay</h2><p>Hoạt động đã được lưu và PT của bạn có thể xem trong hồ sơ liên kết.</p></div>
+                <CheckCircle2 size={24} /><div><h2 id="daily-checkin-title">Đã check-in hôm nay</h2><p>Hoạt động đã được lưu và PT của bạn có thể xem trong hồ sơ liên kết.</p></div>
               </section>
             ) : <CheckinForm />}
 
@@ -51,6 +56,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
             </section>
 
             <ProgressHistory records={records} />
+            <Suspense fallback={<p role="status">Đang tải membership và ghi chú…</p>}><CoachingProfileContext traineeId={trainee.id}/></Suspense>
             <section className="workspace-record-list" aria-labelledby="trainee-records-title">
               <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody đã xác minh</h2></div><p>{records.length} lần đo được PT xác nhận</p></div>
               {records.length === 0
@@ -84,7 +90,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
           <p className="workspace-kicker">Tổng quan học viên</p>
           <h1>Chào {viewer.profile.display_name}</h1>
           <p>Quản lý hồ sơ, kết nối tài khoản và xác nhận kết quả InBody cho từng học viên.</p>
-          <OpenCreateTraineeButton />
+          <div className="workspace-primary-actions"><OpenCreateTraineeButton /><Link className="workspace-inline-link" href="/workspace/today">Mở trang Hôm nay</Link></div>
         </div>
         <div className="workspace-overview-stats">
           <div><Users size={18} /><strong>{trainees.length}</strong><span>học viên</span></div>
@@ -162,7 +168,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
         )}
       </section>
 
-      <CreateTraineeForm defaultOpen={trainees.length === 0} />
+      <CreateTraineeForm defaultOpen={trainees.length === 0 || searchParams.create === "1"} />
     </main>
   );
 }
