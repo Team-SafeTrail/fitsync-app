@@ -1,5 +1,7 @@
 # FitSync — công việc sau thiết kế
 
+**Đọc tiến độ mới nhất ở mục “Checkpoint thực thi B0–B8” cuối file.** Các bảng hiện trạng ban đầu là snapshot trước CHAT-TEXT-01. Lát cắt chat đã có code/migration để review nhưng tắt mặc định, chưa nghiệm thu DB hoặc hai tài khoản.
+
 2026-10-30. Kế hoạch theo yêu cầu chủ sản phẩm; không phải PRD gốc, không mặc định persona/milestone cũ. Chủ sản phẩm xác nhận đã có mô hình kinh doanh trước đó và ngày 2026-10-30 yêu cầu cùng xem xét lại, không coi như chưa từng có quyết định. Giá cụ thể mới chưa được duyệt.
 
 ## Phạm vi hiện tại
@@ -89,3 +91,29 @@ Chưa hoàn thành các gói chat/calendar/membership/PDF/native; không tick do
 ## Checkpoint owner mới nhất
 
 Xem ../PRODUCT_DECISIONS.md: mức199k/tháng đã có khảo sát sơ bộ; ưu tiên implementation workspace thật, tour chỉ là phụ. Chưa xác định URL deployed hay có Supabase test; không tiếp tục xem đổi giao diện mẫu là hoàn thành remake core.
+
+## Checkpoint thực thi B0–B8 — 2026-10-30
+
+Bảng này theo các nhãn của blueprint, là điểm đọc tiến độ hiện hành; các mục ghi lịch sử phía trên không có nghĩa mọi giai đoạn đã xong.
+
+| Giai đoạn | Trạng thái thật | Phần còn lại / cổng tiếp theo |
+| --- | --- | --- |
+| B0 Ranh giới | Đã ghi nhận hướng PT/học viên, Android trước,199k khảo sát sơ bộ | Các chi tiết nghiệp vụ còn mở giữ thành quyết định riêng |
+| B1 Luồng/quyền/thiết kế | Visual approved; chat-text contract đã viết và đang có code để review | Review toàn bộ intake/OCR/lịch/gói; không gọi visual approval là duyệt mọi UX |
+| B2 Dữ liệu/hợp đồng | Nền cũ có sẵn; migration chat additive + RLS + pgTAP đã viết, CHƯA áp dụng | Chạy DB test/upgrade/isolation; sinh lại types từ DB và đối chiếu với bản types viết tay |
+| B3 Intake/InBody | Có baseline năm chỉ số và review | Báo cáo đầy đủ/PDF/segmental/provider chưa đạt |
+| B4 Chat/lịch/gói | Đang triển khai lát cắt text chat thật; mặc định tắt, chưa nghiệm thu | Hai tài khoản test, retry/pagination/archive; sau đó shared calendar và ledger |
+| B5 Dinh dưỡng/bài tập | Có baseline check-in/ảnh; chưa remake đủ | Target/history, phản hồi PT, assignment; AI gate riêng |
+| B6 Android | Chưa triển khai | Core contracts và test thiết bị thật |
+| B7 Landing/pilot | Landing đã cập nhật một phần | Không hoàn thành trước activation/support/privacy/payment/pilot evidence |
+| B8 Sau pilot | Để sau | iOS/chủ gym/community/voice theo nhu cầu đã kiểm chứng |
+
+### Công việc đang thực hiện: CHAT-TEXT-01
+
+[B1 contract và tiêu chí](B1_CHAT_TEXT_SLICE.md) → migration `20261030190000_coaching_text_messages.sql` → server action/page `/workspace/chat/*`. Đây là một miền xuyên B1/B2/B4 được tách trong blueprint, không đổi thứ tự hoặc tự đóng B3.
+
+Đã viết: private text messages gắn đúng PT, learner auth identity và trainee record; RLS và column grants; idempotency nonce; keyset pagination giữ microseconds; disabled/loading/error/empty; draft giữ trong form khi lỗi; chuyển thread không mang draft sang người khác; refresh15s khi trang hiện, không gọi realtime/push.
+
+Cổng chưa qua: migration chưa chạy ở bất kỳ DB nào, pgTAP và E2E hai tài khoản chưa chạy. `FITSYNC_CHAT_ENABLED=false` mặc định. Không thêm fixture vào workspace, không giả chat thành công, không chạm production. Chưa mở attachment, sửa/xóa tin, read receipt hoặc notifications; rate limiting/operational retention còn là cổng trước pilot.
+
+Bước kế tiếp chính xác: có môi trường Supabase synthetic chạy được → apply migration trên DB test có dữ liệu baseline → chạy pgTAP và authenticated chat E2E → đối chiếu generated types → review → bật cờ tại test. Không chuyển sang một lượt sửa landing khác để thay bước này. Các phần B1 lịch/OCR có thể tiếp tục thiết kế độc lập trong lúc môi trường test được chuẩn bị.

@@ -23,6 +23,16 @@ export type Database = {
           }
         },"public": {
           Tables: {
+            "coaching_messages": {
+              Row: { id: string; trainee_id: string; pt_id: string; learner_id: string; sender_id: string; client_message_id: string; body: string; created_at: string }
+              Insert: { id?: string; trainee_id: string; pt_id: string; learner_id: string; sender_id: string; client_message_id: string; body: string; created_at?: string }
+              Update: { [_ in never]: never }
+              Relationships: [
+                { foreignKeyName: "coaching_messages_trainee_id_fkey"; columns: ["trainee_id"]; isOneToOne: false; referencedRelation: "trainee_profiles"; referencedColumns: ["id"] },
+                { foreignKeyName: "coaching_messages_pt_id_fkey"; columns: ["pt_id"]; isOneToOne: false; referencedRelation: "pt_profiles"; referencedColumns: ["id"] },
+                { foreignKeyName: "coaching_messages_sender_id_fkey"; columns: ["sender_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }
+              ]
+            },
             "checkins": {
                   Row: {
                     "created_at": string,"id": string,"local_checkin_date": string,"note": string | null,"submitted_at": string,"trainee_id": string
