@@ -20,8 +20,8 @@ $$;
 create function pg_temp.membership(nonce integer,version integer,starts text default '2026-01-01',ends text default '2027-12-31') returns uuid language sql security invoker as $$
  select public.save_coaching_membership('ad000000-0000-0000-0000-000000000001',('bf000000-0000-0000-0000-'||lpad(nonce::text,12,'0'))::uuid,'Two year membership',starts::date,ends::date,version);
 $$;
-select has_table('public','coaching_membership_versions');
-select has_table('public','coaching_notes');
+select has_table('public','coaching_membership_versions','membership history table exists');
+select has_table('public','coaching_notes','private/shared note table exists');
 select is(has_table_privilege('anon','public.coaching_notes','SELECT'),false,'anonymous cannot read notes');
 select is(has_table_privilege('authenticated','public.coaching_membership_versions','INSERT'),false,'membership writes must use controlled revision RPC');
 select is(has_table_privilege('authenticated','public.coaching_notes','DELETE'),false,'no silent history deletion');
