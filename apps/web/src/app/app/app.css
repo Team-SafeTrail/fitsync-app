@@ -117,7 +117,7 @@
 .coaching-app .rounded-\[var\(--radius-base\)\] {
   border-radius: 12px;
 }
-@media(max-width:768px) {
+@media(max-width:767px) {
   .coaching-app main {
     border-radius: 0;
     margin: 0;
@@ -204,3 +204,12 @@
 .coaching-app .text-amber-600,.coaching-app .text-amber-700 {
   color: var(--color-warning);
 }
+
+.coaching-app .mobile-client-list{display:none}.coaching-app .profile-name-action{font:inherit;text-align:left;text-decoration:underline;text-underline-offset:4px}
+.coaching-app .mobile-client-row{width:100%;display:flex;gap:14px;align-items:center;text-align:left;padding:18px 16px;border-bottom:1px solid var(--color-border-default)}
+.coaching-app .mobile-client-row>span:nth-child(2){display:grid;gap:4px;flex:1}.coaching-app .mobile-client-row strong{font-weight:500;font-size:16px}.coaching-app .mobile-client-row small,.coaching-app .mobile-client-row>span:last-child{font-size:13px;color:var(--color-text-secondary)}
+.mobile-client-avatar{display:grid;place-items:center;width:40px;height:40px;flex-shrink:0;background:var(--color-brand-light);color:var(--color-brand);border-radius:12px}
+.sample-dossier{padding:28px}.sample-dossier h2{font-size:30px;margin:16px 0}.sample-dossier p{font-size:14px;line-height:1.7;color:var(--color-text-secondary);margin-block:14px}.sample-dossier dl{display:grid;grid-template-columns:1fr 1fr;gap:20px;padding-block:24px;border-block:1px solid var(--color-border-default);margin-bottom:20px}.sample-dossier dt{font-size:13px;color:var(--color-text-secondary)}.sample-dossier dd{font-size:22px;margin:8px 0}
+.coaching-app .trainee-companion{margin-bottom:24px;padding:24px;border-bottom:1px solid var(--color-border-default)}.coaching-app .trainee-companion>div{display:flex;gap:12px;align-items:center}.coaching-app .trainee-companion h2{font-size:20px;font-weight:500}.coaching-app .trainee-companion p{font-size:14px;color:var(--color-text-secondary);line-height:1.7;margin-block:8px}.coaching-app .trainee-companion a{display:inline-flex;align-items:center;min-height:44px;text-decoration:underline;color:var(--color-brand)}
+.coaching-app .text-\[10px\]{font-size:13px}.coaching-app .input{min-height:44px;font-size:16px}.coaching-app .coaching-brand{font-size:24px}.coaching-app .coaching-brand svg{width:32px;height:28px}
+@media(max-width:700px){.coaching-app .mobile-client-list{display:block}.coaching-app .desktop-client-table{display:none}.sample-dossier{padding:20px}}

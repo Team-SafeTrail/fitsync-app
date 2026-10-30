@@ -102,7 +102,7 @@ export default function AdminDashboardClient({
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
             <span className="admin-kpi-title">Tổng Huấn Luyện Viên PT</span>
-            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(255, 107, 0, 0.15)", color: "var(--color-brand)" }}>
+            <div className="admin-kpi-icon" style={{ backgroundColor: "var(--color-brand-light)", color: "var(--color-brand)" }}>
               <Users size={22} />
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function AdminDashboardClient({
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
             <span className="admin-kpi-title">Tổng Học Viên Hoạt Động</span>
-            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(59, 130, 246, 0.15)", color: "var(--color-brand)" }}>
+            <div className="admin-kpi-icon" style={{ backgroundColor: "var(--color-brand-light)", color: "var(--color-brand)" }}>
               <UserCheck size={22} />
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function AdminDashboardClient({
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
             <span className="admin-kpi-title">Bản Ghi InBody Đã Xác Nhận</span>
-            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(16, 185, 129, 0.15)", color: "var(--color-success)" }}>
+            <div className="admin-kpi-icon" style={{ backgroundColor: "var(--color-brand-light)", color: "var(--color-success)" }}>
               <FileSpreadsheet size={22} />
             </div>
           </div>
@@ -164,8 +164,8 @@ export default function AdminDashboardClient({
       {/* Security & Multi-tenant RLS Notice */}
       <div
         style={{
-          backgroundColor: "rgba(16, 185, 129, 0.08)",
-          border: "1px solid rgba(16, 185, 129, 0.25)",
+          backgroundColor: "var(--color-brand-light)",
+          border: "1px solid var(--color-brand-light)",
           borderRadius: "12px",
           padding: "16px 20px",
           display: "flex",
@@ -276,8 +276,8 @@ export default function AdminDashboardClient({
                             user.role === "admin"
                               ? "rgba(168, 85, 247, 0.2)"
                               : user.role === "pt"
-                              ? "rgba(255, 107, 0, 0.2)"
-                              : "rgba(59, 130, 246, 0.2)",
+                              ? "var(--color-brand-light)"
+                              : "var(--color-brand-light)",
                           color:
                             user.role === "admin"
                               ? "var(--color-brand)"

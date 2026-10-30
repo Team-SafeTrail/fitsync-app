@@ -1,7 +1,7 @@
 "use client";
 
 import AccessibleModal from "@/components/app/AccessibleModal";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { todayMeals } from "@/lib/mock-data";
 import type { MealEntry } from "@/types";
 import {
@@ -85,6 +85,7 @@ export default function TraineePage() {
         </div>
       </div>
 
+      <section className="trainee-companion"><div><span className="mobile-client-avatar">AN</span><div><h2>PT Anh Nam</h2><p>Người đồng hành trong bản mẫu</p></div></div><p>Ghi lại bữa ăn để thử cập nhật ngày của bạn. Chat và lịch chung chưa được kết nối trong bản mẫu.</p><a href="#trainee-meals">Xem và ghi bữa ăn</a></section>
       {/* Calorie Gauge */}
       <div className="card mb-4">
         <div className="flex items-center justify-between mb-3">
@@ -223,6 +224,7 @@ export default function TraineePage() {
         </div>
       </div>
 
+      <span id="trainee-meals" />
       {/* Primary Log Action CTA */}
       <button
         onClick={() => openLogWithSlot("snack")}
@@ -302,7 +304,7 @@ function MealRow({ meal }: { meal: MealEntry }) {
           {meal.name}
         </p>
         <p className="text-[11px] text-[var(--color-text-muted)]">
-          {meal.slot.charAt(0).toUpperCase() + meal.slot.slice(1)} • P:
+          {({breakfast:"Sáng",lunch:"Trưa",dinner:"Tối",snack:"Bữa phụ"})[meal.slot]} • P:
           {meal.protein}g C:{meal.carbs}g F:{meal.fat}g
         </p>
       </div>
@@ -334,6 +336,7 @@ function LogMealModal({
   const [carbs, setCarbs] = useState("");
   const [fat, setFat] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+  useEffect(() => () => {if (photoPreview?.startsWith("blob:")) URL.revokeObjectURL(photoPreview);}, [photoPreview]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const quickMeals = [
@@ -391,7 +394,7 @@ function LogMealModal({
               id="log-meal-title"
               className="text-[17px] font-semibold text-[var(--color-text-primary)]"
             >
-              Check-in Bữa Ăn
+              Ghi bữa ăn mẫu
             </h3>
             <p className="text-[11px] text-[var(--color-text-muted)]">
               Chọn ảnh để xem trước luồng check-in mô phỏng
@@ -399,7 +402,7 @@ function LogMealModal({
           </div>
           <button
             onClick={onClose}
-            aria-label="Close modal"
+            aria-label="Đóng chi tiết"
             className="p-1.5 hover:bg-[var(--color-canvas)] rounded-[var(--radius-base)] transition-colors border-none bg-transparent cursor-pointer"
           >
             <X size={18} className="text-[var(--color-text-muted)]" />
@@ -434,7 +437,7 @@ function LogMealModal({
               <button
                 type="button"
                 onClick={() => setPhotoPreview(null)}
-                aria-label="Remove attached photo"
+                aria-label="Bỏ ảnh đã chọn"
                 className="p-1.5 hover:bg-[var(--color-surface-elevated)] rounded text-[var(--color-success)] border-none bg-transparent cursor-pointer"
               >
                 <X size={14} />
@@ -449,15 +452,15 @@ function LogMealModal({
               className="flex-1 flex items-center justify-center gap-2 h-[48px] rounded-[var(--radius-md)] border-2 border-dashed border-[var(--color-border-default)] hover:border-[var(--color-brand)] bg-[var(--color-canvas)] transition-colors cursor-pointer text-[12px] text-[var(--color-text-secondary)] font-medium"
             >
               <Camera size={16} className="text-[var(--color-brand)]" />
-              Upload Food Photo
+              Chọn ảnh bữa ăn
             </button>
             <button
               type="button"
               onClick={triggerSimulatedPhoto}
               className="px-3 h-[48px] rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] hover:bg-[var(--color-surface-elevated)] text-[11px] font-medium text-[var(--color-text-muted)] cursor-pointer"
-              title="Simulate quick snap"
+              title="Thử ảnh mô phỏng"
             >
-              Quick Snap
+              Dùng ảnh mô phỏng
             </button>
           </div>
         )}
@@ -505,7 +508,7 @@ function LogMealModal({
                 className="input h-[34px] text-[13px]"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="e.g. Cơm gà luộc"
+                placeholder="Ví dụ: Cơm gà luộc"
                 required
               />
             </div>
@@ -523,10 +526,10 @@ function LogMealModal({
                 value={slot}
                 onChange={(e) => setSlot(e.target.value)}
               >
-                <option value="breakfast">Breakfast (Sáng)</option>
-                <option value="lunch">Lunch (Trưa)</option>
-                <option value="dinner">Dinner (Tối)</option>
-                <option value="snack">Snack (Phụ)</option>
+                <option value="breakfast">Bữa sáng</option>
+                <option value="lunch">Bữa trưa</option>
+                <option value="dinner">Bữa tối</option>
+                <option value="snack">Bữa phụ</option>
               </select>
             </div>
           </div>
@@ -537,7 +540,7 @@ function LogMealModal({
                 htmlFor="meal-cal-input"
                 className="block text-[11px] font-medium text-[var(--color-text-secondary)] mb-1 cursor-pointer"
               >
-                Calories
+                Năng lượng
               </label>
               <input
                 id="meal-cal-input"

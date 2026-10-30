@@ -35,6 +35,7 @@ import {
 export default function DashboardPage() {
   const { clients } = useApp();
   const [search, setSearch] = useState("");
+  const [profile, setProfile] = useState<Client | null>(null);
   const [statusFilter, setStatusFilter] = useState<
     "all" | "active" | "warning"
   >("all");
@@ -58,18 +59,14 @@ export default function DashboardPage() {
     setScanModalOpen(true);
   };
 
-  const handleZaloNudge = (client: Client) => {
-    const text = `Chào ${client.name}, Coach Nam (FitSync) đây! Thấy em đã ${client.days_inactive} ngày chưa log bữa ăn/check-in. Hôm nay lịch tập thế nào em ơi?`;
-    navigator.clipboard.writeText(text);
-    setToastMessage(
-      `Đã sao chép tin nhắn Zalo cho ${client.name}! Đang mở Zalo...`,
-    );
-    setTimeout(() => {
-      window.open("https://zalo.me", "_blank");
-    }, 500);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 4500);
+  const handleZaloNudge = async (client: Client) => {
+    const text = `Chào ${client.name}, PT Nam đây. Mình cùng cập nhật tình hình tập luyện nhé.`;
+    try {
+      await navigator.clipboard.writeText(text);
+      setToastMessage(`Đã sao chép lời nhắc mẫu cho ${client.name}. Chưa gửi tin nhắn.`);
+    } catch {
+      setToastMessage("Không thể sao chép. Hãy thử lại khi trình duyệt cho phép clipboard.");
+    }
   };
 
   return (
@@ -175,7 +172,7 @@ export default function DashboardPage() {
                     size={13}
                     className="text-[var(--color-brand)]"
                   />
-                  Soạn lời nhắc Zalo
+                  Sao chép lời nhắc
                 </button>
               </div>
             ))}
@@ -232,19 +229,20 @@ export default function DashboardPage() {
           </div>
         </div>
 
+        <div className="mobile-client-list">{filteredClients.map(client => <button key={client.id} className="mobile-client-row" onClick={() => setProfile(client)}><span className="mobile-client-avatar">{client.avatar_initial}</span><span><strong>{client.name}</strong><small>{getGoalLabel(client.profile.goal)}</small><small>{client.sessions_remaining} / {client.sessions_total} buổi PT</small></span><span>Xem hồ sơ</span></button>)}</div>
         {/* Table */}
-        <div className="overflow-x-auto">
+        <div className="desktop-client-table overflow-x-auto">
           <table className="data-table">
             <thead>
               <tr>
-                <th>Client</th>
-                <th>Goal</th>
-                <th className="text-right">Weight</th>
-                <th className="text-right">Body Fat</th>
-                <th className="text-right">Sessions</th>
-                <th>Status</th>
-                <th className="text-right">Compliance</th>
-                <th>Actions</th>
+                <th>Học viên</th>
+                <th>Mục tiêu</th>
+                <th className="text-right">Cân nặng</th>
+                <th className="text-right">Tỷ lệ mỡ</th>
+                <th className="text-right">Buổi PT</th>
+                <th>Trạng thái</th>
+                <th className="text-right">Mức cập nhật mẫu</th>
+                <th>Thao tác</th>
               </tr>
             </thead>
             <tbody>
@@ -259,11 +257,11 @@ export default function DashboardPage() {
                         </div>
                         <div>
                           <p className="text-[13px] font-medium text-[var(--color-text-primary)]">
-                            {client.name}
+                            <button className="profile-name-action" onClick={() => setProfile(client)}>{client.name}</button>
                           </p>
                           <p className="text-[11px] text-[var(--color-text-muted)]">
                             {client.profile.gender === "male" ? "♂" : "♀"}{" "}
-                            {client.profile.age}yo • {client.profile.height_cm}
+                            {client.profile.age} tuổi · {client.profile.height_cm}
                             cm
                           </p>
                         </div>
@@ -341,10 +339,11 @@ export default function DashboardPage() {
                     <td>
                       <button
                         onClick={() => openScanModal(client)}
+                        aria-label={`Đọc phiếu cho ${client.name}`}
                         className="btn-secondary h-[28px] px-2.5 text-[11px] hover:border-[var(--color-brand)] hover:text-[var(--color-brand)]"
                       >
                         <ScanLine size={12} />
-                        Scan
+                        Đọc phiếu mẫu
                       </button>
                     </td>
                   </tr>
@@ -361,6 +360,7 @@ export default function DashboardPage() {
         )}
       </div>
 
+      {profile && <AccessibleModal labelId="sample-profile-title" onClose={() => setProfile(null)} width={560}><div className="sample-dossier"><button className="btn-secondary" onClick={() => setProfile(null)} aria-label="Đóng hồ sơ">Đóng</button><p>Dữ liệu minh họa · Không lưu hồ sơ thật</p><h2 id="sample-profile-title">{profile.name}</h2><p>{getGoalLabel(profile.profile.goal)} · {profile.profile.age} tuổi</p><dl><div><dt>Cân nặng</dt><dd>{profile.latest_biometrics.weight_kg} kg</dd></div><div><dt>Khối cơ xương</dt><dd>{profile.latest_biometrics.skeletal_muscle_mass_kg} kg</dd></div><div><dt>Tỷ lệ mỡ</dt><dd>{profile.latest_biometrics.percent_body_fat}%</dd></div><div><dt>Gói buổi PT</dt><dd>{profile.sessions_remaining} / {profile.sessions_total} buổi</dd></div></dl><h3>Giữ ngữ cảnh trước khi trao đổi</h3><p>Lần check-in mẫu: {profile.last_checkin}. Chat và lịch dùng chung đang được phát triển; chưa thể gửi tin hoặc đặt lịch từ hồ sơ mẫu này.</p><button className="btn-primary" onClick={() => {setProfile(null);openScanModal(profile);}}>Đối chiếu phiếu của học viên này</button></div></AccessibleModal>}
       {/* Scan Modal */}
       {scanModalOpen && (
         <ScanModal

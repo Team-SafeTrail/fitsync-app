@@ -1,3 +1,4 @@
+import WorkspaceNav from "@/components/workspace/WorkspaceNav";
 import Link from "next/link";
 import Brand from "@/components/brand/Brand";
 import { redirect } from "next/navigation";
@@ -21,17 +22,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
           <span className="workspace-product-label">{isPt ? "Không gian PT" : "Không gian học viên"}</span>
         </div>
 
-        <nav className="workspace-nav" aria-label="Điều hướng workspace">
-          <Link href="/workspace" aria-current="page">
-            {isPt ? <UsersRound size={18} /> : <LayoutDashboard size={18} />}
-            <span>{isPt ? "Học viên" : "Tổng quan"}</span>
-          </Link>
-          <Link href="/app/dashboard" target="_blank">
-            <LayoutDashboard size={18} />
-            <span>Bản mẫu công khai</span>
-            <ArrowUpRight size={14} />
-          </Link>
-        </nav>
+        <WorkspaceNav isPt={isPt} />
 
         <div className="workspace-sidebar-foot">
           <div className="workspace-security-note"><ShieldCheck size={16} /><span>Dữ liệu thật được bảo vệ theo vai trò.</span></div>

@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { BrandMark } from '@/components/brand/Brand';
+import Brand, { BrandMark } from '@/components/brand/Brand';
 import { usePathname } from 'next/navigation';
 import { useApp } from '@/lib/context';
 import {
@@ -31,15 +31,8 @@ export default function AppSidebar() {
     >
       {/* Logo */}
       <div className="h-14 flex items-center gap-2 px-4 border-b border-[var(--color-border-default)] shrink-0">
-        <Link href="/" className="flex items-center gap-2 no-underline">
-          <div className="w-8 h-8 bg-[var(--color-brand)] rounded-[var(--radius-base)] flex items-center justify-center shrink-0">
-            <BrandMark className="w-6 h-6 text-[var(--color-brand-foreground)]" />
-          </div>
-          {!collapsed && (
-            <span className="text-[16px] font-bold tracking-tight text-[var(--color-text-primary)]">
-              FitSync
-            </span>
-          )}
+        <Link href="/" aria-label="FitSync, trang chủ" className="flex items-center gap-2 no-underline">
+          {collapsed ? <BrandMark className="w-8 h-8" /> : <Brand />}
         </Link>
       </div>
 
@@ -52,6 +45,8 @@ export default function AppSidebar() {
             <Link
               key={link.href}
               href={link.href}
+              aria-label={link.label}
+              aria-current={active ? "page" : undefined}
               className={cn(
                 'flex items-center gap-3 h-[38px] rounded-[var(--radius-base)] transition-colors no-underline',
                 collapsed ? 'justify-center px-0' : 'px-3',
@@ -73,6 +68,7 @@ export default function AppSidebar() {
       <div className="p-2 border-t border-[var(--color-border-default)]">
         <button
           onClick={() => setCollapsed(!collapsed)}
+          aria-expanded={!collapsed}
           aria-label={collapsed ? "Mở rộng điều hướng" : "Thu gọn điều hướng"}
           className="w-full h-[34px] flex items-center justify-center gap-2 rounded-[var(--radius-base)] text-[var(--color-text-muted)] hover:bg-[var(--color-canvas)] hover:text-[var(--color-text-secondary)] transition-colors border-none bg-transparent cursor-pointer"
         >
@@ -92,7 +88,7 @@ export default function AppSidebar() {
           {!collapsed && (
             <div className="min-w-0">
               <p className="text-[13px] font-medium text-[var(--color-text-primary)] truncate">
-                Coach Nam
+                {pathname === "/app/trainee" ? "Khánh Linh" : "PT Nam"}
               </p>
               <p className="text-[11px] text-[var(--color-text-muted)]">
                 Không gian mẫu

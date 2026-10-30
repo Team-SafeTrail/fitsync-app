@@ -102,3 +102,7 @@ Giữ luồng tiếp nhận, hồ sơ hai vai trò, demo sửa/duyệt, khảo s
 ## Increment core đầu tiên — 2026-10-30
 
 Tiếp nhận trên landing dùng ba vật thể minh họa (hồ sơ, phiếu đối chiếu, cập nhật), chữ ngắn; khả năng chi tiết qua disclosure. Giữ nhãn dữ liệu giả và nguồn khảo sát. Workspace dùng search/filter theo công việc, tiến trình chỉ lấy records được server hiện có cấp quyền. Không thay authenticated data bằng fixture. Chart không bịa xu hướng khi chưa có hai lần đo, có trục zero-based, ngày/đơn vị và bảng giá trị đọc bằng keyboard. Không dùng chart để kết luận sức khỏe hoặc gán giảm cân luôn là tốt.
+
+## Đồng bộ theo vai trò và tính thật của hành động
+
+Public tour cũng dùng Brand chữ fitsync với dấu liên kết, không icon tile khác hệ. Sidebar icon khi thu gọn vẫn có accessible name/current state. Góc học viên hiện đúng danh tính học viên; PT liên kết là ngữ cảnh, không thay danh tính người dùng. Phone roster là hàng hồ sơ gọn; desktop dùng bảng khi cần so sánh. Tên mở hồ sơ và thao tác phải thực hiện được. Lịch/chat chưa kết nối phải ghi ngay cạnh minh họa, không chỉ ở cuối FAQ. Gói dịch vụ đề xuất có thể giải thích trên landing nhưng không biến thành giá/checkout đã duyệt. Audit có giới hạn theo ALL_PAGES_ALIGNMENT_REVIEW.md.

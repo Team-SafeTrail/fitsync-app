@@ -25,7 +25,7 @@ const sections = [
   {
     title: "Thanh toán và tài khoản",
     paragraphs: [
-      "Bản mẫu chưa tạo tài khoản, chưa nhận thanh toán và chưa tự động gia hạn. Website không yêu cầu thông tin thẻ để khám phá các màn hình mẫu.",
+      "Các trang mẫu /app không tạo tài khoản hoặc lưu thay đổi vào workspace. Luồng tài khoản và dữ liệu riêng nằm tại /register, /login và /workspace, tùy cấu hình dịch vụ. Hiện chưa mở thanh toán hoặc tự động gia hạn; không cần thông tin thẻ để xem bản mẫu.",
     ],
   },
   {
@@ -40,8 +40,8 @@ export default function PrivacyPage() {
   return (
     <LegalPage
       title="Quyền riêng tư"
-      updated="27/09/2026"
-      summary="Bản này mô tả đúng phạm vi của website nguyên mẫu hiện tại. Đây chưa phải chính sách cho một dịch vụ FitSync thương mại hoặc hệ thống xử lý dữ liệu sức khỏe thật."
+      updated="30/10/2026"
+      summary="Bản này mô tả phạm vi bản mẫu công khai và phân biệt với workspace có tài khoản. Đây chưa phải chính sách cho một dịch vụ FitSync thương mại hoặc hệ thống xử lý dữ liệu sức khỏe thật."
       sections={sections}
     />
   );

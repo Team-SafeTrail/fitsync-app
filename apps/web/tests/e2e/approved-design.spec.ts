@@ -80,3 +80,13 @@ for (const width of [1440, 768, 390, 320]) {
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
   });
 }
+
+for (const width of [1440,768,390,320]) {
+ test(`sample dossier and role identity at ${width}px`,async({page})=>{
+  await page.setViewportSize({width,height:900});await page.goto("/app/dashboard");
+  if(width<700) await page.locator(".mobile-client-row").first().click();else await page.locator(".profile-name-action").first().click();
+  const sheet=page.getByRole("dialog");await expect(sheet).toBeVisible();await expect(sheet).toContainText("Không lưu hồ sơ thật");await expect(sheet).toContainText("Gói buổi PT");await page.keyboard.press("Escape");await expect(sheet).toHaveCount(0);
+  if(width===1440){await page.getByRole("button",{name:"Thu gọn điều hướng"}).click();await expect(page.getByRole("link",{name:"Góc học viên",exact:true})).toBeVisible();}
+  await page.goto("/app/trainee");await expect(page.locator(".trainee-companion")).toContainText("PT Anh Nam");if(width<700) await expect(page.locator("header")).toContainText("Khánh Linh");
+ });
+}

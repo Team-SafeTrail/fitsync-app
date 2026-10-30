@@ -2199,3 +2199,12 @@
 .coaching-site .journey-step{font-size:13px;color:var(--jade)}
 .coaching-site .capability-disclosure>summary{cursor:pointer;padding:20px 0;min-height:48px;border-top:1px solid var(--line);font-size:18px}
 @media(max-width:700px){.coaching-site .visual-journey .intake-steps li{display:block}.coaching-site .journey-preview{min-height:190px}.coaching-site .visual-journey .intake-steps{gap:32px}.coaching-site .visual-journey .intake-steps h3{margin-top:8px}}
+
+.coaching-site .coaching-offer{padding-block:64px;border-bottom:1px solid var(--line)}
+.coaching-site .coaching-offer h2{font-size:clamp(30px,3.4vw,48px);line-height:1.2;letter-spacing:-.04em;margin-bottom:20px}
+.coaching-site .coaching-offer>div:first-child{display:grid;grid-template-columns:1fr 1fr;gap:64px}
+.coaching-site .coaching-offer p{max-width:60ch;color:var(--muted)}
+.coaching-site .offer-relationship{display:grid;grid-template-columns:1fr 64px 1fr;align-items:center;margin:32px 0;background:var(--mint);padding:32px;border-radius:20px}
+.coaching-site .offer-relationship>div{display:grid;gap:10px}.coaching-site .offer-relationship strong{font-weight:500;font-size:22px}.coaching-site .offer-relationship span{font-size:14px}.coaching-site .offer-role{color:var(--jade)}.coaching-site .offer-link{text-align:center;font-size:28px!important}
+.coaching-site .offer-status{display:flex;gap:32px;align-items:center;justify-content:space-between}.coaching-site .offer-status p{font-size:14px}.coaching-site .offer-status a{flex-shrink:0}
+@media(max-width:700px){.coaching-site .coaching-offer>div:first-child{grid-template-columns:1fr;gap:8px}.coaching-site .offer-relationship{padding:24px;grid-template-columns:1fr;gap:16px}.coaching-site .offer-link{text-align:left;transform:rotate(90deg);width:28px}.coaching-site .offer-status{display:block}.coaching-site .offer-status a{display:inline-block;margin-top:16px}}

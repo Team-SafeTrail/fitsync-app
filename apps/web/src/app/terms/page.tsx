@@ -11,7 +11,7 @@ const sections = [
   {
     title: "Mục đích",
     paragraphs: [
-      "FitSync hiện là bản mẫu dùng để nghiên cứu, trình diễn và thử nghiệm trải nghiệm người dùng. Các màn hình và dữ liệu không đại diện cho một dịch vụ đang vận hành.",
+      "Các trang /app và phần tương tác trên landing dùng để nghiên cứu, trình diễn trải nghiệm với dữ liệu giả. Workspace có tài khoản là khu vực riêng; các chức năng cần cấu hình dịch vụ. Không coi chat, lịch hoặc giao dịch minh họa là dịch vụ đã phát hành.",
     ],
   },
   {
@@ -38,7 +38,7 @@ export default function TermsPage() {
   return (
     <LegalPage
       title="Điều khoản bản mẫu"
-      updated="27/09/2026"
+      updated="30/10/2026"
       summary="Các điều khoản này giúp người xem hiểu rõ bản mẫu làm được gì và chưa làm được gì. Điều khoản dịch vụ đầy đủ sẽ cần được soạn và rà soát trước khi ra mắt thương mại."
       sections={sections}
     />
