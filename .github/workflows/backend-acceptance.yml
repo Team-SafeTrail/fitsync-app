@@ -33,12 +33,24 @@ jobs:
         run: node scripts/test/ci-local-supabase.mjs
       - name: Run all database and RLS tests
         run: node node_modules/supabase/dist/supabase.js test db
+      - name: Generate public schema types from test database
+        run: node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/database.generated.ts"
       - name: Install Chromium
         working-directory: apps/web
         run: npx --no-install playwright install --with-deps chromium
       - name: Test real synthetic coaching flows
         working-directory: apps/web
         run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts
+      - name: Retain schema and synthetic chat screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-backend-evidence
+          retention-days: 1
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/database.generated.ts
+            apps/web/test-results/chat-proof/*.png
       - name: Stop disposable stack
         if: always()
         run: node node_modules/supabase/dist/supabase.js stop

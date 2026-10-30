@@ -100,7 +100,7 @@ Bảng này theo các nhãn của blueprint, là điểm đọc tiến độ hi�
 | --- | --- | --- |
 | B0 Ranh giới | Đã ghi nhận hướng PT/học viên, Android trước,199k khảo sát sơ bộ | Các chi tiết nghiệp vụ còn mở giữ thành quyết định riêng |
 | B1 Luồng/quyền/thiết kế | Visual approved; chat-text contract đã viết và đang có code để review | Review toàn bộ intake/OCR/lịch/gói; không gọi visual approval là duyệt mọi UX |
-| B2 Dữ liệu/hợp đồng | Nền cũ có sẵn; migration chat additive + RLS + pgTAP đã viết, CHƯA áp dụng | Chạy DB test/upgrade/isolation; sinh lại types từ DB và đối chiếu với bản types viết tay |
+| B2 Dữ liệu/hợp đồng | Nền cũ có sẵn; migration chat đã chạy trên DB tạm của CI;140 SQL/RLS checks qua, chưa áp production | Chạy DB test/upgrade/isolation; sinh lại types từ DB và đối chiếu với bản types viết tay |
 | B3 Intake/InBody | Có baseline năm chỉ số và review | Báo cáo đầy đủ/PDF/segmental/provider chưa đạt |
 | B4 Chat/lịch/gói | Đang triển khai lát cắt text chat thật; mặc định tắt, chưa nghiệm thu | Hai tài khoản test, retry/pagination/archive; sau đó shared calendar và ledger |
 | B5 Dinh dưỡng/bài tập | Có baseline check-in/ảnh; chưa remake đủ | Target/history, phản hồi PT, assignment; AI gate riêng |
@@ -114,6 +114,12 @@ Bảng này theo các nhãn của blueprint, là điểm đọc tiến độ hi�
 
 Đã viết: private text messages gắn đúng PT, learner auth identity và trainee record; RLS và column grants; idempotency nonce; keyset pagination giữ microseconds; disabled/loading/error/empty; draft giữ trong form khi lỗi; chuyển thread không mang draft sang người khác; refresh15s khi trang hiện, không gọi realtime/push.
 
-Cổng chưa qua: migration chưa chạy ở bất kỳ DB nào, pgTAP và E2E hai tài khoản chưa chạy. `FITSYNC_CHAT_ENABLED=false` mặc định. Không thêm fixture vào workspace, không giả chat thành công, không chạm production. Chưa mở attachment, sửa/xóa tin, read receipt hoặc notifications; rate limiting/operational retention còn là cổng trước pilot.
+Cập nhật CI: migration đã áp trên DB tạm độc lập và140 kiểm tra SQL/RLS (gồm29 chat) qua. E2E M2/M3 qua; chat hai tài khoản chưa qua ở lượt đầu, đang sửa và chạy lại. `FITSYNC_CHAT_ENABLED=false` mặc định. Không thêm fixture vào workspace, không giả chat thành công, không chạm production. Chưa mở attachment, sửa/xóa tin, read receipt hoặc notifications; rate limiting/operational retention còn là cổng trước pilot.
 
 Bước kế tiếp chính xác: có môi trường Supabase synthetic chạy được → apply migration trên DB test có dữ liệu baseline → chạy pgTAP và authenticated chat E2E → đối chiếu generated types → review → bật cờ tại test. Không chuyển sang một lượt sửa landing khác để thay bước này. Các phần B1 lịch/OCR có thể tiếp tục thiết kế độc lập trong lúc môi trường test được chuẩn bị.
+
+### CI-RUNNER-01 — gỡ chặn test backend
+
+Draft PR31: https://github.com/Team-SafeTrail/fitsync-app/pull/31. Workflow backend-acceptance dùng Docker trên runner tạm, chỉ loopback, không cloud credentials/deploy. Bốn environment-guard tests qua. Run41059690048: DB start/5 pgTAP files140 checks PASS; browser M2/M3 PASS; chat E2E timeout, chưa nghiệm thu. Đã sửa cleanup test để không che lỗi và đặt streaming fallback sau kiểm quyền, giữ nguyên yêu cầu HTTP404/người ngoài không đọc được. Đang chạy lại; không đổi assertion thành chấp nhận quyền sai.
+
+Workflow bổ sung schema types từ DB và ảnh chat synthetic để review đúng code chạy thật; không upload private footage/auth traces. Contract lịch/gói tiếp theo ở B1_CALENDAR_LEDGER_SLICE.md là đề xuất, chưa có migration mới. Không khởi tạo thêm miền DB chưa test trong lúc chat đang được kiểm chứng.
