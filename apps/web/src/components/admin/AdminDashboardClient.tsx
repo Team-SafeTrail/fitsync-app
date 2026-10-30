@@ -248,7 +248,7 @@ export default function AdminDashboardClient({
         </div>
 
         {/* Users Table */}
-        <div className="admin-table-container">
+        <div className="admin-table-container" role="region" aria-label="Danh sách người dùng mẫu" tabIndex={0}>
           <table className="admin-table">
             <thead>
               <tr>
@@ -356,7 +356,7 @@ export default function AdminDashboardClient({
           </div>
         </div>
 
-        <div className="admin-table-container">
+        <div className="admin-table-container" role="region" aria-label="Giao dịch VietQR mẫu" tabIndex={0}>
           <table className="admin-table">
             <thead>
               <tr>
