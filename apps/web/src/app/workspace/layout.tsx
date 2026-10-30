@@ -1,4 +1,4 @@
-import WorkspaceNav from "@/components/workspace/WorkspaceNav";
+import WorkspaceNav, {WorkspaceMobileNav} from "@/components/workspace/WorkspaceNav";
 import Link from "next/link";
 import Brand from "@/components/brand/Brand";
 import { redirect } from "next/navigation";
@@ -50,6 +50,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
           </div>
         </header>
         {children}
+        <WorkspaceMobileNav isPt={isPt}/>
       </div>
     </div>
   );

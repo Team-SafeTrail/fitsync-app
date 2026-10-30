@@ -52,7 +52,7 @@ test("public auth, invitation and legal surfaces retain shared navigation", asyn
 });
 
 test("real chat routes retain authentication guards", async ({page}) => {
-  for (const route of ["/workspace/chat", "/workspace/chat/ac000000-0000-0000-0000-000000000001"]) {
+  for (const route of ["/workspace/chat", "/workspace/chat/ac000000-0000-0000-0000-000000000001", "/workspace/calendar"]) {
     await page.goto(route);
     await expect(page).toHaveURL(/\/login/);
     await expect(page.locator(".chat-history")).toHaveCount(0);

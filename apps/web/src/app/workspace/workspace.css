@@ -52,6 +52,7 @@
 .workspace-security-note { display: flex; align-items: flex-start; gap: 0.6rem; padding: 0.8rem; border-top: 1px solid var(--color-border-default); color: var(--color-text-muted); font-size: 0.8125rem; line-height: 1.5; }
 .workspace-security-note svg { flex: none; color: var(--color-success); }
 .workspace-mobile-header { display: none; }
+.workspace-mobile-nav { display: none; }
 
 .workspace-header {
   position: sticky;
@@ -409,6 +410,10 @@
 @media (max-width: 900px) {
   .workspace-shell { display: block; }
   .workspace-sidebar { display: none; }
+  .workspace-mobile-nav{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));position:fixed;inset:auto 0 0;z-index:30;border-top:1px solid var(--color-border-default);background:var(--color-surface);padding:6px 12px calc(6px + env(safe-area-inset-bottom))}
+  .workspace-mobile-nav a{display:grid;justify-items:center;align-content:center;gap:6px;min-height:52px;border-radius:12px;text-decoration:none;font-size:12px;color:var(--color-text-secondary)}
+  .workspace-mobile-nav a[aria-current=page]{color:var(--color-brand);background:var(--color-brand-light)}
+  .workspace-surface{padding-bottom:calc(76px + env(safe-area-inset-bottom))}
   .workspace-mobile-header {
     position: sticky;
     top: 0;
@@ -521,3 +526,26 @@
 .chat-page{max-width:1000px}.chat-history{display:grid;gap:16px;margin:24px 0;padding:24px;background:var(--color-surface);border:1px solid var(--color-border-default);border-radius:20px;min-height:220px}.chat-message{max-width:85%;padding:16px 20px;border-radius:16px 16px 16px 4px;background:var(--color-surface-muted);justify-self:start}.chat-message.is-own{background:var(--color-brand-light);border-radius:16px 16px 4px 16px;justify-self:end}.chat-message p{white-space:pre-wrap;overflow-wrap:anywhere;font-size:16px;line-height:1.7;margin-block:8px}.chat-message span,.chat-message time{font-size:13px;color:var(--color-text-secondary)}.chat-message time{display:block}
 .chat-composer form{display:grid;gap:12px;margin-top:20px}.chat-composer label{font-weight:500}.chat-composer textarea{min-height:100px;padding:16px;border:1px solid var(--color-border-strong);border-radius:12px;background:var(--color-surface);font:inherit;color:var(--color-text-primary)}.chat-composer p,.chat-refresh-note{font-size:14px;color:var(--color-text-secondary);line-height:1.7}.chat-composer fieldset{border:0;padding:0;margin:0;display:grid;gap:12px}.chat-refresh-note{margin-top:20px}
 @media(max-width:600px){.chat-history{padding:16px}.chat-message{max-width:95%;padding:14px}.chat-thread-list>a{display:grid;gap:8px}}
+
+/* Shared calendar: agenda/date rails instead of a compressed desktop grid. */
+.calendar-heading{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px}
+.calendar-heading h1{font:650 clamp(1.8rem,3vw,2.6rem)/1.15 var(--font-display);letter-spacing:-.04em;margin:14px 0}
+.calendar-heading p,.calendar-note{color:var(--color-text-secondary);line-height:1.7}
+.calendar-heading>a{flex:none}.calendar-week-nav{display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding:20px 0;border-block:1px solid var(--color-border-default)}
+.calendar-week-nav>div{display:grid;gap:6px}.calendar-week-nav span{font-size:13px;color:var(--color-text-secondary)}
+.calendar-week-nav a{font-size:14px;min-height:44px;display:inline-flex;align-items:center}.calendar-note{font-size:14px;margin-block:20px 32px}
+.calendar-layout{display:grid;grid-template-columns:minmax(0,1fr) minmax(280px,350px);gap:40px}.calendar-layout.is-learner{grid-template-columns:minmax(0,1fr);max-width:850px}
+.calendar-agenda h2,.calendar-entry h2{font-size:24px;letter-spacing:-.025em;margin:0 0 24px}.calendar-day{margin-bottom:32px}
+.calendar-day>h3{font-size:14px;font-weight:600;padding:12px 0;color:var(--color-text-secondary);border-bottom:1px solid var(--color-border-default);text-transform:capitalize}
+.calendar-appointment{display:grid;grid-template-columns:90px minmax(0,1fr);gap:24px;padding:24px 0;border-bottom:1px solid var(--color-border-default)}
+.calendar-time{display:grid;align-content:start;gap:6px;font-variant-numeric:tabular-nums}.calendar-time>time{font-size:22px;font-weight:600;color:var(--color-brand)}
+.calendar-time>span{font-size:12px;color:var(--color-text-secondary)}.calendar-kind{font-size:12px;color:var(--color-text-secondary)}
+.calendar-appointment h4{font-size:20px;margin:8px 0;overflow-wrap:anywhere}.calendar-appointment p{margin:8px 0;color:var(--color-text-secondary)}
+.calendar-row-links{display:flex;flex-wrap:wrap;gap:8px 20px;margin-top:14px;font-size:13px}.calendar-row-links a{min-height:32px;display:inline-flex;align-items:center}
+.calendar-entry{align-self:start;padding:24px;border:1px solid var(--color-border-default);border-top:3px solid var(--color-brand);border-radius:4px 4px 20px 20px;background:var(--color-surface-muted)}
+.calendar-entry-label{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--color-text-secondary);margin-bottom:10px}
+.appointment-form fieldset{border:0;padding:0;margin:0;display:grid;gap:12px;min-width:0}.appointment-form label{font-size:14px;font-weight:600}
+.appointment-form input,.appointment-form select{display:block;min-width:0;width:100%;min-height:46px;padding:12px;border:1px solid var(--color-border-strong);border-radius:10px;background:var(--color-surface);color:var(--color-text-primary);font:inherit;font-size:16px}
+.appointment-form p{font-size:13px;line-height:1.7;color:var(--color-text-secondary);margin:4px 0 8px}.appointment-form [role=alert]{color:var(--color-text-primary);border-left:3px solid var(--color-brand);padding-left:12px}
+@media(max-width:1100px){.calendar-layout{grid-template-columns:minmax(0,1fr);gap:32px}.calendar-entry{max-width:600px}}
+@media(max-width:600px){.calendar-heading{display:block}.calendar-heading>a{display:inline-flex;min-height:44px;align-items:center}.calendar-week-nav{gap:12px 20px}.calendar-week-nav>div{order:-1;width:100%}.calendar-appointment{grid-template-columns:76px minmax(0,1fr);gap:16px}.calendar-entry{padding:20px}.calendar-appointment h4{font-size:18px}}

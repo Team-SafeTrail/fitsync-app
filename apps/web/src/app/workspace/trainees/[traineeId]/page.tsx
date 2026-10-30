@@ -88,6 +88,7 @@ export default async function TraineeDetailPage({
       )}
 
       {trainee.profile_id && trainee.status !== "archived" && <Link className="workspace-button workspace-button-secondary" href={`/workspace/chat/${trainee.id}`}>Trao đổi với học viên</Link>}
+      {trainee.profile_id && trainee.status !== "archived" && <Link className="workspace-button workspace-button-secondary" href={`/workspace/calendar?trainee=${trainee.id}`}>Xếp lịch với học viên</Link>}
       <ProgressHistory records={records} />
       <section className="workspace-record-list" aria-labelledby="checkin-history-title">
         <div className="workspace-section-heading"><div><p className="workspace-kicker">Hoạt động</p><h2 id="checkin-history-title">Check-in của học viên</h2></div><p>{checkins.length} ngày đã ghi nhận</p></div>

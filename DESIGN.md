@@ -89,6 +89,14 @@ Tách câu chuyện khách hàng khỏi yêu cầu EXE201 và demo. Không tự 
 
 ## Quy trình sửa về sau
 
+### Lịch dùng chung trong workspace — CALENDAR-01
+
+Agenda tuần là bố cục đầu tiên: rail giờ bên trái, nội dung và ngữ cảnh học viên bên phải; desktop đặt form xếp lịch cạnh agenda, phone xếp theo chiều dọc. Không thu nhỏ lịch lưới desktop lên điện thoại. Heading tác vụ khoảng30–42px, không dùng heading hero cho mọi màn hình. Tên cuộc hẹn có thể dài và phải xuống dòng.
+
+Giữ forest/jade, Be Vietnam Pro và các token hiện có; dùng nhịp ngày/giờ và đường phân chia làm cấu trúc, không thêm gradient hoặc card thống kê trang trí. Mobile workspace có3 lối đi thường trực: Học viên/Hôm nay, Lịch, Trao đổi; dành chỗ dưới nội dung cho thanh điều hướng và safe area. Chưa coi đây là navigation cuối cho toàn bộ các miền tương lai.
+
+UI chỉ hiển thị lịch đã lưu dưới quyền hai bên. Không tạo appointment mẫu, nút hoàn thành/đổi lịch giả hoặc ám chỉ membership đã triển khai. Tách đặt lịch, check-in và trừ buổi bằng hành vi thật. Form có pending/error/retry; không xóa dữ liệu đang nhập khi mất phản hồi. Các cờ rollout không thay authorization/RLS.
+
 Đọc tài liệu này, AGENTS.md và product alignment trước khi sửa UI. Lead frontend-design;
 React/Next.js dùng guideline đúng version, giữ page/server boundary gọn. Xem render
 ở desktop/tablet/phone, kiểm keyboard/contrast/overflow/reduced motion và các luồng

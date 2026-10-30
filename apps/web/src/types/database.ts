@@ -24,6 +24,37 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"coaching_appointments": {
+                  Row: {
+                    "client_request_id": string,"created_at": string,"ends_at": string,"id": string,"kind": string,"learner_id": string,"pt_id": string,"retired_at": string | null,"starts_at": string,"status": string,"title": string,"trainee_id": string
+                  }
+                  Insert: {
+                    "client_request_id": string,"created_at"?: string,"ends_at": string,"id"?: string,"kind": string,"learner_id": string,"pt_id": string,"retired_at"?: string | null,"starts_at": string,"status"?: string,"title": string,"trainee_id": string
+                  }
+                  Update: {
+                    "client_request_id"?: string,"created_at"?: string,"ends_at"?: string,"id"?: string,"kind"?: string,"learner_id"?: string,"pt_id"?: string,"retired_at"?: string | null,"starts_at"?: string,"status"?: string,"title"?: string,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "coaching_appointments_learner_id_fkey"
+      columns: ["learner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_appointments_pt_id_fkey"
+      columns: ["pt_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_appointments_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"coaching_messages": {
                   Row: {
                     "body": string,"client_message_id": string,"created_at": string,"id": string,"learner_id": string,"pt_id": string,"sender_id": string,"trainee_id": string
