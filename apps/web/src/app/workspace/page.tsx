@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ProgressHistory from "@/components/workspace/ProgressHistory";
 import { AlertTriangle, ArrowRight, CheckCircle2, Dumbbell, UserRoundCheck, Users } from "lucide-react";
 import CheckinActivityList from "@/components/workspace/CheckinActivityList";
 import CheckinForm from "@/components/workspace/CheckinForm";
@@ -16,7 +17,7 @@ const goalLabels = {
   recomp: "Tái cấu trúc",
 };
 
-export default async function WorkspacePage() {
+export default async function WorkspacePage({ searchParams }: {searchParams: {q?: string; filter?: string}}) {
   const viewer = await getWorkspaceViewer();
   if (!viewer) return null;
 
@@ -49,6 +50,7 @@ export default async function WorkspacePage() {
               <CheckinActivityList checkins={checkins} emptyMessage="Gửi check-in đầu tiên để PT theo sát tiến trình giữa các buổi tập." />
             </section>
 
+            <ProgressHistory records={records} />
             <section className="workspace-record-list" aria-labelledby="trainee-records-title">
               <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody đã xác minh</h2></div><p>{records.length} lần đo được PT xác nhận</p></div>
               {records.length === 0
@@ -69,6 +71,11 @@ export default async function WorkspacePage() {
   const linkedCount = trainees.filter((trainee) => trainee.profile_id).length;
   const pendingCount = trainees.length - linkedCount;
   const warningTrainees = trainees.filter((trainee) => warningByTrainee.has(trainee.id));
+
+  const query = typeof searchParams.q === "string" ? searchParams.q.trim().slice(0,100) : "";
+  const filter = typeof searchParams.filter === "string" ? searchParams.filter : "all";
+  const normalize = (text:string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g,"d").replace(/Đ/g,"D").toLowerCase();
+  const visibleTrainees = trainees.filter(trainee => normalize(`${trainee.display_name} ${trainee.phone ?? ""}`).includes(normalize(query)) && (filter === "attention" ? warningByTrainee.has(trainee.id) : filter === "pending" ? !trainee.profile_id : true));
 
   return (
     <main id="main-content" className="workspace-main">
@@ -120,15 +127,22 @@ export default async function WorkspacePage() {
 
       <section className="workspace-roster" aria-labelledby="roster-title">
         <div className="workspace-section-heading">
-          <div><p className="workspace-kicker">Roster</p><h2 id="roster-title">Học viên của bạn</h2></div>
+          <div><p className="workspace-kicker">Hồ sơ và hoạt động</p><h2 id="roster-title">Học viên của bạn</h2></div>
           <p>{trainees.length === 0 ? "Tạo hồ sơ đầu tiên để bắt đầu." : `${linkedCount}/${trainees.length} tài khoản đã kết nối · ${pendingCount} đang chờ`}</p>
         </div>
+        <form className="workspace-roster-search" action="/workspace" method="get" role="search" aria-label="Tìm học viên trong workspace">
+          <label>Tìm học viên<input name="q" type="search" defaultValue={query} placeholder="Tên hoặc số điện thoại" maxLength={100}/></label>
+          <label>Việc cần xem<select name="filter" defaultValue={filter}><option value="all">Tất cả học viên</option><option value="attention">Cần theo dõi check-in</option><option value="pending">Chưa kết nối tài khoản</option></select></label>
+          <button type="submit" className="workspace-button workspace-button-primary">Tìm kiếm</button>
+          {(query || filter !== "all") && <Link className="workspace-inline-link" href="/workspace">Xóa bộ lọc</Link>}
+        </form>
+        <p className="workspace-search-count" role="status">{visibleTrainees.length} / {trainees.length} học viên</p>
         {trainees.length === 0 ? (
           <div className="workspace-empty compact"><Users size={28} /><h3>Roster đang trống</h3><p>Thêm học viên, sao chép link mời rồi gửi qua kênh bạn đang dùng.</p><OpenCreateTraineeButton compact /></div>
-        ) : (
+        ) : visibleTrainees.length === 0 ? <div className="workspace-empty compact"><h3>Không tìm thấy học viên</h3><p>Thử tên khác hoặc bỏ bộ lọc để xem lại danh sách.</p><Link href="/workspace">Xem tất cả học viên</Link></div> : (
           <div className="workspace-roster-list">
             <div className="workspace-roster-labels" aria-hidden="true"><span>Học viên</span><span>Trạng thái</span><span>Gói tập</span><span>InBody</span><span /></div>
-            {trainees.map((trainee) => {
+            {visibleTrainees.map((trainee) => {
               const invitation = invitationByTrainee.get(trainee.id);
               const inviteExpired = invitation ? new Date(invitation.expires_at) <= new Date() : false;
               const status = trainee.profile_id ? "Đã kết nối" : invitation?.status === "pending" && !inviteExpired ? "Chờ chấp nhận" : "Lời mời hết hạn";

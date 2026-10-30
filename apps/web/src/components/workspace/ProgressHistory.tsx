@@ -1,0 +1,11 @@
+import { progressData } from "./progress-data";
+import React from "react";
+import type { InBodyRecord } from "@/features/workspace/data";
+
+export default function ProgressHistory({records}:{records:InBodyRecord[]}) {
+  const {readings,latest,max} = progressData(records);
+  if (!latest) return null;
+  const points = readings.map((r,i)=>`${readings.length===1?50:5+i*90/(readings.length-1)},${95-r.weight_kg/max*85}`).join(" ");
+  const date = (value:string)=>new Intl.DateTimeFormat("vi-VN",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"Asia/Ho_Chi_Minh"}).format(new Date(value));
+  return <section className="workspace-progress" aria-labelledby="progress-heading"><div className="workspace-section-heading"><div><h2 id="progress-heading">Tiến trình qua các lần đo</h2><p>Chỉ gồm số đo đã được PT xác nhận.</p></div><div className="progress-latest"><strong>{latest.weight_kg} <small>kg</small></strong><span>Lần đo {date(latest.recorded_at)}</span></div></div>{readings.length>1 ? <><div className="progress-chart"><span>{max} kg</span><svg viewBox="0 0 100 100" preserveAspectRatio="none" role="img" aria-label={`Cân nặng qua ${readings.length} lần đo. Trục dọc từ 0 đến ${max} kg. Chi tiết ở bảng bên dưới.`}><path d="M0 10H100M0 52.5H100M0 95H100" fill="none" stroke="var(--color-border-default)" strokeWidth=".4"/><polyline points={points} fill="none" stroke="var(--color-brand)" strokeWidth="2" vectorEffect="non-scaling-stroke"/></svg><span>0 kg</span></div><p className="progress-range">{date(readings[0].recorded_at)} — {date(latest.recorded_at)} · Tối đa 8 lần đo gần nhất</p></> : <p>Đã có bản đo đầu tiên. Thêm một lần đo để xem xu hướng.</p>}<details><summary>Xem số đo theo ngày</summary><div className="progress-data" role="region" aria-label="Chi tiết tiến trình" tabIndex={0}><table><caption>Số đo đã xác nhận, không phải mục tiêu hoặc dự báo</caption><thead><tr><th scope="col">Ngày đo</th><th scope="col">Cân nặng (kg)</th><th scope="col">Cơ xương (kg)</th><th scope="col">Tỷ lệ mỡ (%)</th></tr></thead><tbody>{readings.map(record=><tr key={record.id}><td>{date(record.recorded_at)}</td><td>{record.weight_kg}</td><td>{record.skeletal_muscle_mass_kg}</td><td>{record.percent_body_fat}</td></tr>)}</tbody></table></div></details></section>;
+}

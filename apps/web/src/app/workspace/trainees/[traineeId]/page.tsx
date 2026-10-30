@@ -1,3 +1,4 @@
+import ProgressHistory from "@/components/workspace/ProgressHistory";
 import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { Activity, AlertTriangle, ArrowLeft, CircleUserRound, Phone, Target, TicketCheck } from "lucide-react";
@@ -86,6 +87,7 @@ export default async function TraineeDetailPage({
         <section className="workspace-empty compact"><CircleUserRound size={28} /><h2>Đang chờ học viên kết nối</h2><p>Gửi link mời đã tạo cho học viên. Biểu mẫu InBody sẽ mở ngay sau khi họ tạo mật khẩu.</p><Link href="/workspace#new-trainee" className="workspace-inline-link"><ArrowLeft size={15} /> Về roster</Link></section>
       )}
 
+      <ProgressHistory records={records} />
       <section className="workspace-record-list" aria-labelledby="checkin-history-title">
         <div className="workspace-section-heading"><div><p className="workspace-kicker">Hoạt động</p><h2 id="checkin-history-title">Check-in của học viên</h2></div><p>{checkins.length} ngày đã ghi nhận</p></div>
         <CheckinActivityList checkins={checkins} emptyMessage="Check-in của học viên sẽ xuất hiện ở đây sau khi gửi." />

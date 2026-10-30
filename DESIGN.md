@@ -98,3 +98,7 @@ không thay cho duyệt thẩm mỹ hoặc kiểm chứng giá trị với PT.
 ## Nội dung landing cần giữ
 
 Giữ luồng tiếp nhận, hồ sơ hai vai trò, demo sửa/duyệt, khảo sát kèm giới hạn, trạng thái tính năng và đội ngũ khi đổi layout. Dùng timeline/hàng dữ liệu với tokens đã duyệt. Không đưa lại giá, ROI, APK chưa có căn cứ. Kế hoạch chức năng: docs/plans/COACHING_PRODUCT_FOLLOWUP.md.
+
+## Increment core đầu tiên — 2026-10-30
+
+Tiếp nhận trên landing dùng ba vật thể minh họa (hồ sơ, phiếu đối chiếu, cập nhật), chữ ngắn; khả năng chi tiết qua disclosure. Giữ nhãn dữ liệu giả và nguồn khảo sát. Workspace dùng search/filter theo công việc, tiến trình chỉ lấy records được server hiện có cấp quyền. Không thay authenticated data bằng fixture. Chart không bịa xu hướng khi chưa có hai lần đo, có trục zero-based, ngày/đơn vị và bảng giá trị đọc bằng keyboard. Không dùng chart để kết luận sức khỏe hoặc gán giảm cân luôn là tốt.

@@ -2182,3 +2182,20 @@
 .coaching-site .research-snapshot{padding-block:48px}
 .coaching-site .research-counts dd{font-size:30px}
 }
+
+/* The intake is demonstrated with three distinct working objects. */
+.coaching-site .visual-journey .intake-steps li{border:0;padding:0}
+.coaching-site .journey-preview{min-height:220px;background:var(--mint);border-radius:20px;padding:28px;display:flex;flex-direction:column;justify-content:center;gap:12px;margin-bottom:24px;font-size:14px}
+.coaching-site .journey-preview strong{font-weight:500;font-size:21px}
+.coaching-site .journey-avatar{width:48px;height:48px;display:grid;place-items:center;background:var(--forest);color:white;border-radius:16px}
+.coaching-site .preview-connection{display:flex;gap:8px;align-items:center;color:var(--jade);font-size:13px}
+.coaching-site .preview-connection i{width:7px;height:7px;border-radius:50%;background:var(--jade)}
+.coaching-site .preview-report{background:#fff;border:1px solid var(--line);transform:rotate(-2deg)}
+.coaching-site .preview-report>div:nth-child(2){display:flex;align-items:center;justify-content:space-between;padding-block:12px;border-block:1px solid var(--line)}
+.coaching-site .preview-report strong{font-size:32px}.coaching-site .preview-report small{font-size:14px}
+.coaching-site .preview-update{background:var(--forest);color:white}
+.coaching-site .preview-bubble{padding:12px 16px;border-radius:16px 16px 16px 4px;background:#ffffff18;margin-bottom:8px}
+.coaching-site .preview-update-line{display:flex;justify-content:space-between;gap:16px}.coaching-site .preview-update-line strong{font-size:14px}
+.coaching-site .journey-step{font-size:13px;color:var(--jade)}
+.coaching-site .capability-disclosure>summary{cursor:pointer;padding:20px 0;min-height:48px;border-top:1px solid var(--line);font-size:18px}
+@media(max-width:700px){.coaching-site .visual-journey .intake-steps li{display:block}.coaching-site .journey-preview{min-height:190px}.coaching-site .visual-journey .intake-steps{gap:32px}.coaching-site .visual-journey .intake-steps h3{margin-top:8px}}
