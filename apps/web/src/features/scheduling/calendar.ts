@@ -1,4 +1,4 @@
-import {addCalendarDays,getApplicationDate} from "@/features/engagement/calendar";
+import {addCalendarDays,getApplicationDate} from "../engagement/calendar";
 import {vietnamAppointmentInstant} from "./validation";
 
 export function scheduleWeek(raw?: string) {

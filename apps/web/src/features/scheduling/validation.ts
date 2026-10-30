@@ -11,7 +11,7 @@ export function vietnamAppointmentInstant(value: unknown) {
   return local === value ? instant.toISOString() : null;
 }
 
-export function validateAppointment(form: FormData, now = new Date()) {
+export function validateAppointment(form: FormData, now = new Date(), options: {allowPast?:boolean} = {}) {
   const traineeId = form.get("traineeId");
   const nonce = form.get("clientRequestId");
   const rawTitle = form.get("title");
@@ -24,7 +24,7 @@ export function validateAppointment(form: FormData, now = new Date()) {
   if (!title || title.length > 100) return {ok:false as const, error:"Nhập tên cuộc hẹn từ 1 đến 100 ký tự."};
   if (kind !== "training" && kind !== "consultation") return {ok:false as const, error:"Chọn loại cuộc hẹn hợp lệ."};
   if (!startsAt || !endsAt) return {ok:false as const, error:"Nhập ngày giờ hợp lệ theo giờ Việt Nam."};
-  if (Date.parse(startsAt) <= now.getTime()) return {ok:false as const, error:"Chọn thời gian bắt đầu trong tương lai."};
+  if (!options.allowPast && Date.parse(startsAt) <= now.getTime()) return {ok:false as const, error:"Chọn thời gian bắt đầu trong tương lai."};
   const duration = Date.parse(endsAt) - Date.parse(startsAt);
   if (duration <= 0 || duration > 24 * 60 * 60 * 1000) return {ok:false as const, error:"Giờ kết thúc phải sau giờ bắt đầu, tối đa 24 giờ cho một cuộc hẹn."};
   return {ok:true as const, traineeId, nonce, title, kind, startsAt, endsAt};

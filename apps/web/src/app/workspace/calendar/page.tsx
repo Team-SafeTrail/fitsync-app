@@ -37,7 +37,7 @@ async function CalendarContent({viewer,week,selected}:{viewer:NonNullable<Awaite
   const time = new Intl.DateTimeFormat("vi-VN",{hour:"2-digit",minute:"2-digit",timeZone:"Asia/Ho_Chi_Minh"});
   const dayLabel = new Intl.DateTimeFormat("vi-VN",{weekday:"long",day:"numeric",month:"numeric",timeZone:"Asia/Ho_Chi_Minh"});
   return <>
-    <header className="calendar-heading"><div><Link href="/workspace">Không gian của bạn</Link><h1>Lịch tập, cùng một nhịp.</h1><p>{isPt?"Xếp lịch với học viên, không cần soạn giáo án trước.":"Cuộc hẹn PT đã xếp cho bạn. Cần thay đổi? Trao đổi với PT."}</p></div><Link href="/workspace/chat">Mở trao đổi</Link></header>
+    <header className="calendar-heading"><div><Link href="/workspace">Không gian của bạn</Link><h1>Lịch tập, cùng một nhịp.</h1><p>{isPt?"Xếp lịch với học viên, không cần soạn giáo án trước.":"Cuộc hẹn PT đã xếp cho bạn. Cần thay đổi? Trao đổi với PT."}</p></div><div className="calendar-heading-actions">{isPt&&<a className="workspace-button" href="#calendar-entry-title">Xếp cuộc hẹn</a>}<Link href="/workspace/chat">Mở trao đổi</Link></div></header>
     <nav className="calendar-week-nav" aria-label="Chọn tuần"><Link href={`/workspace/calendar?week=${week.previous}`} aria-label="Tuần trước">← Tuần trước</Link><div><strong>Tuần từ {week.monday.split("-").reverse().join("/")}</strong><span>Giờ Việt Nam · UTC+7</span></div><Link href={`/workspace/calendar?week=${week.next}`} aria-label="Tuần sau">Tuần sau →</Link><Link href="/workspace/calendar">Tuần này</Link></nav>
     <p className="calendar-note">Đặt lịch không tự trừ buổi PT hoặc ghi nhận check-in.</p>
     <div className={isPt?"calendar-layout":"calendar-layout is-learner"}>
