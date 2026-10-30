@@ -10,6 +10,11 @@ Giá 199.000đ/tháng đã có khảo sát sơ bộ, nhưng offer/hạn mức/ch
 
 | Tài liệu | Dùng để làm gì |
 | --- | --- |
+| [Chạy dự án và kiểm thử](DEVELOPER_RUNBOOK.md) | Công cụ, local Supabase/env, commands, browser suite và troubleshooting |
+| [Bản đồ code và contract](CODE_AND_CONTRACT_MAP.md) | Server actions/data/UI, identity, retry và ranh giới web/Android |
+| [Nghiệm thu từng luồng](MANUAL_ACCEPTANCE.md) | Checklist thao tác PT/học viên, lỗi/quyền, responsive và biên bản review |
+| [Issues đã assign](ISSUE_TRACKER.md) | Task cụ thể cho Huy/Khai, dependency, readiness và cách nhận việc |
+| [Gộp nhánh và gửi Discord](MERGE_AND_SHARE.md) | Review/merge/rollout khác nhau, link bàn giao và mẫu tin nhắn |
 | [Database v1](DATABASE_V1.md) | Schema hiện hành, quyền, quy tắc và giới hạn; phân biệt phần đã có với target contract |
 | [Schema-only SQL](schema-v1.sql) | Snapshot cấu trúc từ DB test, không chứa rows và không phải script import production |
 | [Từ điển cột sinh từ types](DATA_DICTIONARY.md) | Tên/type/nullability để web và Android không tự đặt field khác nhau |
@@ -21,6 +26,8 @@ Giá 199.000đ/tháng đã có khảo sát sơ bộ, nhưng offer/hạn mức/ch
 | [Quyết định chủ sản phẩm](../PRODUCT_DECISIONS.md) | Những gì phải bám; không phải PRD gốc thất lạc |
 
 Không đọc schema target rồi tưởng migration đó đã chạy. Không dùng ảnh/fixture làm bằng chứng persistence. Không dùng tests PASS để kết luận đã chứng minh giá trị khách hàng.
+
+Nếu nhận bàn giao qua GitHub, không cần ZIP. Sau merge, repo tại commit đã nhận là nguồn chính; ZIP cũ không tự cập nhật theo issues. Trước merge, dùng nhánh của PR31 để đọc các tệp mới. Bắt đầu với REVIEW-BASELINE (#32), không bắt đầu đồng thời mọi task đã assign.
 
 ## Luồng và điểm vào
 
@@ -83,7 +90,7 @@ Các helper `ci-local-supabase.mjs` và `ci-upgrade-rehearsal.mjs` dành riêng 
 
 Web baseline có chức năng thật nhưng chưa gồm mọi phần của ý tưởng ban đầu. Full-report InBody/PDF/provider, yêu cầu đổi/hủy lịch, completion/ledger, target publication, nhiều bữa/ngày, media chat và Android còn có contract/ticket riêng. Không ghi những phần đó là đã implement chỉ vì đã có layout hoặc field dictionary.
 
-Huy review schema, legacy authorization, transaction/race, lưu/xóa dữ liệu và rollout. Khai review UX, desktop/phone, keyboard/focus và Android parity. Chủ sản phẩm duyệt những quy tắc kinh doanh còn mở; human reviewer chấp nhận PR/release. Bản bàn giao không tự gửi tin hoặc giao việc thay hai người.
+Huy review schema, legacy authorization, transaction/race, lưu/xóa dữ liệu và rollout. Khai review UX, desktop/phone, keyboard/focus và Android parity. Chủ sản phẩm duyệt những quy tắc kinh doanh còn mở; human reviewer chấp nhận PR/release. Theo yêu cầu bổ sung ngày31/10, các gói việc đã được tạo thành issues và assign; xem ISSUE_TRACKER. Chưa gửi Discord hoặc thực hiện merge/deploy.
 
 
 ## Kết quả chốt baseline

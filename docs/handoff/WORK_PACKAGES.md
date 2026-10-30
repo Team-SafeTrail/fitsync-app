@@ -1,6 +1,6 @@
 # Gói việc sau bàn giao
 
-Người phụ trách dưới đây là **đề xuất bàn giao theo chuyên môn**, chưa tự tạo/assign issue hoặc gửi tin cho ai. Huy: backend/Supabase/ops; Diệp Khai: web/mobile UI và Android. Chủ sản phẩm duyệt business rules còn mở; reviewer nhận DONE, không agent tự approve/merge.
+Chủ sản phẩm yêu cầu tạo issues và assign ngày31/10/2026. Các gói bên dưới đã có issue tại [ISSUE_TRACKER](ISSUE_TRACKER.md); issue giữ scope/acceptance và trạng thái công việc, bảng này giữ bản đồ dependency. Huy: backend/Supabase/ops; Diệp Khai: web/mobile UI và Android. Chủ sản phẩm duyệt business rules còn mở; reviewer nhận DONE, không agent tự approve/merge. Chưa gửi tin Discord hoặc sửa Trello.
 
 | Ưu tiên / gói | Lead đề xuất | Dependency | Kết quả / điều kiện nghiệm thu |
 | --- | --- | --- | --- |
@@ -14,7 +14,7 @@ Người phụ trách dưới đây là **đề xuất bàn giao theo chuyên m�
 | P1 / FULL-REPORT | Huy; Khai review field groups | Template matrix + BODY-REPORT-02 contract | Core+totals+segments+source/evidence/revisions; migration giữ legacy; PT bắt buộc review; UI hiển thị missing/unit/model đúng, không suy luận nhóm cơ không được đo |
 | P1 / OCR-PDF | Huy + owner benchmark | FULL-REPORT | Bounded PDF text/scan/image pipeline, provider/version/cost/timeout/cleanup; holdout có threshold duyệt trước; manual fallback và duplicate-confirm/isolation tests |
 | P1 / TARGETS-MEALS | Huy; Khai nối UI | Target/meal contract | Target history+publication; nhiều bữa/ngày và phản hồi PT; migrate legacy không duplicate; ảnh gửi được khi AI lỗi |
-| P1 / ANDROID-SPIKE | Khai; Huy hợp đồng | REVIEW-BASELINE + stable APIs | ADR chọn runtime; auth→invite→profile→camera/review trên Android thật; session/deep link/permissions/keyboard/reconnect không mất hoặc nhân dữ liệu |
+| P1 / ANDROID-SPIKE | Khai; Huy hợp đồng | REVIEW-BASELINE + AUTH-DELIVERY + stable APIs | Đối chiếu hướng Expo/React Native ở issue24 với ADR003 Proposed TWA; cập nhật ADR cùng owner trước scaffold; auth→invite→profile→camera/review trên Android thật |
 | P2 / ANDROID-CORE | Khai | SPIKE + calendar/report APIs | Điều hướng hai vai trò, chat/lịch/membership/check-in/targets; native interaction phù hợp phone; dùng cùng DB/domain, no service key; gói cài nội bộ có bằng chứng máy thật |
 | P2 / REALTIME-MEDIA | Huy + Khai | OPS-DATA + rate | Media chat/read-state/unread/notification, file quyền/cleanup, reconnect/background và thông báo không lộ dữ liệu trên lock screen |
 | P2 / BILLING-OFFER | Owner + Huy | Pricing/limits decision | Giữ baseline199k; xác nhận ai trả/hạn mức/AI economics/receipt/renewal/support, không bật trial/unlimited/checkout từ fixture |

@@ -1,6 +1,6 @@
 # FitSync — bắt đầu từ đây
 
-Cập nhật30/10/2026. Bộ bàn giao web/database v1 cho Huy và Diệp Khai ở **[docs/handoff/README.md](handoff/README.md)**. Chủ sản phẩm xác nhận: hoàn thiện web và tài liệu, Android để Khai triển khai tiếp.
+Cập nhật31/10/2026. Bộ bàn giao web/database v1 cho Huy và Diệp Khai ở **[docs/handoff/README.md](handoff/README.md)**. Chủ sản phẩm xác nhận: hoàn thiện web và tài liệu, Android để Khai triển khai tiếp. Xem [issues đã assign](handoff/ISSUE_TRACKER.md), [runbook](handoff/DEVELOPER_RUNBOOK.md) và [merge/Discord](handoff/MERGE_AND_SHARE.md).
 
 Branch: `codex/apply-approved-coaching-design`. Draft [PR31](https://github.com/Team-SafeTrail/fitsync-app/pull/31). Chưa merge/deploy/cloud migration hoặc bật cờ production. Giữ các thay đổi chưa commit, video và dữ liệu riêng.
 
@@ -29,6 +29,6 @@ Baseline199k/tháng đã có khảo sát sơ bộ; offer/hạn mức/AI cost/thu
 
 Đọc [WORK_PACKAGES](handoff/WORK_PACKAGES.md) và [REMAINING_CONTRACTS](handoff/REMAINING_CONTRACTS.md): legacy authorization review, retention/delete/rate/support, request/change/cancel, ledger/completion, full-report/PDF/provider, nutrition publication/multi-meal và Android. Baseline12 bảng không có nghĩa mọi miền này đã implement.
 
-Huy phụ trách review backend/DB/ops theo phân công đề xuất; Khai review web/UX và triển khai Android. Chưa tự assign issue hoặc gửi tin cho hai người. Human reviewer nhận PR/release; không agent tự approve/merge.
+Huy nhận review backend/DB/ops; Khai nhận review web/UX và Android theo issues chủ sản phẩm yêu cầu tạo/assign. Human reviewer nhận PR/release; không agent tự approve/merge. Chưa gửi Discord, sửa Trello hoặc triển khai cloud. Các issue phụ thuộc còn blocked cho tới khi review gate và business rules liên quan qua.
 
 Không dùng real health data, reset cloud project hoặc nhập schema snapshot vào production để nhận bàn giao. Windows checkout hiện chưa có Supabase local/Docker; authenticated acceptance chạy trên runner DB tạm. Ba cờ rollout mặc định false; không dùng chúng thay authorization/RLS.
