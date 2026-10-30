@@ -2,6 +2,7 @@
 .workspace-page-heading h1 { font-size:clamp(28px,2.8vw,40px); line-height:1.22; max-width:none; overflow-wrap:anywhere; }
 .workspace-primary-actions { display:flex; flex-wrap:wrap; align-items:center; gap:12px 20px; margin:20px 0; }
 .workspace-primary-actions>a { min-height:44px; display:inline-flex; align-items:center; }
+.workspace-main :is(input:not([type=hidden]):not([type=checkbox]):not([type=radio]):not([type=file]),select,textarea) { border-color:var(--color-border-strong); }
 .coaching-page-header { display:flex; justify-content:space-between; align-items:end; gap:24px; margin-bottom:36px; }
 .coaching-page-header h1 { font:600 clamp(28px,3vw,40px)/1.2 var(--font-display); letter-spacing:-.04em; margin:14px 0; }
 .coaching-page-header p { color:var(--color-text-secondary); line-height:1.7; max-width:65ch; }
@@ -62,7 +63,7 @@
 .coaching-notes-list { padding:0; list-style:none; }
 .coaching-notes-list>li { border-left:2px solid var(--color-border-default); padding:4px 0 4px 20px; margin:24px 0; }
 .coaching-notes-list>li>div { display:flex; align-items:center; flex-wrap:wrap; gap:12px; }
-.coaching-notes-list time { font-size:12px; color:var(--color-text-secondary); }
+.coaching-notes-list time { font-size:13px; color:var(--color-text-secondary); }
 .coaching-notes-list p { white-space:pre-wrap; overflow-wrap:anywhere; }
 .coaching-membership-history li { padding:12px 0; }
 .coaching-membership-history li>span { display:block; margin-top:8px; font-size:13px; color:var(--color-text-secondary); }

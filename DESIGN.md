@@ -35,6 +35,7 @@ Không biến mọi nội dung thành các thẻ giống nhau hoặc làm mới 
 | brand / jade | `#226C5D` | Điều khiển, dữ liệu, đường biểu đồ |
 | sun | `#FFD29C` | CTA trên forest; không dùng chữ trắng trên sun |
 | border | `#D4DFD7` | Biên bảng, ô nhập, phân vùng có nghĩa |
+| border strong | `#6F8879` | Biên control cần nhận diện; tương phản3.84:1 trên trắng và3.32:1 trên nền muted |
 | success | `#1D6951` | Xác nhận, có nhãn chữ |
 | warning | `#85520F` | Cần xem lại; nền `#FFF2DB` |
 | destructive | `#AC3434` | Lỗi; nền `#FCEDED` |
@@ -99,7 +100,7 @@ UI chỉ hiển thị lịch đã lưu dưới quyền hai bên. Không tạo ap
 
 ### Hồ sơ và trang Hôm nay — web handoff v1
 
-PT Today gom lịch sắp tới, nhóm cần xem check-in và trạng thái kết nối; không tạo badge tin chưa đọc khi chưa có read-state. Hồ sơ dùng liên kết theo phần, đặt ngữ cảnh/tiến trình trước biểu mẫu nhập. Biểu mẫu InBody thu gọn ở lần vào sau khi đã có record, nhưng giữ mở khi người dùng vừa lưu để không che xác nhận. Ghi chú riêng/chia sẻ có nhãn chữ, mặc định riêng tư. Membership hiển thị ngày bao gồm cả ngày kết thúc; buổi PT là đối tượng riêng.
+PT Today gom lịch sắp tới, nhóm cần xem check-in và trạng thái kết nối; không tạo badge tin chưa đọc khi chưa có read-state. Hồ sơ PT dùng5 tab tác vụ: Tổng quan, Tiến trình, Membership & buổi, Ghi chú, Nhập số đo. Tabs có keyboard navigation và hash/deep link; giữ mounted nội dung để không mất draft khi đổi phần. Không ghép mọi form thành một trang dài. Ghi chú riêng/chia sẻ có nhãn chữ, mặc định riêng tư. Membership hiển thị ngày bao gồm cả ngày kết thúc; buổi PT là đối tượng riêng.
 
 Biểu đồ có ba lựa chọn cân nặng/cơ xương/tỷ lệ mỡ; trục thời gian dùng khoảng cách ngày thực, đơn vị rõ và có bảng số. Không đổi mỡ giảm thành kết luận tốt/xấu hoặc hiển thị số mẫu trong hồ sơ. Chat dùng vùng lịch sử có cuộn, cập nhật cuối khi người dùng đang ở cuối; không kéo người đang đọc tin cũ. Tất cả giữ token từ globals.css; các alias màu cũ của form OCR đã được thay bằng token hiện hành.
 
