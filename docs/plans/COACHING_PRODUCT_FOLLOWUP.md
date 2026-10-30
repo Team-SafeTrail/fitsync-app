@@ -1,6 +1,6 @@
 # FitSync — công việc sau thiết kế
 
-**Tiến độ hiện hành:** CHAT-TEXT-01 và CALENDAR-01 (lịch read/create) đã qua acceptance synthetic trên production build tại [CI41078850281](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41078850281), code28a9e9a:169 SQL/RLS +4 browser scenarios PASS. [Web CI41078850312](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41078850312):87 unit tests/lint/typecheck/build PASS. Chat/lịch đều tắt mặc định tại production. Tiếp theo là CALENDAR-02, membership và ledger; chưa hoàn thành B0–B8. Xem checkpoint cuối file; các bảng khảo sát ban đầu bên dưới là lịch sử.
+**Tiến độ hiện hành:** Chủ sản phẩm chốt lượt này hoàn thiện web + bộ bàn giao; Android để Khai triển khai tiếp. Xem [bộ bàn giao v1](../handoff/README.md), [kế hoạch hiện hành](WEB_HANDOFF_V1.md) và [bằng chứng mới](../handoff/UI_ACCEPTANCE.md). Chat/lịch create-read, membership theo ngày và notes private/shared đã có implementation; không gọi toàn bộ B0–B8 hoàn tất. Các snapshot/checkpoint bên dưới là lịch sử, không thay trạng thái trong bộ bàn giao.
 
 2026-10-30. Kế hoạch theo yêu cầu chủ sản phẩm; không phải PRD gốc, không mặc định persona/milestone cũ. Baseline199k/tháng đã có khảo sát sơ bộ; đang làm rõ offer/hạn mức/chi phí, không coi như chưa từng có quyết định và không tự thay giá.
 
@@ -153,3 +153,8 @@ Review thêm biên retry: nếu DB đã lưu cuộc hẹn nhưng người dùng 
 Bằng chứng ảnh synthetic đã xem và lưu tại [coaching-core evidence](../evidence/coaching-core-2026-10-30/README.md); [báo cáo CALENDAR-01](../reviews/CALENDAR_01_IMPLEMENTATION.md). Các lượt trước là lịch sử, bao gồm run41078285566 bị CI tự hủy khi có commit mới (calendar/chat đã qua nhưng không được gọi cả run PASS).
 
 **Bước tiếp theo: CALENDAR-02.** Bổ sung version/audit; học viên đề nghị đổi/hủy, PT chấp nhận/từ chối, học viên rút yêu cầu; giữ slot gốc đến khi quyết định, test stale version/concurrent decisions và liên kết appointment trong chat. Sau đó PACKAGE-01 (ngày membership) rồi LEDGER-01 (opening balance/completion/debit/reversal). Không tự phạt vắng, tính phí hoặc trừ buổi khi đặt lịch/check-in. Trước pilot còn phải có migration upgrade rehearsal, rate/retention/account deletion, human review và kiểm thiết bị thật. Không tự deploy hoặc bật cờ production.
+
+
+### Web handoff v1 — checkpoint mới
+
+PT Today, dossier năm tab, learner Home/history, progress đa chỉ số, membership revisions/private-shared notes và responsive navigation đã implement. Database tám migrations/mười hai bảng; có schema snapshot, generated dictionary và upgrade rehearsal. [UI_ACCEPTANCE](../handoff/UI_ACCEPTANCE.md) ghi fresh receipts và giới hạn. [WORK_PACKAGES](../handoff/WORK_PACKAGES.md) thay thứ tự “bước tiếp theo” lịch sử phía trên: Huy review backend/ops, Khai review web và tiếp Android. Không tự rollout ba flags hoặc sửa cloud DB.
