@@ -49,3 +49,7 @@ The backend environment blocker is resolved for CI, not for this Windows host: G
 - Local rerun at head751262c: TypeScript PASS,58 unit tests PASS, lint PASS with telemetry disabled. The initial lint attempt failed on a Windows cross-device telemetry config rename; the disabled-telemetry rerun completed without warnings.
 
 Chat remains default-off. Operational rate limiting, retention/account deletion, physical-device/keyboard review and human PR review are still separate gates before a real pilot.
+
+### Latest acceptance result
+
+[Run41076144990](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41076144990), head84ec6f2, completed SUCCESS:140/140 SQL/RLS checks, exact generated-types diff, production build, and3/3 authenticated browser scenarios (chat, M2, M3). Chat passed on its first attempt: PT/learner exchange and reload,15-second visible-page polling, lost-ack retry with exactly one rendered message,56-message same-timestamp pagination50/6, sending from history returns to latest, outsider HTTP404 with no chat content/composer. Actual synthetic PT1440px/learner390px screenshots downloaded and visually reviewed. No claim of physical-device/keyboard, rate/load or production readiness. The earlier local/CI failures above remain historical evidence, superseded for acceptance by this run.

@@ -100,9 +100,9 @@ Bảng này theo các nhãn của blueprint, là điểm đọc tiến độ hi�
 | --- | --- | --- |
 | B0 Ranh giới | Đã ghi nhận hướng PT/học viên, Android trước,199k khảo sát sơ bộ | Các chi tiết nghiệp vụ còn mở giữ thành quyết định riêng |
 | B1 Luồng/quyền/thiết kế | Visual approved; chat-text contract đã viết và đang có code để review | Review toàn bộ intake/OCR/lịch/gói; không gọi visual approval là duyệt mọi UX |
-| B2 Dữ liệu/hợp đồng | Nền cũ có sẵn; migration chat đã chạy trên DB tạm của CI;140 SQL/RLS checks qua, chưa áp production | Chạy DB test/upgrade/isolation; sinh lại types từ DB và đối chiếu với bản types viết tay |
+| B2 Dữ liệu/hợp đồng | Chat đã qua140 SQL/RLS checks; types sinh từ DB và CI diff PASS, chưa áp production | Lịch đang thêm; các miền còn lại và kiểm thử nâng cấp từ baseline vẫn cần thực hiện |
 | B3 Intake/InBody | Có baseline năm chỉ số và review | Báo cáo đầy đủ/PDF/segmental/provider chưa đạt |
-| B4 Chat/lịch/gói | Đang triển khai lát cắt text chat thật; mặc định tắt, chưa nghiệm thu | Hai tài khoản test, retry/pagination/archive; sau đó shared calendar và ledger |
+| B4 Chat/lịch/gói | Text chat đã qua acceptance synthetic trên production build; mặc định tắt tại production | CALENDAR-01 đang triển khai; sau đó yêu cầu đổi lịch, membership và ledger; chat media/operational gates còn mở |
 | B5 Dinh dưỡng/bài tập | Có baseline check-in/ảnh; chưa remake đủ | Target/history, phản hồi PT, assignment; AI gate riêng |
 | B6 Android | Chưa triển khai | Core contracts và test thiết bị thật |
 | B7 Landing/pilot | Landing đã cập nhật một phần | Không hoàn thành trước activation/support/privacy/payment/pilot evidence |
@@ -129,3 +129,11 @@ CI lượt2 (41061261782):140 DB/RLS PASS, M2/M3 browser PASS, schema types đã
 CI lượt3 (41074069082):140 DB/RLS và schema diff PASS; M2/M3 PASS. Chat đã gửi từ PT nhưng test lưu URL trước khi client navigation hoàn tất, nên so URL learner với đường dẫn inbox. Sửa bằng chờ đúng URL thread trước khi đọc; đây là lỗi đồng bộ của test, chưa phải bằng chứng lỗi quyền hay gửi tin. Bổ sung acceptance cho polling, mất phản hồi sau commit rồi retry không trùng tin, phân trang các tin cùng timestamp và gửi từ trang lịch sử. Composer chuyển về trang mới nhất sau khi gửi từ lịch sử để người dùng thấy tin vừa gửi. Typecheck và diff check tại máy qua; kết quả browser mới còn chờ CI.
 
 CI lượt4 (41075370536): SQL140/schema diff/M2/M3 vẫn PASS. Chat PT→learner→reply, polling và reload đã đi qua; mô phỏng mất phản hồi hiển thị đúng lỗi/giữ nội dung. Test dừng do locator alert chung trùng với route announcer của Next. Đã scope vào composer, giữ nguyên yêu cầu lỗi và retry. Từ lượt kế tiếp backend E2E build/start production với chính DB tạm để nghiệm thu bản build thay vì dev server; chưa tự gọi chat đã PASS.
+
+### CHAT-TEXT-01 — acceptance PASS, không phải production rollout
+
+[Run41076144990](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41076144990), head84ec6f2: SQL140/140, generated schema diff, production build và3 browser scenarios (chat/M2/M3) PASS, không cần retry. Chat gồm hai vai trò, persistence, visible-page polling, mất phản hồi và gửi lại không trùng,56 tin chia50/6 với timestamp trùng, gửi từ trang cũ quay về mới nhất, outsider HTTP404/no content. Đã xem ảnh PT1440px và learner390px từ artifact synthetic. Đây không phải test bàn phím/Android thật, kiểm thử tải hoặc bằng chứng rate limiting/retention đã sẵn sàng. Các lượt lỗi trước giữ để phân biệt bằng chứng; checkpoint PASS này thay trạng thái “đang chờ” của chúng.
+
+### CALENDAR-01 — đang triển khai
+
+Sau chat gate: thêm appointment read/create cho học viên đã kết nối; không giáo án bắt buộc, không trừ buổi. Migration20261030200000 và29 pgTAP cases mới đang chuẩn bị chạy trên DB tạm. Validator có19 boundary cases PASS tại máy. CI đầu của schema mới dự kiến dừng ở types diff cho đến khi lấy artifact generated types; không bỏ cổng này hoặc gọi test UI đã chạy. Tiếp theo nối agenda/form hai vai trò, test overlap đồng thời, reload, không trừ buổi và quyền. Production flag lịch sẽ mặc định false.

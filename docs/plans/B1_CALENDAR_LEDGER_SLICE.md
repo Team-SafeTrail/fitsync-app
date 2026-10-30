@@ -62,3 +62,13 @@ Introduce new structures first. When connecting the ledger, change the existing 
 Only start the next database domain after chat's isolation/persistence gate is understood, rather than accumulating untested migrations. Keep each feature default-off until its isolated database and browser acceptance pass. The environment is synthetic, never the historical cloud production project by default.
 
 Acceptance includes desktop/phone, DST/offset-safe boundaries, adjacent/overlapping sessions, request races, retries, expiry boundaries, package exhaustion, self-check-in without debit, two PTs/two learners/anon/admin denial, and back/reload consistency. This file does not mark B1/B2/B4 or the full plan complete.
+
+## CALENDAR-01 implementation defaults
+
+After chat acceptance passed in CI41076144990: start with linked learners only, PT creates training/consultation appointments, shared title up to100 characters, explicit Vietnam local start/end converted to timestamptz. New bookings are future-only and at most24 hours (technical input bound, not a billing policy). No exercises, fee flag, attendance or package mutation is required. Pre-invitation booking and change requests remain later work, not silently implied by this form.
+
+Day-grouped weekly agenda on both surfaces; desktop places appointment entry alongside the agenda, phone stacks the agenda and a focused entry panel. Existing forest/jade/apricot and Be Vietnam Pro from DESIGN.md; use date rails and time rows, not a decorative dashboard card grid. Heading remains utility-sized. Show both parties the same appointment ID/state and actual time; linked dossier/chat entry points keep context. No speculative slot availability or completion button.
+
+Database exclusion constraints protect overlapping PT/learner ranges with half-open endpoints. Creation locks the relationship row; archive/unlink/reassignment retires outstanding claims and preserves rows, so hidden old records cannot block new schedules. Read access still requires the original current participant tuple/role. Retired claims are not billing cancellations or a right to transfer old history. Cancellation policy and audit/request UX remain CALENDAR-02.
+
+Technical references checked against Postgres17: [range exclusion](https://www.postgresql.org/docs/17/rangetypes.html), [row lock modes](https://www.postgresql.org/docs/17/explicit-locking.html). Validate with actual SQL/concurrency cases; references alone do not establish that this implementation is correct.
