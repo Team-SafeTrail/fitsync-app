@@ -1,14 +1,18 @@
 # FitSync — công việc sau thiết kế
 
-**Đọc tiến độ mới nhất ở mục “Checkpoint thực thi B0–B8” cuối file.** Các bảng hiện trạng ban đầu là snapshot trước CHAT-TEXT-01. Lát cắt chat đã có code/migration để review nhưng tắt mặc định, chưa nghiệm thu DB hoặc hai tài khoản.
+**Tiến độ hiện hành:** CHAT-TEXT-01 và CALENDAR-01 (lịch read/create) đã qua acceptance synthetic trên production build tại [CI41078850281](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41078850281), code28a9e9a:169 SQL/RLS +4 browser scenarios PASS. [Web CI41078850312](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41078850312):87 unit tests/lint/typecheck/build PASS. Chat/lịch đều tắt mặc định tại production. Tiếp theo là CALENDAR-02, membership và ledger; chưa hoàn thành B0–B8. Xem checkpoint cuối file; các bảng khảo sát ban đầu bên dưới là lịch sử.
 
-2026-10-30. Kế hoạch theo yêu cầu chủ sản phẩm; không phải PRD gốc, không mặc định persona/milestone cũ. Chủ sản phẩm xác nhận đã có mô hình kinh doanh trước đó và ngày 2026-10-30 yêu cầu cùng xem xét lại, không coi như chưa từng có quyết định. Giá cụ thể mới chưa được duyệt.
+2026-10-30. Kế hoạch theo yêu cầu chủ sản phẩm; không phải PRD gốc, không mặc định persona/milestone cũ. Baseline199k/tháng đã có khảo sát sơ bộ; đang làm rõ offer/hạn mức/chi phí, không coi như chưa từng có quyết định và không tự thay giá.
 
 ## Phạm vi hiện tại
 
+Triển khai core trong workspace thật theo các lát cắt có DB/RLS/browser acceptance: chat text → lịch dùng chung → yêu cầu đổi lịch → membership/ledger → tiếp nhận/OCR đầy đủ. Thiết kế theo DESIGN.md; không tiếp tục mở rộng tour để thay chức năng thật. Chưa đóng toàn bộ B1/B2/B4 hoặc B0–B8.
+
+## Snapshot công việc trước CHAT-TEXT-01 — lịch sử
+
 Khôi phục nội dung landing trong ngôn ngữ thiết kế đã duyệt: tiếp nhận → kết nối → xác nhận số đo → theo dõi; khảo sát tổng hợp kèm giới hạn; trạng thái chức năng; vai trò đội ngũ. Demo chọn ba phiếu giả, sửa cân nặng, invalid/review/confirm/reset. Không tự tạo mục tiêu dinh dưỡng: công cụ cũ có công thức giả định, không phải tư vấn cá nhân. Không đưa lại giá, ROI, APK hoặc cam kết hỗ trợ chưa có bằng chứng. Dữ liệu khảo sát theo ../research/survey-evidence.md.
 
-## Đối chiếu ý muốn với hiện trạng đọc từ code
+## Đối chiếu ý muốn với hiện trạng đọc từ code — snapshot trước chat
 
 | Ý muốn đã nêu | Hiện trạng | Giữ/sửa/bổ sung | Còn chưa rõ |
 | --- | --- | --- | --- |
@@ -99,16 +103,16 @@ Bảng này theo các nhãn của blueprint, là điểm đọc tiến độ hi�
 | Giai đoạn | Trạng thái thật | Phần còn lại / cổng tiếp theo |
 | --- | --- | --- |
 | B0 Ranh giới | Đã ghi nhận hướng PT/học viên, Android trước,199k khảo sát sơ bộ | Các chi tiết nghiệp vụ còn mở giữ thành quyết định riêng |
-| B1 Luồng/quyền/thiết kế | Visual approved; chat-text contract đã viết và đang có code để review | Review toàn bộ intake/OCR/lịch/gói; không gọi visual approval là duyệt mọi UX |
+| B1 Luồng/quyền/thiết kế | Visual approved; chat text và agenda/form lịch đã có code, desktop/phone browser acceptance | Review intake/OCR/đổi lịch/gói; không gọi visual approval là duyệt mọi UX |
 | B2 Dữ liệu/hợp đồng | Chat đã qua140 SQL/RLS checks; types sinh từ DB và CI diff PASS, chưa áp production | Lịch đang thêm; các miền còn lại và kiểm thử nâng cấp từ baseline vẫn cần thực hiện |
 | B3 Intake/InBody | Có baseline năm chỉ số và review | Báo cáo đầy đủ/PDF/segmental/provider chưa đạt |
-| B4 Chat/lịch/gói | Text chat đã qua acceptance synthetic trên production build; mặc định tắt tại production | CALENDAR-01 đang triển khai; sau đó yêu cầu đổi lịch, membership và ledger; chat media/operational gates còn mở |
+| B4 Chat/lịch/gói | Text chat và lịch read/create đã qua acceptance synthetic trên production build; mặc định tắt tại production | CALENDAR-02 yêu cầu đổi/hủy; membership và ledger; chat media/operational gates còn mở |
 | B5 Dinh dưỡng/bài tập | Có baseline check-in/ảnh; chưa remake đủ | Target/history, phản hồi PT, assignment; AI gate riêng |
 | B6 Android | Chưa triển khai | Core contracts và test thiết bị thật |
 | B7 Landing/pilot | Landing đã cập nhật một phần | Không hoàn thành trước activation/support/privacy/payment/pilot evidence |
 | B8 Sau pilot | Để sau | iOS/chủ gym/community/voice theo nhu cầu đã kiểm chứng |
 
-### Công việc đang thực hiện: CHAT-TEXT-01
+### CHAT-TEXT-01 — lịch sử triển khai trước nghiệm thu
 
 [B1 contract và tiêu chí](B1_CHAT_TEXT_SLICE.md) → migration `20261030190000_coaching_text_messages.sql` → server action/page `/workspace/chat/*`. Đây là một miền xuyên B1/B2/B4 được tách trong blueprint, không đổi thứ tự hoặc tự đóng B3.
 
@@ -141,3 +145,11 @@ Sau chat gate: thêm appointment read/create cho học viên đã kết nối; k
 [Run41077255354](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41077255354):169 SQL/RLS checks PASS (29 calendar mới +140 trước); dừng đúng ở schema diff, browser bị skip. Đã lấy generated types từ artifact. Code mới có weekly agenda, PT entry, empty/error/loading/pending, lost-ack retry, profile/chat links, mobile navigation3 việc chính. Flag FITSYNC_CALENDAR_ENABLED=false; chỉ runner tạm bật. Typecheck,77 unit tests, lint và4 environment-guard tests tại máy PASS. Đã thêm authenticated calendar E2E gồm overlap/concurrent insert/lost-ack/direct DB check không trừ buổi, chưa gọi PASS trước khi CI chạy.
 
 Review thêm biên retry: nếu DB đã lưu cuộc hẹn nhưng người dùng gửi lại sau giờ bắt đầu, phải nhận đúng kết quả cũ thay vì bị coi là lịch mới quá hạn. Action hiện tra nonce dưới quyền hiện hành trước khi kiểm future-time cho insert mới; nonce khác nội dung vẫn conflict. Có10 action boundary tests mới cho quyền/identity/retry/past/overlap. Chưa thay chính sách hủy/hoàn thành hoặc mở production.
+
+### CALENDAR-01 — acceptance PASS
+
+[Backend41078850281](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41078850281), head28a9e9a, hoàn tất SUCCESS:169/169 SQL/RLS checks, exact schema/types diff, production build và4/4 browser scenarios PASS lần đầu. Calendar: PT tạo, learner mobile xem cùng lịch, reload, overlap giữ form/lịch cũ, adjacent slots, mất phản hồi sau commit (kiểm DB có đúng1 record trước retry), hai insert đồng thời cùng range chỉ1 thành công, không thay remaining_sessions, outsider không đọc được. Chat/M2/M3 cùng chạy PASS sau thay đổi navigation. Web CI87 unit tests/lint/typecheck/build PASS. Không đo coverage hoặc thử Android/bàn phím thật.
+
+Bằng chứng ảnh synthetic đã xem và lưu tại [coaching-core evidence](../evidence/coaching-core-2026-10-30/README.md); [báo cáo CALENDAR-01](../reviews/CALENDAR_01_IMPLEMENTATION.md). Các lượt trước là lịch sử, bao gồm run41078285566 bị CI tự hủy khi có commit mới (calendar/chat đã qua nhưng không được gọi cả run PASS).
+
+**Bước tiếp theo: CALENDAR-02.** Bổ sung version/audit; học viên đề nghị đổi/hủy, PT chấp nhận/từ chối, học viên rút yêu cầu; giữ slot gốc đến khi quyết định, test stale version/concurrent decisions và liên kết appointment trong chat. Sau đó PACKAGE-01 (ngày membership) rồi LEDGER-01 (opening balance/completion/debit/reversal). Không tự phạt vắng, tính phí hoặc trừ buổi khi đặt lịch/check-in. Trước pilot còn phải có migration upgrade rehearsal, rate/retention/account deletion, human review và kiểm thiết bị thật. Không tự deploy hoặc bật cờ production.

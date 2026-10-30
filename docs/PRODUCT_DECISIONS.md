@@ -33,3 +33,5 @@ Chặn kiểm thử thực hiện tại: apps/web chỉ có .env.example, không
 Đính chính môi trường: Supabase CLI2.118.0 có sẵn trong node_modules, trước đây kiểm tra PATH đã bỏ sót. Repo có bằng chứng cloud lịch sử. Hiện Docker/Podman và local database chưa chạy; CLI cloud chưa có phiên truy cập. Kết quả kiểm tra thực tế: [ENVIRONMENT_RECHECK.md](reviews/ENVIRONMENT_RECHECK.md).
 
 Có môi trường test → chạy lại nền tài khoản/hồ sơ hiện có → làm một vertical slice chat có lưu và quyền hai bên → shared calendar/đổi lịch → membership/ledger → OCR schema/provider đầy đủ. Lần lượt kiểm desktop/phone, persistence, retry và người ngoài bị chặn. Landing cập nhật theo trạng thái đã chứng minh. Không thay tests/domain thật bằng screenshot hay fixture. Các chi tiết UX còn mở vẫn được ghi rõ như đề xuất.
+
+Cập nhật thực thi: môi trường test đã có trên GitHub Actions, dùng Supabase loopback tạm và dữ liệu tổng hợp; Windows host vẫn không có Docker/local DB. CHAT-TEXT-01 qua acceptance tại run41076144990. CALENDAR-01 đang nghiệm thu theo file COACHING_PRODUCT_FOLLOWUP.md. Không còn chờ owner cung cấp key để chạy các acceptance này; production deployment/rollout vẫn là việc riêng.

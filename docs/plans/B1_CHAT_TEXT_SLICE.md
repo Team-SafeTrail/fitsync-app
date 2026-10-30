@@ -34,12 +34,12 @@ Unique(sender_id,client_message_id) xử lý duplicate retry. App chỉ nhận l
 
 ## Phát hành và nghiệm thu
 
-Feature flag FITSYNC_CHAT_ENABLED=false đến khi DB test và flow hai tài khoản qua. Migration additive chưa áp dụng. Types bổ sung thủ công cho draft schema, không gọi là generated-from-live-DB. Sau test phải regenerate/diff types. Không reset DB hiện dùng; nếu rollback app, tắt cờ và giữ bảng, không xóa message. Test DB dùng dữ liệu tổng hợp và transaction rollback.
+Feature flag FITSYNC_CHAT_ENABLED=false tại production; DB test và flow hai tài khoản đã qua tại CI41076144990, chưa mở pilot. Migration additive mới áp trên DB tạm; public types đã sinh từ DB và CI diff PASS. Không reset DB hiện dùng; nếu rollback app, tắt cờ và giữ bảng, không xóa message. Test DB dùng dữ liệu tổng hợp và transaction rollback.
 
-Cần kiểm: PT và learner gửi/đọc/reload; đúng tác giả; người thứ ba/admin/anon không đọc/gửi; forged sender/PT/learner bị chặn; retry không trùng;50+ tin và cùng microsecond; archive/unlink/reassign đổi quyền; mất mạng/draft; routeback và mobile keyboard. 29 pgTAP cases đã viết, chưa chạy. Unit validation/server action kiểm các boundary nhưng không chứng minh SQL/RLS thực thi.
+Cần kiểm: PT và learner gửi/đọc/reload; đúng tác giả; người thứ ba/admin/anon không đọc/gửi; forged sender/PT/learner bị chặn; retry không trùng;50+ tin và cùng microsecond; archive/unlink/reassign đổi quyền; mất mạng/draft; routeback và mobile keyboard.29 pgTAP cases đã chạy PASS trong CI; authenticated browser acceptance cũng PASS. Mobile keyboard/Android thật và vận hành còn mở. Unit validation/server action kiểm các boundary nhưng không thay SQL/RLS thực thi.
 
 Chưa gồm media, read receipt, edit/delete, notification, voice, booking. Rate limit và retention/abuse handling cần hoàn tất trước pilot; không hứa sẵn sàng production. Tài liệu nền: [RLS](https://supabase.com/docs/guides/database/postgres/row-level-security), [column grants](https://supabase.com/docs/guides/database/postgres/column-level-security), [OR filters](https://supabase.com/docs/reference/javascript/using-filters-or).
 
 ## Cập nhật bằng chứng sau bản contract ban đầu
 
-Các câu “chưa áp dụng/chưa chạy/types thủ công” ở mục phát hành phía trên là trạng thái lúc soạn contract. Sau đó migration đã được áp trên Supabase tạm trong CI;29 chat assertions và111 assertions nền đã qua ở các lượt41059690048,41061261782,41074069082. Types public đã sinh từ DB thật của runner và có CI diff. Chat browser acceptance mới đang chạy ở41075370536, chưa nghiệm thu; xem checkpoint hiện hành trong COACHING_PRODUCT_FOLLOWUP.md và CHAT_TEXT_01_IMPLEMENTATION.md. Chưa áp migration hoặc bật cờ tại production.
+Migration đã được áp trên Supabase tạm trong CI;29 chat assertions và111 assertions nền đã qua. Run41076144990 nghiệm thu chat browser trên production build PASS lần đầu, cùng M2/M3 và schema diff. Xem checkpoint hiện hành trong COACHING_PRODUCT_FOLLOWUP.md và CHAT_TEXT_01_IMPLEMENTATION.md. Chưa áp migration hoặc bật cờ tại production.
