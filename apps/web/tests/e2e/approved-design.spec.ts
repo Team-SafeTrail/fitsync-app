@@ -50,3 +50,33 @@ test("public auth, invitation and legal surfaces retain shared navigation", asyn
   await page.goto("/workspace");
   await expect(page).toHaveURL(/\/login/);
 });
+
+for (const width of [1440, 768, 390, 320]) {
+  test(`restored content and editable review at ${width}px`, async ({page}) => {
+    await page.setViewportSize({width,height:900});
+    await page.goto("/");
+    await expect(page.getByRole("heading",{name:/Từ buổi đầu/})).toBeVisible();
+    await expect(page.locator("#tinh-nang")).toContainText("Đang lên kế hoạch");
+    await page.getByText("Nguồn và giới hạn khảo sát",{exact:true}).click();
+    await expect(page.locator(".research-snapshot")).toContainText("không đại diện");
+    await page.getByRole("button",{name:"Thử mở bản nháp"}).click();
+    const dialog = page.getByRole("dialog");
+    const confirm = dialog.getByRole("button",{name:"Xác nhận bản mẫu"});
+    const weight = dialog.getByRole("spinbutton");
+    await dialog.getByRole("checkbox").check();
+    await weight.fill("71");
+    await expect(confirm).toBeDisabled();
+    await weight.fill("");
+    await expect(weight).toHaveAttribute("aria-invalid","true");
+    await expect(dialog.getByRole("checkbox")).toBeDisabled();
+    await dialog.getByRole("combobox").selectOption("1");
+    await expect(weight).toHaveValue("65.8");
+    await dialog.getByRole("checkbox").check();
+    await confirm.click();
+    await expect(dialog.getByRole("status")).toContainText("65,8 kg");
+    await dialog.getByRole("button",{name:"Đặt lại bản mẫu"}).click();
+    await expect(confirm).toBeDisabled();
+    await page.keyboard.press("Escape");
+    expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
+  });
+}

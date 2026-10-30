@@ -94,3 +94,7 @@ React/Next.js dùng guideline đúng version, giữ page/server boundary gọn. 
 ở desktop/tablet/phone, kiểm keyboard/contrast/overflow/reduced motion và các luồng
 đã sửa. Build, typecheck, lint và test được báo theo kết quả thực chạy. Passing tests
 không thay cho duyệt thẩm mỹ hoặc kiểm chứng giá trị với PT.
+
+## Nội dung landing cần giữ
+
+Giữ luồng tiếp nhận, hồ sơ hai vai trò, demo sửa/duyệt, khảo sát kèm giới hạn, trạng thái tính năng và đội ngũ khi đổi layout. Dùng timeline/hàng dữ liệu với tokens đã duyệt. Không đưa lại giá, ROI, APK chưa có căn cứ. Kế hoạch chức năng: docs/plans/COACHING_PRODUCT_FOLLOWUP.md.
