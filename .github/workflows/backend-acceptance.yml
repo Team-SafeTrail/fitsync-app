@@ -35,6 +35,8 @@ jobs:
         run: node node_modules/supabase/dist/supabase.js test db
       - name: Generate public schema types from test database
         run: node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/database.generated.ts"
+      - name: Export schema-only handoff snapshot
+        run: node node_modules/supabase/dist/supabase.js db dump --local --schema public,private --file "$RUNNER_TEMP/schema-v1.sql"
       - name: Verify committed database types match tested schema
         run: diff -u apps/web/src/types/database.ts "$RUNNER_TEMP/database.generated.ts"
       - name: Install Chromium
@@ -57,7 +59,34 @@ jobs:
           if-no-files-found: warn
           path: |
             ${{ runner.temp }}/database.generated.ts
+            ${{ runner.temp }}/schema-v1.sql
             apps/web/test-results/chat-proof/*.png
+      - name: Stop disposable stack
+        if: always()
+        run: node node_modules/supabase/dist/supabase.js stop
+
+  baseline-upgrade:
+    name: Upgrade legacy baseline without changing existing rows
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Bootstrap baseline and apply additive migrations
+        run: node scripts/test/ci-upgrade-rehearsal.mjs
+      - name: Run SQL and RLS after upgrade
+        run: node node_modules/supabase/dist/supabase.js test db
+      - name: Check upgraded schema types
+        run: |
+          node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/upgrade-types.ts"
+          diff -u apps/web/src/types/database.ts "$RUNNER_TEMP/upgrade-types.ts"
       - name: Stop disposable stack
         if: always()
         run: node node_modules/supabase/dist/supabase.js stop
