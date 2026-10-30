@@ -1,281 +1,123 @@
 ---
-version: 3.1.0
-name: FitSync Carbon Interface
-description: Dark data-forward design system for FitSync. Rich anthracite background, amber-gold accent, warm ivory typography, oversized hero type, asymmetric layouts, scroll-driven animations. Premium health-tech aesthetic that communicates trust and technical capability.
-colors:
-  background: "#0E0E12"
-  surface: "#18181D"
-  surface_elevated: "#1F1F25"
-  surface_muted: "#13131A"
-  border: "#28282E"
-  border_strong: "#3A3A42"
-  border_accent: "rgba(245, 166, 35, 0.2)"
-  text_primary: "#ECEAE6"
-  text_secondary: "#9A968F"
-  text_muted: "#5C5A55"
-  primary: "#F5A623"
-  primary_hover: "#FFB83D"
-  primary_light: "rgba(245, 166, 35, 0.1)"
-  primary_foreground: "#0E0E12"
-  accent: "#34D399"
-  accent_light: "rgba(52, 211, 153, 0.1)"
-  success: "#34D399"
-  success_light: "rgba(52, 211, 153, 0.08)"
-  warning: "#F59E0B"
-  warning_light: "rgba(245, 158, 11, 0.08)"
-  destructive: "#EF4444"
-  destructive_light: "rgba(239, 68, 68, 0.08)"
-  glow_primary: "rgba(245, 166, 35, 0.05)"
-  glow_accent: "rgba(52, 211, 153, 0.05)"
-typography:
-  font_family_display: "'Space Grotesk', 'Inter', sans-serif"
-  font_family: "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif"
-  font_family_mono: "'JetBrains Mono', 'SF Mono', Consolas, monospace"
-  headings:
-    hero: { size: "clamp(40px, 7vw, 72px)", weight: 700, line_height: 1.05, letter_spacing: "-0.04em" }
-    h1: { size: "36px", weight: 700, line_height: "44px", letter_spacing: "-0.03em" }
-    h2: { size: "28px", weight: 700, line_height: "36px", letter_spacing: "-0.025em" }
-    h3: { size: "20px", weight: 600, line_height: "28px", letter_spacing: "-0.015em" }
-    h4: { size: "16px", weight: 600, line_height: "24px", letter_spacing: "-0.01em" }
-  body:
-    base: { size: "15px", weight: 400, line_height: "24px" }
-    medium: { size: "15px", weight: 500, line_height: "24px" }
-    small: { size: "13px", weight: 400, line_height: "20px" }
-    small_medium: { size: "13px", weight: 500, line_height: "20px" }
-    caption: { size: "11px", weight: 700, line_height: "14px", text_transform: "uppercase", letter_spacing: "0.08em" }
-spacing:
-  xs: "4px"
-  sm: "8px"
-  md: "12px"
-  base: "16px"
-  lg: "24px"
-  xl: "32px"
-  2xl: "48px"
-  3xl: "64px"
-  4xl: "96px"
-rounded:
-  none: "0px"
-  sm: "4px"
-  base: "8px"
-  md: "12px"
-  lg: "16px"
-  xl: "20px"
-  full: "9999px"
-shadows:
-  xs: "0 1px 2px 0 rgba(0, 0, 0, 0.3)"
-  sm: "0 2px 4px 0 rgba(0, 0, 0, 0.25)"
-  md: "0 4px 12px -2px rgba(0, 0, 0, 0.3)"
-  lg: "0 8px 24px -4px rgba(0, 0, 0, 0.4)"
-  glow: "0 0 40px rgba(245, 166, 35, 0.08)"
-  glow_accent: "0 0 30px rgba(52, 211, 153, 0.06)"
+version: 4.0.0
+name: FitSync Coaching Interface
+approved: 2026-10-30
 ---
 
-# FitSync Design Specification — Carbon Interface v3.1
+# FitSync design language
 
-> **Design Theme:** Carbon Interface — Dark Data-Forward
-> **Aesthetic Philosophy:** Premium warmth via amber-gold on dark anthracite. Oversized typography-first hero. Asymmetric layouts. Scroll-driven reveals. Product-led composition, readable contrast, and locally served editorial imagery.
-> **Benchmark Invocations:** Linear.app (density), Vercel.com (dark craft), Stripe Terminal (data aesthetic), Raycast (warm dark).
+Chủ sản phẩm duyệt `docs/prototypes/coaching-specimen/` ngày 2026-10-30 và yêu cầu
+áp dụng vào các page chính. Tài liệu này là chuẩn thiết kế hiện tại, thay Carbon v3.1
+được giữ ở `docs/archive/landing/DESIGN-carbon-v3.1.md`.
+Phê duyệt này áp dụng ngôn ngữ thiết kế; không tự phê duyệt giá, persona 5–20,
+B2B SaaS, database mới, app store hoặc milestone trong các tài liệu cũ.
 
----
+## Tính cách và cấu trúc
 
-## 1. Overview & Core Design Principles
+Gần con người, bình tĩnh và chỉn chu. Cùng một dấu kết nối hiện ở brand, cuộc hẹn,
+timeline và sheet. Landing dùng bối cảnh gym có người; app dùng một mặt phẳng hồ sơ
+có thứ bậc, không phủ ảnh hoặc hero marketing vào dashboard. Dòng thời gian cho
+lịch sử, hàng dữ liệu cho số đo, hội thoại cho trao đổi, sheet cho đối chiếu.
+Không biến mọi nội dung thành các thẻ giống nhau hoặc làm mới chỉ bằng đổi màu.
 
-1. **Dark ≠ Gloomy:** Rich anthracite `#0E0E12` with warm undertones — never cold blue-black or pure `#000000`. The warmth comes from amber accents and off-white ivory text.
-2. **Product and people lead:** Pair strong Space Grotesk headings with readable, interactive sample product views and editorial coaching imagery. Mark generated illustrations and sample data honestly.
-3. **Amber Gold as Trust Signal:** `#F5A623` conveys warmth, trustworthiness, and premium quality — appropriate for a health-data platform. Reserved for CTAs, active states, and data highlights.
-4. **Depth Without Blur:** Grain texture overlays, subtle radial glows at 5% opacity, and elevation through border + shadow — never `backdrop-filter: blur()`.
-5. **Motion as Narrative:** Scroll-driven CSS animations (GPU-accelerated) with spring easing. Every section reveals on scroll. `prefers-reduced-motion` always respected.
+## Tokens dùng chung
 
----
+| Token | Giá trị | Vai trò |
+| --- | --- | --- |
+| canvas | `#F5F8F6` | Nền đọc / mặt phẳng làm việc |
+| surface | `#FFFFFF` | Hồ sơ và sheet |
+| surface muted | `#EAF0EB` | Khung app / navigation |
+| surface elevated | `#EAF3ED` | Trạng thái hoặc vùng cần nhìn |
+| text primary / forest | `#143E38` | Nội dung chính / nút trong app |
+| deep | `#102E2A` | Nền ảnh và mảng tương phản marketing |
+| text secondary | `#465E53` | Mô tả, metadata có contrast |
+| text muted | `#52675C` | Thông tin phụ, không cho nhỏ/nhạt tới mức khó đọc |
+| brand / jade | `#226C5D` | Điều khiển, dữ liệu, đường biểu đồ |
+| sun | `#FFD29C` | CTA trên forest; không dùng chữ trắng trên sun |
+| border | `#D4DFD7` | Biên bảng, ô nhập, phân vùng có nghĩa |
+| border strong | `#6F8879` | Biên control cần nhận diện; tương phản3.84:1 trên trắng và3.32:1 trên nền muted |
+| success | `#1D6951` | Xác nhận, có nhãn chữ |
+| warning | `#85520F` | Cần xem lại; nền `#FFF2DB` |
+| destructive | `#AC3434` | Lỗi; nền `#FCEDED` |
 
-## 2. Color System & Semantic Usage
+Tokens CSS ở `apps/web/src/app/globals.css`; Tailwind trỏ vào CSS variables.
+Không khai báo một bảng màu khác trong auth/admin/workspace. Foreground của brand
+là trắng; nút trên hero dùng sun/deep. Bề mặt app trung tính, màu dành cho trạng thái.
 
-### 2.1 Backgrounds & Surfaces
-* **Base Background (`#0E0E12`):** The foundational anthracite. All pages start here.
-* **Surface (`#18181D`):** Card backgrounds, modal surfaces, input fields.
-* **Surface Elevated (`#1F1F25`):** Hovered cards, active states, dropdown menus.
-* **Surface Muted (`#13131A`):** Subtle recessed areas, code blocks, OCR terminal view.
-* **Border Default (`#28282E`):** 1px crisp dividers between cards and sections.
-* **Border Strong (`#3A3A42`):** Active input borders, focused elements.
-* **Border Accent (`rgba(245, 166, 35, 0.2)`):** Highlighted/recommended card borders.
+## Chữ, nhịp và hình khối
 
-### 2.2 Brand & Interaction Accents
-* **Amber Gold (`#F5A623`):** The signature accent. Used for primary CTAs, active indicators, progress bars, slider thumbs, and key metric highlights.
-* **Amber Hover (`#FFB83D`):** Immediate interactive feedback.
-* **Amber Glow (`rgba(245, 166, 35, 0.05)`):** Subtle radial behind hero headline and recommended pricing card.
-* **Seafoam (`#34D399`):** Health metrics, biometric data, success states, feature checkmarks.
+Be Vietnam Pro 400/500/600/700 tự host qua next/font/local; giữ OFL và nguồn file.
+Display 500, line-height ≥1.16, tracking -0.045em. H1 marketing clamp 40–82px;
+h1 công việc 28–40px; body 15–18px; metadata đọc được 13px. Dữ liệu dùng tabular-nums,
+không monospace cho toàn bộ app. Đơn vị và ngày/nguồn đi cùng con số.
 
-### 2.3 Semantic Status Colors
-* **Success (`#34D399`):** Healthy/compliant. BG: `rgba(52, 211, 153, 0.08)`.
-* **Warning (`#F59E0B`):** Attention needed. BG: `rgba(245, 158, 11, 0.08)`.
-* **Destructive (`#EF4444`):** Critical/error. BG: `rgba(239, 68, 68, 0.08)`.
+Khung app 16–24px; sheet 20–24px; nút 44px trở lên, pill cho CTA; sheet là một lớp
+riêng, bóng đổ dành cho overlay. Avatar có góc mềm để định danh người. Không thêm
+glow, grain toàn trang hoặc shadow/scale cho tất cả cards. Khoảng cách theo 4/8px.
 
-### 2.4 Text Hierarchy
-* **Primary (`#ECEAE6`):** Warm ivory. Headlines and body text. Never pure `#FFFFFF`.
-* **Secondary (`#9A968F`):** Warm mid-gray. Subtitles, descriptions, labels.
-* **Muted (`#5C5A55`):** Low-emphasis. Captions, timestamps, tertiary info.
+## Các surface chính
 
----
+- `/`: hero ảnh approved, giải thích PT/trainee, hồ sơ minh họa và đối chiếu mẫu,
+  CTA thật `/register`, link mẫu `/app/dashboard`, giới hạn khả năng rõ ràng.
+- `/login`, `/register`, `/invite/*`: cùng brand và ảnh bối cảnh; form đọc tốt, lỗi
+  cạnh dữ liệu. Giữ nguyên server actions, validation, redirect và token handling.
+- `/workspace` và hồ sơ: roster/hồ sơ/check-in/OCR thực, một nguồn dữ liệu; nội dung
+  do server kiểm quyền. Không đổi auth/RLS hoặc gate bắt buộc xác nhận OCR.
+- `/app/dashboard`, `/app/trainee`: mẫu công khai có nhãn, đồng bộ app shell và type;
+  không biến số mẫu thành khách hàng, doanh thu, thời gian tiết kiệm đã chứng minh.
+- `/privacy`, `/terms`: nền đọc, heading/nhịp chữ chung, nội dung pháp lý được giữ.
+- `/admin`: quản trị hệ thống hiện có, không phải dashboard chủ gym mới. Giữ guard admin.
 
-## 3. Typography
+## Mobile, motion và trạng thái
 
-### 3.1 Font Stack
-* **Display / Headlines:** Space Grotesk (Google Fonts) — tech-forward, geometric, sharp character.
-* **Body / UI:** Inter — crisp, professional, excellent tabular numerals.
-* **Monospace / Data:** JetBrains Mono — for pricing, metrics, biometric values.
+Không scale screenshot desktop. Phone giữ công việc chính, nhãn input đủ rõ,
+đồ thị có trục/đơn vị và text đọc được. Bảng nhiều cột có vùng cuộn riêng có nhãn.
+Tab/focus rõ; native dialog/sheet chứa focus, Escape đóng và trả về opener.
+Một entrance nhẹ cho appointment, các motion còn lại phục vụ thao tác. Không ẩn
+nội dung chờ reveal. Reduced motion tắt animation/transition và smooth scroll.
 
-### 3.2 Scale
-```
-Hero:  clamp(40px,7vw,72px) / 1.05  | Bold (700)   | Page Hero Headline
-H1:   36px / 44px                   | Bold (700)    | Section Headers
-H2:   28px / 36px                   | Bold (700)    | Card Titles
-H3:   20px / 28px                   | SemiBold (600)| Subsections
-H4:   16px / 24px                   | SemiBold (600)| Small Headers
-Body: 15px / 24px                   | Regular (400) | Standard Body
-Small:13px / 20px                   | Medium (500)  | Labels, Meta
-Cap:  11px / 14px                   | Bold (700) UC | Section Tags, Badges
-Mono: 14px / 20px                   | SemiBold (600)| Metrics, Prices, Data
-```
+Trống, loading, lỗi, disabled, pending và đã xác nhận phải phân biệt bằng chữ.
+Tính năng chưa kết nối thật trong sample phải ghi mô phỏng; không tạo PDF upload,
+chat/đặt lịch thật hoặc health outcome bằng cách thay copy.
 
----
+## Tài nguyên và tính trung thực
 
-## 4. Layout Architecture
+Hero `public/images/coaching-afternoon.webp` chuyển định dạng từ PNG AI đã duyệt,
+không sửa nội dung hình. Caption/alt ghi minh họa AI, nhân vật giả định. Không dùng
+ảnh/video riêng hoặc asset Gentler. Nguồn/prompt: `docs/prototypes/coaching-specimen/IMAGE_PROMPT.md`.
+Không claim thời gian tiết kiệm, giá/trial, 24/7, APK hoặc khách hàng chưa có bằng chứng.
+Tách câu chuyện khách hàng khỏi yêu cầu EXE201 và demo. Không tự public khảo sát/danh tính.
 
-### 4.1 Landing Page Flow
-```
-┌─────────────────────────────────────────────────────┐
-│ STICKY NAV: Dark transparent → solid on scroll      │
-│ FitSync | Product  How it works  Evidence | CTA     │
-├─────────────────────────────────────────────────────┤
-│ HERO: Specific PT outcome + real activation CTA     │
-│ + Verified M2 coach and trainee product proof       │
-├─────────────────────────────────────────────────────┤
-│ HOW IT WORKS: Create trainee → invite → verify      │
-│ Three concrete steps using synthetic product data   │
-├─────────────────────────────────────────────────────┤
-│ PRODUCT PROOF: PT roster + confirmed InBody record  │
-│ Paired with the trainee's read-only mobile view     │
-├─────────────────────────────────────────────────────┤
-│ EVIDENCE: Qualified survey findings and boundaries  │
-│ No fabricated testimonials or outcome claims        │
-├─────────────────────────────────────────────────────┤
-│ SECONDARY TOUR / ROADMAP: Clearly labeled fixtures  │
-│ OCR and pricing remain prototypes or hypotheses     │
-├─────────────────────────────────────────────────────┤
-│ FINAL CTA: Create a real PT workspace               │
-│ Secondary link: view the public sample              │
-├─────────────────────────────────────────────────────┤
-│ FOOTER: Minimal dark, FitSync branding              │
-└─────────────────────────────────────────────────────┘
-```
+## Quy trình sửa về sau
 
-### 4.2 Max Widths & Spacing
-* **Container:** `max-width: 1200px` with `padding: 0 24px`
-* **Section padding:** `96px 0` (desktop) / `64px 0` (mobile)
-* **Card padding:** `24px` (desktop) / `20px` (mobile)
-* **Card gap:** `20px`
+### Lịch dùng chung trong workspace — CALENDAR-01
 
----
+Agenda tuần là bố cục đầu tiên: rail giờ bên trái, nội dung và ngữ cảnh học viên bên phải; desktop đặt form xếp lịch cạnh agenda, phone xếp theo chiều dọc. Không thu nhỏ lịch lưới desktop lên điện thoại. Heading tác vụ khoảng28–40px, không dùng heading hero cho mọi màn hình. Tên cuộc hẹn có thể dài và phải xuống dòng.
 
-## 5. UI Component Specifications
+Giữ forest/jade, Be Vietnam Pro và các token hiện có; dùng nhịp ngày/giờ và đường phân chia làm cấu trúc, không thêm gradient hoặc card thống kê trang trí. Mobile workspace có4 lối đi thường trực: PT dùng Hôm nay, Học viên, Lịch, Trao đổi; học viên dùng Hôm nay, Tiến trình, Lịch, Trao đổi. Dành chỗ dưới nội dung cho thanh điều hướng và safe area. Tour công khai là trợ giúp phụ ở sidebar, không nằm trong navigation chính của app.
 
-### 5.1 Primary Buttons
-* **Base:** Background `#F5A623`, Text `#0E0E12`, Border-radius `8px`, Height `44px`, Padding `0 24px`, Font `15px SemiBold`.
-* **Hover:** Background `#FFB83D`, Box-shadow `0 0 20px rgba(245, 166, 35, 0.15)`.
-* **Focus:** `2px outline #F5A623`, offset `2px`.
-* **Disabled:** Background `#28282E`, Text `#5C5A55`, Cursor `not-allowed`.
+UI chỉ hiển thị lịch đã lưu dưới quyền hai bên. Không tạo appointment mẫu, nút hoàn thành/đổi lịch giả hoặc ám chỉ membership đã triển khai. Tách đặt lịch, check-in và trừ buổi bằng hành vi thật. Form có pending/error/retry; không xóa dữ liệu đang nhập khi mất phản hồi. Các cờ rollout không thay authorization/RLS.
 
-### 5.2 Secondary / Ghost Buttons
-* **Base:** Background `transparent`, Text `#ECEAE6`, Border `1px solid #3A3A42`, Height `44px`, Padding `0 24px`, Border-radius `8px`.
-* **Hover:** Background `#1F1F25`, Border-color `#5C5A55`.
+### Hồ sơ và trang Hôm nay — web handoff v1
 
-### 5.3 Cards (Landing Page)
-* **Base:** Background `#18181D`, Border `1px solid #28282E`, Border-radius `12px`, Padding `24px`.
-* **Hover:** Border-color `#3A3A42`, Box-shadow `0 4px 12px -2px rgba(0,0,0,0.3)`.
-* **Highlighted:** Border `1px solid rgba(245, 166, 35, 0.3)`, Box-shadow `0 0 40px rgba(245, 166, 35, 0.06)`.
+PT Today gom lịch sắp tới, nhóm cần xem check-in và trạng thái kết nối; không tạo badge tin chưa đọc khi chưa có read-state. Hồ sơ PT dùng5 tab tác vụ: Tổng quan, Tiến trình, Membership & buổi, Ghi chú, Nhập số đo. Tabs có keyboard navigation và hash/deep link; giữ mounted nội dung để không mất draft khi đổi phần. Không ghép mọi form thành một trang dài. Ghi chú riêng/chia sẻ có nhãn chữ, mặc định riêng tư. Membership hiển thị ngày bao gồm cả ngày kết thúc; buổi PT là đối tượng riêng.
 
-### 5.4 Input Fields
-* **Base:** Background `#13131A`, Border `1px solid #28282E`, Border-radius `8px`, Height `44px`, Color `#ECEAE6`.
-* **Focus:** Border-color `#F5A623`, Box-shadow `0 0 0 2px rgba(245, 166, 35, 0.1)`.
-* **Placeholder:** Color `#5C5A55`.
+Biểu đồ có ba lựa chọn cân nặng/cơ xương/tỷ lệ mỡ; trục thời gian dùng khoảng cách ngày thực, đơn vị rõ và có bảng số. Không đổi mỡ giảm thành kết luận tốt/xấu hoặc hiển thị số mẫu trong hồ sơ. Chat dùng vùng lịch sử có cuộn, cập nhật cuối khi người dùng đang ở cuối; không kéo người đang đọc tin cũ. Tất cả giữ token từ globals.css; các alias màu cũ của form OCR đã được thay bằng token hiện hành.
 
-### 5.5 Section Tags (Captions)
-* **Style:** `11px`, `700 weight`, `uppercase`, `0.08em letter-spacing`, Color `#F5A623`.
+Đọc tài liệu này, AGENTS.md và product alignment trước khi sửa UI. Lead frontend-design;
+React/Next.js dùng guideline đúng version, giữ page/server boundary gọn. Xem render
+ở desktop/tablet/phone, kiểm keyboard/contrast/overflow/reduced motion và các luồng
+đã sửa. Build, typecheck, lint và test được báo theo kết quả thực chạy. Passing tests
+không thay cho duyệt thẩm mỹ hoặc kiểm chứng giá trị với PT.
 
-### 5.6 Status Badges
-* **Pill:** Height `24px`, Padding `4px 10px`, Rounded `9999px`, Font `11px SemiBold`.
-* **Success:** Text `#34D399`, BG `rgba(52, 211, 153, 0.1)`, Border `1px solid rgba(52, 211, 153, 0.2)`.
-* **Warning:** Text `#F59E0B`, BG `rgba(245, 158, 11, 0.1)`, Border `1px solid rgba(245, 158, 11, 0.2)`.
-* **Destructive:** Text `#EF4444`, BG `rgba(239, 68, 68, 0.1)`, Border `1px solid rgba(239, 68, 68, 0.2)`.
+## Nội dung landing cần giữ
 
----
+Giữ luồng tiếp nhận, hồ sơ hai vai trò, demo sửa/duyệt, khảo sát kèm giới hạn, trạng thái tính năng và đội ngũ khi đổi layout. Dùng timeline/hàng dữ liệu với tokens đã duyệt. Không đưa lại giá, ROI, APK chưa có căn cứ. Kế hoạch chức năng: docs/plans/COACHING_PRODUCT_FOLLOWUP.md.
 
-## 6. Animation & Motion System
+## Increment core đầu tiên — 2026-10-30
 
-### 6.1 Scroll-Driven Reveals
-```css
-.reveal {
-  animation: revealUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-  animation-timeline: view();
-  animation-range: entry 10% cover 30%;
-}
-@keyframes revealUp {
-  from { opacity: 0; transform: translateY(24px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-```
+Tiếp nhận trên landing dùng ba vật thể minh họa (hồ sơ, phiếu đối chiếu, cập nhật), chữ ngắn; khả năng chi tiết qua disclosure. Giữ nhãn dữ liệu giả và nguồn khảo sát. Workspace dùng search/filter theo công việc, tiến trình chỉ lấy records được server hiện có cấp quyền. Không thay authenticated data bằng fixture. Chart không bịa xu hướng khi chưa có hai lần đo, có trục zero-based, ngày/đơn vị và bảng giá trị đọc bằng keyboard. Không dùng chart để kết luận sức khỏe hoặc gán giảm cân luôn là tốt.
 
-### 6.2 Staggered Reveals
-Children use `animation-delay` at `150ms` intervals for triptych/pricing cards.
+## Đồng bộ theo vai trò và tính thật của hành động
 
-### 6.3 Micro-Interactions
-* **Button hover:** `scale(1.02)` + subtle glow, `0.2s ease-out`
-* **Card hover:** border-color transition + elevation increase, `0.25s ease`
-* **Slider interaction:** thumb scales up, track fills with amber gradient
-* **Number counters:** CSS `@property` animated count-up on viewport entry
-
-### 6.4 Reduced Motion
-```css
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-```
-
----
-
-## 7. Strict Do's and Don'ts
-
-### ❌ Strict Don'ts (Banned Patterns)
-* **NO Pure White Background:** Do not use `#FFFFFF` as any section background.
-* **NO Purple/Violet:** No `#8B5CF6`, no indigo, no magenta. Not even as a subtle tint.
-* **NO Glassmorphism:** Do not use `backdrop-filter: blur()` on any landing page element.
-* **Asset integrity:** Use local product captures or functional sample views. Coaching imagery may be original or generated editorial illustration, never presented as a customer endorsement.
-* **NO Equal-Width Feature Cards:** The 3-column equal grid is a template trap. Use asymmetric widths.
-* **NO Cold Blue-Black Background:** Background must be warm-tinted anthracite, never cold.
-* **NO Mesh/Aurora Gradients:** No floating colored blobs.
-
-### ✅ Strict Do's
-* **DO Use Warm Ivory Text:** `#ECEAE6` for primary text, never pure `#FFFFFF`.
-* **DO Add Grain Texture:** Subtle noise overlay at 3-5% opacity for tactile depth.
-* **DO Animate on Scroll:** Every section must reveal with scroll-driven animation.
-* **DO Use Amber for Focus States:** All interactive focus indicators use the amber accent.
-* **DO Support `prefers-reduced-motion`:** All animations must be disabled for accessibility.
-* **DO Use Monospace for Data:** All numbers, prices, and biometric values in JetBrains Mono.
-
-
-## Landing implementation v4 — post-M2 acquisition alignment
-
-The 2026-09-27 research report and verified M2 workflow guide this revision. The marketing page uses scoped `.fs-landing` styles so product styling remains isolated. Keep charcoal and amber, 1240px containers, 20px mobile gutters, 44–80px responsive display type, and 16–18px marketing body copy. Green remains semantic status only. Existing fonts and Lucide icons remain.
-
-All marketing copy is Vietnamese. The primary action is “Tạo workspace PT” linking to `/register`, because this is the real activation path available today. The secondary action is “Xem bản mẫu” linking to the clearly labeled fixture-backed `/app/dashboard`. Do not call registration a free trial or pilot until those operations are defined and supported.
-
-The hero and first product story must show the verified M2 loop: a PT roster, a secure invitation, manual entry and confirmation of five InBody metrics, and the trainee's read-only verified record. Use synthetic data and keep product text readable at mobile and desktop sizes. `/app/*` remains useful as an optional interactive tour, but it must not visually compete with the primary activation action.
-
-Simulated OCR, the assumption-based ROI estimator, and proposed pricing may remain as lower-priority prototype or roadmap material only when their status is unmistakable. They must not be the first proof of a working product. Do not show payment QR codes, invented customer proof, unsupported accuracy claims, implied automatic OCR, or fake submission success.
-
-Research evidence must show its denominator and describe the source as survey submissions, never customers or verified coaches. Publish aggregate counts only unless a separate consent record explicitly permits a named quotation, image, or testimonial. Survey evidence establishes the problem; it does not establish product outcomes.
-
-Use CSS for control transitions and a short initial entrance, with reduced-motion support. Content remains visible without animation. Images require responsive sizes and dimensions. Interactive previews must either reflect verified M2 behavior or be labeled as fixtures. Prefer sanitized product captures or faithful UI compositions from `/workspace` over screenshots of nonexistent capabilities.
+Public tour cũng dùng Brand chữ fitsync với dấu liên kết, không icon tile khác hệ. Sidebar icon khi thu gọn vẫn có accessible name/current state. Góc học viên hiện đúng danh tính học viên; PT liên kết là ngữ cảnh, không thay danh tính người dùng. Phone roster là hàng hồ sơ gọn; desktop dùng bảng khi cần so sánh. Tên mở hồ sơ và thao tác phải thực hiện được. Lịch/chat chưa kết nối phải ghi ngay cạnh minh họa, không chỉ ở cuối FAQ. Gói dịch vụ đề xuất có thể giải thích trên landing nhưng không biến thành giá/checkout đã duyệt. Audit có giới hạn theo ALL_PAGES_ALIGNMENT_REVIEW.md.

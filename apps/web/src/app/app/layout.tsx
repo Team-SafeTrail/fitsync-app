@@ -4,30 +4,28 @@ import { AppProvider, useApp } from '@/lib/context';
 import AppSidebar from '@/components/app/AppSidebar';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { Activity, LayoutDashboard, Users, User } from 'lucide-react';
+import { LayoutDashboard, Users, User } from 'lucide-react';
+import Brand from '@/components/brand/Brand';
+import './app.css';
 import { cn } from '@/lib/utils';
 
 function AppLayoutContent({ children }: { children: React.ReactNode }) {
   const { sidebarCollapsed } = useApp();
   const pathname = usePathname();
+  const traineeView = pathname === "/app/trainee";
 
   return (
-    <div className="min-h-screen bg-[var(--color-canvas)] text-[var(--color-text-primary)]">
+    <div className="coaching-app min-h-screen bg-[var(--color-canvas)] text-[var(--color-text-primary)]">
       {/* Desktop Sidebar */}
       <AppSidebar />
 
       {/* Mobile Top Navbar */}
-      <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-[#111115] border-b border-[var(--color-border-default)] px-4 flex items-center justify-between z-30">
+      <header className="md:hidden fixed top-0 left-0 right-0 h-14 bg-[var(--color-surface-muted)] border-b border-[var(--color-border-default)] px-4 flex items-center justify-between z-30">
         <Link href="/" className="flex items-center gap-2 no-underline">
-          <div className="w-7 h-7 bg-[var(--color-brand)] rounded-[var(--radius-base)] flex items-center justify-center">
-            <Activity size={16} className="text-[var(--color-brand-foreground)]" />
-          </div>
-          <span className="text-[16px] font-bold text-[var(--color-text-primary)]">
-            FitSync
-          </span>
+          <Brand />
         </Link>
         <div className="flex items-center gap-2">
-          <span className="text-[12px] font-medium text-[var(--color-text-secondary)]">Coach Nam</span>
+          <span className="text-[12px] font-medium text-[var(--color-text-secondary)]">{traineeView ? "Khánh Linh · Học viên mẫu" : "PT Nam · PT mẫu"}</span>
           <div className="w-7 h-7 rounded-full bg-[var(--color-surface-muted)] flex items-center justify-center">
             <User size={14} className="text-[var(--color-text-muted)]" />
           </div>
@@ -36,6 +34,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
 
       {/* Main Content Area */}
       <main
+        id="main-content"
         className={cn(
           'min-h-screen transition-[margin] duration-200 pt-14 md:pt-0 pb-20 md:pb-0',
           sidebarCollapsed ? 'md:ml-[60px]' : 'md:ml-[240px]'
@@ -49,9 +48,10 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
       </main>
 
       {/* Mobile Bottom Navigation Bar */}
-      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-14 bg-[#111115] border-t border-[var(--color-border-default)] flex items-center justify-around z-30 px-2">
+      <nav className="md:hidden fixed bottom-0 left-0 right-0 h-14 bg-[var(--color-surface-muted)] border-t border-[var(--color-border-default)] flex items-center justify-around z-30 px-2">
         <Link
           href="/app/dashboard"
+          aria-current={!traineeView ? "page" : undefined}
           className={cn(
             'flex flex-col items-center justify-center gap-0.5 w-1/2 h-full text-[11px] font-medium no-underline transition-colors',
             pathname === '/app/dashboard'
@@ -60,10 +60,11 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           )}
         >
           <LayoutDashboard size={18} />
-          <span>Dashboard</span>
+          <span>Học viên</span>
         </Link>
         <Link
           href="/app/trainee"
+          aria-current={traineeView ? "page" : undefined}
           className={cn(
             'flex flex-col items-center justify-center gap-0.5 w-1/2 h-full text-[11px] font-medium no-underline transition-colors',
             pathname === '/app/trainee'
@@ -72,7 +73,7 @@ function AppLayoutContent({ children }: { children: React.ReactNode }) {
           )}
         >
           <Users size={18} />
-          <span>Trainee Portal</span>
+          <span>Góc học viên</span>
         </Link>
       </nav>
     </div>

@@ -1,46 +1,12 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 import LegalPage from "@/components/landing/LegalPage";
 import "../landing.css";
-
-export const metadata: Metadata = {
-  title: "Điều khoản bản mẫu | FitSync",
-  description: "Giới hạn sử dụng bản mẫu FitSync.",
-};
-
-const sections = [
-  {
-    title: "Mục đích",
-    paragraphs: [
-      "FitSync hiện là bản mẫu dùng để nghiên cứu, trình diễn và thử nghiệm trải nghiệm người dùng. Các màn hình và dữ liệu không đại diện cho một dịch vụ đang vận hành.",
-    ],
-  },
-  {
-    title: "Không phải tư vấn sức khỏe",
-    paragraphs: [
-      "Chỉ số, mục tiêu năng lượng và macro trong bản mẫu là dữ liệu minh họa. Không dùng các kết quả này để chẩn đoán, điều trị hoặc thay thế đánh giá của chuyên gia đủ điều kiện.",
-    ],
-  },
-  {
-    title: "Tính năng và giá dự kiến",
-    paragraphs: [
-      "Tính năng, giới hạn và mức giá hiển thị là định hướng đang được kiểm chứng. Chúng có thể thay đổi trước khi FitSync ra mắt và không cấu thành lời chào bán.",
-    ],
-  },
-  {
-    title: "Sử dụng có trách nhiệm",
-    paragraphs: [
-      "Không tải lên hoặc nhập dữ liệu sức khỏe, thông tin nhận dạng hay nội dung bí mật của người thật vào bản mẫu. Không dựa vào trạng thái mô phỏng để đưa ra quyết định có ảnh hưởng đến học viên.",
-    ],
-  },
+export const metadata:Metadata={title:"Điều khoản sử dụng | FitSync",description:"Phạm vi workspace, trách nhiệm xác nhận và giới hạn thử nghiệm FitSync."};
+const sections=[
+ {title:"Phạm vi của phiên bản",paragraphs:["FitSync đang được hoàn thiện cho công việc quản lý và đồng hành học viên của PT. Workspace có tài khoản khác với các trang /app và phần minh họa trên landing. Khả năng sử dụng một chức năng phụ thuộc môi trường được mở và cấu hình thực tế.","Bản web không đồng nghĩa đã có ứng dụng Android/iPhone phát hành. Các chức năng được ghi là chưa hỗ trợ không nên được hiểu là đã có chỉ vì xuất hiện trong hướng trải nghiệm."]},
+ {title:"Thông tin coaching và xác nhận số liệu",paragraphs:["PT cần đối chiếu, sửa và xác nhận chỉ số trước khi lưu thành bản ghi đã xác minh. Không coi bản nháp OCR, số mẫu, gợi ý máy hoặc mục tiêu coaching là chẩn đoán hoặc chỉ định y khoa.","Giữ đúng người trong hồ sơ, đối chiếu đơn vị và ngày ghi nhận. Không điền một giá trị ước đoán để thay cho trường còn thiếu trên báo cáo."]},
+ {title:"Lịch, membership và buổi PT",paragraphs:["Cuộc hẹn là lịch đã xếp giữa PT và học viên. Đặt lịch không tự ghi nhận tham dự, hoàn thành, thanh toán hoặc trừ một buổi PT. Tự check-in cũng không tự trừ buổi PT.","Membership được theo dõi bằng ngày bắt đầu/kết thúc; ngày kết thúc được tính bao gồm cả ngày đó. Số dư buổi PT hiện có được đối chiếu riêng. Chính sách hủy, vắng, hoàn buổi hoặc tính phí không được suy ra từ một trạng thái trên lịch."]},
+ {title:"Mô hình kinh doanh đang kiểm chứng",paragraphs:["Mức 199.000đ/tháng đã có khảo sát sơ bộ của chủ sản phẩm. Đối tượng thanh toán, hạn mức và chi phí phục vụ vẫn cần được hoàn thiện thành offer chính thức; không tự suy ra một gói không giới hạn hoặc miễn phí cho mọi chức năng.","Phiên bản này chưa mở checkout, thanh toán tự động hoặc tự động gia hạn. Giao dịch được ghi nhãn mẫu trong demo không phải bằng chứng thanh toán."]},
+ {title:"Trước khi dùng dữ liệu thật",paragraphs:["Bản kiểm thử dùng dữ liệu tổng hợp. Đội ngũ cần hoàn tất điều kiện về quyền riêng tư, hỗ trợ, lưu/xóa dữ liệu và phê duyệt phát hành trước thử nghiệm với thông tin thật.","Nội dung này giải thích phạm vi phiên bản hiện tại; điều khoản dịch vụ đầy đủ và chính sách liên quan cần được rà soát trước khi phát hành thương mại."]},
 ];
-
-export default function TermsPage() {
-  return (
-    <LegalPage
-      title="Điều khoản bản mẫu"
-      updated="27/09/2026"
-      summary="Các điều khoản này giúp người xem hiểu rõ bản mẫu làm được gì và chưa làm được gì. Điều khoản dịch vụ đầy đủ sẽ cần được soạn và rà soát trước khi ra mắt thương mại."
-      sections={sections}
-    />
-  );
-}
+export default function TermsPage(){return <LegalPage title="Điều khoản sử dụng" updated="30/10/2026" summary="Hiểu đúng chức năng của workspace, dữ liệu minh họa và trách nhiệm xác nhận trước khi sử dụng FitSync." sections={sections}/>;}

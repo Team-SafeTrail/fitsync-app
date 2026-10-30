@@ -1,48 +1,12 @@
-import type { Metadata } from "next";
+import type {Metadata} from "next";
 import LegalPage from "@/components/landing/LegalPage";
 import "../landing.css";
-
-export const metadata: Metadata = {
-  title: "Quyền riêng tư bản mẫu | FitSync",
-  description: "Thông tin về dữ liệu trong bản mẫu FitSync.",
-};
-
-const sections = [
-  {
-    title: "Dữ liệu trên trang mẫu",
-    paragraphs: [
-      "Trang landing, dashboard coach và không gian học viên hiện dùng dữ liệu minh họa được đóng gói cùng ứng dụng. Không nhập dữ liệu sức khỏe thật vào bản mẫu.",
-      "Demo đọc phiếu không tải ảnh lên máy chủ và không chạy dịch vụ OCR trực tiếp. Các thay đổi trong giao diện có thể mất khi bạn tải lại trang.",
-    ],
-  },
-  {
-    title: "Khảo sát nghiên cứu",
-    paragraphs: [
-      "Trang landing chỉ công bố số đếm tổng hợp từ 104 phiếu khảo sát EXE101. Email, số điện thoại, họ tên và câu trả lời cá nhân không được hiển thị.",
-      "Biểu mẫu khảo sát không có trường đồng ý công khai danh tính. Vì vậy FitSync không dùng tên, ảnh hoặc trích dẫn cá nhân làm chứng thực trên website.",
-    ],
-  },
-  {
-    title: "Thanh toán và tài khoản",
-    paragraphs: [
-      "Bản mẫu chưa tạo tài khoản, chưa nhận thanh toán và chưa tự động gia hạn. Website không yêu cầu thông tin thẻ để khám phá các màn hình mẫu.",
-    ],
-  },
-  {
-    title: "Khi sản phẩm chuyển sang thử nghiệm thật",
-    paragraphs: [
-      "Chính sách này phải được cập nhật trước khi FitSync thu thập thông tin liên hệ, dữ liệu sức khỏe, tệp tải lên hoặc dữ liệu phân tích nhận diện người dùng.",
-    ],
-  },
+export const metadata:Metadata={title:"Quyền riêng tư | FitSync",description:"Phân biệt dữ liệu bản mẫu, workspace có tài khoản và phạm vi thử nghiệm FitSync."};
+const sections=[
+ {title:"Bản mẫu và workspace là hai khu vực khác nhau",paragraphs:["Các trang /app và các tình huống trên landing dùng dữ liệu minh họa. Tương tác trong bản mẫu không tạo hồ sơ thật trong workspace.","Khu vực /workspace yêu cầu đăng nhập và sử dụng dữ liệu được lưu trong backend đã cấu hình. Không nhập thông tin sức khỏe thật trước khi đội ngũ hoàn tất điều kiện thử nghiệm và thông báo xử lý dữ liệu."]},
+ {title:"Những thông tin workspace có thể lưu",paragraphs:["Tài khoản, tên hiển thị và thông tin liên hệ; hồ sơ liên kết PT/học viên; chỉ số được PT xác nhận; mục tiêu dinh dưỡng, check-in và ảnh bữa ăn; cùng chat, cuộc hẹn, membership và ghi chú khi các chức năng đó được mở.","Chỉ số từ phiếu và mục tiêu coaching là các loại thông tin khác nhau. Ảnh hoặc bản nháp OCR không được tự xem là bản ghi đã được PT xác nhận. Không có cam kết rằng mọi loại phiếu hoặc mọi chỉ số đã được hỗ trợ."]},
+ {title:"Ai có thể xem",paragraphs:["PT phụ trách và học viên được liên kết xem nội dung phù hợp vai trò của họ. Ghi chú mới mặc định là riêng tư cho PT; học viên chỉ thấy ghi chú được chọn chia sẻ. Không đưa nội dung chat và ghi chú riêng vào bảng quản trị mẫu.","Ảnh bữa ăn và ảnh dùng trong quy trình OCR được lưu ở vùng riêng tư. Đường dẫn xem có thời hạn và cần quyền truy cập; đây không phải liên kết công khai để chia sẻ rộng rãi."]},
+ {title:"Nghiên cứu và mô phỏng",paragraphs:["Thông tin khảo sát trên landing là số liệu tổng hợp, kèm nguồn và giới hạn ngay tại khu vực đó. Không công khai danh tính hoặc dùng câu trả lời cá nhân làm chứng thực khi chưa có sự đồng ý phù hợp.","Giao dịch và dữ liệu chi tiết được ghi nhãn demo OC2 trong khu vực quản trị là mô phỏng; chúng không chứng minh doanh thu, khách hàng hoặc hoạt động thanh toán thật."]},
+ {title:"Lưu trữ, chỉnh sửa và yêu cầu xóa",paragraphs:["Thời hạn lưu dữ liệu, xử lý bản sao lưu, xóa tài khoản và kênh tiếp nhận yêu cầu cần được đội ngũ chốt và công bố trước khi thử nghiệm với dữ liệu thật. Bản web hiện chưa có quy trình tự phục vụ để xóa toàn bộ tài khoản và dữ liệu liên quan.","Không gửi thông tin sức khỏe hoặc ảnh cá nhân vào bản mẫu công khai hay một kênh hỗ trợ chưa được xác nhận. Tài liệu này mô tả ranh giới kỹ thuật hiện tại; bản chính sách phát hành phải được rà soát và phê duyệt riêng."]},
 ];
-
-export default function PrivacyPage() {
-  return (
-    <LegalPage
-      title="Quyền riêng tư"
-      updated="27/09/2026"
-      summary="Bản này mô tả đúng phạm vi của website nguyên mẫu hiện tại. Đây chưa phải chính sách cho một dịch vụ FitSync thương mại hoặc hệ thống xử lý dữ liệu sức khỏe thật."
-      sections={sections}
-    />
-  );
-}
+export default function PrivacyPage(){return <LegalPage title="Quyền riêng tư" updated="30/10/2026" summary="Thông tin trước thử nghiệm: dữ liệu nào thuộc bản mẫu, dữ liệu nào được lưu trong workspace và những điều kiện còn phải hoàn tất trước khi sử dụng dữ liệu thật." sections={sections}/>;}

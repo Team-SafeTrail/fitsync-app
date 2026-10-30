@@ -1,0 +1,14 @@
+"use client";
+import { useState } from "react";
+const samples = [{label:"Phiếu mẫu A",weight:70.4,muscle:30.2,fat:20.4},{label:"Phiếu mẫu B",weight:65.8,muscle:27.6,fat:19.1},{label:"Phiếu mẫu C",weight:73.2,muscle:31.5,fat:21.2}];
+export default function ReportSample() {
+  const [index,setIndex] = useState(0);
+  const [weight,setWeight] = useState(String(samples[0].weight));
+  const [reviewed,setReviewed] = useState(false);
+  const [confirmed,setConfirmed] = useState(false);
+  const sample = samples[index];
+  const value = Number(weight);
+  const valid = weight.trim() !== "" && Number.isFinite(value) && value >= 20 && value <= 300;
+  function reset(next = index) { setIndex(next); setWeight(String(samples[next].weight)); setReviewed(false); setConfirmed(false); }
+  return <div className="report-sample"><p className="sheet-description">Chọn phiếu giả, đối chiếu rồi thử sửa bản nháp. Không upload hay đọc phiếu thật tại đây.</p><label className="sample-field">Chọn phiếu minh họa<select value={index} onChange={event => reset(Number(event.target.value))}>{samples.map((item,i) => <option key={item.label} value={i}>{item.label}</option>)}</select></label><div className="sheet-source"><span>Nguồn: {sample.label}, tổng hợp giả lập · 30/10/2026</span><dl><div><dt>Cân nặng trên phiếu</dt><dd>{sample.weight.toLocaleString("vi-VN")} kg</dd></div><div><dt>Khối cơ xương</dt><dd>{sample.muscle.toLocaleString("vi-VN")} kg</dd></div><div><dt>Khối lượng mỡ</dt><dd>{sample.fat.toLocaleString("vi-VN")} kg</dd></div></dl></div><label className="sample-field">Cân nặng bản nháp (kg)<input type="number" min="20" max="300" step="0.1" value={weight} disabled={confirmed} aria-invalid={!valid} aria-describedby="sample-weight-help" onChange={event => {setWeight(event.target.value);setReviewed(false);}} /></label><p id="sample-weight-help" className="context-caption">{valid ? "Mỗi lần sửa cần đối chiếu lại. Trong workspace, PT có thể sửa các trường được hỗ trợ; mẫu này chỉ cho thử cân nặng." : "Nhập cân nặng từ 20 đến 300 kg để tiếp tục."}</p><p className="sheet-description">Khối nạc theo vùng không phải khối lượng từng nhóm cơ. Mẫu này chưa có dữ liệu theo vùng và không tạo mục tiêu dinh dưỡng.</p><label className="review-check"><input type="checkbox" checked={reviewed} disabled={confirmed || !valid} onChange={event => setReviewed(event.target.checked)} />Tôi đã đối chiếu với phiếu minh họa.</label><button className="button forest" disabled={!valid || !reviewed || confirmed} onClick={() => {if(valid && reviewed) setConfirmed(true);}}>Xác nhận bản mẫu</button><p className="review-result" role="status">{confirmed ? `Đã mô phỏng xác nhận ${value.toLocaleString("vi-VN")} kg. Không lưu hoặc thay đổi hồ sơ thật.` : ""}</p><button className="sample-reset" onClick={() => reset()}>Đặt lại bản mẫu</button><p className="sheet-limit">Chỉ mô phỏng kiểm duyệt. Không OCR, không lưu dữ liệu hoặc tự cập nhật hồ sơ đã xác nhận.</p></div>;
+}

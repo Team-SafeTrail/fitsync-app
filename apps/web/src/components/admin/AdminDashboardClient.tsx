@@ -86,7 +86,7 @@ export default function AdminDashboardClient({
           background: "rgba(245, 158, 11, 0.1)",
           borderRadius: "12px",
           padding: "14px 18px",
-          color: "#FDE68A",
+          color: "var(--color-warning)",
           lineHeight: 1.5,
         }}
       >
@@ -102,7 +102,7 @@ export default function AdminDashboardClient({
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
             <span className="admin-kpi-title">Tổng Huấn Luyện Viên PT</span>
-            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(255, 107, 0, 0.15)", color: "#FF6B00" }}>
+            <div className="admin-kpi-icon" style={{ backgroundColor: "var(--color-brand-light)", color: "var(--color-brand)" }}>
               <Users size={22} />
             </div>
           </div>
@@ -117,7 +117,7 @@ export default function AdminDashboardClient({
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
             <span className="admin-kpi-title">Tổng Học Viên Hoạt Động</span>
-            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(59, 130, 246, 0.15)", color: "#3B82F6" }}>
+            <div className="admin-kpi-icon" style={{ backgroundColor: "var(--color-brand-light)", color: "var(--color-brand)" }}>
               <UserCheck size={22} />
             </div>
           </div>
@@ -132,7 +132,7 @@ export default function AdminDashboardClient({
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
             <span className="admin-kpi-title">Bản Ghi InBody Đã Xác Nhận</span>
-            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(16, 185, 129, 0.15)", color: "#10B981" }}>
+            <div className="admin-kpi-icon" style={{ backgroundColor: "var(--color-brand-light)", color: "var(--color-success)" }}>
               <FileSpreadsheet size={22} />
             </div>
           </div>
@@ -147,11 +147,11 @@ export default function AdminDashboardClient({
         <div className="admin-kpi-card">
           <div className="admin-kpi-header">
             <span className="admin-kpi-title">Kịch Bản VietQR Mô Phỏng</span>
-            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(168, 85, 247, 0.15)", color: "#A855F7" }}>
+            <div className="admin-kpi-icon" style={{ backgroundColor: "rgba(168, 85, 247, 0.15)", color: "var(--color-brand)" }}>
               <CreditCard size={22} />
             </div>
           </div>
-          <p className="admin-kpi-value" style={{ color: "#10B981" }}>
+          <p className="admin-kpi-value" style={{ color: "var(--color-success)" }}>
             {kpi.totalRevenueVnd.toLocaleString("vi-VN")} đ
           </p>
           <div className="admin-kpi-meta">
@@ -164,8 +164,8 @@ export default function AdminDashboardClient({
       {/* Security & Multi-tenant RLS Notice */}
       <div
         style={{
-          backgroundColor: "rgba(16, 185, 129, 0.08)",
-          border: "1px solid rgba(16, 185, 129, 0.25)",
+          backgroundColor: "var(--color-brand-light)",
+          border: "1px solid var(--color-brand-light)",
           borderRadius: "12px",
           padding: "16px 20px",
           display: "flex",
@@ -176,12 +176,12 @@ export default function AdminDashboardClient({
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
-          <ShieldCheck size={24} color="#10B981" />
+          <ShieldCheck size={24} color="var(--color-success)" />
           <div>
-            <div style={{ color: "#FFFFFF", fontWeight: 700, fontSize: "0.95rem" }}>
+            <div style={{ color: "var(--color-text-primary)", fontWeight: 700, fontSize: "0.95rem" }}>
               Ranh giới bảo mật dữ liệu (được kiểm chứng bằng migration/pgTAP)
             </div>
-            <div style={{ color: "#94A3B8", fontSize: "0.82rem" }}>
+            <div style={{ color: "var(--color-text-secondary)", fontSize: "0.82rem" }}>
               Mỗi PT chỉ có quyền truy cập học viên được phân công. Bản ghi sức khỏe InBody và ảnh bữa ăn cách ly hoàn toàn theo Tenant ID.
             </div>
           </div>
@@ -196,7 +196,7 @@ export default function AdminDashboardClient({
       <section id="users-table" className="admin-section">
         <div className="admin-section-header">
           <div className="admin-section-title">
-            <Users size={22} color="#FF6B00" />
+            <Users size={22} color="var(--color-brand)" />
             <h2>Tài Khoản Mẫu & Phân Quyền</h2>
             <span>{filteredUsers.length} tài khoản</span>
           </div>
@@ -210,7 +210,7 @@ export default function AdminDashboardClient({
         {/* Toolbar: Search + Filter Tabs in single row */}
         <div className="admin-toolbar">
           <div className="admin-search-box">
-            <Search size={16} color="#64748B" />
+            <Search size={16} color="var(--color-text-muted)" />
             <input
               type="text"
               placeholder="Tìm theo tên, email hoặc số điện thoại..."
@@ -248,7 +248,7 @@ export default function AdminDashboardClient({
         </div>
 
         {/* Users Table */}
-        <div className="admin-table-container">
+        <div className="admin-table-container" role="region" aria-label="Danh sách người dùng mẫu" tabIndex={0}>
           <table className="admin-table">
             <thead>
               <tr>
@@ -276,14 +276,14 @@ export default function AdminDashboardClient({
                             user.role === "admin"
                               ? "rgba(168, 85, 247, 0.2)"
                               : user.role === "pt"
-                              ? "rgba(255, 107, 0, 0.2)"
-                              : "rgba(59, 130, 246, 0.2)",
+                              ? "var(--color-brand-light)"
+                              : "var(--color-brand-light)",
                           color:
                             user.role === "admin"
-                              ? "#A855F7"
+                              ? "var(--color-brand)"
                               : user.role === "pt"
-                              ? "#FF6B00"
-                              : "#3B82F6",
+                              ? "var(--color-brand)"
+                              : "var(--color-brand)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -293,7 +293,7 @@ export default function AdminDashboardClient({
                       >
                         {user.displayName.charAt(0)}
                       </div>
-                      <span style={{ fontWeight: 600, color: "#FFFFFF" }}>{user.displayName}</span>
+                      <span style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>{user.displayName}</span>
                     </div>
                   </td>
                   <td>
@@ -320,12 +320,12 @@ export default function AdminDashboardClient({
                     )}
                   </td>
                   <td>
-                    <span style={{ fontWeight: 600, color: user.inbodyCount > 0 ? "#10B981" : "#64748B" }}>
+                    <span style={{ fontWeight: 600, color: user.inbodyCount > 0 ? "var(--color-success)" : "var(--color-text-muted)" }}>
                       {user.inbodyCount} bản ghi
                     </span>
                   </td>
                   <td>
-                    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "#10B981", fontSize: "0.78rem" }}>
+                    <span style={{ display: "inline-flex", alignItems: "center", gap: "4px", color: "var(--color-success)", fontSize: "0.78rem" }}>
                       <ShieldCheck size={14} /> Cách ly
                     </span>
                   </td>
@@ -340,13 +340,13 @@ export default function AdminDashboardClient({
       <section id="transactions-table" className="admin-section">
         <div className="admin-section-header">
           <div className="admin-section-title">
-            <CreditCard size={22} color="#10B981" />
+            <CreditCard size={22} color="var(--color-success)" />
             <h2>Kịch Bản Đơn Hàng & VietQR Mô Phỏng</h2>
             <span>{filteredTransactions.length} giao dịch</span>
           </div>
 
           <div className="admin-search-box" style={{ minWidth: "240px" }}>
-            <Search size={16} color="#64748B" />
+            <Search size={16} color="var(--color-text-muted)" />
             <input
               type="text"
               placeholder="Tìm theo mã đơn, người trả..."
@@ -356,7 +356,7 @@ export default function AdminDashboardClient({
           </div>
         </div>
 
-        <div className="admin-table-container">
+        <div className="admin-table-container" role="region" aria-label="Giao dịch VietQR mẫu" tabIndex={0}>
           <table className="admin-table">
             <thead>
               <tr>
@@ -374,11 +374,11 @@ export default function AdminDashboardClient({
               {filteredTransactions.map((tx) => (
                 <tr key={tx.id}>
                   <td>
-                    <span style={{ fontFamily: "monospace", color: "#FF6B00", fontWeight: 700 }}>
+                    <span style={{ fontFamily: "monospace", color: "var(--color-brand)", fontWeight: 700 }}>
                       {tx.orderCode}
                     </span>
                   </td>
-                  <td style={{ fontWeight: 600, color: "#FFFFFF" }}>{tx.userName}</td>
+                  <td style={{ fontWeight: 600, color: "var(--color-text-primary)" }}>{tx.userName}</td>
                   <td>
                     <span className={`admin-status-badge ${tx.userRole === "PT" ? "pt" : "trainee"}`}>
                       {tx.userRole}
@@ -386,7 +386,7 @@ export default function AdminDashboardClient({
                   </td>
                   <td>{tx.planName}</td>
                   <td>
-                    <span style={{ fontWeight: 700, color: "#10B981" }}>
+                    <span style={{ fontWeight: 700, color: "var(--color-success)" }}>
                       {tx.amountVnd.toLocaleString("vi-VN")} đ
                     </span>
                   </td>
@@ -402,7 +402,7 @@ export default function AdminDashboardClient({
                       </span>
                     )}
                   </td>
-                  <td style={{ fontSize: "0.8rem", color: "#94A3B8" }}>
+                  <td style={{ fontSize: "0.8rem", color: "var(--color-text-secondary)" }}>
                     {new Date(tx.paidAt).toLocaleString("vi-VN")}
                   </td>
                 </tr>
