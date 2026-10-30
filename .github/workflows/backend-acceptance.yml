@@ -35,6 +35,8 @@ jobs:
         run: node node_modules/supabase/dist/supabase.js test db
       - name: Generate public schema types from test database
         run: node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/database.generated.ts"
+      - name: Verify committed database types match tested schema
+        run: diff -u apps/web/src/types/database.ts "$RUNNER_TEMP/database.generated.ts"
       - name: Install Chromium
         working-directory: apps/web
         run: npx --no-install playwright install --with-deps chromium

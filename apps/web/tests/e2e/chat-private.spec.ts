@@ -32,7 +32,7 @@ test("linked PT and trainee exchange persisted messages; outsider cannot open th
     await a.getByLabel("Mục tiêu chính").selectOption("recomp");
     await a.getByLabel("Tổng số buổi").fill("12");
     await a.getByLabel("Số buổi còn lại").fill("12");
-    await a.getByRole("button", {name:"Tạo học viên",exact:true}).click();
+    await a.getByRole("button", {name:"Tạo học viên & link mời",exact:true}).click();
     const invitation = await a.getByTestId("invitation-link").inputValue();
     console.info("[chat-acceptance] accept invitation as learner");
     await b.goto(invitation);

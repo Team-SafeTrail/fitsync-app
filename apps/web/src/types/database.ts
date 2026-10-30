@@ -3,36 +3,8 @@ export type Json = string | number | boolean | null | { [key: string]: Json | un
 
 export type Database = {
   
-  "graphql_public": {
+  "public": {
           Tables: {
-            [_ in never]: never
-          }
-          Views: {
-            [_ in never]: never
-          }
-          Functions: {
-            "graphql":
-{ Args: { "extensions"?: Json,"operationName"?: string,"query"?: string,"variables"?: Json }; Returns: Json
-                           }
-          }
-          Enums: {
-            [_ in never]: never
-          }
-          CompositeTypes: {
-            [_ in never]: never
-          }
-        },"public": {
-          Tables: {
-            "coaching_messages": {
-              Row: { id: string; trainee_id: string; pt_id: string; learner_id: string; sender_id: string; client_message_id: string; body: string; created_at: string }
-              Insert: { id?: string; trainee_id: string; pt_id: string; learner_id: string; sender_id: string; client_message_id: string; body: string; created_at?: string }
-              Update: { [_ in never]: never }
-              Relationships: [
-                { foreignKeyName: "coaching_messages_trainee_id_fkey"; columns: ["trainee_id"]; isOneToOne: false; referencedRelation: "trainee_profiles"; referencedColumns: ["id"] },
-                { foreignKeyName: "coaching_messages_pt_id_fkey"; columns: ["pt_id"]; isOneToOne: false; referencedRelation: "pt_profiles"; referencedColumns: ["id"] },
-                { foreignKeyName: "coaching_messages_sender_id_fkey"; columns: ["sender_id"]; isOneToOne: false; referencedRelation: "profiles"; referencedColumns: ["id"] }
-              ]
-            },
             "checkins": {
                   Row: {
                     "created_at": string,"id": string,"local_checkin_date": string,"note": string | null,"submitted_at": string,"trainee_id": string
@@ -46,6 +18,43 @@ export type Database = {
                   Relationships: [
                     {
       foreignKeyName: "checkins_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"coaching_messages": {
+                  Row: {
+                    "body": string,"client_message_id": string,"created_at": string,"id": string,"learner_id": string,"pt_id": string,"sender_id": string,"trainee_id": string
+                  }
+                  Insert: {
+                    "body": string,"client_message_id": string,"created_at"?: string,"id"?: string,"learner_id": string,"pt_id": string,"sender_id": string,"trainee_id": string
+                  }
+                  Update: {
+                    "body"?: string,"client_message_id"?: string,"created_at"?: string,"id"?: string,"learner_id"?: string,"pt_id"?: string,"sender_id"?: string,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "coaching_messages_learner_id_fkey"
+      columns: ["learner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_messages_pt_id_fkey"
+      columns: ["pt_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_messages_sender_id_fkey"
+      columns: ["sender_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "coaching_messages_trainee_id_fkey"
       columns: ["trainee_id"]
 isOneToOne: false
       referencedRelation: "trainee_profiles"
@@ -384,11 +393,7 @@ export type CompositeTypes<
   : never
 
 export const Constants = {
-  "graphql_public": {
-          Enums: {
-            
-          }
-        },"public": {
+  "public": {
           Enums: {
             "fitness_goal": ["fat_loss", "muscle_gain", "recomp"],"inbody_source": ["manual", "ocr"],"invitation_status": ["pending", "accepted", "revoked", "expired"],"ocr_attempt_status": ["pending", "success", "failed"],"subscription_plan": ["free", "pro", "enterprise"],"trainee_status": ["active", "warning", "inactive", "archived"],"user_role": ["pt", "trainee", "admin"]
           }
