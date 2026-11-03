@@ -128,6 +128,7 @@ export async function acceptInvitation(
       used: "Lời mời đã được sử dụng.",
       email_mismatch: "Email đăng nhập không khớp với lời mời.",
       account_role: "Tài khoản PT không thể nhận lời mời học viên.",
+      already_linked: "Tài khoản học viên này đã được liên kết với một hồ sơ khác.",
       invalid: "Lời mời không hợp lệ.",
     };
     return errorState(messages[outcome ?? ""] ?? "Không thể chấp nhận lời mời.");
@@ -135,6 +136,53 @@ export async function acceptInvitation(
 
   revalidatePath("/workspace");
   redirect("/workspace");
+}
+
+export async function reissueInvitation(traineeId: string): Promise<WorkspaceActionState> {
+  const context = await requireRole("pt");
+  if (!context) return errorState("Chỉ tài khoản PT đã đăng nhập mới có thể cấp lại lời mời.");
+
+  const rawToken = createInvitationToken();
+  const tokenHash = hashInvitationToken(rawToken);
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const { error } = await context.supabase.rpc("reissue_trainee_invitation", {
+    target_trainee_id: traineeId,
+    new_token_hash: tokenHash,
+    new_expires_at: expiresAt,
+  });
+
+  if (error) {
+    return errorState("Không thể cấp lại lời mời. Kiểm tra hồ sơ học viên rồi thử lại.");
+  }
+
+  revalidatePath("/workspace");
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
+  return {
+    status: "success",
+    message: "Đã cấp lại liên kết mời mới. Sao chép liên kết này gửi cho học viên.",
+    invitationUrl: `${siteUrl}/invite/${rawToken}`,
+    invitationExpiresAt: expiresAt,
+  };
+}
+
+export async function revokeInvitation(traineeId: string): Promise<WorkspaceActionState> {
+  const context = await requireRole("pt");
+  if (!context) return errorState("Chỉ tài khoản PT đã đăng nhập mới có thể thu hồi lời mời.");
+
+  const { error } = await context.supabase.rpc("revoke_trainee_invitation", {
+    target_trainee_id: traineeId,
+  });
+
+  if (error) {
+    return errorState("Không thể thu hồi lời mời. Vui lòng thử lại.");
+  }
+
+  revalidatePath("/workspace");
+  return {
+    status: "success",
+    message: "Đã thu hồi lời mời thành công.",
+  };
 }
 
 export async function createInBodyRecord(
