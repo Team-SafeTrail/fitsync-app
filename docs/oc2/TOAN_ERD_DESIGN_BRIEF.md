@@ -1,5 +1,12 @@
 # Brief thiết kế ERD Outcome 2 gửi Toàn
 
+## Draft đã nhận ngày 24/10/2026
+
+- [SVG vector](assets/erd/fitsync-oc2-data-model-draft.svg)
+- [PNG 5610×8192](assets/erd/fitsync-oc2-data-model-draft.png)
+
+Draft đã thể hiện đủ tám bảng và các quan hệ chính, đồng thời vượt yêu cầu độ phân giải PNG. Trước khi đổi tên thành bản final, vẫn cần bổ sung title/footer, `auth.users`, hai private bucket, năm security callout bên dưới, xuất PDF, review chéo với migrations và tạo link Drive view-only.
+
 ## Deliverable
 
 - Một PNG rộng tối thiểu 2560 px, đọc rõ ở zoom 100%.
@@ -19,7 +26,9 @@
 
 ## Sơ đồ nguồn chính xác
 
-Copy đoạn Mermaid này vào Mermaid Live, draw.io hoặc công cụ Toàn dùng để dựng visual:
+Nguồn độc lập là [`FITSYNC_OC2_ERD.mmd`](FITSYNC_OC2_ERD.mmd). Cách nhanh: dán vào [Mermaid Live](https://mermaid.live/) và export SVG/PNG. Cách khuyến nghị cho bản Carbon Dark: mở [draw.io](https://app.diagrams.net/), chọn **Arrange → Insert → Mermaid → Diagram**, sau đó chỉnh màu/layout và export PNG ≥2560 px + PDF. Giữ file `.drawio` để sửa về sau.
+
+Copy đoạn Mermaid này vào công cụ nếu không mở file `.mmd` trực tiếp:
 
 ```mermaid
 erDiagram

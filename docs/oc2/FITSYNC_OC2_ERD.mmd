@@ -1,0 +1,78 @@
+%% FitSync Outcome 2 ERD
+%% Source of truth: five Supabase migrations on main at e1b03ad
+%% Synthetic demo data only. Do not add secrets or real health data.
+erDiagram
+  profiles ||--o| pt_profiles : "PT extension"
+  profiles o|--o| trainee_profiles : "optional linked login"
+  pt_profiles ||--o{ trainee_profiles : "assigned coach"
+  pt_profiles ||--o{ trainee_invitations : "creates"
+  trainee_profiles ||--o{ trainee_invitations : "invited record"
+  trainee_profiles ||--o{ inbody_records : "has verified records"
+  pt_profiles ||--o{ inbody_records : "records and verifies"
+  trainee_profiles ||--o{ checkins : "submits"
+  checkins ||--o| meal_logs : "optional meal image"
+  trainee_profiles ||--o{ meal_logs : "owns"
+  trainee_profiles ||--o{ ocr_attempts : "source report"
+  pt_profiles ||--o{ ocr_attempts : "runs review"
+  inbody_records o|--o| ocr_attempts : "optional confirmation"
+
+  profiles {
+    uuid id PK, FK
+    user_role role
+    text display_name
+    text phone
+  }
+  pt_profiles {
+    uuid id PK, FK
+    text gym_affiliation
+    subscription_plan subscription_plan
+    timestamptz subscription_valid_until
+  }
+  trainee_profiles {
+    uuid id PK
+    uuid profile_id FK, UK
+    uuid assigned_pt_id FK
+    text display_name
+    fitness_goal primary_goal
+    trainee_status status
+  }
+  trainee_invitations {
+    uuid id PK
+    uuid pt_id FK
+    uuid trainee_id FK
+    text email
+    text token_hash UK
+    invitation_status status
+  }
+  inbody_records {
+    uuid id PK
+    uuid trainee_id FK
+    uuid pt_id FK
+    numeric weight_kg
+    numeric skeletal_muscle_mass_kg
+    numeric body_fat_mass_kg
+    numeric percent_body_fat
+    uuid verified_by FK
+  }
+  checkins {
+    uuid id PK
+    uuid trainee_id FK
+    date local_checkin_date UK
+    text note
+  }
+  meal_logs {
+    uuid id PK
+    uuid checkin_id FK, UK
+    uuid trainee_id FK
+    text private_photo_path UK
+    text photo_mime_type
+  }
+  ocr_attempts {
+    uuid id PK
+    uuid trainee_id FK
+    uuid pt_id FK
+    text private_image_path UK
+    ocr_attempt_status status
+    jsonb raw_draft
+    uuid inbody_record_id FK, UK
+  }

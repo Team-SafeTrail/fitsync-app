@@ -5,7 +5,7 @@
 Có thể tập lời và quay bản nháp ngay. Chỉ quay/upload bản final khi đủ các điều kiện sau:
 
 - URL Vercel production mở được ở tab ẩn danh và trả HTTP 200.
-- PR #26 và PR #28 đã được review, merge và commit đang quay đúng với production.
+- PR #26 (`094c5ee`) và recovery PR #29 (`e1b03ad`) đã được review, merge đúng thứ tự; commit đang quay phải là `e1b03ad` hoặc một bản sửa mới đã được review.
 - Supabase project FitSync đã chạy đủ năm migration, có seed synthetic và tài khoản demo dùng được.
 - ERD PNG/PDF của Toàn đã có link view-only.
 - Mọi ảnh sức khỏe, bữa ăn, tên, email và giao dịch xuất hiện trong video đều là synthetic.
