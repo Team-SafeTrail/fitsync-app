@@ -10,6 +10,7 @@ select ('83000000-0000-0000-0000-00000000000'||n)::uuid,'00000000-0000-0000-0000
 
 update public.profiles set role='trainee' where id in ('83000000-0000-0000-0000-000000000003','83000000-0000-0000-0000-000000000004');
 update public.profiles set role='admin' where id='83000000-0000-0000-0000-000000000005';
+delete from public.pt_profiles where id in ('83000000-0000-0000-0000-000000000003','83000000-0000-0000-0000-000000000004','83000000-0000-0000-0000-000000000005');
 
 -- Trainee profile linked to PT 1 and Learner 3
 insert into public.trainee_profiles(id,profile_id,assigned_pt_id,display_name,primary_goal) values
@@ -21,13 +22,13 @@ insert into public.trainee_invitations(id,pt_id,trainee_id,email,token_hash,expi
  ('be000000-0000-0000-0000-000000000001','83000000-0000-0000-0000-000000000001','ad000000-0000-0000-0000-000000000002',
   'auth-delivery-4@example.test',repeat('1', 64),now() + interval '7 days','pending');
 
--- Privilege checks on new functions
+-- Privilege checks on new functions (1-4)
 select has_function('public','reissue_trainee_invitation',array['uuid','text','timestamptz'],'reissue function exists');
 select has_function('public','revoke_trainee_invitation',array['uuid'],'revoke function exists');
 select is(has_function_privilege('anon','public.reissue_trainee_invitation(uuid,text,timestamptz)','EXECUTE'),false,'anonymous cannot reissue');
 select is(has_function_privilege('anon','public.revoke_trainee_invitation(uuid)','EXECUTE'),false,'anonymous cannot revoke');
 
--- Test Scoped Coach Display Identity: Learner 3 views Coach 1
+-- Test Scoped Coach Display Identity: Learner 3 views Coach 1 (5-8)
 set local role authenticated;
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000003',true);
 select results_eq(
@@ -50,7 +51,7 @@ select throws_ok(
   '42501',null,'Learner cannot reissue invitations'
 );
 
--- Test PT 1 Reissuing Invitation for Pending Trainee 2
+-- Test PT 1 Reissuing Invitation for Pending Trainee 2 (9-11)
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000001',true);
 select lives_ok(
   $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('2', 64), now() + interval '5 days')$$,
@@ -67,21 +68,19 @@ select results_eq(
   'New invitation is pending'
 );
 
--- Negative: PT 2 cannot reissue invitation for PT 1 trainee
+-- Negative checks on reissue (12-16)
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000002',true);
 select throws_ok(
   $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('3', 64), now() + interval '5 days')$$,
   'P0002',null,'Other PT cannot reissue invitation'
 );
 
--- Negative: PT 1 cannot reissue for already linked trainee 1
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000001',true);
 select throws_ok(
   $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000001'::uuid, repeat('3', 64), now() + interval '5 days')$$,
   '22000',null,'Cannot reissue invitation for already linked trainee'
 );
 
--- Negative: Invalid expiry window (e.g. past or > 30 days)
 select throws_ok(
   $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('3', 64), now() - interval '1 day')$$,
   '22023',null,'Expiry in past rejected'
@@ -90,8 +89,12 @@ select throws_ok(
   $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('3', 64), now() + interval '35 days')$$,
   '22023',null,'Expiry > 30 days rejected'
 );
+select throws_ok(
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, 'not_valid_sha256', now() + interval '5 days')$$,
+  '22023',null,'Invalid token hash format rejected'
+);
 
--- Test PT Revoke Invitation
+-- Test PT Revoke Invitation (17-19)
 select is(
   (select public.revoke_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid)),
   true,
@@ -110,7 +113,7 @@ select results_eq(
   'Revoked invitation preview leaks no PII'
 );
 
--- Reissue again for acceptance testing
+-- Reissue again for acceptance testing (20-24)
 select lives_ok(
   $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('4', 64), now() + interval '5 days')$$,
   'Reissue invitation for trainee 2 again'

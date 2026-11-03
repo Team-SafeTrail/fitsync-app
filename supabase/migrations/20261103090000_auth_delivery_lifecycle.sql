@@ -47,7 +47,9 @@ declare
   trainee_email text;
   new_invitation_id uuid;
 begin
-  if caller_id is null or not exists (
+  if caller_id is null or (
+    select role from public.profiles where id = caller_id
+  ) is distinct from 'pt'::public.user_role or not exists (
     select 1 from public.pt_profiles where id = caller_id
   ) then
     raise exception 'PT account required' using errcode = '42501';
@@ -118,7 +120,7 @@ begin
 end;
 $$;
 
-revoke all on function public.reissue_trainee_invitation(uuid, text, timestamptz) from public;
+revoke all on function public.reissue_trainee_invitation(uuid, text, timestamptz) from public,anon,authenticated;
 grant execute on function public.reissue_trainee_invitation(uuid, text, timestamptz) to authenticated;
 
 -- 3. Revoke Trainee Invitation RPC
@@ -133,7 +135,9 @@ as $$
 declare
   caller_id uuid := auth.uid();
 begin
-  if caller_id is null or not exists (
+  if caller_id is null or (
+    select role from public.profiles where id = caller_id
+  ) is distinct from 'pt'::public.user_role or not exists (
     select 1 from public.pt_profiles where id = caller_id
   ) then
     raise exception 'PT account required' using errcode = '42501';
@@ -154,7 +158,7 @@ begin
 end;
 $$;
 
-revoke all on function public.revoke_trainee_invitation(uuid) from public;
+revoke all on function public.revoke_trainee_invitation(uuid) from public,anon,authenticated;
 grant execute on function public.revoke_trainee_invitation(uuid) to authenticated;
 
 -- 4. Update accept_trainee_invitation with already_linked guard
