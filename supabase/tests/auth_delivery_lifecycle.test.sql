@@ -16,10 +16,10 @@ insert into public.trainee_profiles(id,profile_id,assigned_pt_id,display_name,pr
  ('ad000000-0000-0000-0000-000000000001','83000000-0000-0000-0000-000000000003','83000000-0000-0000-0000-000000000001','Linked Learner 3','recomp'),
  ('ad000000-0000-0000-0000-000000000002',null,'83000000-0000-0000-0000-000000000001','Pending Trainee 2','recomp');
 
--- Initial invitation for trainee 2
+-- Initial invitation for trainee 2 (must satisfy check constraint invitation_token_is_sha256)
 insert into public.trainee_invitations(id,pt_id,trainee_id,email,token_hash,expires_at,status) values
  ('be000000-0000-0000-0000-000000000001','83000000-0000-0000-0000-000000000001','ad000000-0000-0000-0000-000000000002',
-  'auth-delivery-4@example.test','initial_hash_111',now() + interval '7 days','pending');
+  'auth-delivery-4@example.test',repeat('1', 64),now() + interval '7 days','pending');
 
 -- Privilege checks on new functions
 select has_function('public','reissue_trainee_invitation',array['uuid','text','timestamptz'],'reissue function exists');
@@ -46,23 +46,23 @@ select results_eq(
   'Learner can read assigned coach pt_profiles'
 );
 select throws_ok(
-  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, 'fail_hash', now() + interval '3 days')$$,
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('2', 64), now() + interval '3 days')$$,
   '42501',null,'Learner cannot reissue invitations'
 );
 
 -- Test PT 1 Reissuing Invitation for Pending Trainee 2
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000001',true);
 select lives_ok(
-  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, 'reissued_hash_222', now() + interval '5 days')$$,
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('2', 64), now() + interval '5 days')$$,
   'PT 1 successfully reissues invitation for trainee 2'
 );
 select results_eq(
-  'select status from public.trainee_invitations where token_hash = ''initial_hash_111''',
+  'select status from public.trainee_invitations where token_hash = repeat(''1'', 64)',
   $$values ('revoked'::public.invitation_status)$$,
   'Prior pending invitation is revoked'
 );
 select results_eq(
-  'select status from public.trainee_invitations where token_hash = ''reissued_hash_222''',
+  'select status from public.trainee_invitations where token_hash = repeat(''2'', 64)',
   $$values ('pending'::public.invitation_status)$$,
   'New invitation is pending'
 );
@@ -70,24 +70,24 @@ select results_eq(
 -- Negative: PT 2 cannot reissue invitation for PT 1 trainee
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000002',true);
 select throws_ok(
-  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, 'unauthorized_hash', now() + interval '5 days')$$,
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('3', 64), now() + interval '5 days')$$,
   'P0002',null,'Other PT cannot reissue invitation'
 );
 
 -- Negative: PT 1 cannot reissue for already linked trainee 1
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000001',true);
 select throws_ok(
-  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000001'::uuid, 'hash_for_linked', now() + interval '5 days')$$,
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000001'::uuid, repeat('3', 64), now() + interval '5 days')$$,
   '22000',null,'Cannot reissue invitation for already linked trainee'
 );
 
 -- Negative: Invalid expiry window (e.g. past or > 30 days)
 select throws_ok(
-  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, 'hash_bad_expiry', now() - interval '1 day')$$,
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('3', 64), now() - interval '1 day')$$,
   '22023',null,'Expiry in past rejected'
 );
 select throws_ok(
-  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, 'hash_bad_expiry', now() + interval '35 days')$$,
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('3', 64), now() + interval '35 days')$$,
   '22023',null,'Expiry > 30 days rejected'
 );
 
@@ -98,28 +98,28 @@ select is(
   'PT can revoke active invitation'
 );
 select results_eq(
-  'select status from public.trainee_invitations where token_hash = ''reissued_hash_222''',
+  'select status from public.trainee_invitations where token_hash = repeat(''2'', 64)',
   $$values ('revoked'::public.invitation_status)$$,
   'Active invitation is now revoked'
 );
 
 -- Preview with revoked hash yields 0 rows (no PII leak)
 select results_eq(
-  'select count(*)::bigint from public.get_invitation_preview(''reissued_hash_222'')',
+  'select count(*)::bigint from public.get_invitation_preview(repeat(''2'', 64))',
   array[0::bigint],
   'Revoked invitation preview leaks no PII'
 );
 
 -- Reissue again for acceptance testing
 select lives_ok(
-  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, 'reissued_hash_333', now() + interval '5 days')$$,
+  $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('4', 64), now() + interval '5 days')$$,
   'Reissue invitation for trainee 2 again'
 );
 
--- Test Accept Invitation: Learner 3 (already linked) attempts to accept -> gets 'already_linked'
+-- Test Accept Invitation: Learner 3 (already linked to trainee 1) attempts to accept pending invite for trainee 2 -> gets 'already_linked'
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000003',true);
 select results_eq(
-  'select outcome from public.accept_trainee_invitation(''reissued_hash_333'')',
+  'select outcome from public.accept_trainee_invitation(repeat(''4'', 64))',
   $$values ('already_linked'::text)$$,
   'Already linked learner gets deterministic already_linked outcome'
 );
@@ -127,24 +127,23 @@ select results_eq(
 -- Test Accept Invitation: Learner 4 (unlinked, matching email) accepts -> 'accepted'
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000004',true);
 select results_eq(
-  'select outcome from public.accept_trainee_invitation(''reissued_hash_333'')',
+  'select outcome from public.accept_trainee_invitation(repeat(''4'', 64))',
   $$values ('accepted'::text)$$,
   'Unlinked matching learner gets accepted'
 );
 
--- Second accept attempt -> 'used'
+-- Second accept attempt by Learner 4 on same invitation -> 'used'
 select results_eq(
-  'select outcome from public.accept_trainee_invitation(''reissued_hash_333'')',
+  'select outcome from public.accept_trainee_invitation(repeat(''4'', 64))',
   $$values ('used'::text)$$,
-  'Token cannot be reused once accepted'
+  'Accepted invitation cannot be reused (returns used)'
 );
 
 -- Revoked token attempt -> 'used'
 select results_eq(
-  'select outcome from public.accept_trainee_invitation(''reissued_hash_222'')',
+  'select outcome from public.accept_trainee_invitation(repeat(''2'', 64))',
   $$values ('used'::text)$$,
-  'Revoked token returns used/invalid'
+  'Revoked token returns used'
 );
 
 rollback;
-

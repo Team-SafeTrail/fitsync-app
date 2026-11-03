@@ -53,6 +53,10 @@ begin
     raise exception 'PT account required' using errcode = '42501';
   end if;
 
+  if new_token_hash !~ '^[0-9a-f]{64}$' then
+    raise exception 'Invalid SHA-256 token hash format' using errcode = '22023';
+  end if;
+
   if new_expires_at <= now() or new_expires_at > now() + interval '30 days' then
     raise exception 'Invitation expiry is outside the allowed window' using errcode = '22023';
   end if;
@@ -189,15 +193,6 @@ begin
     return;
   end if;
 
-  -- Guard: ensure this user is not already linked to another trainee profile
-  if exists (
-    select 1 from public.trainee_profiles
-    where profile_id = accepting_user_id
-  ) then
-    return query select null::uuid, 'already_linked'::text;
-    return;
-  end if;
-
   select *
   into invitation_row
   from public.trainee_invitations
@@ -211,6 +206,15 @@ begin
 
   if invitation_row.status <> 'pending' then
     return query select null::uuid, 'used'::text;
+    return;
+  end if;
+
+  -- Guard: if invitation is pending, but this user is already linked to another trainee profile
+  if exists (
+    select 1 from public.trainee_profiles
+    where profile_id = accepting_user_id and id <> invitation_row.trainee_id
+  ) then
+    return query select null::uuid, 'already_linked'::text;
     return;
   end if;
 
@@ -260,4 +264,3 @@ begin
   return query select trainee_row.id, 'accepted'::text;
 end;
 $$;
-
