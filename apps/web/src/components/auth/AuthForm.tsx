@@ -32,19 +32,19 @@ export default function AuthForm({ mode, action, error, message, next }: {
           </div>
         </label>
         <label>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <span>Mật khẩu</span>
-            {!registering && (
-              <Link href="/forgot-password" style={{ fontSize: "13px", color: "var(--coaching-primary-accent, #226C5D)" }}>
-                Quên mật khẩu?
-              </Link>
-            )}
-          </div>
+          <span>Mật khẩu</span>
           <div className="auth-input">
             <LockKeyhole size={17} />
             <input name="password" type="password" autoComplete={registering ? "new-password" : "current-password"} minLength={8} placeholder="Ít nhất 8 ký tự" required />
           </div>
         </label>
+        {!registering && (
+          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "-10px" }}>
+            <Link href="/forgot-password" style={{ fontSize: "13px", color: "var(--coaching-primary-accent, #226C5D)" }}>
+              Quên mật khẩu?
+            </Link>
+          </div>
+        )}
         <button className="auth-submit">{registering ? "Tạo workspace PT" : "Vào workspace"}<ArrowRight size={17} /></button>
       </form>
       <div className="auth-switch"><span>{registering ? "Đã có workspace?" : "Lần đầu dùng FitSync?"}</span><Link href={registering ? "/login" : "/register"}>{registering ? "Đăng nhập" : "Tạo tài khoản PT"} <ArrowRight size={14} /></Link></div>
