@@ -1,0 +1,2 @@
+# Preserve the exact CI schema export and its recorded SHA256 on Windows.
+schema-v1.sql -text

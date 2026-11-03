@@ -103,6 +103,7 @@ test("trainee check-in reaches the PT with private media, session updates, and m
   await expect(ptPage.getByRole("heading", { name: "Check-in của học viên" })).toBeVisible();
   await expect(ptPage.getByTestId("checkin-activity")).toContainText("Năng lượng tốt");
   await expect(ptPage.getByTestId("private-meal-photo")).toBeVisible();
+  await ptPage.getByRole("tab", {name:"Membership & buổi",exact:true}).click();
   await ptPage.getByRole("spinbutton", { name: /Số buổi còn lại/ }).fill("8");
   await ptPage.getByRole("button", { name: "Cập nhật số buổi" }).click();
   await expect(ptPage.getByRole("status")).toContainText("Đã cập nhật số buổi còn lại");
@@ -194,8 +195,9 @@ test("trainee check-in reaches the PT with private media, session updates, and m
 
   await ptPage.setViewportSize({ width: 1440, height: 1000 });
   await ptPage.goto(traineePath!);
-  await expect(ptPage.getByRole("spinbutton", { name: /Số buổi còn lại/ })).toHaveValue("8");
   await expect(ptPage.getByTestId("private-meal-photo")).toBeVisible();
+  await ptPage.getByRole("tab", {name:"Membership & buổi",exact:true}).click();
+  await expect(ptPage.getByRole("spinbutton", { name: /Số buổi còn lại/ })).toHaveValue("8");
 
   expect(networkRequests.some((url) => /zalo\.me|\/messages?(?:\/|\?|$)|send-message/i.test(url))).toBe(false);
   expect(runtimeErrors).toEqual([]);

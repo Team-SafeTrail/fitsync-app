@@ -137,7 +137,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
       {currentState.message && <p className={`workspace-alert is-${currentState.status}`} role={currentState.status === "error" ? "alert" : "status"}>{currentState.message}</p>}
 
       {/* OCR Upload Section */}
-      <div className="workspace-fieldset workspace-field-wide" style={{ marginBottom: '2rem', padding: '1rem', backgroundColor: 'var(--surface-sunken)', borderRadius: 'var(--radius-md)' }}>
+      <div className="workspace-fieldset workspace-field-wide" style={{ marginBottom: '2rem', padding: '1rem', backgroundColor: 'var(--color-surface-muted)', borderRadius: 'var(--radius-md)' }}>
         <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
           <Camera size={18} /> <strong>Quét ảnh InBody (Thử nghiệm)</strong>
         </div>
@@ -146,7 +146,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         </p>
         
         {ocrStatus === "uploading" ? (
-          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", color: "var(--text-muted)" }}>
+          <div style={{ display: "flex", gap: "0.5rem", alignItems: "center", color: "var(--color-text-secondary)" }}>
             <Loader2 size={16} className="animate-spin" /> Đang tải lên và xử lý ảnh...
           </div>
         ) : (
@@ -174,7 +174,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
 
         {ocrImageUrl && (
           <div style={{ marginTop: '1rem', border: '1px solid var(--border-subtle)', borderRadius: 'var(--radius-sm)', overflow: 'hidden' }}>
-            <div style={{ padding: '0.5rem', backgroundColor: 'var(--surface-raised)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <div style={{ padding: '0.5rem', backgroundColor: 'var(--color-surface)', fontSize: '0.8rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
               <ImageIcon size={14} /> Ảnh nguồn (bảo mật)
             </div>
             {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -212,8 +212,8 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
               <ErrorText error={currentState.fieldErrors?.bodyFatMassKg} />
             </label>
             <label className="workspace-field" htmlFor="body-fat-percent">
-              <span>Tỷ lệ mỡ (%) {ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) && <AlertTriangle size={14} color="var(--intent-warning)" style={{display: 'inline', verticalAlign: 'middle', marginLeft: '0.3rem'}}/>}</span>
-              <input id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" defaultValue={draftData?.metrics?.percent_body_fat ?? ""} required style={ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) ? { borderColor: 'var(--intent-warning)', backgroundColor: 'color-mix(in srgb, var(--intent-warning) 10%, transparent)' } : {}}/>
+              <span>Tỷ lệ mỡ (%) {ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) && <AlertTriangle size={14} color="var(--color-warning)" style={{display: 'inline', verticalAlign: 'middle', marginLeft: '0.3rem'}}/>}</span>
+              <input id="body-fat-percent" name="percentBodyFat" type="number" inputMode="decimal" min={3} max={60} step="0.1" defaultValue={draftData?.metrics?.percent_body_fat ?? ""} required style={ocrWarnings.some(w => w.includes("Tỷ lệ mỡ")) ? { borderColor: 'var(--color-warning)', backgroundColor: 'color-mix(in srgb, var(--color-warning) 10%, transparent)' } : {}}/>
               <ErrorText error={currentState.fieldErrors?.percentBodyFat} />
             </label>
             <label className="workspace-field" htmlFor="body-water-liters">

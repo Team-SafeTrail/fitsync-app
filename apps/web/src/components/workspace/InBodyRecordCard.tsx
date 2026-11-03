@@ -16,20 +16,22 @@ export default function InBodyRecordCard({
   record,
   traineeId,
   editableNutrition,
+  compact = false,
 }: {
   record: InBodyRecord;
   traineeId: string;
   editableNutrition: boolean;
+  compact?: boolean;
 }) {
   const updateAction = updateNutritionDraft.bind(null, record.id, traineeId);
   return (
-    <article className="workspace-record" data-testid="verified-record">
+    <article className={compact ? "workspace-record is-compact" : "workspace-record"} data-testid="verified-record">
       <header>
         <div>
           <span className="workspace-badge is-verified"><CheckCircle2 size={14} /> Đã xác minh</span>
           <h3>{dateFormatter.format(new Date(record.recorded_at))}</h3>
         </div>
-        <span className="workspace-record-source">Nhập thủ công</span>
+        <span className="workspace-record-source">{record.source === "ocr" ? "OCR · PT đã kiểm tra" : "Nhập thủ công"}</span>
       </header>
       <dl className="workspace-record-metrics">
         <div><dt>Cân nặng</dt><dd>{record.weight_kg} kg</dd></div>

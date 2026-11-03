@@ -25,7 +25,7 @@ export default defineConfig({
   webServer: useExternalServer
     ? undefined
     : {
-        command: "npm run dev",
+        command: process.env.PLAYWRIGHT_PRODUCTION_SERVER === "true" ? "npm run start -- --hostname 127.0.0.1" : "npm run dev",
         url: "http://127.0.0.1:3000",
         reuseExistingServer: !process.env.CI,
         timeout: 120_000,

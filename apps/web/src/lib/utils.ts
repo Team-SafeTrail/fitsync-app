@@ -70,9 +70,9 @@ export function computeNutrition(
 
 export function getGoalLabel(goal: ClientGoal): string {
   const labels: Record<ClientGoal, string> = {
-    fat_loss: 'Fat Loss',
-    muscle_gain: 'Muscle Gain',
-    recomp: 'Recomp',
+    fat_loss: 'Giảm mỡ',
+    muscle_gain: 'Tăng cơ',
+    recomp: 'Tái cấu trúc',
   };
   return labels[goal];
 }

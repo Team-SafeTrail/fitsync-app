@@ -1,9 +1,12 @@
+import WorkspaceNav, {WorkspaceMobileNav} from "@/components/workspace/WorkspaceNav";
 import Link from "next/link";
+import Brand from "@/components/brand/Brand";
 import { redirect } from "next/navigation";
-import { Activity, ArrowUpRight, LayoutDashboard, LogOut, ShieldCheck, UsersRound } from "lucide-react";
+import { LogOut, ShieldCheck } from "lucide-react";
 import { logout } from "../auth/actions";
 import { getWorkspaceViewer } from "@/features/workspace/data";
 import "./workspace.css";
+import "./coaching.css";
 
 export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
   const viewer = await getWorkspaceViewer();
@@ -15,25 +18,15 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
       <aside className="workspace-sidebar">
         <div>
           <Link href="/workspace" className="workspace-brand" aria-label="FitSync Workspace, về tổng quan">
-            <Activity size={22} strokeWidth={2.2} />
-            <span>fit<strong>sync</strong></span>
+            <Brand />
           </Link>
-          <span className="workspace-product-label">{isPt ? "Coach workspace" : "Trainee workspace"}</span>
+          <span className="workspace-product-label">{isPt ? "Không gian PT" : "Không gian học viên"}</span>
         </div>
 
-        <nav className="workspace-nav" aria-label="Điều hướng workspace">
-          <Link href="/workspace" aria-current="page">
-            {isPt ? <UsersRound size={18} /> : <LayoutDashboard size={18} />}
-            <span>{isPt ? "Học viên" : "Tổng quan"}</span>
-          </Link>
-          <Link href="/app/dashboard" target="_blank">
-            <LayoutDashboard size={18} />
-            <span>Bản mẫu công khai</span>
-            <ArrowUpRight size={14} />
-          </Link>
-        </nav>
+        <WorkspaceNav isPt={isPt} />
 
         <div className="workspace-sidebar-foot">
+          <Link className="workspace-tour-help" href={isPt?"/app/dashboard":"/app/trainee"}>Xem bản mẫu công khai</Link>
           <div className="workspace-security-note"><ShieldCheck size={16} /><span>Dữ liệu thật được bảo vệ theo vai trò.</span></div>
           <div className="workspace-account">
             <span className="workspace-account-avatar">{viewer.profile.display_name.trim().charAt(0).toUpperCase()}</span>
@@ -51,7 +44,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
       <div className="workspace-surface">
         <header className="workspace-mobile-header">
           <Link href="/workspace" className="workspace-brand" aria-label="FitSync Workspace, về tổng quan">
-            <Activity size={21} strokeWidth={2.2} /><span>fit<strong>sync</strong></span>
+            <Brand />
           </Link>
           <div className="workspace-account">
             <span className="workspace-account-avatar">{viewer.profile.display_name.trim().charAt(0).toUpperCase()}</span>
@@ -59,6 +52,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
           </div>
         </header>
         {children}
+        <WorkspaceMobileNav isPt={isPt}/>
       </div>
     </div>
   );

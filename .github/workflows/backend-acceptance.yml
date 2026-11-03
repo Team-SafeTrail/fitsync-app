@@ -1,0 +1,92 @@
+name: Backend acceptance
+
+on:
+  pull_request:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: backend-acceptance-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  database-and-chat:
+    name: Synthetic database and coaching flows
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Check local-only environment guard
+        run: node --test scripts/test/local-environment.test.mjs
+      - name: Start isolated Supabase and mask local keys
+        run: node scripts/test/ci-local-supabase.mjs
+      - name: Run all database and RLS tests
+        run: node node_modules/supabase/dist/supabase.js test db
+      - name: Generate public schema types from test database
+        run: node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/database.generated.ts"
+      - name: Export schema-only handoff snapshot
+        run: node node_modules/supabase/dist/supabase.js db dump --local --schema public,private --file "$RUNNER_TEMP/schema-v1.sql"
+      - name: Verify committed database types match tested schema
+        run: diff -u apps/web/src/types/database.ts "$RUNNER_TEMP/database.generated.ts"
+      - name: Install Chromium
+        working-directory: apps/web
+        run: npx --no-install playwright install --with-deps chromium
+      - name: Build application against disposable test stack
+        working-directory: apps/web
+        run: npm run build
+      - name: Test real synthetic coaching flows
+        working-directory: apps/web
+        env:
+          PLAYWRIGHT_PRODUCTION_SERVER: "true"
+        run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts tests/e2e/calendar-private.spec.ts tests/e2e/web-handoff.spec.ts tests/e2e/approved-design.spec.ts tests/e2e/public-journey.spec.ts tests/e2e/oc2-admin-landing.spec.ts
+      - name: Retain schema and synthetic chat screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: synthetic-backend-evidence
+          retention-days: 1
+          if-no-files-found: warn
+          path: |
+            ${{ runner.temp }}/database.generated.ts
+            ${{ runner.temp }}/schema-v1.sql
+            apps/web/test-results/chat-proof/*.png
+      - name: Stop disposable stack
+        if: always()
+        run: node node_modules/supabase/dist/supabase.js stop
+
+  baseline-upgrade:
+    name: Upgrade legacy baseline without changing existing rows
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Install locked dependencies
+        run: npm ci
+      - name: Bootstrap baseline and apply additive migrations
+        run: node scripts/test/ci-upgrade-rehearsal.mjs
+      - name: Run SQL and RLS after upgrade
+        run: node node_modules/supabase/dist/supabase.js test db
+      - name: Check upgraded schema types
+        run: |
+          node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/upgrade-types.ts"
+          diff -u apps/web/src/types/database.ts "$RUNNER_TEMP/upgrade-types.ts"
+      - name: Stop disposable stack
+        if: always()
+        run: node node_modules/supabase/dist/supabase.js stop

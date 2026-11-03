@@ -1,4 +1,8 @@
 import Link from "next/link";
+import ProgressHistory from "@/components/workspace/ProgressHistory";
+import {Suspense} from "react";
+import CoachingProfileContext from "@/components/workspace/CoachingProfileContext";
+import CoachingScheduleSummary from "@/components/workspace/CoachingScheduleSummary";
 import { AlertTriangle, ArrowRight, CheckCircle2, Dumbbell, UserRoundCheck, Users } from "lucide-react";
 import CheckinActivityList from "@/components/workspace/CheckinActivityList";
 import CheckinForm from "@/components/workspace/CheckinForm";
@@ -16,7 +20,7 @@ const goalLabels = {
   recomp: "Tái cấu trúc",
 };
 
-export default async function WorkspacePage() {
+export default async function WorkspacePage({ searchParams }: {searchParams: {q?: string; filter?: string;create?:string}}) {
   const viewer = await getWorkspaceViewer();
   if (!viewer) return null;
 
@@ -31,16 +35,18 @@ export default async function WorkspacePage() {
             <h1>Chào {viewer.profile.display_name}</h1>
             <p>Theo dõi gói tập và những kết quả đã được PT xác nhận.</p>
           </div>
-          {trainee && <div className="workspace-session-stat"><strong>{trainee.remaining_sessions}</strong><span>buổi còn lại / {trainee.total_sessions}</span></div>}
+          {trainee && <div className="workspace-session-stat"><strong>{trainee.remaining_sessions}</strong><span>buổi PT còn lại / {trainee.total_sessions}</span></div>}
         </header>
 
         {!trainee ? (
           <section className="workspace-empty"><UserRoundCheck size={30} /><h2>Chưa liên kết hồ sơ</h2><p>Mở lại liên kết mời từ PT để hoàn tất kết nối.</p></section>
         ) : (
           <>
+            <Suspense fallback={<p role="status">Đang tải cuộc hẹn…</p>}><CoachingScheduleSummary isPt={false} traineeId={trainee.id}/></Suspense>
+            <nav className="dossier-section-nav" aria-label="Nội dung của bạn"><a href="#daily-checkin-title">Check-in hôm nay</a><a href="#progress">Tiến trình</a><a href="#trainee-records-title">Số đo và dinh dưỡng</a><a href="#membership">Membership</a><a href="#coaching-notes">Ghi chú PT chia sẻ</a></nav>
             {checkedInToday ? (
               <section className="workspace-complete-today" data-testid="checkin-complete-today">
-                <CheckCircle2 size={24} /><div><h2>Đã check-in hôm nay</h2><p>Hoạt động đã được lưu và PT của bạn có thể xem trong hồ sơ liên kết.</p></div>
+                <CheckCircle2 size={24} /><div><h2 id="daily-checkin-title">Đã check-in hôm nay</h2><p>Hoạt động đã được lưu và PT của bạn có thể xem trong hồ sơ liên kết.</p></div>
               </section>
             ) : <CheckinForm />}
 
@@ -49,11 +55,13 @@ export default async function WorkspacePage() {
               <CheckinActivityList checkins={checkins} emptyMessage="Gửi check-in đầu tiên để PT theo sát tiến trình giữa các buổi tập." />
             </section>
 
+            <ProgressHistory records={records} />
+            <Suspense fallback={<p role="status">Đang tải membership và ghi chú…</p>}><CoachingProfileContext traineeId={trainee.id}/></Suspense>
             <section className="workspace-record-list" aria-labelledby="trainee-records-title">
-              <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody đã xác minh</h2></div><p>{records.length} lần đo được PT xác nhận</p></div>
+              <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody gần nhất</h2></div><Link href="/workspace/progress">Xem đủ {records.length} bản ghi</Link></div>
               {records.length === 0
                 ? <div className="workspace-empty compact"><Dumbbell size={28} /><h3>Chưa có bản ghi đã xác minh</h3><p>PT của bạn sẽ nhập và xác nhận kết quả trước khi nó xuất hiện tại đây.</p></div>
-                : records.map((record) => <InBodyRecordCard key={record.id} record={record} traineeId={trainee.id} editableNutrition={false} />)}
+                : records.slice(0,1).map((record) => <InBodyRecordCard key={record.id} record={record} traineeId={trainee.id} editableNutrition={false} compact />)}
             </section>
           </>
         )}
@@ -70,6 +78,11 @@ export default async function WorkspacePage() {
   const pendingCount = trainees.length - linkedCount;
   const warningTrainees = trainees.filter((trainee) => warningByTrainee.has(trainee.id));
 
+  const query = typeof searchParams.q === "string" ? searchParams.q.trim().slice(0,100) : "";
+  const filter = typeof searchParams.filter === "string" ? searchParams.filter : "all";
+  const normalize = (text:string) => text.normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/đ/g,"d").replace(/Đ/g,"D").toLowerCase();
+  const visibleTrainees = trainees.filter(trainee => normalize(`${trainee.display_name} ${trainee.phone ?? ""}`).includes(normalize(query)) && (filter === "attention" ? warningByTrainee.has(trainee.id) : filter === "pending" ? !trainee.profile_id : true));
+
   return (
     <main id="main-content" className="workspace-main">
       <header className="workspace-page-heading">
@@ -77,7 +90,7 @@ export default async function WorkspacePage() {
           <p className="workspace-kicker">Tổng quan học viên</p>
           <h1>Chào {viewer.profile.display_name}</h1>
           <p>Quản lý hồ sơ, kết nối tài khoản và xác nhận kết quả InBody cho từng học viên.</p>
-          <OpenCreateTraineeButton />
+          <div className="workspace-primary-actions"><OpenCreateTraineeButton /><Link className="workspace-inline-link" href="/workspace/today">Mở trang Hôm nay</Link></div>
         </div>
         <div className="workspace-overview-stats">
           <div><Users size={18} /><strong>{trainees.length}</strong><span>học viên</span></div>
@@ -120,15 +133,22 @@ export default async function WorkspacePage() {
 
       <section className="workspace-roster" aria-labelledby="roster-title">
         <div className="workspace-section-heading">
-          <div><p className="workspace-kicker">Roster</p><h2 id="roster-title">Học viên của bạn</h2></div>
+          <div><p className="workspace-kicker">Hồ sơ và hoạt động</p><h2 id="roster-title">Học viên của bạn</h2></div>
           <p>{trainees.length === 0 ? "Tạo hồ sơ đầu tiên để bắt đầu." : `${linkedCount}/${trainees.length} tài khoản đã kết nối · ${pendingCount} đang chờ`}</p>
         </div>
+        <form className="workspace-roster-search" action="/workspace" method="get" role="search" aria-label="Tìm học viên trong workspace">
+          <label>Tìm học viên<input name="q" type="search" defaultValue={query} placeholder="Tên hoặc số điện thoại" maxLength={100}/></label>
+          <label>Việc cần xem<select name="filter" defaultValue={filter}><option value="all">Tất cả học viên</option><option value="attention">Cần theo dõi check-in</option><option value="pending">Chưa kết nối tài khoản</option></select></label>
+          <button type="submit" className="workspace-button workspace-button-primary">Tìm kiếm</button>
+          {(query || filter !== "all") && <Link className="workspace-inline-link" href="/workspace">Xóa bộ lọc</Link>}
+        </form>
+        <p className="workspace-search-count" role="status">{visibleTrainees.length} / {trainees.length} học viên</p>
         {trainees.length === 0 ? (
           <div className="workspace-empty compact"><Users size={28} /><h3>Roster đang trống</h3><p>Thêm học viên, sao chép link mời rồi gửi qua kênh bạn đang dùng.</p><OpenCreateTraineeButton compact /></div>
-        ) : (
+        ) : visibleTrainees.length === 0 ? <div className="workspace-empty compact"><h3>Không tìm thấy học viên</h3><p>Thử tên khác hoặc bỏ bộ lọc để xem lại danh sách.</p><Link href="/workspace">Xem tất cả học viên</Link></div> : (
           <div className="workspace-roster-list">
             <div className="workspace-roster-labels" aria-hidden="true"><span>Học viên</span><span>Trạng thái</span><span>Gói tập</span><span>InBody</span><span /></div>
-            {trainees.map((trainee) => {
+            {visibleTrainees.map((trainee) => {
               const invitation = invitationByTrainee.get(trainee.id);
               const inviteExpired = invitation ? new Date(invitation.expires_at) <= new Date() : false;
               const status = trainee.profile_id ? "Đã kết nối" : invitation?.status === "pending" && !inviteExpired ? "Chờ chấp nhận" : "Lời mời hết hạn";
@@ -148,7 +168,7 @@ export default async function WorkspacePage() {
         )}
       </section>
 
-      <CreateTraineeForm defaultOpen={trainees.length === 0} />
+      <CreateTraineeForm defaultOpen={trainees.length === 0 || searchParams.create === "1"} />
     </main>
   );
 }

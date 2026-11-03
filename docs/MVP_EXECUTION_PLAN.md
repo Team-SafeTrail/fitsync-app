@@ -1,5 +1,7 @@
 # FitSync MVP execution plan
 
+> Current entry point (2026-10-30): [web/database handoff v1](handoff/README.md) and [owner decisions](PRODUCT_DECISIONS.md). This document retains the earlier M0–M7 engineering baseline. Its persona, frozen scope and milestone order do not override later owner instructions; code/tests establish behavior, not desired product direction. Use the new handoff for current scope and verification.
+
 **Status:** Active implementation baseline
 **Version:** 1.5
 **Updated:** 2026-10-10
