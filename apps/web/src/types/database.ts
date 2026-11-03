@@ -362,16 +362,16 @@ isOneToOne: false
               "display_name": string,"email": string,"expires_at": string
             }[]
                            },
+"is_checkin_warning_due":
+{ Args: { "at_time": string,"reference_date": string }; Returns: boolean
+                           },
 "reissue_trainee_invitation":
 { Args: { "new_expires_at": string,"new_token_hash": string,"target_trainee_id": string }; Returns: {
               "email": string,"expires_at": string,"invitation_id": string
             }[]
-                            },
+                           },
 "revoke_trainee_invitation":
 { Args: { "target_trainee_id": string }; Returns: boolean
-                            },
-"is_checkin_warning_due":
-{ Args: { "at_time": string,"reference_date": string }; Returns: boolean
                            },
 "save_coaching_membership":
 { Args: { "ends_on": string,"expected_revision": number,"membership_label": string,"request_id": string,"starts_on": string,"target_trainee": string }; Returns: string
