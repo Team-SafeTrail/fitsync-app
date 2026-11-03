@@ -1,5 +1,4 @@
 import React from "react";
-import Brand from "@/components/brand/Brand";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { 
@@ -48,7 +47,10 @@ export default async function AdminLayout({
       <aside className="admin-sidebar">
         <div>
           <Link href="/admin" className="admin-brand" aria-label="FitSync Admin Portal">
-            <Brand />
+            <Activity size={24} color="#FF6B00" strokeWidth={2.5} />
+            <span>
+              fit<strong>sync</strong>
+            </span>
           </Link>
           <span className="admin-portal-badge">Admin Console</span>
 
@@ -80,16 +82,16 @@ export default async function AdminLayout({
         <div className="admin-sidebar-foot">
           {/* System Health */}
           <div className="admin-system-health">
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 600, color: "var(--color-text-primary)" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 600, color: "#FFFFFF" }}>
               <span className="admin-system-health-dot" />
               <span>Phiên quản trị đã được xác thực</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <Server size={12} color="var(--color-success)" />
+              <Server size={12} color="#10B981" />
               <span>Supabase: kiểm tra theo môi trường triển khai</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <ShieldCheck size={12} color="var(--color-success)" />
+              <ShieldCheck size={12} color="#10B981" />
               <span>RLS: được khai báo trong migrations</span>
             </div>
           </div>
@@ -101,10 +103,10 @@ export default async function AdminLayout({
                 {displayName.charAt(0).toUpperCase()}
               </div>
               <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
+                <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "#FFFFFF" }}>
                   {displayName}
                 </span>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-brand)", textTransform: "capitalize" }}>
+                <span style={{ fontSize: "0.75rem", color: "#FF6B00", textTransform: "capitalize" }}>
                   {userRole === "admin" ? "System Admin" : userRole === "pt" ? "Coach Admin" : "Trainee"}
                 </span>
               </div>
@@ -125,7 +127,7 @@ export default async function AdminLayout({
         <header className="admin-topbar">
           <div className="admin-topbar-title">
             <h1>Bảng Điều Khiển Quản Trị Hệ Thống</h1>
-            <p>Quản trị hệ thống FitSync · Dữ liệu minh họa được ghi nhãn riêng</p>
+            <p>FitSync B2B SaaS Platform • Minh chứng kiểm thử Outcome 2 • SafeTrail Team</p>
           </div>
 
           <div className="admin-topbar-actions">
@@ -141,7 +143,7 @@ export default async function AdminLayout({
         </header>
 
         {/* Content Page */}
-        <main id="main-content">{children}</main>
+        <main>{children}</main>
       </div>
     </div>
   );

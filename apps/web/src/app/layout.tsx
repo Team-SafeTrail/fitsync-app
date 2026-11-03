@@ -1,21 +1,28 @@
 import type { Metadata, Viewport } from "next";
-import localFont from "next/font/local";
+import { Inter, JetBrains_Mono, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import "./auth.css";
 
-const beVietnam = localFont({
-  src: [
-    { path: "./fonts/be-vietnam-pro-0.ttf", weight: "400", style: "normal" },
-    { path: "./fonts/be-vietnam-pro-1.ttf", weight: "500", style: "normal" },
-    { path: "./fonts/be-vietnam-pro-2.ttf", weight: "600", style: "normal" },
-    { path: "./fonts/be-vietnam-pro-3.ttf", weight: "700", style: "normal" },
-  ],
-  variable: "--font-be-vietnam",
+const inter = Inter({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const spaceGrotesk = Space_Grotesk({
+  subsets: ["latin", "vietnamese"],
+  variable: "--font-space-grotesk",
+  display: "swap",
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ["latin"],
+  variable: "--font-mono",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "FitSync | Cùng tập. Cùng tiến xa.",
+  title: "FitSync | Bớt việc quản lý. Thêm giờ huấn luyện.",
   description:
     "Workspace FitSync dành cho PT Việt: tạo hồ sơ, mời học viên và xác nhận chỉ số InBody trong một luồng được phân quyền.",
   keywords: [
@@ -29,8 +36,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  colorScheme: "light",
-  themeColor: "#143e38",
+  colorScheme: "dark",
+  themeColor: "#101113",
 };
 
 export default function RootLayout({
@@ -41,9 +48,9 @@ export default function RootLayout({
   return (
     <html
       lang="vi"
-      className={beVietnam.variable}
+      className={`${inter.variable} ${spaceGrotesk.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="antialiased font-sans">
+      <body className="antialiased font-sans grain-overlay">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-50 focus:px-3 focus:py-1.5 focus:bg-[var(--color-surface)] focus:text-[var(--color-brand)] focus:border focus:border-[var(--color-brand)] focus:rounded-md focus:shadow-md"

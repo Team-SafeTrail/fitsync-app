@@ -1,7 +1,6 @@
 "use client";
 
-import AccessibleModal from "@/components/app/AccessibleModal";
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { todayMeals } from "@/lib/mock-data";
 import type { MealEntry } from "@/types";
 import {
@@ -57,12 +56,12 @@ export default function TraineePage() {
   };
 
   return (
-    <div className="demo-trainee max-w-[780px] mx-auto p-4 pb-20">
+    <div className="max-w-[480px] mx-auto p-4 pb-20">
       {/* Header */}
       <div className="flex items-center justify-between mb-5">
         <div>
           <h1 className="text-[22px] font-bold tracking-[-0.015em] text-[var(--color-text-primary)]">
-            Hôm nay của Linh
+            Xin chào, Linh 👋
           </h1>
           <p className="text-[13px] text-[var(--color-text-secondary)] mt-0.5">
             Hôm nay |{" "}
@@ -80,21 +79,20 @@ export default function TraineePage() {
             {STREAK_DAYS}
           </span>
           <span className="text-[11px] text-amber-600 font-semibold uppercase tracking-wider">
-            ngày trong mẫu
+            Days Active
           </span>
         </div>
       </div>
 
-      <section className="trainee-companion"><div><span className="mobile-client-avatar">AN</span><div><h2>PT Anh Nam</h2><p>Người đồng hành trong bản mẫu</p></div></div><p>Ghi lại bữa ăn để thử cập nhật ngày của bạn. Chat và lịch chung chưa được kết nối trong bản mẫu.</p><a href="#trainee-meals">Xem và ghi bữa ăn</a></section>
       {/* Calorie Gauge */}
       <div className="card mb-4">
         <div className="flex items-center justify-between mb-3">
           <div>
             <h2 className="text-[15px] font-semibold text-[var(--color-text-primary)]">
-              Mục tiêu dinh dưỡng mẫu
+              Daily Nutrition Target
             </h2>
             <p className="text-[11px] text-[var(--color-text-muted)]">
-              PT gợi ý · Dữ liệu minh họa
+              Prescribed by Coach Nam
             </p>
           </div>
           <span className="font-mono text-[13px] font-bold text-[var(--color-brand)] bg-[var(--color-brand-light)] px-2 py-0.5 rounded">
@@ -154,14 +152,14 @@ export default function TraineePage() {
         </div>
       </div>
 
-      {/* Thay đổi trong mẫu */}
+      {/* Body Recomposition Delta */}
       <div className="card mb-4">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-[15px] font-semibold text-[var(--color-text-primary)]">
-            Thay đổi trong mẫu
+            Body Recomposition Delta
           </h2>
           <span className="text-[11px] text-[var(--color-text-muted)]">
-            Số liệu minh họa
+            Verified InBody 270
           </span>
         </div>
         <div className="grid grid-cols-2 gap-3">
@@ -169,28 +167,28 @@ export default function TraineePage() {
             <div className="flex items-center gap-1.5 mb-1">
               <TrendingDown size={14} className="text-[var(--color-success)]" />
               <span className="text-[11px] text-[var(--color-success)] font-semibold uppercase tracking-wider">
-                Cân nặng
+                Weight
               </span>
             </div>
             <span className="font-mono text-[22px] font-bold text-[var(--color-success)]">
               -1.8 kg
             </span>
             <p className="text-[11px] text-[var(--color-success)] font-medium mt-0.5">
-              30 ngày · Dữ liệu mẫu
+              Last 30 days (Fat Loss)
             </p>
           </div>
           <div className="bg-[var(--color-brand-light)] border border-[var(--color-border-accent)] rounded-[var(--radius-md)] p-3">
             <div className="flex items-center gap-1.5 mb-1">
               <TrendingUp size={14} className="text-[var(--color-brand)]" />
               <span className="text-[11px] text-[var(--color-brand)] font-semibold uppercase tracking-wider">
-                Khối cơ xương
+                SMM Muscle
               </span>
             </div>
             <span className="font-mono text-[22px] font-bold text-[var(--color-brand)]">
               +0.6 kg
             </span>
             <p className="text-[11px] text-[var(--color-brand)] font-medium mt-0.5">
-              30 ngày · Dữ liệu mẫu
+              Last 30 days (Lean Gain)
             </p>
           </div>
         </div>
@@ -201,19 +199,19 @@ export default function TraineePage() {
         <div className="flex items-center justify-between p-4 border-b border-[var(--color-border-default)]">
           <div>
             <h2 className="text-[15px] font-semibold text-[var(--color-text-primary)]">
-              Bữa ăn hôm nay
+              Today&apos;s Meals
             </h2>
             <span className="text-[12px] text-[var(--color-text-muted)]">
-              {meals.length} bữa đã ghi
+              {meals.length} meals recorded
             </span>
           </div>
 
-          {/* Rapid Meal Check-in Button (+ Ghi bữa trưa) */}
+          {/* Rapid Meal Check-in Button (+ Log Lunch) */}
           <button
             onClick={() => openLogWithSlot("lunch")}
             className="btn-secondary h-[32px] px-3 text-[12px] gap-1 font-semibold hover:border-[var(--color-brand)] hover:text-[var(--color-brand)]"
           >
-            <Plus size={13} />+ Ghi bữa trưa
+            <Plus size={13} />+ Log Lunch
           </button>
         </div>
 
@@ -224,14 +222,13 @@ export default function TraineePage() {
         </div>
       </div>
 
-      <span id="trainee-meals" />
       {/* Primary Log Action CTA */}
       <button
         onClick={() => openLogWithSlot("snack")}
         className="btn-primary w-full h-12 text-[15px] shadow-sm"
       >
         <Plus size={18} />
-        Ghi thêm bữa ăn
+        Log Another Meal
       </button>
 
       {/* Log Modal */}
@@ -304,7 +301,7 @@ function MealRow({ meal }: { meal: MealEntry }) {
           {meal.name}
         </p>
         <p className="text-[11px] text-[var(--color-text-muted)]">
-          {({breakfast:"Sáng",lunch:"Trưa",dinner:"Tối",snack:"Bữa phụ"})[meal.slot]} • P:
+          {meal.slot.charAt(0).toUpperCase() + meal.slot.slice(1)} • P:
           {meal.protein}g C:{meal.carbs}g F:{meal.fat}g
         </p>
       </div>
@@ -336,7 +333,6 @@ function LogMealModal({
   const [carbs, setCarbs] = useState("");
   const [fat, setFat] = useState("");
   const [photoPreview, setPhotoPreview] = useState<string | null>(null);
-  useEffect(() => () => {if (photoPreview?.startsWith("blob:")) URL.revokeObjectURL(photoPreview);}, [photoPreview]);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const quickMeals = [
@@ -386,7 +382,22 @@ function LogMealModal({
   };
 
   return (
-    <AccessibleModal labelId="log-meal-title" onClose={onClose} width={480}>
+    <div
+      className="modal-overlay"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="log-meal-title"
+    >
+      <div
+        className="fixed inset-0 bg-black/70"
+        role="button"
+        tabIndex={0}
+        onClick={onClose}
+        onKeyDown={(e) =>
+          (e.key === "Escape" || e.key === "Enter") && onClose()
+        }
+        aria-label="Close dialog overlay"
+      />
       <div className="modal-content relative z-10 max-w-[420px] p-5">
         <div className="flex items-center justify-between mb-4">
           <div>
@@ -394,7 +405,7 @@ function LogMealModal({
               id="log-meal-title"
               className="text-[17px] font-semibold text-[var(--color-text-primary)]"
             >
-              Ghi bữa ăn mẫu
+              Check-in Bữa Ăn
             </h3>
             <p className="text-[11px] text-[var(--color-text-muted)]">
               Chọn ảnh để xem trước luồng check-in mô phỏng
@@ -402,7 +413,7 @@ function LogMealModal({
           </div>
           <button
             onClick={onClose}
-            aria-label="Đóng chi tiết"
+            aria-label="Close modal"
             className="p-1.5 hover:bg-[var(--color-canvas)] rounded-[var(--radius-base)] transition-colors border-none bg-transparent cursor-pointer"
           >
             <X size={18} className="text-[var(--color-text-muted)]" />
@@ -437,7 +448,7 @@ function LogMealModal({
               <button
                 type="button"
                 onClick={() => setPhotoPreview(null)}
-                aria-label="Bỏ ảnh đã chọn"
+                aria-label="Remove attached photo"
                 className="p-1.5 hover:bg-[var(--color-surface-elevated)] rounded text-[var(--color-success)] border-none bg-transparent cursor-pointer"
               >
                 <X size={14} />
@@ -452,15 +463,15 @@ function LogMealModal({
               className="flex-1 flex items-center justify-center gap-2 h-[48px] rounded-[var(--radius-md)] border-2 border-dashed border-[var(--color-border-default)] hover:border-[var(--color-brand)] bg-[var(--color-canvas)] transition-colors cursor-pointer text-[12px] text-[var(--color-text-secondary)] font-medium"
             >
               <Camera size={16} className="text-[var(--color-brand)]" />
-              Chọn ảnh bữa ăn
+              Upload Food Photo
             </button>
             <button
               type="button"
               onClick={triggerSimulatedPhoto}
               className="px-3 h-[48px] rounded-[var(--radius-md)] border border-[var(--color-border-default)] bg-[var(--color-surface-muted)] hover:bg-[var(--color-surface-elevated)] text-[11px] font-medium text-[var(--color-text-muted)] cursor-pointer"
-              title="Thử ảnh mô phỏng"
+              title="Simulate quick snap"
             >
-              Dùng ảnh mô phỏng
+              Quick Snap
             </button>
           </div>
         )}
@@ -508,7 +519,7 @@ function LogMealModal({
                 className="input h-[34px] text-[13px]"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder="Ví dụ: Cơm gà luộc"
+                placeholder="e.g. Cơm gà luộc"
                 required
               />
             </div>
@@ -526,10 +537,10 @@ function LogMealModal({
                 value={slot}
                 onChange={(e) => setSlot(e.target.value)}
               >
-                <option value="breakfast">Bữa sáng</option>
-                <option value="lunch">Bữa trưa</option>
-                <option value="dinner">Bữa tối</option>
-                <option value="snack">Bữa phụ</option>
+                <option value="breakfast">Breakfast (Sáng)</option>
+                <option value="lunch">Lunch (Trưa)</option>
+                <option value="dinner">Dinner (Tối)</option>
+                <option value="snack">Snack (Phụ)</option>
               </select>
             </div>
           </div>
@@ -540,7 +551,7 @@ function LogMealModal({
                 htmlFor="meal-cal-input"
                 className="block text-[11px] font-medium text-[var(--color-text-secondary)] mb-1 cursor-pointer"
               >
-                Năng lượng
+                Calories
               </label>
               <input
                 id="meal-cal-input"
@@ -612,6 +623,6 @@ function LogMealModal({
           </button>
         </form>
       </div>
-    </AccessibleModal>
+    </div>
   );
 }
