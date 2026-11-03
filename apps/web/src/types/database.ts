@@ -362,6 +362,14 @@ isOneToOne: false
               "display_name": string,"email": string,"expires_at": string
             }[]
                            },
+"reissue_trainee_invitation":
+{ Args: { "new_expires_at": string,"new_token_hash": string,"target_trainee_id": string }; Returns: {
+              "email": string,"expires_at": string,"invitation_id": string
+            }[]
+                            },
+"revoke_trainee_invitation":
+{ Args: { "target_trainee_id": string }; Returns: boolean
+                            },
 "is_checkin_warning_due":
 { Args: { "at_time": string,"reference_date": string }; Returns: boolean
                            },
