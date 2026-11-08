@@ -2,6 +2,13 @@
 
 This directory separates active product decisions from supporting evidence and historical material.
 
+## 2026-10-30 alignment checkpoint
+
+The owner has disputed the current product direction. Start with
+[the document/alignment scan](PROJECT_ALIGNMENT_SCAN.md) for the source map and
+missing original PRD, and [project skills](skills/README.md) for the installed
+support library. This checkpoint does not approve a replacement product brief.
+
 ## Start here
 
 | Document | Purpose |
@@ -39,3 +46,10 @@ Research documents support claims and decisions; they do not establish that a fe
 Superseded landing strategy and alignment reports are retained under [`archive/landing/`](archive/landing/) for historical context. Archived documents are not implementation instructions and may describe routes, targets, or planned capabilities that no longer match the product.
 
 Completed milestone checklists and the obsolete continuation prompt were removed from the working tree after their verified outcomes were consolidated into `HANDOFF.md` and `MVP_EXECUTION_PLAN.md`. They remain recoverable from Git history.
+
+
+## Approved coaching design (2026-10-30)
+
+- [Current design language](../DESIGN.md) — owner-approved visual direction for main pages.
+- [Application and fresh verification](reviews/APPROVED_DESIGN_ROLLOUT.md).
+- [Preserved Carbon v3.1 specification](archive/landing/DESIGN-carbon-v3.1.md).

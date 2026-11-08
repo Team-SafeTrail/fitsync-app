@@ -1,0 +1,11 @@
+{
+  "repository": "https://github.com/NVIDIA/SkillSpector",
+  "commit": "54921c8c7c23008c8af2328d5ab492a904b6ece4",
+  "upstream_path": "skills/skill-inspector",
+  "installed_on": "2026-10-29",
+  "license": "Apache-2.0",
+  "files": {
+    "SKILL.md": "1acc220016936ba68f7b9083c19575a8866c9cf74c251d689285a0d9fbe2a067",
+    "LICENSE.txt": "3f34f449075e0cf4222e2e172c5f6569b202dd2ae75f2e396880ac31853e68d6"
+  }
+}

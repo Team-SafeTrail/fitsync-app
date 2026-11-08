@@ -42,3 +42,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Walkthrough footage, credentials, sessions and local review evidence
+/.video-private/
+/outputs/video/
+**/*.auth-state.json
+
+# Local skill audit evidence and upstream video skills with unverified licensing
+/.agents/audit/
+/.agents/skills/remotion-create/
+/.agents/skills/remotion-render/
+/.agents/skills/remotion-captions/
+
+# Local guideline skills with unverified upstream licensing
+/.agents/skills/web-design-guidelines/
+/.agents/skills/writing-guidelines/

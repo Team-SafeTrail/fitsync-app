@@ -1,0 +1,8 @@
+/* Functional dividers inside data-ui product fragments, real tables and review values. */
+.dossier-tabs{border-bottom:1px solid var(--line);}
+.package-row{border-top:1px solid var(--line);}
+.day-agenda{border-left:1px solid var(--line);}
+.report-paper dl>div{border-bottom:1px solid var(--line);}
+.shared-ledger{border-bottom:1px solid #ccd3e5;}
+.review-values>div{border-bottom:1px solid var(--line);}
+@media(max-width:600px){.workspace .day-agenda{border-left:0;border-top:1px solid var(--line);}}

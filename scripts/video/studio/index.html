@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="vi">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>FitSync · Phòng thu thuyết minh</title><link rel="stylesheet" href="/style.css"></head>
+<body>
+<header><div class="brand"><span class="pulse">⌁</span><div><strong>fitsync<span class="dot">.</span></strong><small>PHÒNG THU THUYẾT MINH</small></div></div><div class="header-copy">Giọng của bạn. Video của nhóm.</div><span id="saveState" class="pill">Đang mở phòng thu…</span></header>
+<main>
+  <aside><div class="aside-title">KỊCH BẢN TIẾNG VIỆT <span>03:55</span></div><nav id="sectionList" aria-label="Các đoạn thuyết minh"></nav><div class="aside-note"><strong>Đọc tự nhiên, không cần vội.</strong><p>Nếu vấp, bạn có thể thu lại riêng một đoạn. Bản thu cũ luôn được giữ.</p><a href="/media/video" target="_blank" rel="noreferrer">Mở video hình riêng ↗</a></div></aside>
+  <section class="workspace">
+    <div class="intro"><div><p class="eyebrow">SẴN SÀNG THU LỜI</p><h1>Đọc theo chữ. Còn lại để phòng thu lo.</h1><p>Chọn micro, bấm thu và đọc bằng giọng của bạn. Âm thanh được lưu trên máy này.</p></div></div>
+    <div class="studio-grid">
+      <section class="left-stack">
+        <div class="video-card"><div class="card-head"><span>HÌNH MINH HỌA</span><span id="videoLabel">Bản dựng 3:55</span></div><video id="video" src="/media/video" controls playsinline preload="metadata"></video></div>
+        <div class="panel mic-panel"><div class="card-head"><h2>Micro của bạn</h2><button id="micButton" class="text-button">Bật / kiểm tra micro</button></div><label class="sr-only" for="micSelect">Chọn micro</label><select id="micSelect"><option value="">Micro mặc định</option></select><div class="level-track"><div id="level"></div></div><p id="micHint" class="hint">Cho phép micro khi trình duyệt hỏi. Nên dùng tai nghe và chọn nơi yên tĩnh.</p></div>
+        <div class="panel mix-panel"><div class="card-head"><h2>Âm thanh khi xuất</h2><span class="small-badge">Tự ghép</span></div><label class="check"><input id="clean" type="checkbox" checked> Giảm tạp âm nhẹ, cân mức giọng</label><label class="check"><input id="music" type="checkbox" checked> Nhạc nền nhẹ, tự hạ dưới giọng đọc</label><label class="range-label" for="musicVolume">Mức nhạc <output id="musicValue">4%</output></label><input id="musicVolume" type="range" min="0" max="12" step="1" value="4"><div class="mix-actions"><button id="musicPreview" class="secondary">Nghe thử nhạc</button><label class="check compact"><input id="autoExport" type="checkbox" checked> Tự xuất khi thu đủ</label></div><audio id="musicAudio" src="/media/music" preload="none" loop></audio><p class="hint">Nhạc chỉ được chèn khi xuất. Giọng đọc không bị tăng tốc hoặc đổi cao độ.</p></div>
+      </section>
+      <section class="right-stack">
+        <div class="mode-tabs" role="group" aria-label="Cách thu"><button id="fullMode" class="active">Thu toàn bài · nhanh nhất</button><button id="sectionMode">Thu từng đoạn · dễ thu lại</button></div>
+        <div class="prompter-card"><div class="card-head"><div><p id="sectionKicker" class="eyebrow">ĐOẠN 1 / 9</p><h2 id="sectionTitle">Giới thiệu FitSync</h2></div><span id="target" class="pill">25 giây</span></div>
+          <div class="prompt-toolbar"><label>Cỡ chữ <input id="fontSize" type="range" min="24" max="42" value="29"></label><label>Nhịp chữ <select id="pace"><option value="0.85">Chậm</option><option value="1" selected>Tự nhiên</option><option value="1.12">Nhanh hơn</option></select></label><button id="editButton" class="text-button">Sửa lời</button></div>
+          <div id="prompter" tabindex="0" aria-label="Chữ chạy thuyết minh"><div id="promptText"></div><div id="countdown" hidden></div></div>
+          <div class="read-progress"><div id="readProgress"></div></div><div class="timer-line"><span id="recordStatus">Chưa ghi âm</span><strong id="timer">00:00 <span>/ 03:55</span></strong></div>
+          <div class="record-actions"><button id="recordButton" class="primary"><span class="record-dot"></span><span id="recordButtonText">Bắt đầu thu toàn bài</span></button><button id="rehearseButton" class="secondary">Chạy thử chữ</button><button id="stopButton" class="stop" disabled>Dừng & lưu</button></div>
+        </div>
+        <div class="panel takes-panel"><div class="card-head"><h2>Bản thu đã lưu</h2><span id="takesLabel" class="hint">Chưa có bản thu</span></div><div id="takes"></div><audio id="playback" controls preload="none" hidden></audio></div>
+        <div class="panel export-panel"><div class="card-head"><div><h2>Video có giọng thuyết minh</h2><p id="exportHint" class="hint">Thu toàn bài, hoặc thu đủ 9 đoạn rồi xuất.</p></div><button id="exportButton" class="primary" disabled>Xuất MP4</button></div><div id="jobBox" hidden><div class="job-track"><div id="jobProgress"></div></div><p id="jobMessage" role="status"></p></div><div id="exports"></div></div>
+      </section>
+    </div>
+  </section>
+</main>
+<div id="toast" role="status" hidden></div>
+<dialog id="editDialog"><form method="dialog"><div class="card-head"><h2 id="editTitle">Sửa lời đọc</h2><button class="text-button" value="cancel">Đóng</button></div><p class="hint">Giữ lời đọc khớp với hình. Không khẳng định tính năng chưa được trình diễn.</p><textarea id="scriptEditor" rows="11"></textarea><div class="dialog-actions"><button value="cancel" class="secondary">Hủy</button><button id="saveScript" value="default" class="primary">Lưu lời đọc</button></div></form></dialog>
+<script type="module" src="/app.js"></script>
+</body></html>

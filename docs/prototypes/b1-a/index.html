@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>FitSync · Bản mẫu B1-A</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="refresh.css">
+  <script src="charts.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Đến nội dung chính</a>
+  <div class="reviewbar" aria-label="Công cụ xem bản mẫu">
+    <span class="prototype-label">Bản mẫu B1-A <span>Dữ liệu giả, không lưu sau tải lại</span></span>
+    <div class="review-tools">
+      <label for="review-role">Xem với vai</label>
+      <select id="review-role" aria-label="Vai trò đang xem"><option value="pt">PT</option><option value="trainee">Học viên</option></select>
+      <label for="review-scenario">Tình huống</label>
+      <select id="review-scenario" aria-label="Tình huống đọc báo cáo"><option value="normal">Đọc phiếu mẫu</option><option value="missing">Thiếu một chỉ số</option><option value="unavailable">OCR chưa sẵn sàng</option></select>
+      <button type="button" id="landing-preview">Hướng landing</button>
+      <button type="button" id="reset-prototype">Đặt lại</button>
+    </div>
+  </div>
+  <div id="app"></div>
+  <div id="announcements" class="sr-only" role="status" aria-live="polite"></div>
+  <div id="toast" role="status" hidden></div>
+  <dialog id="app-dialog" aria-labelledby="dialog-title"></dialog>
+  <noscript><p class="no-script">Bản mẫu tương tác cần JavaScript. Bạn có thể đọc B1_A_SPEC.md để xem sơ đồ và quyền.</p></noscript>
+</body>
+</html>
