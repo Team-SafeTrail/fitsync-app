@@ -1,0 +1,163 @@
+[
+  {
+    "source": "docs\\checkpoints\\EXE101_SafeTrail_Checkpoint_01.pdf",
+    "sha256": "63b834e40c073d7206f18f49e49bb71dab65e293cb628524ffcfda125049d3f1",
+    "pages": 16,
+    "text_chars": 1882,
+    "output": "checkpoints__EXE101_SafeTrail_Checkpoint_01.pdf.txt"
+  },
+  {
+    "source": "docs\\checkpoints\\EXE101_SafeTrail_Checkpoint_02.pdf",
+    "sha256": "0eff1896f15c37d6f29f4c13dfc36c795cd0cb4189878334eeff34d94722aa1b",
+    "pages": 28,
+    "text_chars": 8415,
+    "output": "checkpoints__EXE101_SafeTrail_Checkpoint_02.pdf.txt"
+  },
+  {
+    "source": "docs\\checkpoints\\EXE101_SafeTrail_Checkpoint_03.pdf",
+    "sha256": "701b9e61b3b5cec17307f3620d38c118c9fccfcf9b6e9766a368cd92ad35fc81",
+    "pages": 8,
+    "text_chars": 266,
+    "output": "checkpoints__EXE101_SafeTrail_Checkpoint_03.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\FINAL REPORT EXE201 GUIDELINES.docx",
+    "sha256": "06b67582085ce2f54cd027bc2895d864d25fd81938e4923a549230f97e9237cf",
+    "pages": null,
+    "text_chars": 1984,
+    "output": "lecture__FINAL REPORT EXE201 GUIDELINES.docx.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week 1.pdf",
+    "sha256": "c2e676053da64b4c3d7482115496cf597a50d88bb8489c0219c9e050d335dbd1",
+    "pages": 2,
+    "text_chars": 1220,
+    "output": "lecture__Week 1.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week 10.pdf",
+    "sha256": "514b98ecaa24c859209077b6cdb2df7b95c7fc1990d0ca2486fb7546bcb28782",
+    "pages": 1,
+    "text_chars": 543,
+    "output": "lecture__Week 10.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week 2.pdf",
+    "sha256": "41b6f178479d5aa3bbae50382ffa3205b9064c90b0ac9394167508f2b70d562c",
+    "pages": 2,
+    "text_chars": 1319,
+    "output": "lecture__Week 2.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week 4.pdf",
+    "sha256": "3bb4ec00662a0af01c0ea699cf7e0a9f27b10be7288ebeb389e2b9d2db567a7e",
+    "pages": 2,
+    "text_chars": 1345,
+    "output": "lecture__Week 4.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week 6.pdf",
+    "sha256": "76454d423006938775206f98dfad884ac480bca73bab7a44313f27288afca49a",
+    "pages": 1,
+    "text_chars": 496,
+    "output": "lecture__Week 6.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week 7.pdf",
+    "sha256": "f3407a4a98c5f61bee4c05f4dd9183f92529b9de6753e917b2f7bd80c2800a3d",
+    "pages": 2,
+    "text_chars": 1031,
+    "output": "lecture__Week 7.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week 9.pdf",
+    "sha256": "677f76c4dd63ce77e0dc1b4348c9b6eae213e8c8bcad5c5b799f5b37a2e970a2",
+    "pages": 2,
+    "text_chars": 1016,
+    "output": "lecture__Week 9.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week1_EXE201.pdf",
+    "sha256": "bf080b518b833c8f6de9adc84ab675914e203ec1079ed8dd74e4c01ed02fe3f1",
+    "pages": 1,
+    "text_chars": 503,
+    "output": "lecture__Week1_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week2_EXE201.pdf",
+    "sha256": "fba1291402a6a9ff5ff2c5994c3a348ffc8cd01605920a39c8c52742ef891056",
+    "pages": 2,
+    "text_chars": 1062,
+    "output": "lecture__Week2_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week3.pdf",
+    "sha256": "de1cb22bca5ed6f4b4be36c06e12f1af278c6c2f3b7bc734fedb25fafee13572",
+    "pages": 3,
+    "text_chars": 3196,
+    "output": "lecture__Week3.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week3_EXE201.pdf",
+    "sha256": "2c568d3cbf0266c50c25c6832ae57d354c7147caa485bab8bd17c9b0f423e7d2",
+    "pages": 2,
+    "text_chars": 972,
+    "output": "lecture__Week3_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week4_EXE201.pdf",
+    "sha256": "ed8f62b0fd708787467966bdf1e90d00b380039f57a911b02d3b21e29b697485",
+    "pages": 2,
+    "text_chars": 1015,
+    "output": "lecture__Week4_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week5_EXE201.pdf",
+    "sha256": "296c03efa54476946c9ef36494a5fb32640f0955935c93c43f21c428e2101232",
+    "pages": 2,
+    "text_chars": 911,
+    "output": "lecture__Week5_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week6_EXE201.pdf",
+    "sha256": "7149933609fa630eea2ade12a375de6d962a4b240c182bc4f16475c28ae97951",
+    "pages": 2,
+    "text_chars": 1041,
+    "output": "lecture__Week6_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week7_EXE201.pdf",
+    "sha256": "6b4afbd5227f7e0629af7eac77aec9db188bfc9a1c1a0f5ee046eb9a9163d919",
+    "pages": 2,
+    "text_chars": 960,
+    "output": "lecture__Week7_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week8_EXE201.pdf",
+    "sha256": "84ac8e514a90f9825482891b3b3d9fdc1db1c3f04341b0e7e01cf72d8b438b90",
+    "pages": 2,
+    "text_chars": 1024,
+    "output": "lecture__Week8_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\lecture\\Week9_EXE201.pdf",
+    "sha256": "1dc15d624a713609719fd2052d862256b2ffd75c801a48b7feafdd29779d4c25",
+    "pages": 2,
+    "text_chars": 851,
+    "output": "lecture__Week9_EXE201.pdf.txt"
+  },
+  {
+    "source": "docs\\proposal\\FitSync_EXE201_Project_Overview.pdf",
+    "sha256": "89e07a5a9db710603a6c95af2849184f5fb6b249caddab78491f8e0463874b02",
+    "pages": 12,
+    "text_chars": 24031,
+    "output": "proposal__FitSync_EXE201_Project_Overview.pdf.txt"
+  },
+  {
+    "source": "docs\\proposal\\FitSync_Project_Description.docx.pdf",
+    "sha256": "bc1e8fd3f89d535e96c0b01bc8ce3802d03c4f37220f732e5cd4f3ee8ecb2fb8",
+    "pages": 4,
+    "text_chars": 9775,
+    "output": "proposal__FitSync_Project_Description.docx.pdf.txt"
+  }
+]

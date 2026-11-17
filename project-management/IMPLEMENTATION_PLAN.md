@@ -12,7 +12,7 @@ Hoàn thiện báo cáo, audit và kiểm thử trong branch `agent/exe201-fitsy
 2. **P0:** Đối chiếu Trello, GitHub, dữ liệu kinh doanh đã có; tách actual, nguồn lịch sử, giả định và kế hoạch.
 3. **P1:** Kiểm tra dependency, unit/lint/type/build, smoke public và acceptance backend trên môi trường tổng hợp được cô lập nếu khả dụng. Chỉ sửa lỗi được tái hiện và trong phạm vi demo.
 4. **P0:** Viết đúng 6 mục Week 8 và 5 mục Week 9; tạo financial report có dữ liệu thiếu được ghi rõ, CAP/funnel và bản nháp final đúng 5 phần.
-5. **P2:** Tạo Canva mới, khoảng 10 slide 16:9, dùng screenshot tổng hợp có provenance và kịch bản tiếng Việt.
+5. **P2:** Tạo Canva mới, khoảng 10 slide 16: 9, dùng screenshot tổng hợp có provenance và kịch bản tiếng Việt.
 6. **P2:** Đối soát các card phù hợp, giữ lịch sử và trách nhiệm; chuẩn bị commit/PR, xác minh và bàn giao.
 
 ## Điều kiện hoàn tất

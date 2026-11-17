@@ -28,7 +28,7 @@ Archive được đặt tại `../outputs/archive/exe201-cleanup-2026-11-17/test
 
 ## Thư mục chưa chắc chắn
 
-Năm worktree sạch theo `git status --porcelain`. Worktree `ui-before-sync-20261106` có thay đổi ở .gitignore, admin/layout.tsx, auth/actions.ts, supabase/env.ts cùng untracked docs/TRELLO_BOARD_STATE.md và scripts/. Giữ nguyên toàn bộ. Không move worktree bằng thao tác filesystem vì sẽ làm sai đăng ký Git. Những bản giống nhau dưới docs/handoff/screenshots và docs/evidence được giữ vì đang được tài liệu tham chiếu; chưa coi là obsolete.
+Năm worktree sạch theo `git status --porcelain`. Worktree `ui-before-sync-20261106` có thay đổi ở .gitignore, admin/layout.tsx, auth/actions.ts, supabase/env.ts cùng untracked docs/TRELLO_BOARD_STATE.md và scripts/. Giữ nguyên toàn bộ. Không move worktree bằng thao tác file system vì sẽ làm sai đăng ký Git. Những bản giống nhau dưới docs/handoff/screenshots và docs/evidence được giữ vì đang được tài liệu tham chiếu; chưa coi là obsolete.
 
 ## Cấu trúc áp dụng
 

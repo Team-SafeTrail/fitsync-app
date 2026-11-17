@@ -1,0 +1,17 @@
+
+> fitsync@0.1.0 test
+> npm run test --workspace @fitsync/web
+
+
+> @fitsync/web@0.1.0 test
+> vitest run
+
+
+ RUN  v4.1.11 C:/LEARNING/FPT_NVH/FAL2026/EXE201/project/fitsync-app/apps/web
+
+
+ Test Files  10 passed (10)
+      Tests  103 passed (103)
+   Start at  13:28:58
+   Duration  1.40s (transform 1.46s, setup 0ms, import 2.77s, tests 459ms, environment 3ms)
+

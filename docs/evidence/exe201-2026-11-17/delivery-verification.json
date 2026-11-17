@@ -1,0 +1,489 @@
+{
+  "checked_at_utc": "2026-11-17T08:10:05.144Z",
+  "pass": true,
+  "checks": [
+    {
+      "description": "Exists: docs/PROJECT_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/ARCHITECTURE.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/DEMO_WORKFLOW.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/GIT_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/TEST_EVIDENCE.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/WEEK_08_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/WEEK_09_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/WEEK_08_09_PROGRESS_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/FINAL_REPORT_READINESS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/FINAL_REPORT_DRAFT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/FINANCIAL_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/DELIVERY_LINKS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/WEEK_08_09_SCRIPT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/SLIDE_OUTLINE.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/CANVA_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/WEEK_08_09_CANVA_SOURCE.html",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/FitSync_Week_08_09.pdf",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/SKILL_TASK_MAPPING.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/TRELLO_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/EXE201_GAP_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/FINAL_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/CLEANUP_DRY_RUN.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/CLEANUP_RESULT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/PR_DESCRIPTION.md",
+      "pass": true
+    },
+    {
+      "description": "Week8 exact six fields",
+      "pass": true
+    },
+    {
+      "description": "Week9 exact five fields",
+      "pass": true
+    },
+    {
+      "description": "Week8 stop decision is No",
+      "pass": true
+    },
+    {
+      "description": "Week9 verified financial URL",
+      "pass": true
+    },
+    {
+      "description": "Five-part final structure",
+      "pass": true
+    },
+    {
+      "description": "Ten slide scripts",
+      "pass": true
+    },
+    {
+      "description": "Ten Key Message fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Speaking Script fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Visual Explanation fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Transition fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Evidence fields",
+      "pass": true
+    },
+    {
+      "description": "Ten annotated HTML pages",
+      "pass": true
+    },
+    {
+      "description": "Exactly two embedded product screenshots",
+      "pass": true
+    },
+    {
+      "description": "Embedded screenshots match original bytes",
+      "pass": true
+    },
+    {
+      "description": "Final Canva ID and ten pages",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 20 PT + 40 học viên",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 17 PT",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 47 PT",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: ít nhất 20 khách trả phí",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: Nhóm quyết định dừng kinh doanh",
+      "pass": true
+    },
+    {
+      "description": "Rejected mock UI text absent",
+      "pass": true
+    },
+    {
+      "description": "Role counts reconcile to candidates",
+      "pass": true
+    },
+    {
+      "description": "Date groups independently reconcile to candidates",
+      "pass": true
+    },
+    {
+      "description": "Break-even scenarios recomputed",
+      "pass": true
+    },
+    {
+      "description": "20 PT scenario cross-check",
+      "pass": true
+    },
+    {
+      "description": "All106 Trello cards classified once",
+      "pass": true
+    },
+    {
+      "description": "Five exact-title duplicate cards reconciled",
+      "pass": true
+    },
+    {
+      "description": "Ten-page16:9 PDF matches verified hash",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/PROJECT_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/ARCHITECTURE.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/DEMO_WORKFLOW.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/GIT_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/TEST_EVIDENCE.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/WEEK_08_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/WEEK_09_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/WEEK_08_09_PROGRESS_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/FINAL_REPORT_READINESS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/FINAL_REPORT_DRAFT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/FINANCIAL_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/DELIVERY_LINKS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: presentations/WEEK_08_09_SCRIPT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: presentations/SLIDE_OUTLINE.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: presentations/CANVA_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/SKILL_TASK_MAPPING.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/TRELLO_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/EXE201_GAP_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/FINAL_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/CLEANUP_DRY_RUN.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/CLEANUP_RESULT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/PR_DESCRIPTION.md",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "finance": {
+    "price": 199000,
+    "cash": {
+      "fixed": 3000000,
+      "variable": 16990,
+      "contribution": 182010,
+      "break_even": 17,
+      "margin": 0.9146231155778894,
+      "cases": [
+        {
+          "pt": 20,
+          "revenue": 3980000,
+          "result": 640200
+        },
+        {
+          "pt": 50,
+          "revenue": 9950000,
+          "result": 6100500
+        },
+        {
+          "pt": 100,
+          "revenue": 19900000,
+          "result": 15201000
+        }
+      ]
+    },
+    "economic": {
+      "fixed": 7800000,
+      "variable": 31990,
+      "contribution": 167010,
+      "break_even": 47,
+      "margin": 0.8392462311557789,
+      "cases": [
+        {
+          "pt": 20,
+          "revenue": 3980000,
+          "result": -4459800
+        },
+        {
+          "pt": 50,
+          "revenue": 9950000,
+          "result": 550500
+        },
+        {
+          "pt": 100,
+          "revenue": 19900000,
+          "result": 8901000
+        }
+      ]
+    }
+  },
+  "manifest": [
+    {
+      "file": "docs/PROJECT_ANALYSIS.md",
+      "bytes": 10227,
+      "sha256": "94091d4993dee7c589572d0b9da7a1ecddc54d3af14390bbf150c132e93dd20a"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "bytes": 3433,
+      "sha256": "aeec2bc924f573f0c04bf289f65861a88d0306ef8aac9255c7932c70c08edaaa"
+    },
+    {
+      "file": "docs/DEMO_WORKFLOW.md",
+      "bytes": 6312,
+      "sha256": "5ce693250979a72e36e3592d2816fccd2b0c08d4dfa595bb2022bd4853c305d3"
+    },
+    {
+      "file": "docs/GIT_AUDIT.md",
+      "bytes": 2874,
+      "sha256": "31f1fe0a712ebfeb8f6bcc2e99a7e2bd3555a07cb668564cf77de3516daec8d8"
+    },
+    {
+      "file": "docs/TEST_EVIDENCE.md",
+      "bytes": 3229,
+      "sha256": "791ea17d1fbda2f2ed6d6f30938b7aea055cda3d2da5c9000dea10bcc2d2a636"
+    },
+    {
+      "file": "reports/WEEK_08_FORM.md",
+      "bytes": 7164,
+      "sha256": "5bcafa56340ad2082d4e9b3c1a5f0e5328632b8f7cefab452a9a1fc1d7e6d3ae"
+    },
+    {
+      "file": "reports/WEEK_09_FORM.md",
+      "bytes": 5300,
+      "sha256": "68d41cc7b84feeb74044b6b606f87943c25fedcb45647f3b779c914aa90f54e8"
+    },
+    {
+      "file": "reports/WEEK_08_09_PROGRESS_REPORT.md",
+      "bytes": 4043,
+      "sha256": "927f03dda5d2b05bbcb33ff8025c3754318ae106d5118d9bdaa377ddc242e016"
+    },
+    {
+      "file": "reports/FINAL_REPORT_READINESS.md",
+      "bytes": 3716,
+      "sha256": "6ce1bdfb7cc23b56ba4527f3fb3dd560a99e694dc945962fcfc97f72adade13a"
+    },
+    {
+      "file": "reports/FINAL_REPORT_DRAFT.md",
+      "bytes": 9608,
+      "sha256": "ce90bd23d831a25084481aea9885ddb53d667724a77c1ead6d478205c423d766"
+    },
+    {
+      "file": "reports/FINANCIAL_REPORT.md",
+      "bytes": 6185,
+      "sha256": "764fc1abc5447d8ac14b6ad491afee8fd0b9b3b1a771aa7ac9e2d5c019ec4cec"
+    },
+    {
+      "file": "reports/DELIVERY_LINKS.md",
+      "bytes": 1590,
+      "sha256": "4ef5582aa770807cacbf2e8ef1e331be8f0a14776294ccfb4b1d86547b00d09e"
+    },
+    {
+      "file": "presentations/WEEK_08_09_SCRIPT.md",
+      "bytes": 11453,
+      "sha256": "b2255ab278dc35c49e7ea4a9ed307fea34184454d98db97418a01edc38cb8673"
+    },
+    {
+      "file": "presentations/SLIDE_OUTLINE.md",
+      "bytes": 2325,
+      "sha256": "b876f2d25e4e2a4dca83e00b6d01099310f16075457aea1cc89d9120078e6a4d"
+    },
+    {
+      "file": "presentations/CANVA_DELIVERY.md",
+      "bytes": 1967,
+      "sha256": "a475e0a218487d207eb23219e9ba5213b54f6c0d1f7e93bd4479235e97552265"
+    },
+    {
+      "file": "presentations/WEEK_08_09_CANVA_SOURCE.html",
+      "bytes": 199371,
+      "sha256": "4cb7fc8f46ffbdfeea26cb2e148c0240b35c6dae9c69acbd5021747ccd703e1c"
+    },
+    {
+      "file": "presentations/FitSync_Week_08_09.pdf",
+      "bytes": 191168,
+      "sha256": "2b2e11c7f0dd918f203a34535b42672e1bc2b850b77bd10a86cf50d284a7171d"
+    },
+    {
+      "file": "project-management/SKILL_TASK_MAPPING.md",
+      "bytes": 2945,
+      "sha256": "5731b632c33db89aea0fedf1edee7ad671e7bbccdc899ebceda599709a25c405"
+    },
+    {
+      "file": "project-management/TRELLO_AUDIT.md",
+      "bytes": 44826,
+      "sha256": "4009aec6f4156cff04b4e5059117118ea497f2bea7ac133832b69c16ac2b7e6a"
+    },
+    {
+      "file": "project-management/EXE201_GAP_ANALYSIS.md",
+      "bytes": 7605,
+      "sha256": "39f412aecdeebde52f1e346e32576026af952916853f76753495100ac8637901"
+    },
+    {
+      "file": "project-management/IMPLEMENTATION_PLAN.md",
+      "bytes": 2803,
+      "sha256": "d5504a996e5af62768535de207f5830c38d8f9b48bb25bd03e7e377981344e43"
+    },
+    {
+      "file": "project-management/FINAL_DELIVERY.md",
+      "bytes": 8192,
+      "sha256": "fad07e53f7984635b6152119ae774c1c9b8cedd2fdf5de0f4c078556bc52e9e1"
+    },
+    {
+      "file": "project-management/CLEANUP_DRY_RUN.md",
+      "bytes": 2968,
+      "sha256": "5c4082addb2cbf802ad4575abe93f7b7966e5d4666567902fef7f542d2aaf615"
+    },
+    {
+      "file": "project-management/CLEANUP_RESULT.md",
+      "bytes": 1032,
+      "sha256": "666fd56e0a9d2028f56c614883df987fe337bddc19db0c9939334b2addaf6138"
+    },
+    {
+      "file": "project-management/PR_DESCRIPTION.md",
+      "bytes": 1743,
+      "sha256": "527266167700c297f727f6d22416b6972296ae1caf2776cc526b2da6d03f7694"
+    }
+  ]
+}
