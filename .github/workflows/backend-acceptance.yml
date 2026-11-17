@@ -50,6 +50,17 @@ jobs:
         env:
           PLAYWRIGHT_PRODUCTION_SERVER: "true"
         run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts tests/e2e/calendar-private.spec.ts tests/e2e/web-handoff.spec.ts tests/e2e/approved-design.spec.ts tests/e2e/public-journey.spec.ts tests/e2e/oc2-admin-landing.spec.ts tests/e2e/final-product.spec.ts tests/e2e/coaching-completion.spec.ts
+      - name: Verify local demo guards
+        run: node --test scripts/local-demo/config.test.mjs
+      - name: Seed and reconcile labelled local demo twice
+        run: |
+          node scripts/local-demo/seed.mjs --apply
+          node scripts/local-demo/seed.mjs --apply
+      - name: Verify seeded course demo in the real application
+        working-directory: apps/web
+        env:
+          PLAYWRIGHT_PRODUCTION_SERVER: "true"
+        run: npx --no-install playwright test --config playwright.local-demo.config.ts
       - name: Retain schema and synthetic chat screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -61,6 +72,7 @@ jobs:
             ${{ runner.temp }}/database.generated.ts
             ${{ runner.temp }}/schema-v1.sql
             apps/web/test-results/chat-proof/*.png
+            apps/web/test-results/local-demo-proof/*.png
             apps/web/test-results/**/*.webm
             apps/web/test-results/**/test-failed-*.png
             apps/web/test-results/**/error-context.md

@@ -6,6 +6,7 @@ import type { AdminSnapshot, FinanceEntry } from "@/features/admin/live-data";
 import { initialWorkspaceActionState, type WorkspaceActionState } from "@/features/workspace/action-state";
 import SubmitButton from "@/components/workspace/SubmitButton";
 import { PendingFields, usePreservedForm } from "@/components/workspace/PreservedForm";
+import {simulationSummary} from "@/features/admin/simulation-summary";
 
 const money = (v: number) => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(v);
 const date = (s: string) => new Intl.DateTimeFormat("vi-VN", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Ho_Chi_Minh" }).format(new Date(s));
@@ -32,9 +33,11 @@ export default function LiveAdminDashboard({ snapshot: s }: { snapshot: AdminSna
   const [nonce, setNonce] = useState("");
   useEffect(() => setNonce(crypto.randomUUID()), []);
   const reversed = new Set(s.financeEntries.flatMap(e => e.reverses_id ? [e.reverses_id] : []));
+  const simulation=simulationSummary(s.financeEntries);
   const users = s.users.filter(u => u.display_name.toLocaleLowerCase("vi").includes(query.toLocaleLowerCase("vi")));
   return <div className="admin-content live-admin-dashboard" data-testid="live-admin-dashboard">
     <p role="status"><strong>Dữ liệu từ database đang kết nối.</strong> Cập nhật {date(s.checkedAt)}. Số đếm hệ thống gồm cả tài khoản thử; doanh thu và khách trả phí loại trừ giao dịch thử.</p>
+    {simulation.visibleTestRows>0&&<details className="admin-section" data-testid="demo-finance-summary"><summary>Kịch bản mô phỏng — không tính kết quả kinh doanh thật</summary><p>Chỉ tính các giao dịch thử đang hiển thị (tối đa 200), có loại trừ bút toán đã đảo trong cùng danh sách. Không dùng các số này thay doanh thu hoặc khách trả phí thực tế.</p><dl><div><dt>PT thuê bao mô phỏng</dt><dd>{simulation.customers}</dd></div><div><dt>Thu mô phỏng</dt><dd>{money(simulation.revenue)}</dd></div><div><dt>Chi mô phỏng</dt><dd>{money(simulation.cost)}</dd></div><div><dt>Chênh lệch mô phỏng</dt><dd>{money(simulation.result)}</dd></div></dl></details>}
     <section className="admin-kpi-grid" aria-label="Số liệu đã ghi nhận">{[["PT trong hệ thống", s.totalPts], ["Hồ sơ học viên", s.totalTrainees], ["Bản ghi InBody", s.totalInBodyRecords], ["PT đã trả phí được đối soát", s.paidCustomers]].map(([label, value]) => <div className="admin-kpi-card" key={label}><p>{label}</p><strong className="admin-kpi-value">{value}</strong></div>)}</section>
     <section className="admin-section"><h2>Tài chính đã ghi sổ</h2><p>Thu: <strong>{money(s.recordedRevenueVnd)}</strong> · Chi: <strong>{money(s.recordedCostVnd)}</strong> · Dòng tiền thuần: <strong>{money(s.recordedRevenueVnd - s.recordedCostVnd)}</strong></p><p>Chỉ phản ánh chứng từ đã nhập và đối soát. Sổ trống không có nghĩa mọi chi phí dự án bằng 0. Không dùng nhãn Pro làm chứng từ thanh toán.</p></section>
     <section id="users-table" className="admin-section"><h2>Tài khoản từ Auth và profiles</h2><label>Tìm tên hiển thị<input type="search" value={query} onChange={e => setQuery(e.target.value)}/></label><p>{s.authAccounts} tài khoản Auth; tối đa 200 hồ sơ mới nhất. Bảng này không tải email, điện thoại hoặc chỉ số sức khỏe.</p><div className="admin-table-container" role="region" tabIndex={0} aria-label="Tài khoản database"><table className="admin-table"><thead><tr><th>Tên hiển thị</th><th>Vai trò</th><th>Nguồn</th><th>Ngày tạo</th></tr></thead><tbody>{users.map(u => <tr key={u.id}><td>{u.display_name}</td><td>{u.role}</td><td>{u.is_test ? "Dữ liệu thử" : "Chưa đánh dấu thử"}</td><td>{date(u.created_at)}</td></tr>)}</tbody></table></div></section>

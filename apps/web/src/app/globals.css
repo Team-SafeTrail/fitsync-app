@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.fitsync-demo-notice{margin:16px 24px;padding:14px 18px;display:flex;flex-wrap:wrap;gap:6px 16px;border-left:4px solid #85520F;background:#FFF2DB;color:#143E38;font-size:14px;line-height:1.6;overflow-wrap:anywhere}
 /* FitSync Coaching Interface v4. See root DESIGN.md, approved 2026-10-30. */
 :root {
   color-scheme: light;

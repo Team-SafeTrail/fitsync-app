@@ -8,6 +8,7 @@ import { getWorkspaceViewer } from "@/features/workspace/data";
 import "./workspace.css";
 import "./coaching.css";
 import WorkspaceVisit from "@/components/workspace/WorkspaceVisit";
+import DemoNotice from "@/components/workspace/DemoNotice";
 
 export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
   const viewer = await getWorkspaceViewer();
@@ -53,7 +54,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
             <form action={logout}><button type="submit" aria-label="Đăng xuất"><LogOut size={17} /></button></form>
           </div>
         </header>
-        {children}
+        <DemoNotice/>{children}
         <WorkspaceMobileNav isPt={isPt}/>
       </div>
     </div>

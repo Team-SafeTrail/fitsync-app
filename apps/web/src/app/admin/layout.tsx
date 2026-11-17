@@ -17,6 +17,7 @@ import {
 import { getWorkspaceViewer } from "@/features/workspace/data";
 import { logout } from "../auth/actions";
 import "./admin.css";
+import DemoNotice from "@/components/workspace/DemoNotice";
 
 export const metadata = {
   title: "FitSync Admin Portal | Hệ Thống Quản Trị SafeTrail",
@@ -141,7 +142,7 @@ export default async function AdminLayout({
         </header>
 
         {/* Content Page */}
-        <main id="main-content">{children}</main>
+        <main id="main-content"><DemoNotice/>{children}</main>
       </div>
     </div>
   );
