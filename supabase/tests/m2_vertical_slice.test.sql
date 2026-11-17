@@ -103,7 +103,7 @@ select throws_ok(
       '22000000-0000-0000-0000-000000000002'
     )$$,
   '42501',
-  'new row violates row-level security policy for table "inbody_records"',
+  'Active linked profile required',
   'PT B cannot insert a record for PT A trainee'
 );
 reset role;

@@ -64,12 +64,12 @@ returns trigger language plpgsql security definer set search_path = '' as $$
 declare t public.trainee_profiles%rowtype; caller_role public.user_role;
 begin
   if current_setting('role', true) <> 'authenticated' then return new; end if;
-  select * into t from public.trainee_profiles where id = new.trainee_id;
+  select * into t from public.trainee_profiles where id = new.trainee_id for share;
   select role into caller_role from public.profiles where id = auth.uid();
-  if t.id is null or t.status = 'archived' or not (
+  if t.id is null or t.status = 'archived' or (
     (caller_role = 'pt' and t.assigned_pt_id = auth.uid())
     or (caller_role = 'trainee' and t.profile_id = auth.uid())
-  ) then raise exception 'Active linked profile required' using errcode = '42501'; end if;
+  ) is not true then raise exception 'Active linked profile required' using errcode = '42501'; end if;
   return new;
 end; $$;
 revoke all on function public.guard_active_trainee_write() from public, anon, authenticated;

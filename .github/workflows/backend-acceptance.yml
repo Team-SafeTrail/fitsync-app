@@ -31,12 +31,12 @@ jobs:
         run: node --test scripts/test/local-environment.test.mjs
       - name: Start isolated Supabase and mask local keys
         run: node scripts/test/ci-local-supabase.mjs
-      - name: Run all database and RLS tests
-        run: node node_modules/supabase/dist/supabase.js test db
       - name: Generate public schema types from test database
         run: node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/database.generated.ts"
       - name: Export schema-only handoff snapshot
         run: node node_modules/supabase/dist/supabase.js db dump --local --schema public,private --file "$RUNNER_TEMP/schema-v1.sql"
+      - name: Run all database and RLS tests
+        run: node node_modules/supabase/dist/supabase.js test db
       - name: Verify committed database types match tested schema
         run: diff -u apps/web/src/types/database.ts "$RUNNER_TEMP/database.generated.ts"
       - name: Install Chromium
