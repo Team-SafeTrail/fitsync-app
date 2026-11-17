@@ -14,7 +14,8 @@ async function saveIntake(page:Page) {
   page.waitForResponse(r=>r.request().method()==="POST"&&Boolean(r.request().headers()["next-action"])),
   page.locator("#intake").getByRole("button",{name:"Xác nhận và lưu",exact:true}).click(),
  ]);
- expect(response.ok()).toBe(true);expect(await response.finished()).toBeNull();
+ expect(response.ok()).toBe(true);
+ await expect(page.locator("#intake").getByRole("button",{name:"Xác nhận và lưu",exact:true})).toBeEnabled();
 }
 test.use({actionTimeout:15000});
 test.beforeAll(()=>{

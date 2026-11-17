@@ -89,13 +89,13 @@ test("trainee check-in reaches the PT with private media, session updates, and m
     mimeType: "image/png",
     buffer: onePixelPng,
   });
-  // File upload and streamed RSC rendering may still be running after click.
-  // Await the actual action transport; the persisted UI assertions remain below.
+  // Observe the action response, then assert persisted UI. RSC responses may
+  // stay open after rendering; response.finished() is not a business ack.
   const [saved]=await Promise.all([
     traineePage.waitForResponse(response=>response.request().method()==="POST"&&Boolean(response.request().headers()["next-action"])),
     traineePage.getByRole("button", { name: "Gửi check-in hôm nay" }).click(),
   ]);
-  expect(saved.ok()).toBe(true);expect(await saved.finished()).toBeNull();
+  expect(saved.ok()).toBe(true);
   await expect(traineePage.getByTestId("checkin-complete-today")).toBeVisible();
   await expect(traineePage.getByTestId("checkin-activity")).toContainText("Năng lượng tốt");
   await expect(traineePage.getByTestId("private-meal-photo")).toBeVisible();
