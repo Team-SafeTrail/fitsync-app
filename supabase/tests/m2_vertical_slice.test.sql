@@ -72,15 +72,10 @@ select results_eq(
   array[0::bigint],
   'PT B cannot read PT A roster'
 );
-select results_eq(
-  $$with changed as (
-      update public.trainee_profiles
-      set remaining_sessions = 0
-      where id = 'aa000000-0000-0000-0000-000000000001'
-      returning 1
-    ) select count(*)::bigint from changed$$,
-  array[0::bigint],
-  'PT B cannot mutate PT A trainee'
+select throws_ok(
+  $$update public.trainee_profiles set remaining_sessions=0 where id='aa000000-0000-0000-0000-000000000001'$$,
+  '42501',null,
+  'PT B has no direct session mutation privilege'
 );
 select results_eq(
   $$with changed as (

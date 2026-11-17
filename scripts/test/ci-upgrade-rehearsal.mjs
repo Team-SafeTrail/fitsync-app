@@ -19,7 +19,7 @@ function fingerprint() {
  const tables=["profiles","pt_profiles","trainee_profiles","trainee_invitations","inbody_records","checkins","meal_logs","ocr_attempts"];
  // New roster_version defaults do not change any legacy column value. Compare
  // the original row projection, preserving the full old identity/health data.
- const sql=tables.map(name=>`select '${name}',count(*),md5(coalesce(jsonb_agg(${name==="trainee_profiles"?"(to_jsonb(t)-'roster_version')":"to_jsonb(t)"} order by id)::text,'')) from public.${name} t`).join(";");
+ const sql=tables.map(name=>`select '${name}',count(*),md5(coalesce(jsonb_agg(${name==="trainee_profiles"?"(to_jsonb(t)-'roster_version'-'session_version')":"to_jsonb(t)"} order by id)::text,'')) from public.${name} t`).join(";");
  const result=spawnSync("docker",["exec",`supabase_db_${project}`,"psql","-U","postgres","-d","postgres","-At","-c",sql],{encoding:"utf8",timeout:30000,maxBuffer:1024*1024});
  if(result.status!==0) throw new Error("Cannot fingerprint the disposable baseline.");
  return result.stdout;
