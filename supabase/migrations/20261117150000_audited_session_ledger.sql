@@ -117,13 +117,13 @@ begin
  select * into previous from public.session_ledger where actor_id=auth.uid() and client_request_id=request_nonce;
  if found then
   if previous.entitlement_id<>e.id or previous.kind<>'completion' or previous.appointment_id is distinct from a.id
-    or previous.delta<>case when consume_session then -1 else 0 end or previous.reason<>btrim(completion_reason)
+    or previous.delta<>(case when consume_session then -1 else 0 end) or previous.reason<>btrim(completion_reason)
     or previous.version is distinct from expected_session_version+1 then raise exception 'Nonce already used' using errcode='23505'; end if;
   return previous.version;
  end if;
  if a.status<>'scheduled' or a.ends_at>statement_timestamp() then raise exception 'Only an elapsed scheduled appointment can be completed' using errcode='23514'; end if;
  if a.version is distinct from expected_appointment_version or t.session_version is distinct from expected_session_version then raise exception 'Appointment or balance changed; reload' using errcode='40001'; end if;
- next_balance:=t.remaining_sessions-case when consume_session then 1 else 0 end;
+ next_balance:=t.remaining_sessions-(case when consume_session then 1 else 0 end);
  if next_balance<0 then raise exception 'No remaining sessions; do not debit' using errcode='23514'; end if;
  insert into public.session_ledger(entitlement_id,actor_id,client_request_id,version,kind,delta,balance_after,reason,appointment_id)
    values(e.id,auth.uid(),request_nonce,t.session_version+1,'completion',case when consume_session then -1 else 0 end,next_balance,btrim(completion_reason),a.id);
