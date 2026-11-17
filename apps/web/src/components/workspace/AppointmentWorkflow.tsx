@@ -1,6 +1,5 @@
 "use client";
 import {useActionState,useEffect,useState,type ReactNode} from "react";
-import {useRouter} from "next/navigation";
 import {changeAppointment,decideAppointmentRequest,completeAppointment,reverseCompletion} from "@/features/scheduling/workflow-actions";
 import {initialContextState,type ContextState} from "@/features/coaching-context/action-state";
 import type {Tables} from "@/types/database";
@@ -10,16 +9,12 @@ import SubmitButton from "./SubmitButton";
 type Action=(previous:ContextState,form:FormData)=>Promise<ContextState>;
 function WorkflowForm({action,label,children}:{action:Action;label:string;children:ReactNode}){
  const preserved=usePreservedForm();const [nonce,setNonce]=useState("");
- const reset=preserved.reset;
- const router=useRouter();const [handled,setHandled]=useState<string|undefined>(undefined);
  useEffect(()=>setNonce(crypto.randomUUID()),[]);
  const [state,dispatch,pending]=useActionState(async(previous:ContextState,form:FormData):Promise<ContextState>=>{
-  try{return await action(previous,form);}
+  try{const result=await action(previous,form);if(result.status==="success"&&result.nonce===form.get("nonce"))window.location.assign(window.location.pathname+window.location.search);return result;}
   catch{return {status:"error",notice:"Chưa nhận được xác nhận. Thông tin vẫn ở đây; kiểm tra lịch sử trước khi gửi lại."};}
  },initialContextState);
- const preparing=state.status==="success"&&handled!==state.nonce;
- useEffect(()=>{if(state.status==="success"&&state.nonce&&!pending&&handled!==state.nonce){reset();setNonce(crypto.randomUUID());setHandled(state.nonce);router.refresh();}},[state,pending,handled,reset,router]);
- return <form aria-label={label} className="coaching-context-form" action={dispatch} ref={preserved.ref} onReset={preserved.onReset}><PendingFields disabled={!nonce||pending||preparing}>
+ return <form aria-label={label} className="coaching-context-form" action={dispatch} ref={preserved.ref} onReset={preserved.onReset}><PendingFields disabled={!nonce||pending}>
   <input type="hidden" name="nonce" value={nonce}/>{children}
   {state.notice&&<p role={state.status==="error"?"alert":"status"}>{state.notice}</p>}
   {state.conflict&&<a href="">Tải bản mới nhất trước khi nhập lại</a>}

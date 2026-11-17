@@ -1,38 +1,27 @@
 "use client";
-import {useEffect,useRef,useState} from "react";
+import {useEffect,useState} from "react";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
-import {useRouter} from "next/navigation";
 import {createAppointment} from "@/features/scheduling/actions";
 import {initialAppointmentState,type AppointmentState} from "@/features/scheduling/action-state";
 import SubmitButton from "./SubmitButton";
 import {usePreservedForm} from "./PreservedForm";
 
 type Choice = {id:string;display_name:string};
-export default function AppointmentForm({trainees,selected}:{trainees:Choice[];selected?:string}) {
-  const {ref,reset,onReset}=usePreservedForm();
-  const router=useRouter();
+export default function AppointmentForm({trainees,selected,confirmedSaved=false}:{trainees:Choice[];selected?:string;confirmedSaved?:boolean}) {
+  const {ref,onReset}=usePreservedForm();
   const [state,action,pending] = useActionState(async (previous:AppointmentState, form:FormData):Promise<AppointmentState> => {
     try {
-      return await createAppointment(previous,form);
+      const result=await createAppointment(previous,form);
+      if(result.status==="success"&&result.nonce&&result.nonce===form.get("clientRequestId")&&result.week)window.location.assign(`/workspace/calendar?${new URLSearchParams({week:result.week,saved:result.nonce})}`);
+      return result;
     }
     catch {return {status:"error",notice:"Kết nối bị gián đoạn. Thông tin vẫn ở đây; thử lại để xác nhận cuộc hẹn."};}
   },initialAppointmentState);
   const [nonce,setNonce] = useState("");
-  const [handled,setHandled]=useState<string|undefined>(undefined);
-  const preparing=state.status==="success"&&handled!==state.nonce;
-  const routedNonce=useRef<string | undefined>(undefined);
   useEffect(()=>setNonce(crypto.randomUUID()),[]);
-  useEffect(()=>{
-    if(state.status==="success"&&state.nonce&&state.week&&!pending&&routedNonce.current!==state.nonce) {
-      routedNonce.current=state.nonce;
-      reset();setNonce(crypto.randomUUID());setHandled(state.nonce);
-      if(new URL(window.location.href).searchParams.get("week")!==state.week)router.replace(`/workspace/calendar?week=${state.week}`);
-      else router.refresh();
-    }
-  },[state,pending,reset,router]);
   return <form ref={ref} onReset={onReset} action={action} className="appointment-form" aria-label="Xếp cuộc hẹn">
-    <Fields trainees={trainees} selected={selected} nonce={nonce} state={state} disabled={pending||preparing} renewNonce={()=>setNonce(crypto.randomUUID())}/>
+    <Fields trainees={trainees} selected={selected} nonce={nonce} state={state.status==="idle"&&confirmedSaved?{status:"success",notice:"Đã thêm cuộc hẹn. Không trừ buổi PT."}:state} disabled={pending} renewNonce={()=>setNonce(crypto.randomUUID())}/>
   </form>;
 }
 

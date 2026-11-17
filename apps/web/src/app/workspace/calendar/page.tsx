@@ -11,7 +11,7 @@ import AppointmentWorkflow from "@/components/workspace/AppointmentWorkflow";
 
 export const dynamic = "force-dynamic";
 
-export default async function CalendarPage({searchParams:query}:{searchParams:Promise<{week?:string;trainee?:string}>}) {
+export default async function CalendarPage({searchParams:query}:{searchParams:Promise<{week?:string;trainee?:string;saved?:string}>}) {
  const searchParams=await query;
   const viewer = await getWorkspaceViewer();
   if(!viewer) redirect("/login");
@@ -19,10 +19,10 @@ export default async function CalendarPage({searchParams:query}:{searchParams:Pr
   if(!["pt","trainee"].includes(viewer.profile.role)) redirect("/workspace");
   const week = scheduleWeek(searchParams.week);
   if(!week) notFound();
-  return <main id="main-content" className="workspace-main calendar-page"><Suspense fallback={<p role="status">Đang tải lịch của bạn…</p>}><CalendarContent viewer={viewer} week={week} selected={searchParams.trainee}/></Suspense></main>;
+  return <main id="main-content" className="workspace-main calendar-page"><Suspense fallback={<p role="status">Đang tải lịch của bạn…</p>}><CalendarContent viewer={viewer} week={week} selected={searchParams.trainee} saved={searchParams.saved}/></Suspense></main>;
 }
 
-async function CalendarContent({viewer,week,selected}:{viewer:NonNullable<Awaited<ReturnType<typeof getWorkspaceViewer>>>;week:NonNullable<ReturnType<typeof scheduleWeek>>;selected?:string}) {
+async function CalendarContent({viewer,week,selected,saved}:{viewer:NonNullable<Awaited<ReturnType<typeof getWorkspaceViewer>>>;week:NonNullable<ReturnType<typeof scheduleWeek>>;selected?:string;saved?:string}) {
   const isPt = viewer.profile.role === "pt";
   const supabase = (await createClient());
   const [appointments,trainees] = await Promise.all([
@@ -61,7 +61,7 @@ async function CalendarContent({viewer,week,selected}:{viewer:NonNullable<Awaite
         {(changes.data?.length??0)>1000&&<p role="alert">Đang hiển thị tối đa 1.000 đề nghị trong tuần. Cần thu hẹp trước khi đối soát toàn bộ lịch sử.</p>}
         {(appointments.data?.length??0)>500&&<p role="alert">Đang hiển thị 500 cuộc hẹn đầu tuần. Cần thu hẹp khoảng ngày trước khi dùng với lịch dày hơn.</p>}
       </section>
-      {isPt&&<section className="calendar-entry" aria-labelledby="calendar-entry-title"><span className="calendar-entry-label">Cùng học viên</span><h2 id="calendar-entry-title">Thêm cuộc hẹn</h2>{trainees.error?<p role="alert">Chưa tải được danh sách học viên.</p>:trainees.data?.length?<AppointmentForm trainees={trainees.data} selected={selected}/>:<p>Kết nối tài khoản học viên qua <Link href="/workspace">lời mời</Link> trước khi xếp lịch dùng chung.</p>}</section>}
+      {isPt&&<section className="calendar-entry" aria-labelledby="calendar-entry-title"><span className="calendar-entry-label">Cùng học viên</span><h2 id="calendar-entry-title">Thêm cuộc hẹn</h2>{trainees.error?<p role="alert">Chưa tải được danh sách học viên.</p>:trainees.data?.length?<AppointmentForm trainees={trainees.data} selected={selected} confirmedSaved={isPt&&!!saved&&(appointments.data??[]).some(a=>a.client_request_id===saved)}/>:<p>Kết nối tài khoản học viên qua <Link href="/workspace">lời mời</Link> trước khi xếp lịch dùng chung.</p>}</section>}
     </div>
   </>;
 }
