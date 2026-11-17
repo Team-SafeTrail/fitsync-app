@@ -17,7 +17,8 @@ import {prepareFollowUp} from "@/features/engagement/follow-up";
 import {getPtTrainee,getWorkspaceViewer} from "@/features/workspace/data";
 
 const goals={fat_loss:"Giảm mỡ",muscle_gain:"Tăng cơ",recomp:"Tái cấu trúc cơ thể"};
-export default async function TraineeDetailPage({params,searchParams}:{params:{traineeId:string};searchParams:{created?:string;nutrition?:string}}) {
+export default async function TraineeDetailPage({params:route,searchParams:query}:{params:Promise<{traineeId:string}>;searchParams:Promise<{created?:string;nutrition?:string}>}) {
+ const [params,searchParams]=await Promise.all([route,query]);
  const viewer=await getWorkspaceViewer();if(!viewer)redirect("/login");if(viewer.profile.role!=="pt")redirect("/workspace");
  const {trainee,records,checkins}=await getPtTrainee(params.traineeId);if(!trainee)notFound();
  if(trainee.status==="archived") return <main id="main-content" className="workspace-main"><Link href="/workspace?filter=archived">Danh sách đã lưu trữ</Link><h1>{trainee.display_name}</h1><p>Hồ sơ đã lưu trữ. Khôi phục trước khi tiếp tục coaching.</p><RosterLifecycle key={trainee.roster_version} trainee={trainee}/><ProgressHistory records={records}/></main>;

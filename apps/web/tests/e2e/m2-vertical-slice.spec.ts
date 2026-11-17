@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+test.use({ video: "on" });
+
 test("PT invites a trainee, verifies InBody data, and isolation holds on desktop and mobile", async ({ browser }) => {
   test.slow();
   const runId = Date.now();

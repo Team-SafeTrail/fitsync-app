@@ -5,6 +5,7 @@
 - Web đầy đủ được giảng viên chấp nhận; APK không phải điều kiện nộp hiện tại.
 - Chưa có giao dịch thật (17/11); không dựng chứng từ hoặc coi Pro là đã trả tiền.
 - Giá được chốt 199.000đ/PT/tháng, đối soát chuyển khoản thủ công. Tài khoản nhận tiền đang chờ chủ dự án cung cấp.
+- Free tối đa 3 hồ sơ chưa lưu trữ, gồm hồ sơ chờ kết nối. Pro còn hạn không giới hạn học viên, cùng chức năng coaching. Hồ sơ cũ không bị xóa khi hết hạn; tạo/khôi phục theo hạn mức Free. Chủ dự án xác nhận Free3/Pro không giới hạn trong phiên này.
 - Dừng kinh doanh sau học phần. Ưu tiên sản phẩm dùng được, bài nộp và bàn giao.
 - Chủ dự án xem database trước khi cung cấp email giảng viên. Chưa chia sẻ database ra ngoài.
 

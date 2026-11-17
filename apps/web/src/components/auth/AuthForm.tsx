@@ -45,6 +45,7 @@ export default function AuthForm({ mode, action, error, message, next }: {
             </Link>
           </div>
         )}
+        {registering && <label><span>Bạn biết FitSync qua đâu? (tùy chọn)</span><select name="acquisitionChannel" defaultValue="unknown"><option value="unknown">Chưa chia sẻ</option><option value="facebook">Facebook</option><option value="tiktok">TikTok</option><option value="zalo">Zalo</option><option value="referral">Người quen giới thiệu</option><option value="direct">Truy cập trực tiếp</option></select></label>}
         <button className="auth-submit">{registering ? "Tạo workspace PT" : "Vào workspace"}<ArrowRight size={17} /></button>
       </form>
       <div className="auth-switch"><span>{registering ? "Đã có workspace?" : "Lần đầu dùng FitSync?"}</span><Link href={registering ? "/login" : "/register"}>{registering ? "Đăng nhập" : "Tạo tài khoản PT"} <ArrowRight size={14} /></Link></div>

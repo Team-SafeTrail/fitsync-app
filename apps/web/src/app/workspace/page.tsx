@@ -20,12 +20,13 @@ const goalLabels = {
   recomp: "Tái cấu trúc",
 };
 
-export default async function WorkspacePage({ searchParams }: {searchParams: {q?: string; filter?: string;create?:string}}) {
+export default async function WorkspacePage({ searchParams: searchParamsPromise }: {searchParams: Promise<{q?: string; filter?: string;create?:string}>}) {
+  const searchParams = await searchParamsPromise;
   const viewer = await getWorkspaceViewer();
   if (!viewer) return null;
 
   if (viewer.profile.role === "trainee") {
-    const { trainee, records, checkins } = await getTraineeHome(viewer.user.id);
+    const { trainee, coach, records, checkins } = await getTraineeHome(viewer.user.id);
     if (trainee?.status === "archived") return <main id="main-content" className="workspace-main"><h1>Hồ sơ đã được lưu trữ</h1><p>Liên hệ PT phụ trách để khôi phục trước khi tiếp tục check-in hoặc trao đổi.</p></main>;
     const checkedInToday = checkins.some((checkin) => checkin.local_checkin_date === getApplicationDate());
     return (
@@ -34,6 +35,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
           <div>
             <p className="workspace-kicker">Tổng quan của bạn</p>
             <h1>Chào {viewer.profile.display_name}</h1>
+            {coach && <p>Huấn luyện viên đồng hành: {coach.display_name}</p>}
             <p>Theo dõi gói tập và những kết quả đã được PT xác nhận.</p>
           </div>
           {trainee && <div className="workspace-session-stat"><strong>{trainee.remaining_sessions}</strong><span>buổi PT còn lại / {trainee.total_sessions}</span></div>}

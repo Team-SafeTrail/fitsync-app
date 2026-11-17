@@ -5,7 +5,32 @@ export type Database = {
   
   "public": {
           Tables: {
-            "checkins": {
+            "billing_requests": {
+                  Row: {
+                    "amount_vnd": number,"client_nonce": string,"created_at": string,"customer_id": string,"finance_entry_id": string | null,"id": string,"state": string
+                  }
+                  Insert: {
+                    "amount_vnd"?: number,"client_nonce": string,"created_at"?: string,"customer_id": string,"finance_entry_id"?: string | null,"id"?: string,"state"?: string
+                  }
+                  Update: {
+                    "amount_vnd"?: number,"client_nonce"?: string,"created_at"?: string,"customer_id"?: string,"finance_entry_id"?: string | null,"id"?: string,"state"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "billing_requests_customer_id_fkey"
+      columns: ["customer_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "billing_requests_finance_entry_id_fkey"
+      columns: ["finance_entry_id"]
+isOneToOne: true
+      referencedRelation: "finance_entries"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"checkins": {
                   Row: {
                     "created_at": string,"id": string,"local_checkin_date": string,"note": string | null,"submitted_at": string,"trainee_id": string
                   }
@@ -154,6 +179,37 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"finance_entries": {
+                  Row: {
+                    "actor_id": string,"amount_vnd": number,"bank_reference": string | null,"category": string,"client_nonce": string,"created_at": string,"customer_id": string | null,"evidence_path": string,"evidence_sha256": string,"id": string,"is_test": boolean,"kind": string,"note": string,"occurred_at": string,"reverses_id": string | null,"service_until": string | null
+                  }
+                  Insert: {
+                    "actor_id": string,"amount_vnd": number,"bank_reference"?: string | null,"category": string,"client_nonce": string,"created_at"?: string,"customer_id"?: string | null,"evidence_path": string,"evidence_sha256": string,"id"?: string,"is_test"?: boolean,"kind": string,"note": string,"occurred_at": string,"reverses_id"?: string | null,"service_until"?: string | null
+                  }
+                  Update: {
+                    "actor_id"?: string,"amount_vnd"?: number,"bank_reference"?: string | null,"category"?: string,"client_nonce"?: string,"created_at"?: string,"customer_id"?: string | null,"evidence_path"?: string,"evidence_sha256"?: string,"id"?: string,"is_test"?: boolean,"kind"?: string,"note"?: string,"occurred_at"?: string,"reverses_id"?: string | null,"service_until"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "finance_entries_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "finance_entries_customer_id_fkey"
+      columns: ["customer_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "finance_entries_reverses_id_fkey"
+      columns: ["reverses_id"]
+isOneToOne: true
+      referencedRelation: "finance_entries"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"inbody_records": {
                   Row: {
                     "body_fat_mass_kg": number,"created_at": string,"id": string,"is_manually_edited": boolean,"percent_body_fat": number,"pt_id": string,"recorded_at": string,"skeletal_muscle_mass_kg": number,"source": Database["public"]['Enums']["inbody_source"],"target_calories": number | null,"target_carb_grams": number | null,"target_fat_grams": number | null,"target_protein_grams": number | null,"total_body_water_liters": number | null,"trainee_id": string,"verified_by": string,"weight_kg": number
@@ -241,6 +297,25 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"product_events": {
+                  Row: {
+                    "actor_id": string,"channel": string,"event_day": string,"event_key": string,"id": string,"is_test": boolean,"occurred_at": string,"subject_id": string | null
+                  }
+                  Insert: {
+                    "actor_id": string,"channel"?: string,"event_day"?: string,"event_key": string,"id"?: string,"is_test": boolean,"occurred_at"?: string,"subject_id"?: string | null
+                  }
+                  Update: {
+                    "actor_id"?: string,"channel"?: string,"event_day"?: string,"event_key"?: string,"id"?: string,"is_test"?: boolean,"occurred_at"?: string,"subject_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "product_events_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "created_at": string,"display_name": string,"id": string,"phone": string | null,"role": Database["public"]['Enums']["user_role"],"updated_at": string
@@ -304,6 +379,31 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"trainee_profile_events": {
+                  Row: {
+                    "actor_id": string,"created_at": string,"id": string,"kind": string,"roster_version": number,"trainee_id": string
+                  }
+                  Insert: {
+                    "actor_id": string,"created_at"?: string,"id"?: string,"kind": string,"roster_version": number,"trainee_id": string
+                  }
+                  Update: {
+                    "actor_id"?: string,"created_at"?: string,"id"?: string,"kind"?: string,"roster_version"?: number,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "trainee_profile_events_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "trainee_profile_events_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"trainee_profiles": {
                   Row: {
                     "archived_at": string | null,"assigned_pt_id": string,"created_at": string,"display_name": string,"engagement_started_on": string | null,"id": string,"last_checkin_date": string | null,"phone": string | null,"primary_goal": Database["public"]['Enums']["fitness_goal"],"profile_id": string | null,"remaining_sessions": number,"roster_version": number,"status": Database["public"]['Enums']["trainee_status"],"total_sessions": number,"updated_at": string
@@ -335,9 +435,6 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
-            "get_assigned_coach_identity": { Args: Record<PropertyKey, never>; Returns: {id:string;display_name:string}[] },
-            "save_trainee_profile": { Args: { target_trainee:string; expected_version:number; trainee_name:string; contact_phone:string; goal: Database["public"]["Enums"]["fitness_goal"] }; Returns:number },
-            "set_trainee_archived": { Args: { target_trainee:string; expected_version:number; archive_profile:boolean }; Returns:number },
             "accept_trainee_invitation":
 { Args: { "invite_token_hash": string }; Returns: {
               "outcome": string,"trainee_id": string
@@ -360,6 +457,14 @@ isOneToOne: false
 "create_trainee_with_invitation":
 { Args: { "invite_email": string,"invite_expires_at": string,"invite_token_hash": string,"package_remaining": number,"package_total": number,"trainee_display_name": string,"trainee_goal": Database["public"]['Enums']["fitness_goal"],"trainee_phone": string }; Returns: string
                            },
+"get_admin_overview":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"get_assigned_coach_identity":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "display_name": string,"id": string
+            }[]
+                           },
 "get_invitation_preview":
 { Args: { "invite_token_hash": string }; Returns: {
               "display_name": string,"email": string,"expires_at": string
@@ -368,16 +473,37 @@ isOneToOne: false
 "is_checkin_warning_due":
 { Args: { "at_time": string,"reference_date": string }; Returns: boolean
                            },
+"is_system_admin":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"log_workspace_open":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"record_finance_entry":
+{ Args: { "amount": number,"customer"?: string,"description": string,"entry_category": string,"entry_kind": string,"receipt_path": string,"receipt_sha256": string,"request_nonce": string,"test_entry": boolean,"transacted_at": string,"transaction_reference": string }; Returns: string
+                           },
 "reissue_trainee_invitation":
 { Args: { "new_expires_at": string,"new_token_hash": string,"target_trainee_id": string }; Returns: {
               "email": string,"expires_at": string,"invitation_id": string
             }[]
+                           },
+"request_pt_upgrade":
+{ Args: { "request_nonce": string }; Returns: string
+                           },
+"reverse_finance_entry":
+{ Args: { "reason": string,"request_nonce": string,"target_entry": string }; Returns: string
                            },
 "revoke_trainee_invitation":
 { Args: { "target_trainee_id": string }; Returns: boolean
                            },
 "save_coaching_membership":
 { Args: { "ends_on": string,"expected_revision": number,"membership_label": string,"request_id": string,"starts_on": string,"target_trainee": string }; Returns: string
+                           },
+"save_trainee_profile":
+{ Args: { "contact_phone": string,"expected_version": number,"goal": Database["public"]['Enums']["fitness_goal"],"target_trainee": string,"trainee_name": string }; Returns: number
+                           },
+"set_trainee_archived":
+{ Args: { "archive_profile": boolean,"expected_version": number,"target_trainee": string }; Returns: number
                            },
 "submit_daily_checkin":
 { Args: { "checkin_note": string,"meal_photo_mime_type"?: string,"meal_photo_path"?: string,"meal_photo_size_bytes"?: number }; Returns: {

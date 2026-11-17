@@ -17,7 +17,7 @@ export async function createAppointment(_previous:AppointmentState, form:FormDat
   if (!input.ok) return {status:"error",notice:input.error};
   const viewer = await getWorkspaceViewer();
   if (viewer?.profile.role !== "pt") return {status:"error",notice:"Chỉ PT đang đăng nhập mới có thể xếp lịch."};
-  const supabase = createClient();
+  const supabase = (await createClient());
   const {data:trainee,error:relationError} = await supabase.from("trainee_profiles")
     .select("id,profile_id").eq("id",input.traineeId).eq("assigned_pt_id",viewer.user.id).neq("status","archived").maybeSingle();
   if (relationError || !trainee?.profile_id) return {status:"error",notice:"Học viên chưa kết nối hoặc không còn thuộc danh sách của bạn."};

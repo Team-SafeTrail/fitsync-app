@@ -37,7 +37,7 @@ async function requirePt() {
   const user = await getCurrentUser();
   if (!user) return null;
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")

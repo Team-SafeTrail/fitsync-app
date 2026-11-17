@@ -79,7 +79,7 @@ test("handoff admin is a guarded system/demo surface on desktop and phone",async
  const role=await setup.from("profiles").update({role:"admin"}).eq("id",user.data.user!.id);expect(role.error).toBeNull();
  await page.goto("/login");await page.getByLabel("Email",{exact:true}).fill(email);await page.getByLabel("Mật khẩu",{exact:true}).fill(password);await page.getByRole("button",{name:"Vào workspace",exact:true}).click();await expect(page).toHaveURL(/\/(workspace|admin)/);
  await mkdir("test-results/chat-proof",{recursive:true});
- for(const width of [1440,390]) {await page.setViewportSize({width,height:900});await page.goto("/admin");await expect(page.getByText("Dữ liệu demo OC2:",{exact:true})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await capture(page,`test-results/chat-proof/handoff-admin-${width}.png`);}
+ for(const width of [1440,390]) {await page.setViewportSize({width,height:900});await page.goto("/admin");await expect(page.getByTestId("live-admin-dashboard")).toBeVisible();await expect(page.getByText("Dữ liệu từ database đang kết nối.",{exact:true})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await capture(page,`test-results/chat-proof/handoff-admin-${width}.png`);}
 });
 
 test("handoff public page inventory renders at desktop and phone widths",async({page})=>{

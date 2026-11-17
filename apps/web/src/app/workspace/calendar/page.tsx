@@ -10,7 +10,8 @@ import AppointmentForm from "@/components/workspace/AppointmentForm";
 
 export const dynamic = "force-dynamic";
 
-export default async function CalendarPage({searchParams}:{searchParams:{week?:string;trainee?:string}}) {
+export default async function CalendarPage({searchParams:query}:{searchParams:Promise<{week?:string;trainee?:string}>}) {
+ const searchParams=await query;
   const viewer = await getWorkspaceViewer();
   if(!viewer) redirect("/login");
   if(!isCalendarEnabled()) return <main id="main-content" className="workspace-main"><h1>Lịch của bạn</h1><p>Lịch chưa được mở tại môi trường này.</p><Link href="/workspace">Về workspace</Link></main>;
@@ -22,7 +23,7 @@ export default async function CalendarPage({searchParams}:{searchParams:{week?:s
 
 async function CalendarContent({viewer,week,selected}:{viewer:NonNullable<Awaited<ReturnType<typeof getWorkspaceViewer>>>;week:NonNullable<ReturnType<typeof scheduleWeek>>;selected?:string}) {
   const isPt = viewer.profile.role === "pt";
-  const supabase = createClient();
+  const supabase = (await createClient());
   const [appointments,trainees] = await Promise.all([
     supabase.from("coaching_appointments").select("*").eq("status","scheduled")
       .lt("starts_at",week.endsAt).gt("ends_at",week.startsAt).order("starts_at").order("id").limit(501),

@@ -19,7 +19,7 @@ export async function login(formData: FormData) {
   const next = text(formData, "next");
   if (!email || !password) authRedirect("/login", "error", "Nhập email và mật khẩu để tiếp tục.");
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data, error } = await supabase.auth.signInWithPassword({ email, password });
   if (error || !data.user) authRedirect("/login", "error", "Không thể đăng nhập với thông tin này.");
 
@@ -46,13 +46,15 @@ export async function signup(formData: FormData) {
   if (displayName.length < 2) authRedirect("/register", "error", "Tên cần có ít nhất 2 ký tự.");
   if (!email || password.length < 8) authRedirect("/register", "error", "Dùng email hợp lệ và mật khẩu từ 8 ký tự.");
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
+  const reportedChannel = text(formData, "acquisitionChannel");
+  const acquisitionChannel = ["facebook", "tiktok", "zalo", "referral", "direct"].includes(reportedChannel) ? reportedChannel : "unknown";
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
     options: {
-      data: { display_name: displayName, role: "pt" },
+      data: { display_name: displayName, role: "pt", acquisition_channel: acquisitionChannel },
       emailRedirectTo: `${siteUrl}/auth/callback`,
     },
   });
@@ -66,7 +68,7 @@ export async function requestPasswordReset(formData: FormData) {
   const email = text(formData, "email").toLowerCase();
   if (!email) authRedirect("/forgot-password", "error", "Nhập email để nhận liên kết đặt lại mật khẩu.");
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
   const { error } = await supabase.auth.resetPasswordForEmail(email, {
     redirectTo: `${siteUrl}/auth/callback?next=/update-password`,
@@ -90,7 +92,7 @@ export async function updatePassword(formData: FormData) {
     authRedirect("/update-password", "error", "Mật khẩu xác nhận không khớp.");
   }
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { error } = await supabase.auth.updateUser({ password });
   if (error) {
     authRedirect("/update-password", "error", "Không thể cập nhật mật khẩu. Vui lòng thử lại.");
@@ -100,7 +102,7 @@ export async function updatePassword(formData: FormData) {
 }
 
 export async function logout() {
-  const supabase = createClient();
+  const supabase = (await createClient());
   await supabase.auth.signOut();
   redirect("/login");
 }

@@ -11,10 +11,11 @@ export const metadata: Metadata = {
 };
 
 export default async function UpdatePasswordPage({
-  searchParams,
+  searchParams: query,
 }: {
-  searchParams: { error?: string };
+  searchParams: Promise<{ error?: string }>;
 }) {
+  const searchParams = await query;
   if (!await getCurrentUser()) redirect("/forgot-password");
   return (
     <AuthShell

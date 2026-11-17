@@ -41,11 +41,11 @@ create table public.billing_requests (
   customer_id uuid not null references public.pt_profiles(id) on delete restrict,
   client_nonce uuid not null,
   amount_vnd integer not null default 199000 check (amount_vnd = 199000),
-  state text not null default 'requested' check (state in ('requested','reconciled','withdrawn')),
+  state text not null default 'requested' check (state in ('requested','reconciled','withdrawn','reversed')),
   finance_entry_id uuid unique references public.finance_entries(id) on delete restrict,
   created_at timestamptz not null default now(),
   unique(customer_id,client_nonce),
-  check ((state = 'reconciled') = (finance_entry_id is not null))
+  check ((state in ('reconciled','reversed')) = (finance_entry_id is not null))
 );
 create unique index billing_one_pending_per_pt on public.billing_requests(customer_id) where state = 'requested';
 alter table public.billing_requests enable row level security;
@@ -81,8 +81,8 @@ begin
  return result;
 end; $$;
 
-create function public.record_finance_entry(request_nonce uuid, entry_kind text, entry_category text, amount bigint, customer uuid,
- transaction_reference text, transacted_at timestamptz, receipt_path text, receipt_sha256 text, description text, test_entry boolean)
+create function public.record_finance_entry(request_nonce uuid, entry_kind text, entry_category text, amount bigint,
+ transaction_reference text, transacted_at timestamptz, receipt_path text, receipt_sha256 text, description text, test_entry boolean, customer uuid default null)
 returns uuid language plpgsql security definer set search_path = '' as $$
 declare existing public.finance_entries%rowtype; result uuid; paid_until timestamptz; synthetic_customer boolean;
 begin
@@ -148,6 +148,7 @@ begin
  insert into public.finance_entries(actor_id,client_nonce,kind,category,amount_vnd,customer_id,occurred_at,evidence_path,evidence_sha256,note,is_test,reverses_id)
  values(auth.uid(),request_nonce,'reversal',original.category,original.amount_vnd,original.customer_id,now(),original.evidence_path,original.evidence_sha256,btrim(reason),original.is_test,original.id) returning id into result;
  if original.category='subscription' and not original.is_test then
+  update public.billing_requests set state='reversed' where finance_entry_id=original.id;
   select max(e.service_until) into paid_until from public.finance_entries e where e.customer_id=original.customer_id
    and e.category='subscription' and e.kind='income' and not e.is_test and not exists(select 1 from public.finance_entries r where r.reverses_id=e.id);
   update public.pt_profiles set subscription_plan=case when paid_until>now() then 'pro'::public.subscription_plan else 'free'::public.subscription_plan end,
@@ -157,10 +158,10 @@ begin
 end; $$;
 
 revoke all on function public.request_pt_upgrade(uuid) from public,anon,authenticated;
-revoke all on function public.record_finance_entry(uuid,text,text,bigint,uuid,text,timestamptz,text,text,text,boolean) from public,anon,authenticated;
+revoke all on function public.record_finance_entry(uuid,text,text,bigint,text,timestamptz,text,text,text,boolean,uuid) from public,anon,authenticated;
 revoke all on function public.reverse_finance_entry(uuid,uuid,text) from public,anon,authenticated;
 grant execute on function public.request_pt_upgrade(uuid) to authenticated;
-grant execute on function public.record_finance_entry(uuid,text,text,bigint,uuid,text,timestamptz,text,text,text,boolean) to authenticated;
+grant execute on function public.record_finance_entry(uuid,text,text,bigint,text,timestamptz,text,text,text,boolean,uuid) to authenticated;
 grant execute on function public.reverse_finance_entry(uuid,uuid,text) to authenticated;
 
 -- Privacy-minimal, first-party event ledger. It stores no health values, text,

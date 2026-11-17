@@ -66,6 +66,10 @@ begin
   if current_setting('role', true) <> 'authenticated' then return new; end if;
   select * into t from public.trainee_profiles where id = new.trainee_id for share;
   select role into caller_role from public.profiles where id = auth.uid();
+  if (tg_table_name = 'inbody_records' and caller_role is distinct from 'pt'::public.user_role)
+    or (tg_table_name = 'checkins' and caller_role is distinct from 'trainee'::public.user_role) then
+    raise exception 'Active linked profile required' using errcode = '42501';
+  end if;
   if t.id is null or t.status = 'archived' or (
     (caller_role = 'pt' and t.assigned_pt_id = auth.uid())
     or (caller_role = 'trainee' and t.profile_id = auth.uid())

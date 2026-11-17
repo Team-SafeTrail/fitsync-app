@@ -9,11 +9,12 @@ export const metadata: Metadata = {
   description: "Đặt lại mật khẩu cho tài khoản FitSync của bạn.",
 };
 
-export default function ForgotPasswordPage({
-  searchParams,
+export default async function ForgotPasswordPage({
+  searchParams: query,
 }: {
-  searchParams: { error?: string; message?: string };
+  searchParams: Promise<{ error?: string; message?: string }>;
 }) {
+  const searchParams = await query;
   return (
     <AuthShell
       eyebrow="ĐẶT LẠI MẬT KHẨU"

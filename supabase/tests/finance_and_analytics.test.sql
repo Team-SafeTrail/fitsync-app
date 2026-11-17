@@ -2,7 +2,7 @@
 -- evidence of customer payments. False synthetic flag exercises actual-mode rules.
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(29);
+select plan(30);
 insert into auth.users(id,instance_id,aud,role,email,encrypted_password,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at)
 select ('85000000-0000-0000-0000-00000000000'||n)::uuid,'00000000-0000-0000-0000-000000000000'::uuid,
  'authenticated','authenticated','ledger-fixture-'||n||'@fitsync.invalid','',now(),'{}',
@@ -28,21 +28,22 @@ select lives_ok('select public.log_workspace_open()','Workspace usage can be rec
 select lives_ok('select public.log_workspace_open()','Daily retry accepted');
 select set_config('request.jwt.claim.sub','85000000-0000-0000-0000-000000000003',true);
 select throws_ok($$select public.request_pt_upgrade('cc000000-0000-0000-0000-000000000003')$$,'42501',null,'Learner cannot purchase PT plan');
-select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000010','income','subscription',199000,'85000000-0000-0000-0000-000000000002','unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Unit fixture only',false)$$,'42501',null,'Non-admin cannot verify payment');
+select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000010','income','subscription',199000,'unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Unit fixture only',false,'85000000-0000-0000-0000-000000000002')$$,'42501',null,'Non-admin cannot verify payment');
 select set_config('request.jwt.claim.sub','85000000-0000-0000-0000-000000000001',true);
 select is((public.get_admin_overview()->>'paidCustomers')::integer,0,'Legacy plans and requests are not paid customers');
 select is((select count(*)::integer from public.product_events where actor_id='85000000-0000-0000-0000-000000000002' and event_key='workspace_opened'),1,'One daily workspace event per actor');
-select lives_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000010','income','subscription',199000,'85000000-0000-0000-0000-000000000002','unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Unit fixture only',false)$$,'Admin reconciliation records unit fixture');
-select lives_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000010','income','subscription',199000,'85000000-0000-0000-0000-000000000002','unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Unit fixture only',false)$$,'Identical nonce retry is idempotent');
+select lives_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000010','income','subscription',199000,'unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Unit fixture only',false,'85000000-0000-0000-0000-000000000002')$$,'Admin reconciliation records unit fixture');
+select lives_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000010','income','subscription',199000,'unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Unit fixture only',false,'85000000-0000-0000-0000-000000000002')$$,'Identical nonce retry is idempotent');
 select is((public.get_admin_overview()->>'recordedRevenueVnd')::bigint,199000::bigint,'One recorded income only');
 select is((public.get_admin_overview()->>'paidCustomers')::integer,1,'Reconciled subscription counts one payer');
 select is((select state from public.billing_requests where customer_id='85000000-0000-0000-0000-000000000002'),'reconciled','Payment reconciles pending request');
-select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000011','income','subscription',199000,'85000000-0000-0000-0000-000000000002','unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Duplicate reference',false)$$,'23505',null,'Bank reference cannot count twice');
-select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000012','income','subscription',199000,'85000000-0000-0000-0000-000000000004','unit-ref-2',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Synthetic must be test',false)$$,'22023',null,'Synthetic customer cannot become actual revenue');
-select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000013','expense','hosting',10000,null,'unit-ref-3',now(),'missing.png',repeat('a',64),'Missing evidence fixture',true)$$,'22023',null,'Missing receipt rejected');
+select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000011','income','subscription',199000,'unit-ref-1',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Duplicate reference',false,'85000000-0000-0000-0000-000000000002')$$,'23505',null,'Bank reference cannot count twice');
+select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000012','income','subscription',199000,'unit-ref-2',now(),'85000000-0000-0000-0000-000000000001/unit-fixture.png',repeat('a',64),'Synthetic must be test',false,'85000000-0000-0000-0000-000000000004')$$,'22023',null,'Synthetic customer cannot become actual revenue');
+select throws_ok($$select public.record_finance_entry('cc000000-0000-0000-0000-000000000013','expense','hosting',10000,'unit-ref-3',now(),'missing.png',repeat('a',64),'Missing evidence fixture',true,null)$$,'22023',null,'Missing receipt rejected');
 select lives_ok($$select public.reverse_finance_entry((select id from public.finance_entries where bank_reference='unit-ref-1'),'cc000000-0000-0000-0000-000000000020','Unit reversal fixture')$$,'Correction appends a reversal');
 select is((public.get_admin_overview()->>'recordedRevenueVnd')::bigint,0::bigint,'Reversal removes revenue');
 select is((public.get_admin_overview()->>'paidCustomers')::integer,0,'Reversed payment does not count payer');
+select is((select state from public.billing_requests where customer_id='85000000-0000-0000-0000-000000000002'),'reversed','Reversed payment is visible on billing request');
 select is((select count(*)::integer from public.finance_entries),2,'Original and reversal both retained');
 select throws_ok($$select public.reverse_finance_entry((select id from public.finance_entries where bank_reference='unit-ref-1'),'cc000000-0000-0000-0000-000000000021','Second reversal fixture')$$,'23505',null,'Cannot reverse twice');
 select * from finish();

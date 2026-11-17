@@ -4,7 +4,8 @@ import AuthShell from "@/components/auth/AuthShell";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { login } from "../auth/actions";
 
-export default function LoginPage({ searchParams }: { searchParams: { error?: string; message?: string; next?: string } }) {
+export default async function LoginPage({ searchParams: query }: { searchParams: Promise<{ error?: string; message?: string; next?: string }> }) {
+  const searchParams = await query;
   const configured = isSupabaseConfigured();
   return (
     <AuthShell eyebrow="Không gian làm việc" title="Tiếp tục cùng học viên." description="Đăng nhập vào khu vực dữ liệu thật. Bản mẫu công khai vẫn nằm ở mục Khám phá trên trang chủ.">

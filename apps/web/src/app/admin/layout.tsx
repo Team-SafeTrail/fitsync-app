@@ -63,7 +63,7 @@ export default async function AdminLayout({
             </a>
             <a href="#transactions-table" className="admin-nav-item">
               <CreditCard size={18} />
-              <span>Giao dịch VietQR</span>
+              <span>Sổ thu–chi và chứng từ</span>
             </a>
             <Link href="/workspace" className="admin-nav-item highlight">
               <Activity size={18} />
@@ -125,7 +125,7 @@ export default async function AdminLayout({
         <header className="admin-topbar">
           <div className="admin-topbar-title">
             <h1>Bảng Điều Khiển Quản Trị Hệ Thống</h1>
-            <p>Quản trị hệ thống FitSync · Dữ liệu minh họa được ghi nhãn riêng</p>
+            <p>Quản trị FitSync · Dữ liệu từ database, giao dịch thử được tách riêng</p>
           </div>
 
           <div className="admin-topbar-actions">

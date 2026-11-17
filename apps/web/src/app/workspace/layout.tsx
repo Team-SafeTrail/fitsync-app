@@ -7,6 +7,7 @@ import { logout } from "../auth/actions";
 import { getWorkspaceViewer } from "@/features/workspace/data";
 import "./workspace.css";
 import "./coaching.css";
+import WorkspaceVisit from "@/components/workspace/WorkspaceVisit";
 
 export default async function WorkspaceLayout({ children }: { children: React.ReactNode }) {
   const viewer = await getWorkspaceViewer();
@@ -15,6 +16,7 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
 
   return (
     <div className="workspace-shell">
+      <WorkspaceVisit/>
       <aside className="workspace-sidebar">
         <div>
           <Link href="/workspace" className="workspace-brand" aria-label="FitSync Workspace, về tổng quan">

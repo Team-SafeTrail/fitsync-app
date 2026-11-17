@@ -18,7 +18,7 @@ async function requireRole(role: "pt" | "trainee") {
   const user = await getCurrentUser();
   if (!user) return null;
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")
@@ -54,6 +54,8 @@ export async function createTrainee(
   });
 
   if (error) {
+    if (error.code === "P0001") return errorState("Gói Free tối đa 3 học viên đang theo dõi, gồm cả hồ sơ chờ kết nối. Lưu trữ hồ sơ không còn theo dõi hoặc mở Gói FitSync để yêu cầu Pro.");
+    if (error.code === "54000") return errorState("Đã đạt giới hạn tạo hồ sơ trong 24 giờ. Thử lại vào ngày mai.");
     if (error.code === "23505") {
       return errorState("Email này đã có một lời mời đang chờ trong workspace của bạn.", {
         email: "Thu hồi hoặc dùng lời mời hiện tại trước khi tạo lời mời mới.",
@@ -87,7 +89,7 @@ export async function acceptInvitation(
   }
 
   const tokenHash = hashInvitationToken(rawToken);
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data: previews, error: previewError } = await supabase.rpc("get_invitation_preview", {
     invite_token_hash: tokenHash,
   });

@@ -1,6 +1,6 @@
 begin;
 create extension if not exists pgtap with schema extensions;
-select plan(24);
+select plan(26);
 insert into auth.users(id,instance_id,aud,role,email,encrypted_password,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at)
 select ('84000000-0000-0000-0000-00000000000'||n)::uuid,'00000000-0000-0000-0000-000000000000'::uuid,
  'authenticated','authenticated','roster-'||n||'@example.test','',now(),'{}',jsonb_build_object('display_name','Roster '||n),now(),now() from generate_series(1,3) n;
@@ -34,6 +34,10 @@ select throws_ok($$select public.save_trainee_profile('ae000000-0000-0000-0000-0
 select throws_ok($$select public.save_trainee_profile('ae000000-0000-0000-0000-000000000001',2,'X',null,'recomp')$$,'22023',null,'Invalid name rejected at DB');
 select is(public.set_trainee_archived('ae000000-0000-0000-0000-000000000001',2,true),3,'Archive increments version');
 select is((select status::text from public.trainee_profiles where id='ae000000-0000-0000-0000-000000000001'),'archived','Profile archived');
+select throws_ok($$insert into public.inbody_records(trainee_id,pt_id,verified_by,weight_kg,skeletal_muscle_mass_kg,body_fat_mass_kg,percent_body_fat) values('ae000000-0000-0000-0000-000000000001','84000000-0000-0000-0000-000000000001','84000000-0000-0000-0000-000000000001',70,30,14,20)$$,'42501',null,'Archived health writes denied at database');
+select set_config('request.jwt.claim.sub','84000000-0000-0000-0000-000000000003',true);
+select throws_ok($$select public.submit_daily_checkin('Archived test only',null,null,null)$$,'42501',null,'Archived learner cannot bypass UI to check in');
+select set_config('request.jwt.claim.sub','84000000-0000-0000-0000-000000000001',true);
 select throws_ok($$select public.save_trainee_profile('ae000000-0000-0000-0000-000000000001',3,'Wrong edit',null,'recomp')$$,'22023',null,'Archived profile read only');
 select is(public.set_trainee_archived('ae000000-0000-0000-0000-000000000002',1,true),2,'Unlinked profile archived');
 select is((select status::text from public.trainee_invitations where token_hash=repeat('a',64)),'revoked','Archiving revokes pending token');
