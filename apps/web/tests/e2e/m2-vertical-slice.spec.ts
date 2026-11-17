@@ -102,7 +102,11 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.getByRole("tab", {name:"Tiến trình",exact:true}).click();
   const nutritionForm = ptPage.getByTestId("verified-record").locator("form");
   await nutritionForm.getByLabel("Kcal").fill("2200");
-  await nutritionForm.getByRole("button", { name: "Lưu bản nháp" }).click();
+  const [nutritionSaved]=await Promise.all([
+    ptPage.waitForResponse(response=>response.request().method()==="POST"&&Boolean(response.request().headers()["next-action"])),
+    nutritionForm.getByRole("button", { name: "Lưu bản nháp" }).click(),
+  ]);
+  expect(nutritionSaved.ok()).toBe(true);
   await expect(ptPage).toHaveURL(/nutrition=updated/);
   await expect(ptPage.getByRole("status")).toContainText("Đã cập nhật bản nháp dinh dưỡng");
 
