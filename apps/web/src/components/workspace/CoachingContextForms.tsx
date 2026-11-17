@@ -10,12 +10,24 @@ import {usePreservedForm} from "./PreservedForm";
 function useContextForm(action:(previous:ContextState,form:FormData)=>Promise<ContextState>,destination:string) {
   const {ref,onReset}=usePreservedForm();
   const [state,dispatch,pending]=useActionState(async(previous:ContextState,form:FormData):Promise<ContextState>=>{
-    try{const result=await action(previous,form);if(result.status==="success"&&result.nonce===form.get("clientRequestId"))window.location.assign(destination);return result;}
+    try{
+      const result=await action(previous,form);
+      if(result.status==="success"&&result.nonce===form.get("clientRequestId")) {
+        // A same-document hash navigation does not fetch new server props or
+        // issue a fresh form nonce. Reload explicitly after revealing the task.
+        const target=new URL(destination,window.location.href);
+        if(target.pathname===window.location.pathname&&target.search===window.location.search) {
+          window.history.replaceState(null,"",target.href);
+          window.location.reload();
+        } else window.location.assign(target.href);
+      }
+      return result;
+    }
     catch{return {status:"error",notice:"Kết nối bị gián đoạn. Thông tin vẫn ở đây; thử lại khi mạng ổn định."};}
   },initialContextState);
   const [nonce,setNonce]=useState("");
   useEffect(()=>setNonce(crypto.randomUUID()),[]);
-  return {state,dispatch,nonce,ref,onReset,disabled:pending,renew:()=>setNonce(crypto.randomUUID())};
+  return {state,dispatch,nonce,ref,onReset,disabled:pending||state.status==="success",renew:()=>setNonce(crypto.randomUUID())};
 }
 function FormFields({nonce,children,disabled=false}:{nonce:string;children:React.ReactNode;disabled?:boolean}) {
  const {pending}=useFormStatus();return <fieldset disabled={pending||!nonce||disabled}><input type="hidden" name="clientRequestId" value={nonce}/>{children}</fieldset>;
