@@ -306,13 +306,13 @@ isOneToOne: false
                   ]
                 },"trainee_profiles": {
                   Row: {
-                    "archived_at": string | null,"assigned_pt_id": string,"created_at": string,"display_name": string,"engagement_started_on": string | null,"id": string,"last_checkin_date": string | null,"phone": string | null,"primary_goal": Database["public"]['Enums']["fitness_goal"],"profile_id": string | null,"remaining_sessions": number,"status": Database["public"]['Enums']["trainee_status"],"total_sessions": number,"updated_at": string
+                    "archived_at": string | null,"assigned_pt_id": string,"created_at": string,"display_name": string,"engagement_started_on": string | null,"id": string,"last_checkin_date": string | null,"phone": string | null,"primary_goal": Database["public"]['Enums']["fitness_goal"],"profile_id": string | null,"remaining_sessions": number,"roster_version": number,"status": Database["public"]['Enums']["trainee_status"],"total_sessions": number,"updated_at": string
                   }
                   Insert: {
-                    "archived_at"?: string | null,"assigned_pt_id": string,"created_at"?: string,"display_name": string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
+                    "archived_at"?: string | null,"assigned_pt_id": string,"created_at"?: string,"display_name": string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"roster_version"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
                   }
                   Update: {
-                    "archived_at"?: string | null,"assigned_pt_id"?: string,"created_at"?: string,"display_name"?: string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
+                    "archived_at"?: string | null,"assigned_pt_id"?: string,"created_at"?: string,"display_name"?: string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"roster_version"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -335,6 +335,9 @@ isOneToOne: false
             [_ in never]: never
           }
           Functions: {
+            "get_assigned_coach_identity": { Args: Record<PropertyKey, never>; Returns: {id:string;display_name:string}[] },
+            "save_trainee_profile": { Args: { target_trainee:string; expected_version:number; trainee_name:string; contact_phone:string; goal: Database["public"]["Enums"]["fitness_goal"] }; Returns:number },
+            "set_trainee_archived": { Args: { target_trainee:string; expected_version:number; archive_profile:boolean }; Returns:number },
             "accept_trainee_invitation":
 { Args: { "invite_token_hash": string }; Returns: {
               "outcome": string,"trainee_id": string

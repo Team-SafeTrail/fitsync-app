@@ -12,6 +12,8 @@ export async function GET(request: Request) {
     const supabase = createClient();
     const { data, error } = await supabase.auth.exchangeCodeForSession(code);
     if (!error && data.user) {
+      const safeTarget = sanitizeRedirectPath(next, "/workspace");
+      if (safeTarget === "/update-password") return NextResponse.redirect(`${origin}${safeTarget}`);
       // Role-based routing: Admin routes to Admin Portal
       const { data: profile } = await supabase
         .from("profiles")
@@ -23,7 +25,6 @@ export async function GET(request: Request) {
         return NextResponse.redirect(`${origin}/admin`);
       }
 
-      const safeTarget = sanitizeRedirectPath(next, "/workspace");
       return NextResponse.redirect(`${origin}${safeTarget}`);
     }
   }

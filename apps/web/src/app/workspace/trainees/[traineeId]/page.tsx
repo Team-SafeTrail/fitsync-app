@@ -1,3 +1,4 @@
+import RosterLifecycle from "@/components/workspace/RosterLifecycle";
 import {Suspense} from "react";
 import Link from "next/link";
 import {notFound,redirect} from "next/navigation";
@@ -19,6 +20,7 @@ const goals={fat_loss:"Giảm mỡ",muscle_gain:"Tăng cơ",recomp:"Tái cấu t
 export default async function TraineeDetailPage({params,searchParams}:{params:{traineeId:string};searchParams:{created?:string;nutrition?:string}}) {
  const viewer=await getWorkspaceViewer();if(!viewer)redirect("/login");if(viewer.profile.role!=="pt")redirect("/workspace");
  const {trainee,records,checkins}=await getPtTrainee(params.traineeId);if(!trainee)notFound();
+ if(trainee.status==="archived") return <main id="main-content" className="workspace-main"><Link href="/workspace?filter=archived">Danh sách đã lưu trữ</Link><h1>{trainee.display_name}</h1><p>Hồ sơ đã lưu trữ. Khôi phục trước khi tiếp tục coaching.</p><RosterLifecycle key={trainee.roster_version} trainee={trainee}/><ProgressHistory records={records}/></main>;
  const warningReference=trainee.last_checkin_date??trainee.engagement_started_on;
  const warningDue=warningReference?isCheckinWarningDue(warningReference):false;
  const followUp=prepareFollowUp(trainee.display_name,trainee.phone);
@@ -34,9 +36,9 @@ export default async function TraineeDetailPage({params,searchParams}:{params:{t
  const notes=<Suspense fallback={<p role="status">Đang tải ghi chú…</p>}><CoachingProfileContext traineeId={trainee.id} section="notes"/></Suspense>;
  const intake=<section id="intake"><p className="coaching-intake-scope">Biểu mẫu hiện lưu năm chỉ số nền. Chưa hỗ trợ PDF và báo cáo chi tiết theo vùng.</p>{trainee.profile_id?<InBodyForm traineeId={trainee.id}/>:<section className="workspace-empty compact"><CircleUserRound size={28}/><h2>Đang chờ học viên kết nối</h2><p>Gửi link mời đã tạo cho học viên. Có thể ghi chú tư vấn riêng trước khi họ nhận lời mời.</p><a href="#coaching-notes">Mở ghi chú tư vấn</a></section>}</section>;
  return <main id="main-content" className="workspace-main dossier-page"><Link href="/workspace" className="workspace-back"><ArrowLeft size={16}/> Danh sách học viên</Link><header className="workspace-page-heading trainee-detail-heading"><div><p className="workspace-kicker">Hồ sơ học viên</p><h1>{trainee.display_name}</h1><p>Bối cảnh coaching, tiến trình và những việc cần làm cùng học viên.</p></div><span className={"workspace-badge "+(trainee.profile_id?"is-verified":"is-pending")}><CircleUserRound size={14}/>{trainee.profile_id?"Đã kết nối tài khoản":"Đang chờ lời mời"}</span></header>
-  <div className="workspace-primary-actions">{trainee.profile_id&&trainee.status!=="archived"&&<><Link className="workspace-button" href={"/workspace/chat/"+trainee.id}>Trao đổi với học viên</Link><Link className="workspace-button workspace-button-secondary" href={"/workspace/calendar?trainee="+trainee.id}>Xếp lịch với học viên</Link></>}<a className="workspace-inline-link" href="#coaching-notes">Ghi chú tư vấn</a><a className="workspace-inline-link" href="#intake">Thêm số đo</a></div>
+  <div className="workspace-primary-actions">{trainee.profile_id&&<><Link className="workspace-button" href={"/workspace/chat/"+trainee.id}>Trao đổi với học viên</Link><Link className="workspace-button workspace-button-secondary" href={"/workspace/calendar?trainee="+trainee.id}>Xếp lịch với học viên</Link></>}<a className="workspace-inline-link" href="#coaching-notes">Ghi chú tư vấn</a><a className="workspace-inline-link" href="#intake">Thêm số đo</a></div>
   {searchParams.created&&<p className="workspace-alert is-success" role="status">Bản ghi đã được xác minh và lưu.</p>}
   {nutritionMessage&&<p className={"workspace-alert is-"+(searchParams.nutrition==="updated"?"success":"error")} role="status">{nutritionMessage}</p>}
-  <ProfileSectionTabs sections={[{id:"overview",label:"Tổng quan",content:overview},{id:"progress",label:"Tiến trình",content:progress},{id:"membership",label:"Membership & buổi",content:membership},{id:"notes",label:"Ghi chú",content:notes},{id:"intake",label:"Nhập số đo",content:intake}]}/>
+  <RosterLifecycle key={trainee.roster_version} trainee={trainee}/><ProfileSectionTabs sections={[{id:"overview",label:"Tổng quan",content:overview},{id:"progress",label:"Tiến trình",content:progress},{id:"membership",label:"Membership & buổi",content:membership},{id:"notes",label:"Ghi chú",content:notes},{id:"intake",label:"Nhập số đo",content:intake}]}/>
  </main>;
 }

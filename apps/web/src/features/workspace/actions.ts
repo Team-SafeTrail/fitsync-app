@@ -170,11 +170,11 @@ export async function revokeInvitation(traineeId: string): Promise<WorkspaceActi
   const context = await requireRole("pt");
   if (!context) return errorState("Chỉ tài khoản PT đã đăng nhập mới có thể thu hồi lời mời.");
 
-  const { error } = await context.supabase.rpc("revoke_trainee_invitation", {
+  const { data, error } = await context.supabase.rpc("revoke_trainee_invitation", {
     target_trainee_id: traineeId,
   });
 
-  if (error) {
+  if (error || !data) {
     return errorState("Không thể thu hồi lời mời. Vui lòng thử lại.");
   }
 

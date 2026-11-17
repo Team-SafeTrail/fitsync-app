@@ -33,13 +33,13 @@ export const getWorkspaceViewer = cache(async () => {
   return { user, profile };
 });
 
-export async function getPtRoster() {
+export async function getPtRoster(archived = false) {
   const supabase = createClient();
   const [traineesResult, invitationsResult, recordsResult] = await Promise.all([
     supabase
       .from("trainee_profiles")
       .select("*")
-      .neq("status", "archived")
+      .filter("status", archived ? "eq" : "neq", "archived")
       .order("created_at", { ascending: false }),
     supabase
       .from("trainee_invitations")

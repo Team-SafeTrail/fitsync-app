@@ -32,7 +32,7 @@ select is(has_function_privilege('anon','public.revoke_trainee_invitation(uuid)'
 set local role authenticated;
 select set_config('request.jwt.claim.sub','83000000-0000-0000-0000-000000000003',true);
 select results_eq(
-  'select id, display_name from public.profiles where id = ''83000000-0000-0000-0000-000000000001''::uuid',
+  'select id, display_name from public.get_assigned_coach_identity()',
   $$values ('83000000-0000-0000-0000-000000000001'::uuid, 'Auth Delivery 1')$$,
   'Learner can read assigned coach display identity'
 );
@@ -43,8 +43,8 @@ select results_eq(
 );
 select results_eq(
   'select id from public.pt_profiles where id = ''83000000-0000-0000-0000-000000000001''::uuid',
-  $$values ('83000000-0000-0000-0000-000000000001'::uuid)$$,
-  'Learner can read assigned coach pt_profiles'
+  'select null::uuid limit 0',
+  'Learner cannot read coach subscription profile'
 );
 select throws_ok(
   $$select * from public.reissue_trainee_invitation('ad000000-0000-0000-0000-000000000002'::uuid, repeat('2', 64), now() + interval '3 days')$$,

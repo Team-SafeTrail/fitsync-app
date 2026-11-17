@@ -2,17 +2,20 @@ import type { Metadata } from "next";
 import { ArrowRight, LockKeyhole } from "lucide-react";
 import AuthShell from "@/components/auth/AuthShell";
 import { updatePassword } from "../auth/actions";
+import { getCurrentUser } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
   title: "Tạo mật khẩu mới | FitSync",
   robots: { index: false, follow: false },
 };
 
-export default function UpdatePasswordPage({
+export default async function UpdatePasswordPage({
   searchParams,
 }: {
   searchParams: { error?: string };
 }) {
+  if (!await getCurrentUser()) redirect("/forgot-password");
   return (
     <AuthShell
       eyebrow="BẢO MẬT TÀI KHOẢN"
