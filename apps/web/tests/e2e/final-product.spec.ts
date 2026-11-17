@@ -69,6 +69,7 @@ test("PT edits, reissues and archives a learner without losing the profile", asy
     await page.getByText("Quản lý hồ sơ và lời mời", { exact: true }).click();
     archive = page.getByRole("form", { name: "Trạng thái hồ sơ" }); await archive.getByRole("checkbox").check();
     await archive.getByRole("button", { name: "Khôi phục hồ sơ", exact: true }).click();
+    await expect(archive.getByRole("button", { name: "Lưu trữ hồ sơ", exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "Check-in hôm nay", exact: true })).toHaveCount(0);
     await b.reload(); await expect(b.getByRole("heading", { name: "Hồ sơ đã được lưu trữ" })).toHaveCount(0);
     await mkdir("test-results/chat-proof", { recursive: true }); await page.screenshot({ path: "test-results/chat-proof/final-roster-lifecycle.png", fullPage: true });
@@ -108,10 +109,10 @@ test("real admin ledger stores private TEST evidence, reverses once and never co
   const pt = await setup.auth.admin.createUser({ email: ptEmail, password, email_confirm: true, user_metadata: { display_name: "Finance PT synthetic", synthetic: true } }); expect(pt.error).toBeNull();
   const ptContext = await browser.newContext({ recordVideo: { dir: "test-results/final-product-video", size: { width: 1280, height: 720 } } });
   try {
-    const b = await ptContext.newPage(); await b.goto("/login"); await b.getByLabel("Email", { exact: true }).fill(ptEmail); await b.getByLabel("Mật khẩu", { exact: true }).fill(password); await b.getByRole("button", { name: "Vào workspace", exact: true }).click();
+    const b = await ptContext.newPage(); await b.goto("/login"); await b.getByLabel("Email", { exact: true }).fill(ptEmail); await b.getByLabel("Mật khẩu", { exact: true }).fill(password); await b.getByRole("button", { name: "Vào workspace", exact: true }).click(); await expect(b).toHaveURL(/\/workspace$/);
     await b.goto("/workspace/billing"); await b.getByRole("form", { name: "Yêu cầu nâng cấp" }).getByRole("checkbox").check(); await b.getByRole("button", { name: "Gửi yêu cầu nâng cấp", exact: true }).click();
     await expect(b.getByText("requested", { exact: false })).toBeVisible();
-    await page.goto("/login"); await page.getByLabel("Email", { exact: true }).fill(adminEmail); await page.getByLabel("Mật khẩu", { exact: true }).fill(password); await page.getByRole("button", { name: "Vào workspace", exact: true }).click();
+    await page.goto("/login"); await page.getByLabel("Email", { exact: true }).fill(adminEmail); await page.getByLabel("Mật khẩu", { exact: true }).fill(password); await page.getByRole("button", { name: "Vào workspace", exact: true }).click(); await expect(page).toHaveURL(/\/admin$/);
     await page.goto("/admin"); await expect(page.getByTestId("live-admin-dashboard")).toBeVisible();
     await expect(page.locator("body")).not.toContainText("FS-VQR-20261021");
     await page.getByText("Ghi giao dịch đã đối soát", { exact: true }).click();

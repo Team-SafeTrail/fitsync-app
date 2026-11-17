@@ -88,6 +88,9 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await expect(ptPage.getByText(/chênh nhau quá 2 điểm phần trăm/).first()).toBeVisible();
   await expect(ptPage.getByTestId("verified-record")).toHaveCount(0);
 
+  await expect(ptPage.getByLabel("Cân nặng (kg)")).toHaveValue("70");
+  await expect(ptPage.getByLabel(/Tôi đã đối chiếu các chỉ số/)).toBeChecked();
+
   await ptPage.getByLabel("Khối mỡ (kg)").fill("14");
   await ptPage.getByLabel("Tỷ lệ mỡ (%)").fill("20");
   await ptPage.getByRole("button", { name: "Xác nhận và lưu" }).click();

@@ -1,5 +1,5 @@
 "use client";
-import { useCallback, useRef, type FormEvent, type ReactNode } from "react";
+import { useCallback, useEffect, useRef, type FormEvent, type ReactNode } from "react";
 import { useFormStatus } from "react-dom";
 
 // A business validation result is still a successful Promise to React Actions.
@@ -7,6 +7,14 @@ import { useFormStatus } from "react-dom";
 export function usePreservedForm() {
   const ref = useRef<HTMLFormElement>(null);
   const explicit = useRef(false);
+  useEffect(() => {
+    const form=ref.current;
+    // React resets action forms during commit, when synthetic event dispatch is
+    // disabled. A native listener must cancel that implicit reset as well.
+    const preserve=(event:Event)=>{if(!explicit.current)event.preventDefault();};
+    form?.addEventListener("reset",preserve);
+    return ()=>form?.removeEventListener("reset",preserve);
+  },[]);
   const onReset = useCallback((event: FormEvent<HTMLFormElement>) => {
     if (!explicit.current) event.preventDefault();
   }, []);
