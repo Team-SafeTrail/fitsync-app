@@ -23,3 +23,12 @@ Các branch local không tracking upstream hoặc tracking `gone` được giữ
 GitHub connector đọc được repository/issue/PR/Actions nhưng tạo issue và tạo remote branch trả HTTP403 `Resource not accessible by integration`. Git push qua local cũng thất bại: Credential Manager không lưu được credential, terminal prompts đã tắt. Vì vậy chưa có remote branch hoặc PR của lượt này. Đây là giới hạn quyền/đăng nhập hiện tại, không phải thay đổi đã publish.
 
 Đã chuẩn bị patch/bundle và PR description để owner push khi có phiên Git có quyền. Không nhúng key/token vào file hoặc xin secret qua chat. Không thực hiện force push, reset hard, merge hay production deployment.
+
+## Commit và kiểm tra cuối
+
+- 8641fbc — docs: establish EXE201 evidence audit and safe cleanup plan.
+- afa123f — feat: add read-only course metrics and delivery verification.
+- 76a5dca — docs: reconcile EXE201 forms, final draft and project evidence.
+- 294c4ca — docs: add verified Week 8 and 9 presentation package.
+
+Sau đó bổ sung commit bàn giao cuối; exact HEAD và manifest nằm trong receipt ngoài repo. Dirty worktree ui-before-sync-20261106 được đọc lại và giữ nguyên cùng danh sách thay đổi; không thao tác các checkout khác. Source app không thay đổi so với base, chỉ thêm scripts/reporting và tài liệu/evidence.
