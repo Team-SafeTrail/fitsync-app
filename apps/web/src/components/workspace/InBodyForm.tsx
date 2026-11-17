@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useActionState } from "react";
+import {useRouter} from "next/navigation";
 import { CheckCircle2, Info, Ruler, Camera, AlertTriangle, Loader2, Image as ImageIcon } from "lucide-react";
 import { submitInBodyForm } from "@/features/workspace/actions";
 import { startOcrAttempt, getOcrAttemptSignedUrl } from "@/features/workspace/ocr-actions";
@@ -16,6 +17,7 @@ function ErrorText({ error }: { error?: string }) {
 
 export default function InBodyForm({ traineeId }: { traineeId: string }) {
   const boundAction = submitInBodyForm.bind(null, traineeId);
+  const router=useRouter();
   const { ref: formRef, reset, onReset } = usePreservedForm();
   const [state, action, isPending] = useActionState(async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
     try {
@@ -40,7 +42,8 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
     setAttemptId("");setDraftData(null);setOcrWarnings([]);
     sessionStorage.removeItem(`ocr_attempt_${traineeId}`);
     setHandledSuccess(currentState);
-  },[currentState,isPending,handledSuccess,reset,traineeId]);
+    router.refresh();
+  },[currentState,isPending,handledSuccess,reset,traineeId,router]);
 
   useEffect(() => {
     const savedAttempt = sessionStorage.getItem(`ocr_attempt_${traineeId}`);

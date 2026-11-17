@@ -12,33 +12,33 @@ type Choice = {id:string;display_name:string};
 export default function AppointmentForm({trainees,selected}:{trainees:Choice[];selected?:string}) {
   const {ref,reset,onReset}=usePreservedForm();
   const router=useRouter();
-  const [state,action] = useActionState(async (previous:AppointmentState, form:FormData):Promise<AppointmentState> => {
+  const [state,action,pending] = useActionState(async (previous:AppointmentState, form:FormData):Promise<AppointmentState> => {
     try {
-      const result=await createAppointment(previous,form);
-      if(result.status==="success"&&result.nonce===form.get("clientRequestId")&&result.week) {
-        reset();setNonce(crypto.randomUUID());
-      }
-      return result;
+      return await createAppointment(previous,form);
     }
     catch {return {status:"error",notice:"Kết nối bị gián đoạn. Thông tin vẫn ở đây; thử lại để xác nhận cuộc hẹn."};}
   },initialAppointmentState);
   const [nonce,setNonce] = useState("");
+  const [handled,setHandled]=useState<string|undefined>(undefined);
+  const preparing=state.status==="success"&&handled!==state.nonce;
   const routedNonce=useRef<string | undefined>(undefined);
   useEffect(()=>setNonce(crypto.randomUUID()),[]);
   useEffect(()=>{
-    if(state.status==="success"&&state.nonce&&state.week&&routedNonce.current!==state.nonce) {
+    if(state.status==="success"&&state.nonce&&state.week&&!pending&&routedNonce.current!==state.nonce) {
       routedNonce.current=state.nonce;
-      if(new URL(window.location.href).searchParams.get("week")!==state.week) router.replace(`/workspace/calendar?week=${state.week}`);
+      reset();setNonce(crypto.randomUUID());setHandled(state.nonce);
+      if(new URL(window.location.href).searchParams.get("week")!==state.week)router.replace(`/workspace/calendar?week=${state.week}`);
+      else router.refresh();
     }
-  },[state,router]);
+  },[state,pending,reset,router]);
   return <form ref={ref} onReset={onReset} action={action} className="appointment-form" aria-label="Xếp cuộc hẹn">
-    <Fields trainees={trainees} selected={selected} nonce={nonce} state={state} renewNonce={()=>setNonce(crypto.randomUUID())}/>
+    <Fields trainees={trainees} selected={selected} nonce={nonce} state={state} disabled={pending||preparing} renewNonce={()=>setNonce(crypto.randomUUID())}/>
   </form>;
 }
 
-function Fields({trainees,selected,nonce,state,renewNonce}:{trainees:Choice[];selected?:string;nonce:string;state:AppointmentState;renewNonce:()=>void}) {
+function Fields({trainees,selected,nonce,state,renewNonce,disabled}:{trainees:Choice[];selected?:string;nonce:string;state:AppointmentState;renewNonce:()=>void;disabled:boolean}) {
   const {pending} = useFormStatus();
-  return <fieldset disabled={pending || !nonce}>
+  return <fieldset disabled={pending || !nonce||disabled}>
     <input type="hidden" name="clientRequestId" value={nonce}/>
     <label htmlFor="appointment-trainee">Học viên</label><select id="appointment-trainee" name="traineeId" required defaultValue={trainees.some(item=>item.id===selected)?selected:""}><option value="" disabled>Chọn học viên đã kết nối</option>{trainees.map(item=><option key={item.id} value={item.id}>{item.display_name}</option>)}</select>
     <label htmlFor="appointment-title">Tên cuộc hẹn</label><input id="appointment-title" name="title" required maxLength={100} defaultValue="Buổi tập"/>
