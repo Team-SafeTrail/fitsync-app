@@ -208,7 +208,7 @@ export async function createInBodyRecord(
   }
 
   const values = input.data;
-  const { error } = await context.supabase.from("inbody_records").insert({
+  const { data: savedRecord,error } = await context.supabase.from("inbody_records").insert({
     trainee_id: trainee.id,
     pt_id: context.user.id,
     verified_by: context.user.id,
@@ -223,15 +223,16 @@ export async function createInBodyRecord(
     target_protein_grams: values.targetProteinGrams,
     target_carb_grams: values.targetCarbGrams,
     target_fat_grams: values.targetFatGrams,
-  });
+  }).select("id").single();
 
-  if (error) return errorState("Không thể lưu bản ghi. Các chỉ số chưa vượt qua kiểm tra dữ liệu.");
+  if (error||!savedRecord) return errorState("Không thể lưu bản ghi. Các chỉ số chưa vượt qua kiểm tra dữ liệu.");
 
   revalidatePath("/workspace");
   revalidatePath(`/workspace/trainees/${trainee.id}`);
   return {
     status: "success",
     message: "Bản ghi đã được lưu thành công.",
+    recordId:savedRecord.id,
   };
 }
 

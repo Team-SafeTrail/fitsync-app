@@ -1,25 +1,19 @@
 "use client";
 
-import { useActionState, useEffect, useRef } from "react";
-import {useRouter} from "next/navigation";
+import { useActionState } from "react";
 import { Camera, CheckCircle2, NotebookPen } from "lucide-react";
 import { submitDailyCheckin } from "@/features/workspace/actions";
 import { initialWorkspaceActionState, type WorkspaceActionState } from "@/features/workspace/action-state";
 import SubmitButton from "./SubmitButton";
 import { PendingFields, usePreservedForm } from "./PreservedForm";
+import {navigateAfterSave} from "./navigate-after-save";
 
 export default function CheckinForm() {
-  const { ref: formRef, reset, onReset } = usePreservedForm();
-  const router=useRouter();
-  const handled=useRef<WorkspaceActionState|null>(null);
+  const { ref: formRef, onReset } = usePreservedForm();
   const [state, action, isPending] = useActionState(async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
-    try { return await submitDailyCheckin(previous,form); }
+    try { const result=await submitDailyCheckin(previous,form);if(result.status==="success")navigateAfterSave("/workspace");return result; }
     catch { return {status:"error",message:"Chưa xác nhận được check-in. Ảnh và ghi chú được giữ; kiểm tra lịch sử trước khi gửi lại."}; }
   }, initialWorkspaceActionState);
-  useEffect(()=>{
-    if(isPending||state.status!=="success"||handled.current===state)return;
-    handled.current=state;reset();router.refresh();
-  },[state,isPending,reset,router]);
 
   return (
     <section className="workspace-panel workspace-checkin-panel" aria-labelledby="daily-checkin-title">

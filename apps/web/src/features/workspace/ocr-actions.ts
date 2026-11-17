@@ -262,6 +262,7 @@ export async function confirmOcrDraft(
 
   return {
     status: "success",
+    recordId:result.record_id,
     message: result.is_manually_edited
       ? "Bản ghi InBody đã được xác minh và lưu (đã ghi nhận chỉnh sửa từ huấn luyện viên)."
       : "Bản ghi InBody đã được xác minh và lưu.",

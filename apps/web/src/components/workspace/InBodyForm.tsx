@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useActionState } from "react";
-import {useRouter} from "next/navigation";
 import { CheckCircle2, Info, Ruler, Camera, AlertTriangle, Loader2, Image as ImageIcon } from "lucide-react";
 import { submitInBodyForm } from "@/features/workspace/actions";
 import { startOcrAttempt, getOcrAttemptSignedUrl } from "@/features/workspace/ocr-actions";
@@ -10,25 +9,29 @@ import { initialWorkspaceActionState, type WorkspaceActionState } from "@/featur
 import { type OcrNormalizedDraft } from "@/features/workspace/ocr-validation";
 import SubmitButton from "./SubmitButton";
 import { PendingFields, usePreservedForm } from "./PreservedForm";
+import {navigateAfterSave} from "./navigate-after-save";
 
 function ErrorText({ error }: { error?: string }) {
   return error ? <span className="workspace-field-error">{error}</span> : null;
 }
 
-export default function InBodyForm({ traineeId }: { traineeId: string }) {
+export default function InBodyForm({ traineeId,savedMessage }: { traineeId: string;savedMessage?:string }) {
   const boundAction = submitInBodyForm.bind(null, traineeId);
-  const router=useRouter();
-  const { ref: formRef, reset, onReset } = usePreservedForm();
+  const { ref: formRef, onReset } = usePreservedForm();
   const [state, action, isPending] = useActionState(async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
     try {
-      return await boundAction(previous, form);
+      const result=await boundAction(previous,form);
+      if(result.status==="success"&&result.recordId){
+        sessionStorage.removeItem(`ocr_attempt_${traineeId}`);
+        navigateAfterSave(`/workspace/trainees/${traineeId}?created=${encodeURIComponent(result.recordId)}#intake`);
+      }
+      return result;
     } catch {
       return { status: "error", message: "Chưa xác nhận được lần lưu. Dữ liệu nhập vẫn được giữ; kiểm tra lịch sử trước khi gửi lại." };
     }
   }, initialWorkspaceActionState);
   const currentState = state ?? initialWorkspaceActionState;
-  const [handledSuccess,setHandledSuccess]=useState<WorkspaceActionState|null>(null);
-  const preparingNext=currentState.status==="success"&&handledSuccess!==currentState;
+  const preparingNext=currentState.status==="success";
 
   const [ocrStatus, setOcrStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
   const [ocrMessage, setOcrMessage] = useState<string>("");
@@ -36,14 +39,6 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
   const [ocrWarnings, setOcrWarnings] = useState<string[]>([]);
   const [attemptId, setAttemptId] = useState<string>("");
   const [draftData, setDraftData] = useState<OcrNormalizedDraft | null>(null);
-  useEffect(()=>{
-    if(currentState.status!=="success"||isPending||handledSuccess===currentState)return;
-    reset();setOcrStatus("idle");setOcrMessage("");setOcrImageUrl("");
-    setAttemptId("");setDraftData(null);setOcrWarnings([]);
-    sessionStorage.removeItem(`ocr_attempt_${traineeId}`);
-    setHandledSuccess(currentState);
-    router.refresh();
-  },[currentState,isPending,handledSuccess,reset,traineeId,router]);
 
   useEffect(() => {
     const savedAttempt = sessionStorage.getItem(`ocr_attempt_${traineeId}`);
@@ -141,7 +136,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         <p><Info size={15} /> Nhập từ phiếu InBody, sau đó kiểm tra lại trước khi xác nhận.</p>
       </div>
       
-      {currentState.message && <p className={`workspace-alert is-${currentState.status}`} role={currentState.status === "error" ? "alert" : "status"}>{currentState.message}</p>}
+      {(currentState.message||savedMessage) && <p className={`workspace-alert is-${currentState.status==="idle"?"success":currentState.status}`} role={currentState.status === "error" ? "alert" : "status"}>{currentState.message||savedMessage}</p>}
 
       {/* OCR Upload Section */}
       <div className="workspace-fieldset workspace-field-wide" style={{ marginBottom: '2rem', padding: '1rem', backgroundColor: 'var(--color-surface-muted)', borderRadius: 'var(--radius-md)' }}>
