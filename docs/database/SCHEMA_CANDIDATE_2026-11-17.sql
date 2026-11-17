@@ -593,6 +593,10 @@ begin
   if current_setting('role', true) <> 'authenticated' then return new; end if;
   select * into t from public.trainee_profiles where id = new.trainee_id for share;
   select role into caller_role from public.profiles where id = auth.uid();
+  if (tg_table_name = 'inbody_records' and caller_role is distinct from 'pt'::public.user_role)
+    or (tg_table_name = 'checkins' and caller_role is distinct from 'trainee'::public.user_role) then
+    raise exception 'Active linked profile required' using errcode = '42501';
+  end if;
   if t.id is null or t.status = 'archived' or (
     (caller_role = 'pt' and t.assigned_pt_id = auth.uid())
     or (caller_role = 'trainee' and t.profile_id = auth.uid())
@@ -602,6 +606,38 @@ end; $$;
 
 
 ALTER FUNCTION "public"."guard_active_trainee_write"() OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."guard_roster_plan_limit"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare plan public.subscription_plan; valid_until timestamptz; active_count integer;
+begin
+ if current_setting('role',true) <> 'authenticated' then return new; end if;
+ if (select role from public.profiles where id=auth.uid()) is distinct from 'pt'::public.user_role or new.assigned_pt_id<>auth.uid() then
+  raise exception 'PT account required' using errcode='42501'; end if;
+ if tg_op='UPDATE' then
+  if old.status<>'archived' or new.status='archived' then return new; end if;
+ else
+  new.created_at:=now(); new.updated_at:=now(); new.roster_version:=1;
+  new.archived_at:=case when new.status='archived' then now() else null end;
+  if new.total_sessions>500 then raise exception 'Invalid package size' using errcode='22023'; end if;
+ end if;
+ -- Same row serializes concurrent creates, restores and payment reconciliation.
+ select subscription_plan,subscription_valid_until into plan,valid_until from public.pt_profiles where id=new.assigned_pt_id for update;
+ if not found then raise exception 'PT account required' using errcode='42501'; end if;
+ if tg_op='INSERT' and (select count(*) from public.trainee_profiles where assigned_pt_id=auth.uid() and created_at>=now()-interval '24 hours')>=100 then
+  raise exception 'Daily profile creation limit reached' using errcode='54000'; end if;
+ if new.status='archived' then return new; end if;
+ if plan in ('pro','enterprise') and valid_until>now() then return new; end if;
+ select count(*) into active_count from public.trainee_profiles where assigned_pt_id=new.assigned_pt_id and status<>'archived' and id<>new.id;
+ if active_count>=3 then raise exception 'Free plan allows three active profiles' using errcode='P0001'; end if;
+ return new;
+end; $$;
+
+
+ALTER FUNCTION "public"."guard_roster_plan_limit"() OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."handle_new_user"() RETURNS "trigger"
@@ -673,7 +709,7 @@ end; $_$;
 ALTER FUNCTION "public"."log_workspace_open"() OWNER TO "postgres";
 
 
-CREATE OR REPLACE FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "customer" "uuid", "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean) RETURNS "uuid"
+CREATE OR REPLACE FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean, "customer" "uuid" DEFAULT NULL::"uuid") RETURNS "uuid"
     LANGUAGE "plpgsql" SECURITY DEFINER
     SET "search_path" TO ''
     AS $_$
@@ -723,7 +759,7 @@ begin
 end; $_$;
 
 
-ALTER FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "customer" "uuid", "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean) OWNER TO "postgres";
+ALTER FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean, "customer" "uuid") OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."reissue_trainee_invitation"("target_trainee_id" "uuid", "new_token_hash" "text", "new_expires_at" timestamp with time zone) RETURNS TABLE("invitation_id" "uuid", "email" "text", "expires_at" timestamp with time zone)
@@ -854,6 +890,7 @@ begin
  insert into public.finance_entries(actor_id,client_nonce,kind,category,amount_vnd,customer_id,occurred_at,evidence_path,evidence_sha256,note,is_test,reverses_id)
  values(auth.uid(),request_nonce,'reversal',original.category,original.amount_vnd,original.customer_id,now(),original.evidence_path,original.evidence_sha256,btrim(reason),original.is_test,original.id) returning id into result;
  if original.category='subscription' and not original.is_test then
+  update public.billing_requests set state='reversed' where finance_entry_id=original.id;
   select max(e.service_until) into paid_until from public.finance_entries e where e.customer_id=original.customer_id
    and e.category='subscription' and e.kind='income' and not e.is_test and not exists(select 1 from public.finance_entries r where r.reverses_id=e.id);
   update public.pt_profiles set subscription_plan=case when paid_until>now() then 'pro'::public.subscription_plan else 'free'::public.subscription_plan end,
@@ -1126,8 +1163,8 @@ CREATE TABLE IF NOT EXISTS "public"."billing_requests" (
     "finance_entry_id" "uuid",
     "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
     CONSTRAINT "billing_requests_amount_vnd_check" CHECK (("amount_vnd" = 199000)),
-    CONSTRAINT "billing_requests_check" CHECK ((("state" = 'reconciled'::"text") = ("finance_entry_id" IS NOT NULL))),
-    CONSTRAINT "billing_requests_state_check" CHECK (("state" = ANY (ARRAY['requested'::"text", 'reconciled'::"text", 'withdrawn'::"text"])))
+    CONSTRAINT "billing_requests_check" CHECK ((("state" = ANY (ARRAY['reconciled'::"text", 'reversed'::"text"])) = ("finance_entry_id" IS NOT NULL))),
+    CONSTRAINT "billing_requests_state_check" CHECK (("state" = ANY (ARRAY['requested'::"text", 'reconciled'::"text", 'withdrawn'::"text", 'reversed'::"text"])))
 );
 
 
@@ -1823,6 +1860,14 @@ CREATE OR REPLACE TRIGGER "trainee_invitations_set_updated_at" BEFORE UPDATE ON 
 
 
 
+CREATE OR REPLACE TRIGGER "trainee_plan_insert" BEFORE INSERT ON "public"."trainee_profiles" FOR EACH ROW EXECUTE FUNCTION "public"."guard_roster_plan_limit"();
+
+
+
+CREATE OR REPLACE TRIGGER "trainee_plan_restore" BEFORE UPDATE OF "status" ON "public"."trainee_profiles" FOR EACH ROW EXECUTE FUNCTION "public"."guard_roster_plan_limit"();
+
+
+
 CREATE OR REPLACE TRIGGER "trainee_profiles_retire_appointments" AFTER UPDATE OF "status", "assigned_pt_id", "profile_id" ON "public"."trainee_profiles" FOR EACH ROW EXECUTE FUNCTION "private"."retire_relationship_appointments"();
 
 
@@ -2297,6 +2342,11 @@ GRANT ALL ON FUNCTION "public"."guard_active_trainee_write"() TO "service_role";
 
 
 
+REVOKE ALL ON FUNCTION "public"."guard_roster_plan_limit"() FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."guard_roster_plan_limit"() TO "service_role";
+
+
+
 GRANT ALL ON FUNCTION "public"."handle_new_user"() TO "anon";
 GRANT ALL ON FUNCTION "public"."handle_new_user"() TO "authenticated";
 GRANT ALL ON FUNCTION "public"."handle_new_user"() TO "service_role";
@@ -2322,9 +2372,9 @@ GRANT ALL ON FUNCTION "public"."log_workspace_open"() TO "authenticated";
 
 
 
-REVOKE ALL ON FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "customer" "uuid", "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean) FROM PUBLIC;
-GRANT ALL ON FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "customer" "uuid", "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean) TO "service_role";
-GRANT ALL ON FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "customer" "uuid", "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean) TO "authenticated";
+REVOKE ALL ON FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean, "customer" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean, "customer" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."record_finance_entry"("request_nonce" "uuid", "entry_kind" "text", "entry_category" "text", "amount" bigint, "transaction_reference" "text", "transacted_at" timestamp with time zone, "receipt_path" "text", "receipt_sha256" "text", "description" "text", "test_entry" boolean, "customer" "uuid") TO "authenticated";
 
 
 
