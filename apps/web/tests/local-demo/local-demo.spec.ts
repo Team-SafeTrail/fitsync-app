@@ -63,3 +63,28 @@ test("demo Free reserves three slots and learner sees only shared coaching data"
   await learner.goto("/workspace/progress");await expect(learner.getByTestId("verified-record")).toHaveCount(3);await capture(learner,"learner-progress-mobile");
  }finally{await context.close();}
 });
+
+test("recorded walkthrough of persisted PT coaching and separated demo finance",async({page})=>{
+ test.slow();
+ // Deliberate viewing pauses are for the requested video deliverable. Assertions
+ // synchronize the application; there are no full-page screenshots to resize
+ // the viewport while this recording is being made.
+ const hold=()=>page.waitForTimeout(2200);
+ await login(page,"pt01");await hold();
+ const trainee=manifest.trainees.find(t=>t.accountId===manifest.accounts.learner01.id)!;
+ await page.goto(`/workspace/trainees/${trainee.id}#progress`);await expect(page.getByTestId("verified-record")).toHaveCount(3);await page.getByRole("heading",{name:"Tiến trình qua các lần đo",exact:true}).scrollIntoViewIfNeeded();await hold();
+ await page.getByRole("tab",{name:"Membership & buổi",exact:true}).click();await expect(page.getByTestId("membership-summary")).toBeVisible();await page.getByTestId("membership-summary").scrollIntoViewIfNeeded();await hold();
+ await page.getByRole("tab",{name:"Ghi chú",exact:true}).click();await expect(page.getByTestId("coaching-note")).toHaveCount(2);await hold();
+ const note=page.getByRole("form",{name:"Thêm ghi chú",exact:true});
+ const shared="DỮ LIỆU DEMO · Hướng dẫn chia sẻ trong video, không phải review hoặc tư vấn cho khách thật.";
+ await note.getByLabel("Nội dung ghi chú").fill(shared);await note.getByLabel("Ai có thể đọc?").selectOption("shared");await hold();await note.getByRole("button",{name:"Lưu ghi chú",exact:true}).click();await expect(page.getByTestId("coaching-note")).toHaveCount(3);await hold();
+ await page.goto("/workspace/calendar");await expect(page.getByText("DEMO · Trao đổi tiến trình",{exact:true}).first()).toBeVisible();await hold();
+ await page.goto(`/workspace/chat/${trainee.id}`);await expect(page.getByText("DEMO · Bạn kiểm tra lịch và gửi check-in ở workspace nhé.",{exact:true})).toBeVisible();await hold();
+ const message="DEMO · Tin nhắn được lưu trong database local cho video học phần.";
+ await page.getByLabel("Tin nhắn",{exact:true}).fill(message);await page.getByRole("button",{name:"Gửi tin nhắn",exact:true}).click();await expect(page.getByText(message,{exact:true})).toBeVisible();await hold();
+ await page.getByRole("button",{name:"Đăng xuất",exact:true}).first().click();await expect(page).toHaveURL(/\/login/);
+ await login(page,"learner01");await hold();await page.goto("/workspace/progress");await expect(page.getByTestId("verified-record")).toHaveCount(3);await hold();
+ await page.getByRole("button",{name:"Đăng xuất",exact:true}).first().click();await expect(page).toHaveURL(/\/login/);
+ await login(page,"admin");const summary=page.getByTestId("demo-finance-summary");await summary.locator("summary").click();await expect(summary).toContainText("3.980.000");await summary.scrollIntoViewIfNeeded();await hold();
+ await page.locator("#transactions-table").scrollIntoViewIfNeeded();await expect(page.locator("#transactions-table")).toContainText("DỮ LIỆU MÔ PHỎNG");await hold();
+});

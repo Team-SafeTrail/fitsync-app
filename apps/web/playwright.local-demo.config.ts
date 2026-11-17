@@ -7,6 +7,6 @@ export default defineConfig({
  testDir:"./tests/local-demo",
  outputDir:"./test-results/local-demo",
  retries:0,
- use:{...main.use,trace:"off",video:"on"},
+ use:{...main.use,trace:"off",viewport:{width:1280,height:900},video:{mode:"on",size:{width:1280,height:900}}},
  webServer:servers.map(server=>({...server,reuseExistingServer:false,env:{...server.env,FITSYNC_DEMO_MODE:"true"}})),
 });
