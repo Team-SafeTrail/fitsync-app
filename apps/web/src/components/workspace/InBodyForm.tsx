@@ -1,13 +1,14 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useState } from "react";
+import { useActionState } from "react";
 import { CheckCircle2, Info, Ruler, Camera, AlertTriangle, Loader2, Image as ImageIcon } from "lucide-react";
 import { submitInBodyForm } from "@/features/workspace/actions";
 import { startOcrAttempt, getOcrAttemptSignedUrl } from "@/features/workspace/ocr-actions";
-import { initialWorkspaceActionState } from "@/features/workspace/action-state";
+import { initialWorkspaceActionState, type WorkspaceActionState } from "@/features/workspace/action-state";
 import { type OcrNormalizedDraft } from "@/features/workspace/ocr-validation";
 import SubmitButton from "./SubmitButton";
+import { PendingFields, usePreservedForm } from "./PreservedForm";
 
 function ErrorText({ error }: { error?: string }) {
   return error ? <span className="workspace-field-error">{error}</span> : null;
@@ -15,9 +16,21 @@ function ErrorText({ error }: { error?: string }) {
 
 export default function InBodyForm({ traineeId }: { traineeId: string }) {
   const boundAction = submitInBodyForm.bind(null, traineeId);
-  const [state, action] = useFormState(boundAction, initialWorkspaceActionState);
+  const { ref: formRef, reset, onReset } = usePreservedForm();
+  const [state, action] = useActionState(async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
+    try {
+      const result = await boundAction(previous, form);
+      if (result.status === "success") {
+        reset(); setOcrStatus("idle"); setOcrMessage(""); setOcrImageUrl("");
+        setAttemptId(""); setDraftData(null); setOcrWarnings([]);
+        sessionStorage.removeItem(`ocr_attempt_${traineeId}`);
+      }
+      return result;
+    } catch {
+      return { status: "error", message: "Chưa xác nhận được lần lưu. Dữ liệu nhập vẫn được giữ; kiểm tra lịch sử trước khi gửi lại." };
+    }
+  }, initialWorkspaceActionState);
   const currentState = state ?? initialWorkspaceActionState;
-  const formRef = useRef<HTMLFormElement>(null);
 
   const [ocrStatus, setOcrStatus] = useState<"idle" | "uploading" | "success" | "error">("idle");
   const [ocrMessage, setOcrMessage] = useState<string>("");
@@ -25,18 +38,6 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
   const [ocrWarnings, setOcrWarnings] = useState<string[]>([]);
   const [attemptId, setAttemptId] = useState<string>("");
   const [draftData, setDraftData] = useState<OcrNormalizedDraft | null>(null);
-
-  useEffect(() => {
-    if (currentState.status === "success") {
-      formRef.current?.reset();
-      setOcrStatus("idle");
-      setOcrImageUrl("");
-      setAttemptId("");
-      setDraftData(null);
-      setOcrWarnings([]);
-      sessionStorage.removeItem(`ocr_attempt_${traineeId}`);
-    }
-  }, [currentState, traineeId]);
 
   useEffect(() => {
     const savedAttempt = sessionStorage.getItem(`ocr_attempt_${traineeId}`);
@@ -183,7 +184,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         )}
       </div>
 
-      <form ref={formRef} action={action} className="workspace-form-grid">
+      <form ref={formRef} onReset={onReset} action={action} className="workspace-form-grid"><PendingFields>
         <input type="hidden" name="ocrAttemptId" value={attemptId} />
         {attemptId && (
           <div style={{ display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
@@ -243,7 +244,7 @@ export default function InBodyForm({ traineeId }: { traineeId: string }) {
         <div className="workspace-form-action workspace-field-wide">
           <SubmitButton idle="Xác nhận và lưu" pending="Đang xác nhận..." />
         </div>
-      </form>
+      </PendingFields></form>
     </section>
   );
 }

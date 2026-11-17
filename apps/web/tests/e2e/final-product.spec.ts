@@ -22,7 +22,7 @@ test("concurrent Free creation allows three profiles; current Pro can add more",
   const race = await Promise.all([1, 2, 3, 4].map(create)); expect(race.filter(r => !r.error)).toHaveLength(3); expect(race.filter(r => r.error?.code === "P0001")).toHaveLength(1);
   expect((await api.from("trainee_profiles").select("id")).data).toHaveLength(3);
   await page.goto("/login"); await page.getByLabel("Email", { exact: true }).fill(email); await page.getByLabel("Mật khẩu", { exact: true }).fill(password); await page.getByRole("button", { name: "Vào workspace", exact: true }).click();
-  await page.getByRole("button", { name: "Thêm học viên", exact: true }).first().click(); await page.getByLabel("Tên hiển thị").fill("Fourth denied"); await page.getByLabel("Email nhận lời mời").fill(`quota-denied-${Date.now()}@example.test`); await page.getByRole("button", { name: "Tạo học viên & link mời", exact: true }).click(); await expect(page.getByRole("alert")).toContainText("Gói Free tối đa 3");
+  await page.getByRole("button", { name: "Thêm học viên", exact: true }).first().click(); await page.getByLabel("Tên hiển thị").fill("Fourth denied"); await page.getByLabel("Email nhận lời mời").fill(`quota-denied-${Date.now()}@example.test`); await page.getByRole("button", { name: "Tạo học viên & link mời", exact: true }).click(); await expect(page.locator(".workspace-alert[role=alert]")).toContainText("Gói Free tối đa 3");
   // Test-only entitlement, never recorded as customer revenue.
   expect((await setup.from("pt_profiles").update({ subscription_plan: "pro", subscription_valid_until: new Date(Date.now() + 30 * 86400000).toISOString() }).eq("id", user.data.user!.id)).error).toBeNull();
   expect((await create(5)).error).toBeNull(); expect((await api.from("trainee_profiles").select("id")).data).toHaveLength(4);
@@ -42,6 +42,7 @@ test("PT edits, reissues and archives a learner without losing the profile", asy
   await page.getByRole("button", { name: "Tạo học viên & link mời", exact: true }).click();
   const original = await page.getByTestId("invitation-link").inputValue();
   await page.getByRole("link", { name: /Learner lifecycle/ }).click();
+  await expect(page).toHaveURL(/\/workspace\/trainees\/[0-9a-f-]{36}$/);
   const dossier = page.url();
   await page.getByText("Quản lý hồ sơ và lời mời", { exact: true }).click();
   let edit = page.getByRole("form", { name: "Sửa hồ sơ học viên" });
@@ -51,7 +52,7 @@ test("PT edits, reissues and archives a learner without losing the profile", asy
   await page.getByText("Quản lý hồ sơ và lời mời", { exact: true }).click();
   await page.getByRole("button", { name: "Thu hồi lời mời", exact: true }).click();
   await expect(page.getByText("Đã thu hồi lời mời thành công.", { exact: true })).toBeVisible();
-  const learner = await browser.newContext({ viewport: { width: 390, height: 844 } });
+  const learner = await browser.newContext({ viewport: { width: 390, height: 844 }, recordVideo: { dir: "test-results/final-product-video", size: { width: 390, height: 844 } } });
   try {
     const b = await learner.newPage(); await b.goto(original);
     await expect(b.getByRole("button", { name: "Chấp nhận lời mời", exact: true })).toHaveCount(0);
@@ -64,14 +65,14 @@ test("PT edits, reissues and archives a learner without losing the profile", asy
     await archive.getByRole("button", { name: "Lưu trữ hồ sơ", exact: true }).click();
     await expect(page.getByText("Hồ sơ đã lưu trữ. Khôi phục trước khi tiếp tục coaching.")).toBeVisible();
     await b.reload(); await expect(b.getByRole("heading", { name: "Hồ sơ đã được lưu trữ" })).toBeVisible();
-    await page.goto("/workspace?filter=archived"); await page.getByRole("link", { name: /Learner updated/ }).click(); expect(page.url()).toBe(dossier);
+    await page.goto("/workspace?filter=archived"); await page.getByRole("link", { name: /Learner updated/ }).click(); await expect(page).toHaveURL(dossier);
     await page.getByText("Quản lý hồ sơ và lời mời", { exact: true }).click();
     archive = page.getByRole("form", { name: "Trạng thái hồ sơ" }); await archive.getByRole("checkbox").check();
     await archive.getByRole("button", { name: "Khôi phục hồ sơ", exact: true }).click();
     await expect(page.getByRole("button", { name: "Check-in hôm nay", exact: true })).toHaveCount(0);
     await b.reload(); await expect(b.getByRole("heading", { name: "Hồ sơ đã được lưu trữ" })).toHaveCount(0);
     await mkdir("test-results/chat-proof", { recursive: true }); await page.screenshot({ path: "test-results/chat-proof/final-roster-lifecycle.png", fullPage: true });
-  } finally { await learner.close(); }
+  } finally { await learner.close().catch(() => {}); }
 });
 
 test("password recovery email completes PKCE and the new password works", async ({ page }) => {
@@ -105,7 +106,7 @@ test("real admin ledger stores private TEST evidence, reverses once and never co
   const admin = await setup.auth.admin.createUser({ email: adminEmail, password, email_confirm: true, user_metadata: { display_name: "Finance admin synthetic", synthetic: true } }); expect(admin.error).toBeNull();
   expect((await setup.from("profiles").update({ role: "admin" }).eq("id", admin.data.user!.id)).error).toBeNull();
   const pt = await setup.auth.admin.createUser({ email: ptEmail, password, email_confirm: true, user_metadata: { display_name: "Finance PT synthetic", synthetic: true } }); expect(pt.error).toBeNull();
-  const ptContext = await browser.newContext();
+  const ptContext = await browser.newContext({ recordVideo: { dir: "test-results/final-product-video", size: { width: 1280, height: 720 } } });
   try {
     const b = await ptContext.newPage(); await b.goto("/login"); await b.getByLabel("Email", { exact: true }).fill(ptEmail); await b.getByLabel("Mật khẩu", { exact: true }).fill(password); await b.getByRole("button", { name: "Vào workspace", exact: true }).click();
     await b.goto("/workspace/billing"); await b.getByRole("form", { name: "Yêu cầu nâng cấp" }).getByRole("checkbox").check(); await b.getByRole("button", { name: "Gửi yêu cầu nâng cấp", exact: true }).click();
@@ -116,7 +117,7 @@ test("real admin ledger stores private TEST evidence, reverses once and never co
     await page.getByText("Ghi giao dịch đã đối soát", { exact: true }).click();
     const form = page.getByRole("form", { name: "Ghi sổ tài chính" });
     const reference = `SYNTHETIC-ONLY-${run}`;
-    await form.getByLabel("Khách PT", { exact: true }).selectOption(pt.data.user!.id);
+    await form.getByLabel("Khách PT").selectOption(pt.data.user!.id);
     await form.getByLabel("Thời gian giao dịch (kèm múi giờ)").fill(new Date().toISOString());
     await form.getByLabel("Mã tham chiếu trên sao kê").fill(reference); await form.getByLabel("Diễn giải", { exact: true }).fill("SYNTHETIC ONLY: disposable test, not a customer receipt");
     // Generic 1px PNG, explicitly marked TEST. It is not a fabricated bank receipt.
@@ -125,12 +126,14 @@ test("real admin ledger stores private TEST evidence, reverses once and never co
     const ledger = page.getByRole("region", { name: "Sổ thu chi", exact: true }); await expect(ledger).toContainText(reference); await expect(ledger).toContainText("Dữ liệu thử");
     await expect(page.getByRole("region", { name: "Số liệu đã ghi nhận" }).locator(".admin-kpi-card").filter({ hasText: "PT đã trả phí được đối soát" }).locator("strong")).toHaveText("0");
     const snapshot = await setup.rpc("get_admin_overview"); expect(snapshot.error).not.toBeNull(); // service_role without an authenticated admin identity is insufficient.
-    const entry = await setup.from("finance_entries").select("id,evidence_path,is_test").eq("bank_reference", reference.toLowerCase()).single(); expect(entry.error).toBeNull(); expect(entry.data?.is_test).toBe(true);
+    const entry = await setup.from("finance_entries").select("id,evidence_path,evidence_sha256,is_test").eq("bank_reference", reference.toLowerCase()).single(); expect(entry.error).toBeNull(); expect(entry.data?.is_test).toBe(true);
+    const signedUrl = await ledger.getByRole("link", { name: "Tải chứng từ riêng", exact: true }).getAttribute("href"); expect(signedUrl).toBeTruthy();
+    const downloaded = await page.request.get(signedUrl!); expect(downloaded.ok()).toBe(true); expect(createHash("sha256").update(await downloaded.body()).digest("hex")).toBe(entry.data!.evidence_sha256);
     const publicFile = await page.request.get(`${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/finance-evidence/${entry.data!.evidence_path}`); expect(publicFile.ok()).toBe(false);
     await ledger.getByText("Thêm bút toán đảo", { exact: true }).click(); await ledger.getByLabel("Lý do điều chỉnh").fill("SYNTHETIC reversal acceptance test"); await ledger.getByRole("checkbox").check(); await ledger.getByRole("button", { name: "Xác nhận điều chỉnh", exact: true }).click();
     await expect(ledger).toContainText("SYNTHETIC reversal acceptance test");
     expect((await setup.from("finance_entries").select("id").eq("reverses_id", entry.data!.id)).data).toHaveLength(1);
     await mkdir("test-results/chat-proof", { recursive: true });
     for (const width of [1440, 390]) { await page.setViewportSize({ width, height: 1000 }); expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true); await page.screenshot({ path: `test-results/chat-proof/final-live-admin-${width}.png`, fullPage: true }); }
-  } finally { await ptContext.close(); }
+  } finally { await ptContext.close().catch(() => {}); }
 });

@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { updateRemainingSessions } from "@/features/workspace/actions";
 import { initialWorkspaceActionState } from "@/features/workspace/action-state";
 import SubmitButton from "./SubmitButton";
@@ -15,7 +15,7 @@ export default function SessionBalanceForm({
   totalSessions: number;
 }) {
   const action = updateRemainingSessions.bind(null, traineeId);
-  const [state, formAction] = useFormState(action, initialWorkspaceActionState);
+  const [state, formAction] = useActionState(action, initialWorkspaceActionState);
 
   return (
     <form action={formAction} className="workspace-session-form">

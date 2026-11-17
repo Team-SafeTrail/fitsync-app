@@ -62,6 +62,9 @@ jobs:
             ${{ runner.temp }}/schema-v1.sql
             apps/web/test-results/chat-proof/*.png
             apps/web/test-results/**/*.webm
+            apps/web/test-results/**/test-failed-*.png
+            apps/web/test-results/**/error-context.md
+            apps/web/test-results/**/trace.zip
       - name: Stop disposable stack
         if: always()
         run: node node_modules/supabase/dist/supabase.js stop

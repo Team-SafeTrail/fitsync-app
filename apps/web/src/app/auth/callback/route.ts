@@ -6,7 +6,9 @@ export async function GET(request: Request) {
   const url = new URL(request.url);
   const code = url.searchParams.get("code");
   const next = url.searchParams.get("next");
-  const origin = url.origin;
+  // Request.url may contain Next's internal localhost origin behind a proxy.
+  // The configured public site must match where the PKCE cookie was issued.
+  const origin = new URL(process.env.NEXT_PUBLIC_SITE_URL ?? request.url).origin;
 
   if (code) {
     const supabase = (await createClient());

@@ -1,19 +1,18 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { Camera, CheckCircle2, NotebookPen } from "lucide-react";
 import { submitDailyCheckin } from "@/features/workspace/actions";
-import { initialWorkspaceActionState } from "@/features/workspace/action-state";
+import { initialWorkspaceActionState, type WorkspaceActionState } from "@/features/workspace/action-state";
 import SubmitButton from "./SubmitButton";
+import { PendingFields, usePreservedForm } from "./PreservedForm";
 
 export default function CheckinForm() {
-  const [state, action] = useFormState(submitDailyCheckin, initialWorkspaceActionState);
-  const formRef = useRef<HTMLFormElement>(null);
-
-  useEffect(() => {
-    if (state.status === "success") formRef.current?.reset();
-  }, [state.status]);
+  const { ref: formRef, reset, onReset } = usePreservedForm();
+  const [state, action] = useActionState(async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
+    try { const result=await submitDailyCheckin(previous,form); if(result.status==="success")reset(); return result; }
+    catch { return {status:"error",message:"Chưa xác nhận được check-in. Ảnh và ghi chú được giữ; kiểm tra lịch sử trước khi gửi lại."}; }
+  }, initialWorkspaceActionState);
 
   return (
     <section className="workspace-panel workspace-checkin-panel" aria-labelledby="daily-checkin-title">
@@ -31,7 +30,7 @@ export default function CheckinForm() {
         </p>
       )}
 
-      <form ref={formRef} action={action} className="workspace-checkin-form">
+      <form ref={formRef} onReset={onReset} action={action} className="workspace-checkin-form"><PendingFields>
         <label className="workspace-field" htmlFor="checkin-note">
           <span><NotebookPen size={15} /> Ghi chú (không bắt buộc)</span>
           <textarea
@@ -54,7 +53,7 @@ export default function CheckinForm() {
         <div className="workspace-form-action">
           <SubmitButton idle="Gửi check-in hôm nay" pending="Đang lưu riêng tư..." />
         </div>
-      </form>
+      </PendingFields></form>
     </section>
   );
 }

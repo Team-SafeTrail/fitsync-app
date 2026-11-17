@@ -10,7 +10,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   const traineeEmail = `m2-trainee-${runId}@example.test`;
   const outsiderEmail = `m2-outsider-${runId}@example.test`;
 
-  const ptContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const ptContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, recordVideo: { dir: "test-results/final-product-video", size: { width: 1440, height: 1000 } } });
   const ptPage = await ptContext.newPage();
   const runtimeErrors: string[] = [];
   ptPage.on("pageerror", (error) => runtimeErrors.push(error.message));
@@ -51,7 +51,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   const traineePath = await traineeRow.getAttribute("href");
   expect(traineePath).toMatch(/^\/workspace\/trainees\/[0-9a-f-]+$/);
 
-  const traineeContext = await browser.newContext({ viewport: { width: 430, height: 932 } });
+  const traineeContext = await browser.newContext({ viewport: { width: 430, height: 932 }, recordVideo: { dir: "test-results/final-product-video", size: { width: 430, height: 932 } } });
   const traineePage = await traineeContext.newPage();
   traineePage.on("pageerror", (error) => runtimeErrors.push(error.message));
   await traineePage.goto(invitationUrl);
@@ -91,7 +91,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.getByLabel("Khối mỡ (kg)").fill("14");
   await ptPage.getByLabel("Tỷ lệ mỡ (%)").fill("20");
   await ptPage.getByRole("button", { name: "Xác nhận và lưu" }).click();
-  await expect(ptPage.getByRole("status")).toContainText("Bản ghi đã được lưu thành công.");
+  await expect(ptPage.locator("#intake .workspace-alert[role=status]")).toContainText("Bản ghi đã được lưu thành công.");
   await expect(ptPage.getByTestId("verified-record")).toContainText("70 kg");
 
   await ptPage.reload();
