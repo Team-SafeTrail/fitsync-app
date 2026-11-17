@@ -7,7 +7,7 @@ import {getApplicationDate} from "@/features/engagement/calendar";
 
 export default async function CoachingScheduleSummary({isPt,traineeId}:{isPt:boolean;traineeId?:string}) {
   if(!isCalendarEnabled()) return <section className="coaching-schedule-summary"><div className="workspace-section-heading"><h2>{isPt?"Lịch sắp tới":"Buổi hẹn tiếp theo"}</h2><CalendarDays size={22}/></div><p>Lịch dùng chung chưa được mở tại môi trường này.</p><Link href="/workspace/calendar">Xem lịch của bạn</Link></section>;
-  const db=createClient();
+  const db=(await createClient());
   let query=db.from("coaching_appointments").select("id,trainee_id,title,starts_at,ends_at").eq("status","scheduled").gt("ends_at",new Date().toISOString()).order("starts_at").limit(isPt?3:1);
   if(traineeId) query=query.eq("trainee_id",traineeId);
   const {data,error}=await query;

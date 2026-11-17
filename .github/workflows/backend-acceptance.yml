@@ -31,12 +31,12 @@ jobs:
         run: node --test scripts/test/local-environment.test.mjs
       - name: Start isolated Supabase and mask local keys
         run: node scripts/test/ci-local-supabase.mjs
-      - name: Run all database and RLS tests
-        run: node node_modules/supabase/dist/supabase.js test db
       - name: Generate public schema types from test database
         run: node node_modules/supabase/dist/supabase.js gen types typescript --local --schema public > "$RUNNER_TEMP/database.generated.ts"
       - name: Export schema-only handoff snapshot
         run: node node_modules/supabase/dist/supabase.js db dump --local --schema public,private --file "$RUNNER_TEMP/schema-v1.sql"
+      - name: Run all database and RLS tests
+        run: node node_modules/supabase/dist/supabase.js test db
       - name: Verify committed database types match tested schema
         run: diff -u apps/web/src/types/database.ts "$RUNNER_TEMP/database.generated.ts"
       - name: Install Chromium
@@ -49,7 +49,18 @@ jobs:
         working-directory: apps/web
         env:
           PLAYWRIGHT_PRODUCTION_SERVER: "true"
-        run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts tests/e2e/calendar-private.spec.ts tests/e2e/web-handoff.spec.ts tests/e2e/approved-design.spec.ts tests/e2e/public-journey.spec.ts tests/e2e/oc2-admin-landing.spec.ts
+        run: npx --no-install playwright test tests/e2e/m2-vertical-slice.spec.ts tests/e2e/m3-engagement.spec.ts tests/e2e/chat-private.spec.ts tests/e2e/calendar-private.spec.ts tests/e2e/web-handoff.spec.ts tests/e2e/approved-design.spec.ts tests/e2e/public-journey.spec.ts tests/e2e/oc2-admin-landing.spec.ts tests/e2e/final-product.spec.ts tests/e2e/coaching-completion.spec.ts
+      - name: Verify local demo guards
+        run: node --test scripts/local-demo/config.test.mjs
+      - name: Seed and reconcile labelled local demo twice
+        run: |
+          node scripts/local-demo/seed.mjs --apply
+          node scripts/local-demo/seed.mjs --apply
+      - name: Verify seeded course demo in the real application
+        working-directory: apps/web
+        env:
+          PLAYWRIGHT_PRODUCTION_SERVER: "true"
+        run: npx --no-install playwright test --config playwright.local-demo.config.ts
       - name: Retain schema and synthetic chat screenshots
         if: always()
         uses: actions/upload-artifact@v4
@@ -61,6 +72,11 @@ jobs:
             ${{ runner.temp }}/database.generated.ts
             ${{ runner.temp }}/schema-v1.sql
             apps/web/test-results/chat-proof/*.png
+            apps/web/test-results/local-demo-proof/*.png
+            apps/web/test-results/**/*.webm
+            apps/web/test-results/**/test-failed-*.png
+            apps/web/test-results/**/error-context.md
+            apps/web/test-results/**/trace.zip
       - name: Stop disposable stack
         if: always()
         run: node node_modules/supabase/dist/supabase.js stop

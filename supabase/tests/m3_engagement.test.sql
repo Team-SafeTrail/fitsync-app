@@ -214,10 +214,8 @@ reset role;
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '12000000-0000-0000-0000-000000000001', true);
 select lives_ok(
-  $$update public.trainee_profiles
-    set remaining_sessions = 7
-    where id = 'ac000000-0000-0000-0000-000000000001'$$,
-  'PT A can update the explicit remaining-session balance'
+  $$select public.set_session_balance('ac000000-0000-0000-0000-000000000001',0,7,'Synthetic reconciled balance','ac100000-0000-0000-0000-000000000001')$$,
+  'PT A updates the explicit remaining-session balance through audited RPC'
 );
 select results_eq(
   $$select remaining_sessions from public.trainee_profiles
@@ -229,15 +227,10 @@ reset role;
 
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '23000000-0000-0000-0000-000000000002', true);
-select results_eq(
-  $$with changed as (
-      update public.trainee_profiles
-      set remaining_sessions = 0
-      where id = 'ac000000-0000-0000-0000-000000000001'
-      returning 1
-    ) select count(*)::bigint from changed$$,
-  array[0::bigint],
-  'PT B cannot mutate PT A session balance'
+select throws_ok(
+  $$update public.trainee_profiles set remaining_sessions=0 where id='ac000000-0000-0000-0000-000000000001'$$,
+  '42501',null,
+  'PT B has no direct session balance privilege'
 );
 select throws_ok(
   $$select public.submit_daily_checkin('Not a trainee', null, null, null)$$,

@@ -1,5 +1,5 @@
 import { CheckCircle2 } from "lucide-react";
-import { updateNutritionDraft } from "@/features/workspace/actions";
+import NutritionDraftForm from "./NutritionDraftForm";
 import type { InBodyRecord } from "@/features/workspace/data";
 
 const dateFormatter = new Intl.DateTimeFormat("vi-VN", {
@@ -23,7 +23,6 @@ export default function InBodyRecordCard({
   editableNutrition: boolean;
   compact?: boolean;
 }) {
-  const updateAction = updateNutritionDraft.bind(null, record.id, traineeId);
   return (
     <article className={compact ? "workspace-record is-compact" : "workspace-record"} data-testid="verified-record">
       <header>
@@ -47,13 +46,7 @@ export default function InBodyRecordCard({
       </div>
 
       {editableNutrition ? (
-        <form action={updateAction} className="workspace-nutrition-form">
-          <label><span>Kcal</span><input name="targetCalories" type="number" min={800} max={6000} defaultValue={record.target_calories ?? ""} /></label>
-          <label><span>Protein (g)</span><input name="targetProteinGrams" type="number" min={0} max={500} defaultValue={record.target_protein_grams ?? ""} /></label>
-          <label><span>Carb (g)</span><input name="targetCarbGrams" type="number" min={0} max={1000} defaultValue={record.target_carb_grams ?? ""} /></label>
-          <label><span>Chất béo (g)</span><input name="targetFatGrams" type="number" min={0} max={300} defaultValue={record.target_fat_grams ?? ""} /></label>
-          <button className="workspace-button workspace-button-secondary" type="submit">Lưu bản nháp</button>
-        </form>
+        <NutritionDraftForm record={record} traineeId={traineeId}/>
       ) : (
         <dl className="workspace-nutrition-values">
           <div><dt>Năng lượng</dt><dd>{value(record.target_calories, "kcal")}</dd></div>

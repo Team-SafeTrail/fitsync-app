@@ -5,7 +5,88 @@ export type Database = {
   
   "public": {
           Tables: {
-            "checkins": {
+            "appointment_change_requests": {
+                  Row: {
+                    "appointment_id": string,"base_version": number,"client_request_id": string,"created_at": string,"decided_at": string | null,"decided_by": string | null,"decision_request_id": string | null,"id": string,"kind": string,"proposed_ends_at": string | null,"proposed_starts_at": string | null,"reason": string,"requested_by": string,"state": string
+                  }
+                  Insert: {
+                    "appointment_id": string,"base_version": number,"client_request_id": string,"created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_request_id"?: string | null,"id"?: string,"kind": string,"proposed_ends_at"?: string | null,"proposed_starts_at"?: string | null,"reason": string,"requested_by": string,"state"?: string
+                  }
+                  Update: {
+                    "appointment_id"?: string,"base_version"?: number,"client_request_id"?: string,"created_at"?: string,"decided_at"?: string | null,"decided_by"?: string | null,"decision_request_id"?: string | null,"id"?: string,"kind"?: string,"proposed_ends_at"?: string | null,"proposed_starts_at"?: string | null,"reason"?: string,"requested_by"?: string,"state"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "appointment_change_requests_appointment_id_fkey"
+      columns: ["appointment_id"]
+isOneToOne: false
+      referencedRelation: "coaching_appointments"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "appointment_change_requests_decided_by_fkey"
+      columns: ["decided_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "appointment_change_requests_requested_by_fkey"
+      columns: ["requested_by"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"appointment_events": {
+                  Row: {
+                    "actor_id": string | null,"appointment_id": string,"created_at": string,"ends_at": string,"id": string,"kind": string,"previous_ends_at": string | null,"previous_starts_at": string | null,"starts_at": string,"version": number
+                  }
+                  Insert: {
+                    "actor_id"?: string | null,"appointment_id": string,"created_at"?: string,"ends_at": string,"id"?: string,"kind": string,"previous_ends_at"?: string | null,"previous_starts_at"?: string | null,"starts_at": string,"version": number
+                  }
+                  Update: {
+                    "actor_id"?: string | null,"appointment_id"?: string,"created_at"?: string,"ends_at"?: string,"id"?: string,"kind"?: string,"previous_ends_at"?: string | null,"previous_starts_at"?: string | null,"starts_at"?: string,"version"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "appointment_events_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "appointment_events_appointment_id_fkey"
+      columns: ["appointment_id"]
+isOneToOne: false
+      referencedRelation: "coaching_appointments"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"billing_requests": {
+                  Row: {
+                    "amount_vnd": number,"client_nonce": string,"created_at": string,"customer_id": string,"finance_entry_id": string | null,"id": string,"state": string
+                  }
+                  Insert: {
+                    "amount_vnd"?: number,"client_nonce": string,"created_at"?: string,"customer_id": string,"finance_entry_id"?: string | null,"id"?: string,"state"?: string
+                  }
+                  Update: {
+                    "amount_vnd"?: number,"client_nonce"?: string,"created_at"?: string,"customer_id"?: string,"finance_entry_id"?: string | null,"id"?: string,"state"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "billing_requests_customer_id_fkey"
+      columns: ["customer_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "billing_requests_finance_entry_id_fkey"
+      columns: ["finance_entry_id"]
+isOneToOne: true
+      referencedRelation: "finance_entries"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"checkins": {
                   Row: {
                     "created_at": string,"id": string,"local_checkin_date": string,"note": string | null,"submitted_at": string,"trainee_id": string
                   }
@@ -26,13 +107,13 @@ isOneToOne: false
                   ]
                 },"coaching_appointments": {
                   Row: {
-                    "client_request_id": string,"created_at": string,"ends_at": string,"id": string,"kind": string,"learner_id": string,"pt_id": string,"retired_at": string | null,"starts_at": string,"status": string,"title": string,"trainee_id": string
+                    "client_request_id": string,"created_at": string,"ends_at": string,"id": string,"kind": string,"learner_id": string,"pt_id": string,"retired_at": string | null,"starts_at": string,"status": string,"title": string,"trainee_id": string,"version": number
                   }
                   Insert: {
-                    "client_request_id": string,"created_at"?: string,"ends_at": string,"id"?: string,"kind": string,"learner_id": string,"pt_id": string,"retired_at"?: string | null,"starts_at": string,"status"?: string,"title": string,"trainee_id": string
+                    "client_request_id": string,"created_at"?: string,"ends_at": string,"id"?: string,"kind": string,"learner_id": string,"pt_id": string,"retired_at"?: string | null,"starts_at": string,"status"?: string,"title": string,"trainee_id": string,"version"?: number
                   }
                   Update: {
-                    "client_request_id"?: string,"created_at"?: string,"ends_at"?: string,"id"?: string,"kind"?: string,"learner_id"?: string,"pt_id"?: string,"retired_at"?: string | null,"starts_at"?: string,"status"?: string,"title"?: string,"trainee_id"?: string
+                    "client_request_id"?: string,"created_at"?: string,"ends_at"?: string,"id"?: string,"kind"?: string,"learner_id"?: string,"pt_id"?: string,"retired_at"?: string | null,"starts_at"?: string,"status"?: string,"title"?: string,"trainee_id"?: string,"version"?: number
                   }
                   Relationships: [
                     {
@@ -154,6 +235,37 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"finance_entries": {
+                  Row: {
+                    "actor_id": string,"amount_vnd": number,"bank_reference": string | null,"category": string,"client_nonce": string,"created_at": string,"customer_id": string | null,"evidence_path": string,"evidence_sha256": string,"id": string,"is_test": boolean,"kind": string,"note": string,"occurred_at": string,"reverses_id": string | null,"service_until": string | null
+                  }
+                  Insert: {
+                    "actor_id": string,"amount_vnd": number,"bank_reference"?: string | null,"category": string,"client_nonce": string,"created_at"?: string,"customer_id"?: string | null,"evidence_path": string,"evidence_sha256": string,"id"?: string,"is_test"?: boolean,"kind": string,"note": string,"occurred_at": string,"reverses_id"?: string | null,"service_until"?: string | null
+                  }
+                  Update: {
+                    "actor_id"?: string,"amount_vnd"?: number,"bank_reference"?: string | null,"category"?: string,"client_nonce"?: string,"created_at"?: string,"customer_id"?: string | null,"evidence_path"?: string,"evidence_sha256"?: string,"id"?: string,"is_test"?: boolean,"kind"?: string,"note"?: string,"occurred_at"?: string,"reverses_id"?: string | null,"service_until"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "finance_entries_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "finance_entries_customer_id_fkey"
+      columns: ["customer_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "finance_entries_reverses_id_fkey"
+      columns: ["reverses_id"]
+isOneToOne: true
+      referencedRelation: "finance_entries"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"inbody_records": {
                   Row: {
                     "body_fat_mass_kg": number,"created_at": string,"id": string,"is_manually_edited": boolean,"percent_body_fat": number,"pt_id": string,"recorded_at": string,"skeletal_muscle_mass_kg": number,"source": Database["public"]['Enums']["inbody_source"],"target_calories": number | null,"target_carb_grams": number | null,"target_fat_grams": number | null,"target_protein_grams": number | null,"total_body_water_liters": number | null,"trainee_id": string,"verified_by": string,"weight_kg": number
@@ -241,6 +353,25 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
+                },"product_events": {
+                  Row: {
+                    "actor_id": string,"channel": string,"event_day": string,"event_key": string,"id": string,"is_test": boolean,"occurred_at": string,"subject_id": string | null
+                  }
+                  Insert: {
+                    "actor_id": string,"channel"?: string,"event_day"?: string,"event_key": string,"id"?: string,"is_test": boolean,"occurred_at"?: string,"subject_id"?: string | null
+                  }
+                  Update: {
+                    "actor_id"?: string,"channel"?: string,"event_day"?: string,"event_key"?: string,"id"?: string,"is_test"?: boolean,"occurred_at"?: string,"subject_id"?: string | null
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "product_events_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
                 },"profiles": {
                   Row: {
                     "created_at": string,"display_name": string,"id": string,"phone": string | null,"role": Database["public"]['Enums']["user_role"],"updated_at": string
@@ -270,6 +401,74 @@ isOneToOne: false
       columns: ["id"]
 isOneToOne: true
       referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"session_entitlements": {
+                  Row: {
+                    "id": string,"learner_id": string | null,"opened_at": string,"opening_remaining": number,"opening_total": number,"pt_id": string,"trainee_id": string
+                  }
+                  Insert: {
+                    "id"?: string,"learner_id"?: string | null,"opened_at"?: string,"opening_remaining": number,"opening_total": number,"pt_id": string,"trainee_id": string
+                  }
+                  Update: {
+                    "id"?: string,"learner_id"?: string | null,"opened_at"?: string,"opening_remaining"?: number,"opening_total"?: number,"pt_id"?: string,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "session_entitlements_learner_id_fkey"
+      columns: ["learner_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "session_entitlements_pt_id_fkey"
+      columns: ["pt_id"]
+isOneToOne: false
+      referencedRelation: "pt_profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "session_entitlements_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: true
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"session_ledger": {
+                  Row: {
+                    "actor_id": string,"appointment_id": string | null,"balance_after": number,"client_request_id": string,"created_at": string,"delta": number,"entitlement_id": string,"id": string,"kind": string,"reason": string,"reverses_id": string | null,"version": number
+                  }
+                  Insert: {
+                    "actor_id": string,"appointment_id"?: string | null,"balance_after": number,"client_request_id": string,"created_at"?: string,"delta": number,"entitlement_id": string,"id"?: string,"kind": string,"reason": string,"reverses_id"?: string | null,"version": number
+                  }
+                  Update: {
+                    "actor_id"?: string,"appointment_id"?: string | null,"balance_after"?: number,"client_request_id"?: string,"created_at"?: string,"delta"?: number,"entitlement_id"?: string,"id"?: string,"kind"?: string,"reason"?: string,"reverses_id"?: string | null,"version"?: number
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "session_ledger_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "session_ledger_appointment_id_fkey"
+      columns: ["appointment_id"]
+isOneToOne: false
+      referencedRelation: "coaching_appointments"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "session_ledger_entitlement_id_fkey"
+      columns: ["entitlement_id"]
+isOneToOne: false
+      referencedRelation: "session_entitlements"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "session_ledger_reverses_id_fkey"
+      columns: ["reverses_id"]
+isOneToOne: true
+      referencedRelation: "session_ledger"
       referencedColumns: ["id"]
     }
                   ]
@@ -304,15 +503,40 @@ isOneToOne: false
       referencedColumns: ["id"]
     }
                   ]
-                },"trainee_profiles": {
+                },"trainee_profile_events": {
                   Row: {
-                    "archived_at": string | null,"assigned_pt_id": string,"created_at": string,"display_name": string,"engagement_started_on": string | null,"id": string,"last_checkin_date": string | null,"phone": string | null,"primary_goal": Database["public"]['Enums']["fitness_goal"],"profile_id": string | null,"remaining_sessions": number,"status": Database["public"]['Enums']["trainee_status"],"total_sessions": number,"updated_at": string
+                    "actor_id": string,"created_at": string,"id": string,"kind": string,"roster_version": number,"trainee_id": string
                   }
                   Insert: {
-                    "archived_at"?: string | null,"assigned_pt_id": string,"created_at"?: string,"display_name": string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
+                    "actor_id": string,"created_at"?: string,"id"?: string,"kind": string,"roster_version": number,"trainee_id": string
                   }
                   Update: {
-                    "archived_at"?: string | null,"assigned_pt_id"?: string,"created_at"?: string,"display_name"?: string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
+                    "actor_id"?: string,"created_at"?: string,"id"?: string,"kind"?: string,"roster_version"?: number,"trainee_id"?: string
+                  }
+                  Relationships: [
+                    {
+      foreignKeyName: "trainee_profile_events_actor_id_fkey"
+      columns: ["actor_id"]
+isOneToOne: false
+      referencedRelation: "profiles"
+      referencedColumns: ["id"]
+    },{
+      foreignKeyName: "trainee_profile_events_trainee_id_fkey"
+      columns: ["trainee_id"]
+isOneToOne: false
+      referencedRelation: "trainee_profiles"
+      referencedColumns: ["id"]
+    }
+                  ]
+                },"trainee_profiles": {
+                  Row: {
+                    "archived_at": string | null,"assigned_pt_id": string,"created_at": string,"display_name": string,"engagement_started_on": string | null,"id": string,"last_checkin_date": string | null,"phone": string | null,"primary_goal": Database["public"]['Enums']["fitness_goal"],"profile_id": string | null,"remaining_sessions": number,"roster_version": number,"session_version": number,"status": Database["public"]['Enums']["trainee_status"],"total_sessions": number,"updated_at": string
+                  }
+                  Insert: {
+                    "archived_at"?: string | null,"assigned_pt_id": string,"created_at"?: string,"display_name": string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"roster_version"?: number,"session_version"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
+                  }
+                  Update: {
+                    "archived_at"?: string | null,"assigned_pt_id"?: string,"created_at"?: string,"display_name"?: string,"engagement_started_on"?: string | null,"id"?: string,"last_checkin_date"?: string | null,"phone"?: string | null,"primary_goal"?: Database["public"]['Enums']["fitness_goal"],"profile_id"?: string | null,"remaining_sessions"?: number,"roster_version"?: number,"session_version"?: number,"status"?: Database["public"]['Enums']["trainee_status"],"total_sessions"?: number,"updated_at"?: string
                   }
                   Relationships: [
                     {
@@ -346,8 +570,14 @@ isOneToOne: false
 "application_timezone":
 { Args: Record<PropertyKey, never>; Returns: string
                            },
+"change_coaching_appointment":
+{ Args: { "change_kind": string,"change_reason"?: string,"expected_version": number,"proposed_end"?: string,"proposed_start"?: string,"request_nonce"?: string,"target_appointment": string }; Returns: number
+                           },
 "checkin_warning_starts_on":
 { Args: { "reference_date": string }; Returns: string
+                           },
+"complete_coaching_appointment":
+{ Args: { "completion_reason": string,"consume_session": boolean,"expected_appointment_version": number,"expected_session_version": number,"request_nonce": string,"target_appointment": string }; Returns: number
                            },
 "confirm_ocr_inbody_record":
 { Args: { "attempt_id": string,"confirmed_fat_kg": number,"confirmed_fat_percent": number,"confirmed_muscle_kg": number,"confirmed_water_liters"?: number,"confirmed_weight_kg": number,"nutrition_calories"?: number,"nutrition_carb"?: number,"nutrition_fat"?: number,"nutrition_protein"?: number }; Returns: {
@@ -357,6 +587,14 @@ isOneToOne: false
 "create_trainee_with_invitation":
 { Args: { "invite_email": string,"invite_expires_at": string,"invite_token_hash": string,"package_remaining": number,"package_total": number,"trainee_display_name": string,"trainee_goal": Database["public"]['Enums']["fitness_goal"],"trainee_phone": string }; Returns: string
                            },
+"get_admin_overview":
+{ Args: Record<PropertyKey, never>; Returns: Json
+                           },
+"get_assigned_coach_identity":
+{ Args: Record<PropertyKey, never>; Returns: {
+              "display_name": string,"id": string
+            }[]
+                           },
 "get_invitation_preview":
 { Args: { "invite_token_hash": string }; Returns: {
               "display_name": string,"email": string,"expires_at": string
@@ -365,13 +603,57 @@ isOneToOne: false
 "is_checkin_warning_due":
 { Args: { "at_time": string,"reference_date": string }; Returns: boolean
                            },
+"is_system_admin":
+{ Args: Record<PropertyKey, never>; Returns: boolean
+                           },
+"log_workspace_open":
+{ Args: Record<PropertyKey, never>; Returns: undefined
+                           },
+"record_finance_entry":
+{ Args: { "amount": number,"customer"?: string,"description": string,"entry_category": string,"entry_kind": string,"receipt_path": string,"receipt_sha256": string,"request_nonce": string,"test_entry": boolean,"transacted_at": string,"transaction_reference": string }; Returns: string
+                           },
+"reissue_trainee_invitation":
+{ Args: { "new_expires_at": string,"new_token_hash": string,"target_trainee_id": string }; Returns: {
+              "email": string,"expires_at": string,"invitation_id": string
+            }[]
+                           },
+"request_appointment_change":
+{ Args: { "change_kind": string,"change_reason"?: string,"expected_version": number,"proposed_end"?: string,"proposed_start"?: string,"request_nonce"?: string,"target_appointment": string }; Returns: string
+                           },
+"request_pt_upgrade":
+{ Args: { "request_nonce": string }; Returns: string
+                           },
+"resolve_appointment_change":
+{ Args: { "decision": string,"expected_version": number,"request_nonce": string,"target_request": string }; Returns: string
+                           },
+"reverse_finance_entry":
+{ Args: { "reason": string,"request_nonce": string,"target_entry": string }; Returns: string
+                           },
+"reverse_session_completion":
+{ Args: { "change_reason": string,"expected_session_version": number,"request_nonce": string,"target_entry": string }; Returns: number
+                           },
+"revoke_trainee_invitation":
+{ Args: { "target_trainee_id": string }; Returns: boolean
+                           },
 "save_coaching_membership":
 { Args: { "ends_on": string,"expected_revision": number,"membership_label": string,"request_id": string,"starts_on": string,"target_trainee": string }; Returns: string
+                           },
+"save_trainee_profile":
+{ Args: { "contact_phone": string,"expected_version": number,"goal": Database["public"]['Enums']["fitness_goal"],"target_trainee": string,"trainee_name": string }; Returns: number
+                           },
+"set_session_balance":
+{ Args: { "change_reason": string,"expected_version": number,"new_balance": number,"request_nonce": string,"target_trainee": string }; Returns: number
+                           },
+"set_trainee_archived":
+{ Args: { "archive_profile": boolean,"expected_version": number,"target_trainee": string }; Returns: number
                            },
 "submit_daily_checkin":
 { Args: { "checkin_note": string,"meal_photo_mime_type"?: string,"meal_photo_path"?: string,"meal_photo_size_bytes"?: number }; Returns: {
               "checkin_id": string,"local_checkin_date": string,"outcome": string
             }[]
+                           },
+"withdraw_appointment_change":
+{ Args: { "request_nonce": string,"target_request": string }; Returns: string
                            }
           }
           Enums: {

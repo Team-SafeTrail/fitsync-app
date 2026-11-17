@@ -79,12 +79,23 @@ test("trainee check-in reaches the PT with private media, session updates, and m
     "base64",
   );
   await traineePage.getByLabel("Ghi chú").fill("Năng lượng tốt, đã hoàn thành buổi chân.");
+  await traineePage.getByLabel(/Thêm ảnh bữa ăn/).setInputFiles({name:"invalid.png",mimeType:"image/png",buffer:Buffer.from("Synthetic invalid image, no PNG signature")});
+  await traineePage.getByRole("button",{name:"Gửi check-in hôm nay"}).click();
+  await expect(traineePage.getByRole("region",{name:"Check-in trong một phút"}).getByRole("alert")).toBeVisible();
+  await expect(traineePage.getByLabel("Ghi chú")).toHaveValue("Năng lượng tốt, đã hoàn thành buổi chân.");
+  expect(await traineePage.getByLabel(/Thêm ảnh bữa ăn/).evaluate(input=>(input as HTMLInputElement).files?.[0]?.name)).toBe("invalid.png");
   await traineePage.getByLabel(/Thêm ảnh bữa ăn/).setInputFiles({
     name: "bua-trua.png",
     mimeType: "image/png",
     buffer: onePixelPng,
   });
-  await traineePage.getByRole("button", { name: "Gửi check-in hôm nay" }).click();
+  // Observe the action response, then assert persisted UI. RSC responses may
+  // stay open after rendering; response.finished() is not a business ack.
+  const [saved]=await Promise.all([
+    traineePage.waitForResponse(response=>response.request().method()==="POST"&&Boolean(response.request().headers()["next-action"])),
+    traineePage.getByRole("button", { name: "Gửi check-in hôm nay" }).click(),
+  ]);
+  expect(saved.ok()).toBe(true);
   await expect(traineePage.getByTestId("checkin-complete-today")).toBeVisible();
   await expect(traineePage.getByTestId("checkin-activity")).toContainText("Năng lượng tốt");
   await expect(traineePage.getByTestId("private-meal-photo")).toBeVisible();
@@ -105,6 +116,7 @@ test("trainee check-in reaches the PT with private media, session updates, and m
   await expect(ptPage.getByTestId("private-meal-photo")).toBeVisible();
   await ptPage.getByRole("tab", {name:"Membership & buổi",exact:true}).click();
   await ptPage.getByRole("spinbutton", { name: /Số buổi còn lại/ }).fill("8");
+  await ptPage.getByLabel("Lý do điều chỉnh số buổi").fill("SYNTHETIC: reconciled package balance");
   await ptPage.getByRole("button", { name: "Cập nhật số buổi" }).click();
   await expect(ptPage.getByRole("status")).toContainText("Đã cập nhật số buổi còn lại");
   await ptPage.reload();
@@ -180,8 +192,8 @@ test("trainee check-in reaches the PT with private media, session updates, and m
     .update({ remaining_sessions: 0 })
     .eq("id", traineeId)
     .select("id");
-  expect(deniedMutationError).toBeNull();
-  expect(deniedMutation).toEqual([]);
+  expect(deniedMutationError?.code).toBe("42501");
+  expect(deniedMutation).toBeNull();
   const { data: deniedSignedMedia, error: deniedSignedMediaError } = await outsiderApi.storage
     .from("meal-media")
     .createSignedUrl(privatePhotoPath, 60);

@@ -25,7 +25,7 @@ const faqs = [
   ],
   [
     "Bảng giá đã áp dụng chưa?",
-    "Chưa. Tài liệu kinh doanh đề xuất gói miễn phí cho tối đa 3 học viên và gói Pro 199.000 đồng mỗi tháng, nhưng đây vẫn là giả thuyết cần kiểm chứng. Hiện chưa mở thanh toán hay tự động gia hạn.",
+    "Free cho tối đa 3 học viên chưa lưu trữ, gồm hồ sơ chờ kết nối. Pro giá 199.000 đồng/PT/tháng, không giới hạn học viên và dùng cùng chức năng coaching. Gửi yêu cầu nâng cấp trong workspace và chờ thông tin nhận tiền chính thức; gói chỉ được xác nhận sau khi đối chiếu chứng từ, không tự động gia hạn.",
   ],
   [
     "Dữ liệu trong bản mẫu được xử lý thế nào?",

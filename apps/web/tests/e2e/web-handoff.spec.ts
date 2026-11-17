@@ -9,6 +9,14 @@ async function capture(page:Page,path:string) {
  await page.evaluate(()=>window.scrollTo(0,0));
  await page.screenshot({path,fullPage:(page.viewportSize()?.width??1440)>900});
 }
+async function saveIntake(page:Page) {
+ const [response]=await Promise.all([
+  page.waitForResponse(r=>r.request().method()==="POST"&&Boolean(r.request().headers()["next-action"])),
+  page.locator("#intake").getByRole("button",{name:"Xác nhận và lưu",exact:true}).click(),
+ ]);
+ expect(response.ok()).toBe(true);
+ await expect(page.locator("#intake").getByRole("button",{name:"Xác nhận và lưu",exact:true})).toBeEnabled();
+}
 test.use({actionTimeout:15000});
 test.beforeAll(()=>{
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -48,8 +56,8 @@ test("handoff web: profile context, membership revisions, private/shared notes a
   console.info("[handoff-acceptance] verified records, metric switch and phone dossier");
   await a.getByRole("tab",{name:"Nhập số đo",exact:true}).click();
   const intake=a.locator("#intake");await expect(intake.locator('input[name="weightKg"]')).toBeVisible();
-  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("70");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("14");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await intake.getByRole("button",{name:"Xác nhận và lưu",exact:true}).click();await expect(a.getByTestId("verified-record")).toHaveCount(1);
-  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("69");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30.2");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("13.8");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await intake.getByRole("button",{name:"Xác nhận và lưu",exact:true}).click();await expect(a.getByTestId("verified-record")).toHaveCount(2);
+  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("70");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("14");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await saveIntake(a);await expect(a.getByTestId("verified-record")).toHaveCount(1);
+  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("69");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30.2");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("13.8");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await saveIntake(a);await expect(a.getByTestId("verified-record")).toHaveCount(2);
   await b.reload();await b.getByRole("button",{name:"Khối cơ xương",exact:true}).click();await expect(b.getByRole("button",{name:"Khối cơ xương",exact:true})).toHaveAttribute("aria-pressed","true");
   await a.getByRole("tab",{name:"Tiến trình",exact:true}).click();await expect(a.getByTestId("verified-record").first()).toBeVisible();
   await capture(a,`${root}/handoff-pt-progress.png`);
@@ -79,7 +87,7 @@ test("handoff admin is a guarded system/demo surface on desktop and phone",async
  const role=await setup.from("profiles").update({role:"admin"}).eq("id",user.data.user!.id);expect(role.error).toBeNull();
  await page.goto("/login");await page.getByLabel("Email",{exact:true}).fill(email);await page.getByLabel("Mật khẩu",{exact:true}).fill(password);await page.getByRole("button",{name:"Vào workspace",exact:true}).click();await expect(page).toHaveURL(/\/(workspace|admin)/);
  await mkdir("test-results/chat-proof",{recursive:true});
- for(const width of [1440,390]) {await page.setViewportSize({width,height:900});await page.goto("/admin");await expect(page.getByText("Dữ liệu demo OC2:",{exact:true})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await capture(page,`test-results/chat-proof/handoff-admin-${width}.png`);}
+ for(const width of [1440,390]) {await page.setViewportSize({width,height:900});await page.goto("/admin");await expect(page.getByTestId("live-admin-dashboard")).toBeVisible();await expect(page.getByText("Dữ liệu từ database đang kết nối.",{exact:true})).toBeVisible();expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);await capture(page,`test-results/chat-proof/handoff-admin-${width}.png`);}
 });
 
 test("handoff public page inventory renders at desktop and phone widths",async({page})=>{

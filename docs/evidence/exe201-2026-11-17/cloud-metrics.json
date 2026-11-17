@@ -1,0 +1,126 @@
+{
+  "checked_at_utc": "2026-11-17T09:49:35.110Z",
+  "source": "FitSync cloud Auth Admin + read-only REST selects",
+  "method": "No mutations, no health metric values selected. Contact identifiers used only in memory for test filtering.",
+  "counts": {
+    "auth_total": 27,
+    "synthetic_marked": 17,
+    "profiles_by_role": {
+      "pt": 9,
+      "trainee": 17,
+      "admin": 1
+    },
+    "non_synthetic_non_admin_candidates": 10,
+    "candidate_roles": {
+      "pt": 5,
+      "trainee": 5
+    },
+    "candidate_confirmed": 10,
+    "candidate_ever_signed_in": 10,
+    "candidate_signin_last_7d": 0,
+    "non_synthetic_pt_plans": {
+      "pro": 4,
+      "free": 1
+    },
+    "candidate_inbody_records": 0,
+    "candidate_checkins": 0,
+    "candidate_learners_with_checkin_7d": 0,
+    "all_inbody_records": 15,
+    "all_checkins": 8
+  },
+  "candidate_registrations_by_local_date": {
+    "2026-10-29": 1,
+    "2026-10-27": 9
+  },
+  "coaching_table_presence": {
+    "coaching_messages": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "coaching_appointments": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "coaching_membership_versions": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "coaching_notes": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    }
+  },
+  "table_inventory": {
+    "profiles": {
+      "readable": true,
+      "status": 206,
+      "row_count": 27
+    },
+    "pt_profiles": {
+      "readable": true,
+      "status": 206,
+      "row_count": 9
+    },
+    "trainee_profiles": {
+      "readable": true,
+      "status": 206,
+      "row_count": 17
+    },
+    "trainee_invitations": {
+      "readable": true,
+      "status": 200,
+      "row_count": 0
+    },
+    "inbody_records": {
+      "readable": true,
+      "status": 206,
+      "row_count": 15
+    },
+    "checkins": {
+      "readable": true,
+      "status": 206,
+      "row_count": 8
+    },
+    "meal_logs": {
+      "readable": true,
+      "status": 206,
+      "row_count": 8
+    },
+    "ocr_attempts": {
+      "readable": true,
+      "status": 200,
+      "row_count": 0
+    },
+    "coaching_messages": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "coaching_appointments": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "coaching_membership_versions": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "coaching_notes": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    }
+  },
+  "limitations": [
+    "Candidates have not been independently confirmed as customers.",
+    "Pro plan is not proof of payment.",
+    "last_sign_in_at measures latest sign-in, not all weekly activity.",
+    "No acquisition-channel or billing data obtained.",
+    "Multiple read queries are not a single transactional snapshot; concurrent changes may affect totals."
+  ]
+}

@@ -1,5 +1,7 @@
 import { expect, test } from "@playwright/test";
 
+test.use({ video: "on" });
+
 test("PT invites a trainee, verifies InBody data, and isolation holds on desktop and mobile", async ({ browser }) => {
   test.slow();
   const runId = Date.now();
@@ -8,7 +10,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   const traineeEmail = `m2-trainee-${runId}@example.test`;
   const outsiderEmail = `m2-outsider-${runId}@example.test`;
 
-  const ptContext = await browser.newContext({ viewport: { width: 1440, height: 1000 } });
+  const ptContext = await browser.newContext({ viewport: { width: 1440, height: 1000 }, recordVideo: { dir: "test-results/final-product-video", size: { width: 1440, height: 1000 } } });
   const ptPage = await ptContext.newPage();
   const runtimeErrors: string[] = [];
   ptPage.on("pageerror", (error) => runtimeErrors.push(error.message));
@@ -49,7 +51,7 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   const traineePath = await traineeRow.getAttribute("href");
   expect(traineePath).toMatch(/^\/workspace\/trainees\/[0-9a-f-]+$/);
 
-  const traineeContext = await browser.newContext({ viewport: { width: 430, height: 932 } });
+  const traineeContext = await browser.newContext({ viewport: { width: 430, height: 932 }, recordVideo: { dir: "test-results/final-product-video", size: { width: 430, height: 932 } } });
   const traineePage = await traineeContext.newPage();
   traineePage.on("pageerror", (error) => runtimeErrors.push(error.message));
   await traineePage.goto(invitationUrl);
@@ -86,10 +88,13 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await expect(ptPage.getByText(/chênh nhau quá 2 điểm phần trăm/).first()).toBeVisible();
   await expect(ptPage.getByTestId("verified-record")).toHaveCount(0);
 
+  await expect(ptPage.getByLabel("Cân nặng (kg)")).toHaveValue("70");
+  await expect(ptPage.getByLabel(/Tôi đã đối chiếu các chỉ số/)).toBeChecked();
+
   await ptPage.getByLabel("Khối mỡ (kg)").fill("14");
   await ptPage.getByLabel("Tỷ lệ mỡ (%)").fill("20");
   await ptPage.getByRole("button", { name: "Xác nhận và lưu" }).click();
-  await expect(ptPage.getByRole("status")).toContainText("Bản ghi đã được lưu thành công.");
+  await expect(ptPage.locator("#intake .workspace-alert[role=status]")).toContainText("Bản ghi đã được lưu thành công.");
   await expect(ptPage.getByTestId("verified-record")).toContainText("70 kg");
 
   await ptPage.reload();
@@ -97,7 +102,11 @@ test("PT invites a trainee, verifies InBody data, and isolation holds on desktop
   await ptPage.getByRole("tab", {name:"Tiến trình",exact:true}).click();
   const nutritionForm = ptPage.getByTestId("verified-record").locator("form");
   await nutritionForm.getByLabel("Kcal").fill("2200");
-  await nutritionForm.getByRole("button", { name: "Lưu bản nháp" }).click();
+  const [nutritionSaved]=await Promise.all([
+    ptPage.waitForResponse(response=>response.request().method()==="POST"&&Boolean(response.request().headers()["next-action"])),
+    nutritionForm.getByRole("button", { name: "Lưu bản nháp" }).click(),
+  ]);
+  expect(nutritionSaved.ok()).toBe(true);
   await expect(ptPage).toHaveURL(/nutrition=updated/);
   await expect(ptPage.getByRole("status")).toContainText("Đã cập nhật bản nháp dinh dưỡng");
 

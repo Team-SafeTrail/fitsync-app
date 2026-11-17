@@ -1,0 +1,30 @@
+
+Running 16 tests using 1 worker
+
+
+
+node : (node:17068) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+At line:2 char:41
++ ... VER='true'; node ../../node_modules/@playwright/test/cli.js test test ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: ((node:17068) Wa... env being set.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+(Use `node --trace-warnings ...` to show where the warning was created)
+[1/16] [chromium] › tests\e2e\approved-design.spec.ts:4:7 › approved coaching language and sample review work at 1440px
+[2/16] [chromium] › tests\e2e\approved-design.spec.ts:4:7 › approved coaching language and sample review work at 390px
+[3/16] [chromium] › tests\e2e\approved-design.spec.ts:4:7 › approved coaching language and sample review work at 320px
+[4/16] [chromium] › tests\e2e\approved-design.spec.ts:44:5 › public auth, invitation and legal surfaces retain shared navigation
+[5/16] [chromium] › tests\e2e\approved-design.spec.ts:54:5 › real chat routes retain authentication guards
+[6/16] [chromium] › tests\e2e\approved-design.spec.ts:63:7 › restored content and editable review at 1440px
+[7/16] [chromium] › tests\e2e\approved-design.spec.ts:63:7 › restored content and editable review at 768px
+[8/16] [chromium] › tests\e2e\approved-design.spec.ts:63:7 › restored content and editable review at 390px
+[9/16] [chromium] › tests\e2e\approved-design.spec.ts:63:7 › restored content and editable review at 320px
+[10/16] [chromium] › tests\e2e\approved-design.spec.ts:93:6 › sample dossier and role identity at 1440px
+[11/16] [chromium] › tests\e2e\approved-design.spec.ts:93:6 › sample dossier and role identity at 768px
+[12/16] [chromium] › tests\e2e\approved-design.spec.ts:93:6 › sample dossier and role identity at 390px
+[13/16] [chromium] › tests\e2e\approved-design.spec.ts:93:6 › sample dossier and role identity at 320px
+[14/16] [chromium] › tests\e2e\oc2-admin-landing.spec.ts:4:7 › Outcome 2: Admin Portal & Landing Enhancements › landing separates coursework from customer value and does not promise an unavailable APK
+[15/16] [chromium] › tests\e2e\oc2-admin-landing.spec.ts:25:7 › Outcome 2: Admin Portal & Landing Enhancements › unauthenticated access to /admin redirects to login with return path
+[16/16] [chromium] › tests\e2e\public-journey.spec.ts:3:5 › landing separates the public sample from real PT activation on desktop and mobile
+  16 passed (26.2s)

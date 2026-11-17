@@ -3,6 +3,7 @@ import ProgressHistory from "@/components/workspace/ProgressHistory";
 import {Suspense} from "react";
 import CoachingProfileContext from "@/components/workspace/CoachingProfileContext";
 import CoachingScheduleSummary from "@/components/workspace/CoachingScheduleSummary";
+import SessionHistory from "@/components/workspace/SessionHistory";
 import { AlertTriangle, ArrowRight, CheckCircle2, Dumbbell, UserRoundCheck, Users } from "lucide-react";
 import CheckinActivityList from "@/components/workspace/CheckinActivityList";
 import CheckinForm from "@/components/workspace/CheckinForm";
@@ -20,12 +21,14 @@ const goalLabels = {
   recomp: "Tái cấu trúc",
 };
 
-export default async function WorkspacePage({ searchParams }: {searchParams: {q?: string; filter?: string;create?:string}}) {
+export default async function WorkspacePage({ searchParams: searchParamsPromise }: {searchParams: Promise<{q?: string; filter?: string;create?:string}>}) {
+  const searchParams = await searchParamsPromise;
   const viewer = await getWorkspaceViewer();
   if (!viewer) return null;
 
   if (viewer.profile.role === "trainee") {
-    const { trainee, records, checkins } = await getTraineeHome(viewer.user.id);
+    const { trainee, coach, records, checkins } = await getTraineeHome(viewer.user.id);
+    if (trainee?.status === "archived") return <main id="main-content" className="workspace-main"><h1>Hồ sơ đã được lưu trữ</h1><p>Liên hệ PT phụ trách để khôi phục trước khi tiếp tục check-in hoặc trao đổi.</p></main>;
     const checkedInToday = checkins.some((checkin) => checkin.local_checkin_date === getApplicationDate());
     return (
       <main id="main-content" className="workspace-main">
@@ -33,6 +36,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
           <div>
             <p className="workspace-kicker">Tổng quan của bạn</p>
             <h1>Chào {viewer.profile.display_name}</h1>
+            {coach && <p>Huấn luyện viên đồng hành: {coach.display_name}</p>}
             <p>Theo dõi gói tập và những kết quả đã được PT xác nhận.</p>
           </div>
           {trainee && <div className="workspace-session-stat"><strong>{trainee.remaining_sessions}</strong><span>buổi PT còn lại / {trainee.total_sessions}</span></div>}
@@ -57,6 +61,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
 
             <ProgressHistory records={records} />
             <Suspense fallback={<p role="status">Đang tải membership và ghi chú…</p>}><CoachingProfileContext traineeId={trainee.id}/></Suspense>
+            <Suspense fallback={null}><SessionHistory traineeId={trainee.id}/></Suspense>
             <section className="workspace-record-list" aria-labelledby="trainee-records-title">
               <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody gần nhất</h2></div><Link href="/workspace/progress">Xem đủ {records.length} bản ghi</Link></div>
               {records.length === 0
@@ -73,7 +78,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
     return <main id="main-content" className="workspace-main"><section className="workspace-empty"><h1>Vai trò chưa được hỗ trợ</h1></section></main>;
   }
 
-  const { trainees, invitationByTrainee, verifiedRecordCountByTrainee, warningByTrainee } = await getPtRoster();
+  const { trainees, invitationByTrainee, verifiedRecordCountByTrainee, warningByTrainee } = await getPtRoster(searchParams.filter === "archived");
   const linkedCount = trainees.filter((trainee) => trainee.profile_id).length;
   const pendingCount = trainees.length - linkedCount;
   const warningTrainees = trainees.filter((trainee) => warningByTrainee.has(trainee.id));
@@ -138,7 +143,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
         </div>
         <form className="workspace-roster-search" action="/workspace" method="get" role="search" aria-label="Tìm học viên trong workspace">
           <label>Tìm học viên<input name="q" type="search" defaultValue={query} placeholder="Tên hoặc số điện thoại" maxLength={100}/></label>
-          <label>Việc cần xem<select name="filter" defaultValue={filter}><option value="all">Tất cả học viên</option><option value="attention">Cần theo dõi check-in</option><option value="pending">Chưa kết nối tài khoản</option></select></label>
+          <label>Việc cần xem<select name="filter" defaultValue={filter}><option value="all">Tất cả học viên</option><option value="attention">Cần theo dõi check-in</option><option value="pending">Chưa kết nối tài khoản</option><option value="archived">Đã lưu trữ</option></select></label>
           <button type="submit" className="workspace-button workspace-button-primary">Tìm kiếm</button>
           {(query || filter !== "all") && <Link className="workspace-inline-link" href="/workspace">Xóa bộ lọc</Link>}
         </form>
@@ -151,7 +156,7 @@ export default async function WorkspacePage({ searchParams }: {searchParams: {q?
             {visibleTrainees.map((trainee) => {
               const invitation = invitationByTrainee.get(trainee.id);
               const inviteExpired = invitation ? new Date(invitation.expires_at) <= new Date() : false;
-              const status = trainee.profile_id ? "Đã kết nối" : invitation?.status === "pending" && !inviteExpired ? "Chờ chấp nhận" : "Lời mời hết hạn";
+              const status = trainee.status === "archived" ? "Đã lưu trữ" : trainee.profile_id ? "Đã kết nối" : invitation?.status === "pending" && !inviteExpired ? "Chờ chấp nhận" : "Lời mời hết hạn";
               const recordCount = verifiedRecordCountByTrainee.get(trainee.id) ?? 0;
               return (
                 <Link key={trainee.id} href={`/workspace/trainees/${trainee.id}`} className="workspace-roster-row">

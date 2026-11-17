@@ -11,7 +11,7 @@ export default async function ConversationsPage() {
   if (!viewer) redirect("/login");
   if (!isChatEnabled()) return <main id="main-content" className="workspace-main"><h1>Trao đổi</h1><section className="workspace-empty"><h2>Trao đổi chưa được mở</h2><p>Bạn vẫn có thể xem hồ sơ và hoạt động trong workspace.</p><Link href="/workspace">Về workspace</Link></section></main>;
   if (viewer.profile.role !== "pt" && viewer.profile.role !== "trainee") redirect("/workspace");
-  const supabase = createClient();
+  const supabase = (await createClient());
   const query = supabase.from("trainee_profiles").select("id, display_name").not("profile_id", "is", null).neq("status", "archived");
   const { data, error } = await (viewer.profile.role === "pt" ? query.eq("assigned_pt_id", viewer.user.id) : query.eq("profile_id", viewer.user.id));
   if (!error && viewer.profile.role === "trainee" && data?.length === 1) redirect(`/workspace/chat/${data[0].id}`);

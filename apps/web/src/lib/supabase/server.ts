@@ -3,8 +3,8 @@ import { cookies } from "next/headers";
 import type { Database } from "@/types/database";
 import { getSupabaseEnv } from "./env";
 
-export function createClient() {
-  const cookieStore = cookies();
+export async function createClient() {
+  const cookieStore = await cookies();
   const { url, publishableKey } = getSupabaseEnv();
 
   return createServerClient<Database>(url, publishableKey, {

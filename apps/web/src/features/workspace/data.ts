@@ -22,7 +22,7 @@ export const getWorkspaceViewer = cache(async () => {
   const user = await getCurrentUser();
   if (!user) return null;
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data: profile, error } = await supabase
     .from("profiles")
     .select("id, display_name, role, phone")
@@ -33,13 +33,13 @@ export const getWorkspaceViewer = cache(async () => {
   return { user, profile };
 });
 
-export async function getPtRoster() {
-  const supabase = createClient();
+export async function getPtRoster(archived = false) {
+  const supabase = (await createClient());
   const [traineesResult, invitationsResult, recordsResult] = await Promise.all([
     supabase
       .from("trainee_profiles")
       .select("*")
-      .neq("status", "archived")
+      .filter("status", archived ? "eq" : "neq", "archived")
       .order("created_at", { ascending: false }),
     supabase
       .from("trainee_invitations")
@@ -89,7 +89,7 @@ export async function getPtRoster() {
 async function withSignedMealMedia(checkins: Checkin[], mealLogs: MealLog[]) {
   if (mealLogs.length === 0) return checkins.map((checkin) => ({ ...checkin, meal: null }));
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const paths = mealLogs.map((meal) => meal.private_photo_path);
   const { data: signedFiles, error } = await supabase.storage
     .from("meal-media")
@@ -113,7 +113,7 @@ async function withSignedMealMedia(checkins: Checkin[], mealLogs: MealLog[]) {
 }
 
 export async function getPtTrainee(traineeId: string) {
-  const supabase = createClient();
+  const supabase = (await createClient());
   const [traineeResult, recordsResult, checkinsResult, mealLogsResult] = await Promise.all([
     supabase.from("trainee_profiles").select("*").eq("id", traineeId).maybeSingle(),
     supabase
@@ -142,7 +142,7 @@ export async function getPtTrainee(traineeId: string) {
 }
 
 export async function getTraineeHome(profileId: string) {
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data: trainee, error: traineeError } = await supabase
     .from("trainee_profiles")
     .select("*")
@@ -150,9 +150,9 @@ export async function getTraineeHome(profileId: string) {
     .maybeSingle();
 
   if (traineeError) throw new Error("Không thể tải hồ sơ của bạn.");
-  if (!trainee) return { trainee: null, records: [] as InBodyRecord[], checkins: [] as CheckinActivity[] };
+  if (!trainee) return { trainee: null, coach: null, records: [] as InBodyRecord[], checkins: [] as CheckinActivity[] };
 
-  const [recordsResult, checkinsResult, mealLogsResult] = await Promise.all([
+  const [recordsResult, checkinsResult, mealLogsResult, coachResult] = await Promise.all([
     supabase
       .from("inbody_records")
       .select("*")
@@ -168,11 +168,12 @@ export async function getTraineeHome(profileId: string) {
       .select("*")
       .eq("trainee_id", trainee.id)
       .order("created_at", { ascending: false }),
+    supabase.rpc("get_assigned_coach_identity"),
   ]);
 
   if (recordsResult.error || checkinsResult.error || mealLogsResult.error) {
     throw new Error("Không thể tải hoạt động của bạn.");
   }
   const checkins = await withSignedMealMedia(checkinsResult.data, mealLogsResult.data);
-  return { trainee, records: recordsResult.data, checkins };
+  return { trainee, coach: coachResult.data?.[0] ?? null, records: recordsResult.data, checkins };
 }

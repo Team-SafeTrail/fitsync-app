@@ -1,35 +1,33 @@
 "use client";
-import {useEffect,useRef,useState} from "react";
-import {useFormState,useFormStatus} from "react-dom";
-import {useRouter} from "next/navigation";
+import {useEffect,useState} from "react";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import {createAppointment} from "@/features/scheduling/actions";
 import {initialAppointmentState,type AppointmentState} from "@/features/scheduling/action-state";
 import SubmitButton from "./SubmitButton";
+import {usePreservedForm} from "./PreservedForm";
 
 type Choice = {id:string;display_name:string};
-export default function AppointmentForm({trainees,selected}:{trainees:Choice[];selected?:string}) {
-  const [state,action] = useFormState(async (previous:AppointmentState, form:FormData):Promise<AppointmentState> => {
-    try {return await createAppointment(previous,form);}
+export default function AppointmentForm({trainees,selected,confirmedSaved=false}:{trainees:Choice[];selected?:string;confirmedSaved?:boolean}) {
+  const {ref,onReset}=usePreservedForm();
+  const [state,action,pending] = useActionState(async (previous:AppointmentState, form:FormData):Promise<AppointmentState> => {
+    try {
+      const result=await createAppointment(previous,form);
+      if(result.status==="success"&&result.nonce&&result.nonce===form.get("clientRequestId")&&result.week)window.location.assign(`/workspace/calendar?${new URLSearchParams({week:result.week,saved:result.nonce})}`);
+      return result;
+    }
     catch {return {status:"error",notice:"Kết nối bị gián đoạn. Thông tin vẫn ở đây; thử lại để xác nhận cuộc hẹn."};}
   },initialAppointmentState);
   const [nonce,setNonce] = useState("");
-  const ref = useRef<HTMLFormElement>(null);
-  const router = useRouter();
   useEffect(()=>setNonce(crypto.randomUUID()),[]);
-  useEffect(()=>{
-    if(state.status === "success" && state.nonce === nonce && state.week) {
-      ref.current?.reset(); setNonce(crypto.randomUUID());
-      router.replace(`/workspace/calendar?week=${state.week}`); router.refresh();
-    }
-  },[state,nonce,router]);
-  return <form ref={ref} action={action} className="appointment-form" aria-label="Xếp cuộc hẹn">
-    <Fields trainees={trainees} selected={selected} nonce={nonce} state={state} renewNonce={()=>setNonce(crypto.randomUUID())}/>
+  return <form ref={ref} onReset={onReset} action={action} className="appointment-form" aria-label="Xếp cuộc hẹn">
+    <Fields trainees={trainees} selected={selected} nonce={nonce} state={state.status==="idle"&&confirmedSaved?{status:"success",notice:"Đã thêm cuộc hẹn. Không trừ buổi PT."}:state} disabled={pending} renewNonce={()=>setNonce(crypto.randomUUID())}/>
   </form>;
 }
 
-function Fields({trainees,selected,nonce,state,renewNonce}:{trainees:Choice[];selected?:string;nonce:string;state:AppointmentState;renewNonce:()=>void}) {
+function Fields({trainees,selected,nonce,state,renewNonce,disabled}:{trainees:Choice[];selected?:string;nonce:string;state:AppointmentState;renewNonce:()=>void;disabled:boolean}) {
   const {pending} = useFormStatus();
-  return <fieldset disabled={pending || !nonce}>
+  return <fieldset disabled={pending || !nonce||disabled}>
     <input type="hidden" name="clientRequestId" value={nonce}/>
     <label htmlFor="appointment-trainee">Học viên</label><select id="appointment-trainee" name="traineeId" required defaultValue={trainees.some(item=>item.id===selected)?selected:""}><option value="" disabled>Chọn học viên đã kết nối</option>{trainees.map(item=><option key={item.id} value={item.id}>{item.display_name}</option>)}</select>
     <label htmlFor="appointment-title">Tên cuộc hẹn</label><input id="appointment-title" name="title" required maxLength={100} defaultValue="Buổi tập"/>

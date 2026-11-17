@@ -4,7 +4,8 @@ import AuthShell from "@/components/auth/AuthShell";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 import { signup } from "../auth/actions";
 
-export default function RegisterPage({ searchParams }: { searchParams: { error?: string } }) {
+export default async function RegisterPage({ searchParams: query }: { searchParams: Promise<{ error?: string }> }) {
+  const searchParams = await query;
   const configured = isSupabaseConfigured();
   return (
     <AuthShell eyebrow="Dành cho huấn luyện viên" title="Tạo không gian FitSync." description="Bắt đầu bằng tài khoản PT. Lời mời học viên sẽ được tạo từ workspace sau khi đăng nhập.">

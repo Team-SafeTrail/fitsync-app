@@ -1,36 +1,43 @@
 "use client";
 import { useEffect, useState } from "react";
-import { useFormState, useFormStatus } from "react-dom";
+import { useActionState } from "react";
+import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
 import { sendChatMessage } from "@/features/chat/actions";
 import { initialChatState } from "@/features/chat/action-state";
 import type { ChatState } from "@/features/chat/action-state";
 import SubmitButton from "./SubmitButton";
+import { usePreservedForm } from "./PreservedForm";
 
 export default function ChatComposer({ traineeId, refreshAutomatically }: { traineeId: string; refreshAutomatically: boolean }) {
-  const [state, action] = useFormState(async (previous: ChatState, form: FormData): Promise<ChatState> => {
-    try { return await sendChatMessage(traineeId, previous, form); }
+  const router = useRouter();
+  const { onReset } = usePreservedForm();
+  const [state, action] = useActionState(async (previous: ChatState, form: FormData): Promise<ChatState> => {
+    try {
+      const result = await sendChatMessage(traineeId, previous, form);
+      if(result.status === "success" && result.nonce === form.get("clientMessageId")) {
+        setBody(""); setNonce(crypto.randomUUID());
+        // Acknowledged send from a historical cursor opens the latest persisted
+        // thread. A document navigation cannot be overwritten by an older RSC.
+        if(new URL(window.location.href).searchParams.has("before"))window.location.assign(`/workspace/chat/${traineeId}`);
+      }
+      return result;
+    }
     catch { return {status:"error",notice:"Kết nối bị gián đoạn. Tin đang soạn vẫn ở đây; thử gửi lại khi mạng ổn định."}; }
   }, initialChatState);
   const [body, setBody] = useState("");
   const [nonce, setNonce] = useState("");
-  const router = useRouter();
   useEffect(() => setNonce(crypto.randomUUID()), []);
   useEffect(() => {
-    if (state.status === "success" && state.nonce === nonce) {
-      setBody(""); setNonce(crypto.randomUUID());
-      if (refreshAutomatically) router.refresh();
-      else router.replace(`/workspace/chat/${traineeId}`);
-    }
-  }, [state, nonce, router, refreshAutomatically, traineeId]);
-  useEffect(() => {
     if (!refreshAutomatically) return;
-    const timer = setInterval(() => { if (document.visibilityState === "visible") router.refresh(); }, 15000);
-    return () => clearInterval(timer);
+    const refresh = () => { if (document.visibilityState === "visible") router.refresh(); };
+    const timer = setInterval(refresh, 15000);
+    window.addEventListener("focus", refresh); document.addEventListener("visibilitychange", refresh);
+    return () => { clearInterval(timer); window.removeEventListener("focus", refresh); document.removeEventListener("visibilitychange", refresh); };
   }, [refreshAutomatically, router]);
   return <div className="chat-composer">
     <button type="button" className="workspace-inline-link" onClick={() => router.refresh()}>Cập nhật cuộc trò chuyện</button>
-    <form action={action}>
+    <form action={action} onReset={onReset}>
       <ComposerFields body={body} nonce={nonce} state={state} setBody={setBody} renewNonce={() => setNonce(crypto.randomUUID())} />
     </form>
   </div>;

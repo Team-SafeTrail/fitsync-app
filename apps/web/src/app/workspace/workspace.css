@@ -551,3 +551,10 @@
 .appointment-form p{font-size:13px;line-height:1.7;color:var(--color-text-secondary);margin:4px 0 8px}.appointment-form [role=alert]{color:var(--color-text-primary);border-left:3px solid var(--color-brand);padding-left:12px}
 @media(max-width:1100px){.calendar-layout{grid-template-columns:minmax(0,1fr);gap:32px}.calendar-entry{max-width:600px}}
 @media(max-width:600px){.calendar-heading{display:block}.calendar-heading>a{display:inline-flex;min-height:44px;align-items:center}.calendar-week-nav{gap:12px 20px}.calendar-week-nav>div{order:-1;width:100%}.calendar-appointment{grid-template-columns:76px minmax(0,1fr);gap:16px}.calendar-entry{padding:20px}.calendar-appointment h4{font-size:18px}}
+.workspace-submit-fields{display:contents;border:0;margin:0;padding:0;min-width:0}
+.appointment-workflow{margin-top:16px;min-width:0;overflow-wrap:anywhere}
+.appointment-workflow>details{border-top:1px solid var(--color-border-default);padding:8px 0}
+.appointment-workflow summary{min-height:44px;cursor:pointer;align-content:center;font-size:14px;font-weight:600}
+.appointment-workflow .coaching-context-form{margin-top:12px;min-width:0}
+.appointment-workflow ul{padding-left:20px;font-size:14px}
+.workspace-session-form textarea{max-width:100%;min-width:0}

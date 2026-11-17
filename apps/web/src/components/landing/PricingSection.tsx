@@ -2,34 +2,34 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, Check, Compass } from "lucide-react";
 
 const launchFeatures = [
-  "Tối đa 3 học viên trong giả thuyết Free",
-  "OCR chỉ sau khi có benchmark và bước duyệt",
-  "Check-in và cảnh báo đã được kiểm chứng cục bộ",
-  "Không gian riêng cho PT và học viên",
+  "Không giới hạn học viên khi Pro còn hạn",
+  "Cùng chức năng coaching như Free",
+  "Nhập và xác nhận InBody thủ công",
+  "Check-in, ảnh riêng tư và tiến trình",
 ];
 
 export default function PricingSection() {
   return (
     <section id="pricing" className="fs-section fs-offer fs-container">
       <div className="fs-offer-heading">
-        <p className="fs-eyebrow">TRẠNG THÁI SẢN PHẨM</p>
+        <p className="fs-eyebrow">GÓI FITSYNC</p>
         <h2>
           Bắt đầu với điều đã chạy.
           <br />
           <span>Kiểm chứng phần còn lại.</span>
         </h2>
         <p>
-          Luồng workspace M2 + M3 đã hoạt động. Gói thương mại, thanh toán và trial
-          vẫn chưa được phát hành.
+          Bắt đầu với ba học viên trong gói Free. Khi cần quản lý nhiều học viên
+          hơn, yêu cầu Pro theo tháng ngay trong workspace.
         </p>
       </div>
       <div className="fs-offer-now">
-        <span className="fs-offer-label">LUỒNG THẬT TRONG SẢN PHẨM</span>
+        <span className="fs-offer-label">FREE</span>
         <div className="fs-offer-title">
           <Compass size={25} aria-hidden="true" />
           <div>
-            <h3>Workspace PT</h3>
-            <p>Tạo tài khoản PT. Không có bước thanh toán.</p>
+            <h3>Tối đa 3 học viên</h3>
+            <p>Gồm hồ sơ đang theo dõi và chờ kết nối; hồ sơ lưu trữ không chiếm chỗ.</p>
           </div>
         </div>
         <ul>
@@ -51,14 +51,14 @@ export default function PricingSection() {
         </Link>
       </div>
       <div className="fs-offer-later">
-        <span className="fs-offer-label">ĐỊNH HƯỚNG KHI RA MẮT</span>
+        <span className="fs-offer-label">PRO</span>
         <div>
           <span className="fs-offer-price">199.000 ₫</span>
-          <small>mức giá Pro đang được kiểm chứng</small>
+          <small>mỗi PT / một tháng</small>
         </div>
         <p className="fs-offer-free">
-          Định hướng Freemium: tối đa 3 học viên và 3 lượt quét thử. Đây chưa
-          phải gói được phát hành.
+          Không giới hạn học viên, cùng chức năng coaching. Hết hạn vẫn giữ
+          hồ sơ cũ; tạo thêm hoặc khôi phục hồ sơ theo hạn mức Free.
         </p>
         <ul>
           {launchFeatures.map((feature) => (
@@ -67,12 +67,12 @@ export default function PricingSection() {
             </li>
           ))}
         </ul>
-        <a href="#faq" className="fs-text-link">
-          Đọc về giới hạn bản mẫu <ArrowRight size={16} />
-        </a>
+        <Link href="/workspace/billing" className="fs-text-link">
+          Xem gói và yêu cầu Pro <ArrowRight size={16} />
+        </Link>
         <p className="fs-offer-disclaimer">
-          Đây là định hướng, không phải lời chào bán. Tính năng và mức giá có
-          thể thay đổi sau thử nghiệm với người dùng.
+          Chuyển khoản được xác nhận thủ công sau khi đối chiếu chứng từ.
+          Chờ thông tin nhận tiền chính thức trong workspace; không tự gia hạn.
         </p>
       </div>
     </section>

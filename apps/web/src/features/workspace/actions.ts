@@ -18,7 +18,7 @@ async function requireRole(role: "pt" | "trainee") {
   const user = await getCurrentUser();
   if (!user) return null;
 
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data: profile } = await supabase
     .from("profiles")
     .select("role")
@@ -54,6 +54,8 @@ export async function createTrainee(
   });
 
   if (error) {
+    if (error.code === "P0001") return errorState("Gói Free tối đa 3 học viên đang theo dõi, gồm cả hồ sơ chờ kết nối. Lưu trữ hồ sơ không còn theo dõi hoặc mở Gói FitSync để yêu cầu Pro.");
+    if (error.code === "54000") return errorState("Đã đạt giới hạn tạo hồ sơ trong 24 giờ. Thử lại vào ngày mai.");
     if (error.code === "23505") {
       return errorState("Email này đã có một lời mời đang chờ trong workspace của bạn.", {
         email: "Thu hồi hoặc dùng lời mời hiện tại trước khi tạo lời mời mới.",
@@ -87,7 +89,7 @@ export async function acceptInvitation(
   }
 
   const tokenHash = hashInvitationToken(rawToken);
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data: previews, error: previewError } = await supabase.rpc("get_invitation_preview", {
     invite_token_hash: tokenHash,
   });
@@ -128,6 +130,7 @@ export async function acceptInvitation(
       used: "Lời mời đã được sử dụng.",
       email_mismatch: "Email đăng nhập không khớp với lời mời.",
       account_role: "Tài khoản PT không thể nhận lời mời học viên.",
+      already_linked: "Tài khoản học viên này đã được liên kết với một hồ sơ khác.",
       invalid: "Lời mời không hợp lệ.",
     };
     return errorState(messages[outcome ?? ""] ?? "Không thể chấp nhận lời mời.");
@@ -135,6 +138,53 @@ export async function acceptInvitation(
 
   revalidatePath("/workspace");
   redirect("/workspace");
+}
+
+export async function reissueInvitation(traineeId: string): Promise<WorkspaceActionState> {
+  const context = await requireRole("pt");
+  if (!context) return errorState("Chỉ tài khoản PT đã đăng nhập mới có thể cấp lại lời mời.");
+
+  const rawToken = createInvitationToken();
+  const tokenHash = hashInvitationToken(rawToken);
+  const expiresAt = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString();
+
+  const { error } = await context.supabase.rpc("reissue_trainee_invitation", {
+    target_trainee_id: traineeId,
+    new_token_hash: tokenHash,
+    new_expires_at: expiresAt,
+  });
+
+  if (error) {
+    return errorState("Không thể cấp lại lời mời. Kiểm tra hồ sơ học viên rồi thử lại.");
+  }
+
+  revalidatePath("/workspace");
+  const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://127.0.0.1:3000").replace(/\/$/, "");
+  return {
+    status: "success",
+    message: "Đã cấp lại liên kết mời mới. Sao chép liên kết này gửi cho học viên.",
+    invitationUrl: `${siteUrl}/invite/${rawToken}`,
+    invitationExpiresAt: expiresAt,
+  };
+}
+
+export async function revokeInvitation(traineeId: string): Promise<WorkspaceActionState> {
+  const context = await requireRole("pt");
+  if (!context) return errorState("Chỉ tài khoản PT đã đăng nhập mới có thể thu hồi lời mời.");
+
+  const { data, error } = await context.supabase.rpc("revoke_trainee_invitation", {
+    target_trainee_id: traineeId,
+  });
+
+  if (error || !data) {
+    return errorState("Không thể thu hồi lời mời. Vui lòng thử lại.");
+  }
+
+  revalidatePath("/workspace");
+  return {
+    status: "success",
+    message: "Đã thu hồi lời mời thành công.",
+  };
 }
 
 export async function createInBodyRecord(
@@ -158,7 +208,7 @@ export async function createInBodyRecord(
   }
 
   const values = input.data;
-  const { error } = await context.supabase.from("inbody_records").insert({
+  const { data: savedRecord,error } = await context.supabase.from("inbody_records").insert({
     trainee_id: trainee.id,
     pt_id: context.user.id,
     verified_by: context.user.id,
@@ -173,24 +223,25 @@ export async function createInBodyRecord(
     target_protein_grams: values.targetProteinGrams,
     target_carb_grams: values.targetCarbGrams,
     target_fat_grams: values.targetFatGrams,
-  });
+  }).select("id").single();
 
-  if (error) return errorState("Không thể lưu bản ghi. Các chỉ số chưa vượt qua kiểm tra dữ liệu.");
+  if (error||!savedRecord) return errorState("Không thể lưu bản ghi. Các chỉ số chưa vượt qua kiểm tra dữ liệu.");
 
   revalidatePath("/workspace");
   revalidatePath(`/workspace/trainees/${trainee.id}`);
   return {
     status: "success",
     message: "Bản ghi đã được lưu thành công.",
+    recordId:savedRecord.id,
   };
 }
 
-export async function updateNutritionDraft(recordId: string, traineeId: string, formData: FormData) {
+export async function updateNutritionDraft(recordId: string, traineeId: string,_previous:WorkspaceActionState, formData: FormData):Promise<WorkspaceActionState> {
   const input = validateNutritionDraft(formData);
-  if (!input.success) redirect(`/workspace/trainees/${traineeId}?nutrition=invalid`);
+  if (!input.success) return errorState("Chưa lưu bản nháp. Kiểm tra giới hạn dinh dưỡng.",input.fieldErrors);
 
   const context = await requireRole("pt");
-  if (!context) redirect("/login");
+  if (!context) return errorState("Đăng nhập bằng tài khoản PT phụ trách trước khi chỉnh sửa.");
 
   const { data: updatedRecord, error } = await context.supabase
     .from("inbody_records")
@@ -206,9 +257,10 @@ export async function updateNutritionDraft(recordId: string, traineeId: string, 
     .select("id")
     .maybeSingle();
 
-  if (error || !updatedRecord) redirect(`/workspace/trainees/${traineeId}?nutrition=error`);
+  if (error || !updatedRecord) return errorState("Chưa lưu được bản nháp. Kiểm tra quyền và trạng thái hồ sơ.");
   revalidatePath(`/workspace/trainees/${traineeId}`);
-  redirect(`/workspace/trainees/${traineeId}?nutrition=updated`);
+  revalidatePath("/workspace");
+  return {status:"success",message:"Đã cập nhật bản nháp dinh dưỡng."};
 }
 
 export async function submitDailyCheckin(
@@ -277,6 +329,7 @@ export async function submitDailyCheckin(
 
 export async function updateRemainingSessions(
   traineeId: string,
+  expectedVersion: number,
   _previousState: WorkspaceActionState,
   formData: FormData,
 ): Promise<WorkspaceActionState> {
@@ -294,20 +347,15 @@ export async function updateRemainingSessions(
 
   const input = validateRemainingSessions(formData, trainee.total_sessions);
   if (!input.success) return errorState(input.message, input.fieldErrors);
-
-  const { data: updated, error } = await context.supabase
-    .from("trainee_profiles")
-    .update({ remaining_sessions: input.data.remainingSessions })
-    .eq("id", trainee.id)
-    .eq("assigned_pt_id", context.user.id)
-    .select("id")
-    .maybeSingle();
-
-  if (error || !updated) return errorState("Không thể cập nhật số buổi còn lại.");
+  const reason=String(formData.get("reason")??"").trim(),nonce=String(formData.get("nonce")??"");
+  if(reason.length<3||reason.length>500||!/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(nonce))return errorState("Nhập lý do điều chỉnh từ 3 đến 500 ký tự; tải lại nếu chưa có mã lượt lưu.");
+  const {error}=await context.supabase.rpc("set_session_balance",{target_trainee:trainee.id,expected_version:expectedVersion,new_balance:input.data.remainingSessions,change_reason:reason,request_nonce:nonce});
+  if(error)return errorState(error.code==="40001"?"Số buổi đã thay đổi. Tải bản mới nhất trước khi điều chỉnh.":error.code==="23505"?"Lượt lưu đã dùng. Kiểm tra lịch sử trước khi tạo lượt mới.":"Không thể cập nhật số buổi. Kiểm tra trạng thái hồ sơ và quyền sở hữu.");
 
   revalidatePath("/workspace");
   revalidatePath(`/workspace/trainees/${trainee.id}`);
-  return { status: "success", message: "Đã cập nhật số buổi còn lại." };
+  revalidatePath("/workspace/calendar");
+  return { status: "success",nonce, message: "Đã cập nhật số buổi còn lại và lưu lịch sử đối soát." };
 }
 
 export async function submitInBodyForm(traineeId: string, previousState: WorkspaceActionState, formData: FormData) {
