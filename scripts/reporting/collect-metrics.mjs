@@ -54,13 +54,14 @@ try {
   const tally = (items, group) => items.reduce((out, item) => { const k = group(item); out[k] = (out[k] ?? 0) + 1; return out; }, {});
   const cutoff = Date.now() - 7 * 86400000;
   const recent = checkins.filter(c => traineeIds.has(c.trainee_id) && Date.parse(c.created_at) >= cutoff);
-  const tablePresence = {};
-  for (const table of ['coaching_messages', 'coaching_appointments', 'coaching_membership_versions', 'coaching_notes']) {
+  const tableInventory = {};
+  for (const table of ['profiles', 'pt_profiles', 'trainee_profiles', 'trainee_invitations', 'inbody_records', 'checkins', 'meal_logs', 'ocr_attempts', 'coaching_messages', 'coaching_appointments', 'coaching_membership_versions', 'coaching_notes']) {
     // HEAD errors have no JSON body and can be ambiguous in SDKs. GET limit 0
     // verifies the relation without returning any row or health value.
-    const { error, status } = await db.from(table).select('id').limit(0);
-    tablePresence[table] = error ? { readable: false, status, code: error.code } : { readable: status === 200, status };
+    const { error, status, count } = await db.from(table).select('id', { count: 'exact' }).limit(0);
+    tableInventory[table] = error ? { readable: false, status, code: error.code } : { readable: status >= 200 && status < 300, status, row_count: count };
   }
+  const tablePresence = Object.fromEntries(Object.entries(tableInventory).filter(([table]) => table.startsWith('coaching_')));
   const report = {
     checked_at_utc: new Date().toISOString(), source: 'FitSync cloud Auth Admin + read-only REST selects',
     method: 'No mutations, no health metric values selected. Contact identifiers used only in memory for test filtering.',
@@ -81,6 +82,7 @@ try {
     },
     candidate_registrations_by_local_date: tally(candidates, u => new Date(Date.parse(u.created_at) + 7 * 3600000).toISOString().slice(0, 10)),
     coaching_table_presence: tablePresence,
+    table_inventory: tableInventory,
     limitations: ['Candidates have not been independently confirmed as customers.', 'Pro plan is not proof of payment.',
       'last_sign_in_at measures latest sign-in, not all weekly activity.', 'No acquisition-channel or billing data obtained.',
       'Multiple read queries are not a single transactional snapshot; concurrent changes may affect totals.'],
