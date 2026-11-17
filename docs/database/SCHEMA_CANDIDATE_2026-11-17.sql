@@ -100,6 +100,41 @@ CREATE TYPE "public"."user_role" AS ENUM (
 ALTER TYPE "public"."user_role" OWNER TO "postgres";
 
 
+CREATE OR REPLACE FUNCTION "private"."attach_first_session_identity"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+begin
+ if old.profile_id is null and new.profile_id is not null then
+  update public.session_entitlements set learner_id=new.profile_id where trainee_id=new.id and learner_id is null and pt_id=new.assigned_pt_id;
+ end if;
+ return new;
+end; $$;
+
+
+ALTER FUNCTION "private"."attach_first_session_identity"() OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "private"."audit_appointment_revision"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+begin
+  if tg_op='UPDATE' then
+    new.version:=old.version+1;
+    update public.appointment_change_requests set state='stale',decided_at=statement_timestamp()
+      where appointment_id=new.id and state='pending';
+  end if;
+  insert into public.appointment_events(appointment_id,version,actor_id,kind,previous_starts_at,previous_ends_at,starts_at,ends_at)
+    values(new.id,new.version,auth.uid(),case when tg_op='INSERT' then 'created' when new.status='retired' then 'retired' else 'rescheduled' end,
+      case when tg_op='UPDATE' then old.starts_at end,case when tg_op='UPDATE' then old.ends_at end,new.starts_at,new.ends_at);
+  return new;
+end; $$;
+
+
+ALTER FUNCTION "private"."audit_appointment_revision"() OWNER TO "postgres";
+
+
 CREATE OR REPLACE FUNCTION "private"."guard_appointment_creation"() RETURNS "trigger"
     LANGUAGE "plpgsql" SECURITY DEFINER
     SET "search_path" TO ''
@@ -146,6 +181,164 @@ $$;
 
 
 ALTER FUNCTION "private"."guard_coaching_note"() OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "private"."guard_completed_appointment_change"() RETURNS "trigger"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+begin
+ if (new.starts_at is distinct from old.starts_at or new.ends_at is distinct from old.ends_at) and exists(
+  select 1 from public.session_ledger s where s.appointment_id=old.id and s.kind='completion'
+ ) then raise exception 'Completed appointment cannot be rescheduled' using errcode='23514'; end if;
+ return new;
+end; $$;
+
+
+ALTER FUNCTION "private"."guard_completed_appointment_change"() OWNER TO "postgres";
+
+SET default_tablespace = '';
+
+SET default_table_access_method = "heap";
+
+
+CREATE TABLE IF NOT EXISTS "public"."coaching_appointments" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "trainee_id" "uuid" NOT NULL,
+    "pt_id" "uuid" NOT NULL,
+    "learner_id" "uuid" NOT NULL,
+    "client_request_id" "uuid" NOT NULL,
+    "title" "text" NOT NULL,
+    "kind" "text" NOT NULL,
+    "starts_at" timestamp with time zone NOT NULL,
+    "ends_at" timestamp with time zone NOT NULL,
+    "status" "text" DEFAULT 'scheduled'::"text" NOT NULL,
+    "retired_at" timestamp with time zone,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "version" integer DEFAULT 1 NOT NULL,
+    CONSTRAINT "coaching_appointments_kind_check" CHECK (("kind" = ANY (ARRAY['training'::"text", 'consultation'::"text"]))),
+    CONSTRAINT "coaching_appointments_retirement" CHECK ((("status" = 'retired'::"text") = ("retired_at" IS NOT NULL))),
+    CONSTRAINT "coaching_appointments_status_check" CHECK (("status" = ANY (ARRAY['scheduled'::"text", 'retired'::"text"]))),
+    CONSTRAINT "coaching_appointments_time_bounds" CHECK (("isfinite"("starts_at") AND "isfinite"("ends_at") AND ("ends_at" > "starts_at") AND (("ends_at" - "starts_at") <= '24:00:00'::interval))),
+    CONSTRAINT "coaching_appointments_title_check" CHECK (((("char_length"("title") >= 1) AND ("char_length"("title") <= 100)) AND ("title" = "btrim"("title")) AND ("title" ~ '[^[:space:]]'::"text"))),
+    CONSTRAINT "coaching_appointments_version_check" CHECK (("version" > 0))
+);
+
+
+ALTER TABLE "public"."coaching_appointments" OWNER TO "postgres";
+
+
+COMMENT ON TABLE "public"."coaching_appointments" IS 'Shared appointments; PT creates, current participant pair reads. No session debit. Relationship changes retire slots without transferring private history. Change requests/completion belong to later slices.';
+
+
+
+CREATE OR REPLACE FUNCTION "private"."lock_participant_appointment"("target" "uuid") RETURNS "public"."coaching_appointments"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare a public.coaching_appointments; t public.trainee_profiles; actor_role public.user_role;
+begin
+  select * into a from public.coaching_appointments where id=target;
+  if not found then raise exception 'Appointment unavailable' using errcode='42501'; end if;
+  select * into t from public.trainee_profiles where id=a.trainee_id for share;
+  select role into actor_role from public.profiles where id=auth.uid();
+  if t.id is null or t.status='archived' or t.assigned_pt_id is distinct from a.pt_id
+    or t.profile_id is distinct from a.learner_id or (
+      (actor_role='pt' and auth.uid()=a.pt_id) or (actor_role='trainee' and auth.uid()=a.learner_id)
+    ) is not true then raise exception 'Current participant required' using errcode='42501'; end if;
+  select * into a from public.coaching_appointments where id=target for update;
+  return a;
+end; $$;
+
+
+ALTER FUNCTION "private"."lock_participant_appointment"("target" "uuid") OWNER TO "postgres";
+
+
+CREATE TABLE IF NOT EXISTS "public"."trainee_profiles" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "assigned_pt_id" "uuid" NOT NULL,
+    "primary_goal" "public"."fitness_goal" DEFAULT 'fat_loss'::"public"."fitness_goal" NOT NULL,
+    "status" "public"."trainee_status" DEFAULT 'active'::"public"."trainee_status" NOT NULL,
+    "total_sessions" integer DEFAULT 12 NOT NULL,
+    "remaining_sessions" integer DEFAULT 12 NOT NULL,
+    "last_checkin_date" "date",
+    "archived_at" timestamp with time zone,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    "profile_id" "uuid",
+    "display_name" "text" NOT NULL,
+    "phone" "text",
+    "engagement_started_on" "date",
+    "roster_version" integer DEFAULT 1 NOT NULL,
+    "session_version" integer DEFAULT 0 NOT NULL,
+    CONSTRAINT "remaining_sessions_within_total" CHECK (("remaining_sessions" <= "total_sessions")),
+    CONSTRAINT "trainee_display_name_length" CHECK ((("char_length"("display_name") >= 2) AND ("char_length"("display_name") <= 100))),
+    CONSTRAINT "trainee_engagement_date_consistent" CHECK (((("profile_id" IS NULL) AND ("engagement_started_on" IS NULL)) OR (("profile_id" IS NOT NULL) AND ("engagement_started_on" IS NOT NULL)))),
+    CONSTRAINT "trainee_phone_length" CHECK ((("phone" IS NULL) OR (("char_length"("phone") >= 8) AND ("char_length"("phone") <= 20)))),
+    CONSTRAINT "trainee_profiles_remaining_sessions_check" CHECK (("remaining_sessions" >= 0)),
+    CONSTRAINT "trainee_profiles_roster_version_check" CHECK (("roster_version" > 0)),
+    CONSTRAINT "trainee_profiles_session_version_check" CHECK (("session_version" >= 0)),
+    CONSTRAINT "trainee_profiles_total_sessions_check" CHECK (("total_sessions" >= 0))
+);
+
+
+ALTER TABLE "public"."trainee_profiles" OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "private"."lock_session_profile"("target" "uuid") RETURNS "public"."trainee_profiles"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare t public.trainee_profiles;
+begin
+ if (select role from public.profiles where id=auth.uid()) is distinct from 'pt'::public.user_role then raise exception 'Assigned PT required' using errcode='42501'; end if;
+ select * into t from public.trainee_profiles where id=target and assigned_pt_id=auth.uid() for update;
+ if not found or t.status='archived' then raise exception 'Active assigned trainee required' using errcode='42501'; end if;
+ return t;
+end; $$;
+
+
+ALTER FUNCTION "private"."lock_session_profile"("target" "uuid") OWNER TO "postgres";
+
+
+CREATE TABLE IF NOT EXISTS "public"."session_entitlements" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "trainee_id" "uuid" NOT NULL,
+    "pt_id" "uuid" NOT NULL,
+    "learner_id" "uuid",
+    "opening_total" integer NOT NULL,
+    "opening_remaining" integer NOT NULL,
+    "opened_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    CONSTRAINT "session_entitlements_check" CHECK ((("opening_remaining" >= 0) AND ("opening_remaining" <= "opening_total"))),
+    CONSTRAINT "session_entitlements_opening_total_check" CHECK (("opening_total" >= 0))
+);
+
+
+ALTER TABLE "public"."session_entitlements" OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "private"."open_session_entitlement"("t" "public"."trainee_profiles") RETURNS "public"."session_entitlements"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare e public.session_entitlements;
+begin
+ select * into e from public.session_entitlements where trainee_id=t.id;
+ if not found then
+  insert into public.session_entitlements(trainee_id,pt_id,learner_id,opening_total,opening_remaining)
+    values(t.id,t.assigned_pt_id,t.profile_id,t.total_sessions,t.remaining_sessions) returning * into e;
+  insert into public.session_ledger(entitlement_id,actor_id,client_request_id,version,kind,delta,balance_after,reason)
+    values(e.id,auth.uid(),gen_random_uuid(),0,'opening',t.remaining_sessions,t.remaining_sessions,'Opening snapshot from legacy balance; past attendance not reconstructed');
+ elsif e.pt_id is distinct from t.assigned_pt_id or (e.learner_id is not null and e.learner_id is distinct from t.profile_id) then
+  raise exception 'Participant identity changed; entitlement review required' using errcode='42501';
+ elsif e.learner_id is null and t.profile_id is not null then
+  update public.session_entitlements set learner_id=t.profile_id where id=e.id returning * into e;
+ end if;
+ return e;
+end; $$;
+
+
+ALTER FUNCTION "private"."open_session_entitlement"("t" "public"."trainee_profiles") OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "private"."retire_relationship_appointments"() RETURNS "trigger"
@@ -324,6 +517,41 @@ end; $_$;
 ALTER FUNCTION "public"."capture_product_event"() OWNER TO "postgres";
 
 
+CREATE OR REPLACE FUNCTION "public"."change_coaching_appointment"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone DEFAULT NULL::timestamp with time zone, "proposed_end" timestamp with time zone DEFAULT NULL::timestamp with time zone, "change_reason" "text" DEFAULT NULL::"text", "request_nonce" "uuid" DEFAULT NULL::"uuid") RETURNS integer
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare a public.coaching_appointments; r public.appointment_change_requests;
+begin
+  a:=private.lock_participant_appointment(target_appointment);
+  if auth.uid() is distinct from a.pt_id then raise exception 'Assigned PT required' using errcode='42501'; end if;
+  if request_nonce is null or change_reason is null or length(btrim(change_reason)) not between 3 and 500
+    or change_kind is null or change_kind not in ('reschedule','cancel') then raise exception 'Invalid change' using errcode='22023'; end if;
+  select * into r from public.appointment_change_requests where requested_by=auth.uid() and client_request_id=request_nonce;
+  if found then
+    if r.appointment_id<>a.id or r.kind<>change_kind or r.base_version is distinct from expected_version
+      or r.proposed_starts_at is distinct from proposed_start or r.proposed_ends_at is distinct from proposed_end or r.reason<>btrim(change_reason)
+      then raise exception 'Nonce already used' using errcode='23505'; end if;
+    return r.base_version+1;
+  end if;
+  if a.status<>'scheduled' or expected_version is distinct from a.version then raise exception 'Appointment changed' using errcode='40001'; end if;
+  if change_kind='reschedule' then
+    if proposed_start is null or proposed_start<=statement_timestamp() or proposed_end is null or not isfinite(proposed_start) or not isfinite(proposed_end)
+      or proposed_end<=proposed_start or proposed_end-proposed_start>interval '24 hours' then raise exception 'Invalid future time range' using errcode='23514'; end if;
+    update public.coaching_appointments set starts_at=proposed_start,ends_at=proposed_end where id=a.id;
+  else
+    if proposed_start is not null or proposed_end is not null then raise exception 'Cancel has no proposed time' using errcode='22023'; end if;
+    update public.coaching_appointments set status='retired',retired_at=statement_timestamp() where id=a.id;
+  end if;
+  insert into public.appointment_change_requests(appointment_id,requested_by,client_request_id,base_version,kind,proposed_starts_at,proposed_ends_at,reason,state,decided_by,decided_at,decision_request_id)
+    values(a.id,auth.uid(),request_nonce,a.version,change_kind,proposed_start,proposed_end,btrim(change_reason),'accepted',auth.uid(),statement_timestamp(),request_nonce);
+  return a.version+1;
+end; $$;
+
+
+ALTER FUNCTION "public"."change_coaching_appointment"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") OWNER TO "postgres";
+
+
 CREATE OR REPLACE FUNCTION "public"."checkin_warning_starts_on"("reference_date" "date") RETURNS "date"
     LANGUAGE "sql" IMMUTABLE STRICT PARALLEL SAFE
     SET "search_path" TO ''
@@ -333,6 +561,39 @@ $$;
 
 
 ALTER FUNCTION "public"."checkin_warning_starts_on"("reference_date" "date") OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."complete_coaching_appointment"("target_appointment" "uuid", "expected_appointment_version" integer, "expected_session_version" integer, "consume_session" boolean, "completion_reason" "text", "request_nonce" "uuid") RETURNS integer
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare a public.coaching_appointments; t public.trainee_profiles; e public.session_entitlements; previous public.session_ledger; next_balance integer;
+begin
+ select * into a from public.coaching_appointments where id=target_appointment;
+ t:=private.lock_session_profile(a.trainee_id);
+ a:=private.lock_participant_appointment(target_appointment);
+ if consume_session is null or request_nonce is null or completion_reason is null or length(btrim(completion_reason)) not between 3 and 500 then raise exception 'Explicit completion decision required' using errcode='22023'; end if;
+ e:=private.open_session_entitlement(t);
+ select * into previous from public.session_ledger where actor_id=auth.uid() and client_request_id=request_nonce;
+ if found then
+  if previous.entitlement_id<>e.id or previous.kind<>'completion' or previous.appointment_id is distinct from a.id
+    or previous.delta<>(case when consume_session then -1 else 0 end) or previous.reason<>btrim(completion_reason)
+    or previous.version is distinct from expected_session_version+1 then raise exception 'Nonce already used' using errcode='23505'; end if;
+  return previous.version;
+ end if;
+ if a.status<>'scheduled' or a.ends_at>statement_timestamp() then raise exception 'Only an elapsed scheduled appointment can be completed' using errcode='23514'; end if;
+ if a.version is distinct from expected_appointment_version or t.session_version is distinct from expected_session_version then raise exception 'Appointment or balance changed; reload' using errcode='40001'; end if;
+ next_balance:=t.remaining_sessions-(case when consume_session then 1 else 0 end);
+ if next_balance<0 then raise exception 'No remaining sessions; do not debit' using errcode='23514'; end if;
+ insert into public.session_ledger(entitlement_id,actor_id,client_request_id,version,kind,delta,balance_after,reason,appointment_id)
+   values(e.id,auth.uid(),request_nonce,t.session_version+1,'completion',case when consume_session then -1 else 0 end,next_balance,btrim(completion_reason),a.id);
+ update public.trainee_profiles set remaining_sessions=next_balance,session_version=t.session_version+1 where id=t.id;
+ update public.appointment_change_requests set state='stale',decided_at=statement_timestamp() where appointment_id=a.id and state='pending';
+ return t.session_version+1;
+end; $$;
+
+
+ALTER FUNCTION "public"."complete_coaching_appointment"("target_appointment" "uuid", "expected_appointment_version" integer, "expected_session_version" integer, "consume_session" boolean, "completion_reason" "text", "request_nonce" "uuid") OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."confirm_ocr_inbody_record"("attempt_id" "uuid", "confirmed_weight_kg" numeric, "confirmed_muscle_kg" numeric, "confirmed_fat_kg" numeric, "confirmed_fat_percent" numeric, "confirmed_water_liters" numeric DEFAULT NULL::numeric, "nutrition_calories" integer DEFAULT NULL::integer, "nutrition_protein" integer DEFAULT NULL::integer, "nutrition_carb" integer DEFAULT NULL::integer, "nutrition_fat" integer DEFAULT NULL::integer) RETURNS TABLE("record_id" "uuid", "outcome" "text", "is_manually_edited" boolean)
@@ -849,6 +1110,36 @@ $_$;
 ALTER FUNCTION "public"."reissue_trainee_invitation"("target_trainee_id" "uuid", "new_token_hash" "text", "new_expires_at" timestamp with time zone) OWNER TO "postgres";
 
 
+CREATE OR REPLACE FUNCTION "public"."request_appointment_change"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone DEFAULT NULL::timestamp with time zone, "proposed_end" timestamp with time zone DEFAULT NULL::timestamp with time zone, "change_reason" "text" DEFAULT NULL::"text", "request_nonce" "uuid" DEFAULT NULL::"uuid") RETURNS "uuid"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare a public.coaching_appointments; r public.appointment_change_requests; result uuid;
+begin
+  a:=private.lock_participant_appointment(target_appointment);
+  if auth.uid() is distinct from a.learner_id then raise exception 'Learner required' using errcode='42501'; end if;
+  if request_nonce is null or change_reason is null or length(btrim(change_reason)) not between 3 and 500
+    or change_kind is null or change_kind not in ('reschedule','cancel') then raise exception 'Invalid change request' using errcode='22023'; end if;
+  select * into r from public.appointment_change_requests where requested_by=auth.uid() and client_request_id=request_nonce;
+  if found then
+    if r.appointment_id<>a.id or r.kind<>change_kind or r.proposed_starts_at is distinct from proposed_start
+      or r.proposed_ends_at is distinct from proposed_end or r.reason<>btrim(change_reason) or r.base_version is distinct from expected_version
+      then raise exception 'Nonce already used' using errcode='23505'; end if;
+    return r.id;
+  end if;
+  if a.status<>'scheduled' or expected_version is distinct from a.version then raise exception 'Appointment changed' using errcode='40001'; end if;
+  if (select count(*) from public.appointment_change_requests where requested_by=auth.uid() and created_at>=statement_timestamp()-interval '1 day')>=100
+    then raise exception 'Daily change request limit' using errcode='P0001'; end if;
+  if change_kind='reschedule' and (proposed_start is null or proposed_start<=statement_timestamp()) then raise exception 'Choose a future start' using errcode='23514'; end if;
+  insert into public.appointment_change_requests(appointment_id,requested_by,client_request_id,base_version,kind,proposed_starts_at,proposed_ends_at,reason)
+    values(a.id,auth.uid(),request_nonce,a.version,change_kind,proposed_start,proposed_end,btrim(change_reason)) returning id into result;
+  return result;
+end; $$;
+
+
+ALTER FUNCTION "public"."request_appointment_change"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") OWNER TO "postgres";
+
+
 CREATE OR REPLACE FUNCTION "public"."request_pt_upgrade"("request_nonce" "uuid") RETURNS "uuid"
     LANGUAGE "plpgsql" SECURITY DEFINER
     SET "search_path" TO ''
@@ -867,6 +1158,37 @@ end; $$;
 
 
 ALTER FUNCTION "public"."request_pt_upgrade"("request_nonce" "uuid") OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."resolve_appointment_change"("target_request" "uuid", "decision" "text", "expected_version" integer, "request_nonce" "uuid") RETURNS "text"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare a public.coaching_appointments; r public.appointment_change_requests; appointment uuid;
+begin
+  select appointment_id into appointment from public.appointment_change_requests where id=target_request;
+  a:=private.lock_participant_appointment(appointment);
+  if auth.uid() is distinct from a.pt_id then raise exception 'Assigned PT required' using errcode='42501'; end if;
+  if request_nonce is null or decision is null or decision not in ('accepted','rejected') then raise exception 'Invalid decision' using errcode='22023'; end if;
+  select * into r from public.appointment_change_requests where id=target_request for update;
+  if r.state=decision and r.decided_by=auth.uid() and r.decision_request_id=request_nonce then return r.state; end if;
+  if r.state<>'pending' or a.status<>'scheduled' or expected_version is distinct from a.version or r.base_version<>a.version
+    then raise exception 'Request changed; reload' using errcode='40001'; end if;
+  if decision='accepted' then
+    if r.kind='reschedule' then
+      if r.proposed_starts_at<=statement_timestamp() then raise exception 'Requested start is no longer in the future' using errcode='23514'; end if;
+      update public.coaching_appointments set starts_at=r.proposed_starts_at,ends_at=r.proposed_ends_at where id=a.id;
+    else
+      update public.coaching_appointments set status='retired',retired_at=statement_timestamp() where id=a.id;
+    end if;
+  end if;
+  -- Revision trigger marked pending requests stale; this exact one is now decided.
+  update public.appointment_change_requests set state=decision,decided_by=auth.uid(),decision_request_id=request_nonce,decided_at=statement_timestamp() where id=r.id;
+  return decision;
+end; $$;
+
+
+ALTER FUNCTION "public"."resolve_appointment_change"("target_request" "uuid", "decision" "text", "expected_version" integer, "request_nonce" "uuid") OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."reverse_finance_entry"("target_entry" "uuid", "request_nonce" "uuid", "reason" "text") RETURNS "uuid"
@@ -901,6 +1223,37 @@ end; $$;
 
 
 ALTER FUNCTION "public"."reverse_finance_entry"("target_entry" "uuid", "request_nonce" "uuid", "reason" "text") OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."reverse_session_completion"("target_entry" "uuid", "expected_session_version" integer, "change_reason" "text", "request_nonce" "uuid") RETURNS integer
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare original public.session_ledger; previous public.session_ledger; e public.session_entitlements; t public.trainee_profiles; next_balance integer;
+begin
+ select * into original from public.session_ledger where id=target_entry;
+ select * into e from public.session_entitlements where id=original.entitlement_id;
+ t:=private.lock_session_profile(e.trainee_id);
+ e:=private.open_session_entitlement(t);
+ if original.kind is distinct from 'completion' or original.entitlement_id is distinct from e.id then raise exception 'Completion unavailable' using errcode='42501'; end if;
+ if request_nonce is null or change_reason is null or length(btrim(change_reason)) not between 3 and 500 then raise exception 'Reason required' using errcode='22023'; end if;
+ select * into previous from public.session_ledger where actor_id=auth.uid() and client_request_id=request_nonce;
+ if found then
+  if previous.kind<>'reversal' or previous.reverses_id is distinct from original.id or previous.reason<>btrim(change_reason)
+    or previous.version is distinct from expected_session_version+1 then raise exception 'Nonce already used' using errcode='23505'; end if;
+  return previous.version;
+ end if;
+ if t.session_version is distinct from expected_session_version then raise exception 'Balance changed; reload' using errcode='40001'; end if;
+ next_balance:=t.remaining_sessions-original.delta;
+ if next_balance>t.total_sessions then raise exception 'Reversal would exceed package total; review balance first' using errcode='23514'; end if;
+ insert into public.session_ledger(entitlement_id,actor_id,client_request_id,version,kind,delta,balance_after,reason,reverses_id)
+   values(e.id,auth.uid(),request_nonce,t.session_version+1,'reversal',-original.delta,next_balance,btrim(change_reason),original.id);
+ update public.trainee_profiles set remaining_sessions=next_balance,session_version=t.session_version+1 where id=t.id;
+ return t.session_version+1;
+end; $$;
+
+
+ALTER FUNCTION "public"."reverse_session_completion"("target_entry" "uuid", "expected_session_version" integer, "change_reason" "text", "request_nonce" "uuid") OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."revoke_trainee_invitation"("target_trainee_id" "uuid") RETURNS boolean
@@ -986,6 +1339,34 @@ end; $_$;
 
 
 ALTER FUNCTION "public"."save_trainee_profile"("target_trainee" "uuid", "expected_version" integer, "trainee_name" "text", "contact_phone" "text", "goal" "public"."fitness_goal") OWNER TO "postgres";
+
+
+CREATE OR REPLACE FUNCTION "public"."set_session_balance"("target_trainee" "uuid", "expected_version" integer, "new_balance" integer, "change_reason" "text", "request_nonce" "uuid") RETURNS integer
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare t public.trainee_profiles; e public.session_entitlements; previous public.session_ledger;
+begin
+ t:=private.lock_session_profile(target_trainee);
+ if request_nonce is null or new_balance is null or new_balance<0 or new_balance>t.total_sessions
+   or change_reason is null or length(btrim(change_reason)) not between 3 and 500 then raise exception 'Invalid balance adjustment' using errcode='22023'; end if;
+ e:=private.open_session_entitlement(t);
+ select * into previous from public.session_ledger where actor_id=auth.uid() and client_request_id=request_nonce;
+ if found then
+  if previous.entitlement_id<>e.id or previous.kind<>'adjustment' or previous.balance_after<>new_balance or previous.reason<>btrim(change_reason)
+    or previous.version is distinct from expected_version+1 then raise exception 'Nonce already used' using errcode='23505'; end if;
+  return previous.version;
+ end if;
+ if expected_version is distinct from t.session_version then raise exception 'Session balance changed; reload' using errcode='40001'; end if;
+ if (select count(*) from public.session_ledger where actor_id=auth.uid() and created_at>=statement_timestamp()-interval '1 day')>=100 then raise exception 'Daily session adjustment limit' using errcode='P0001'; end if;
+ insert into public.session_ledger(entitlement_id,actor_id,client_request_id,version,kind,delta,balance_after,reason)
+   values(e.id,auth.uid(),request_nonce,t.session_version+1,'adjustment',new_balance-t.remaining_sessions,new_balance,btrim(change_reason));
+ update public.trainee_profiles set remaining_sessions=new_balance,session_version=t.session_version+1 where id=t.id;
+ return t.session_version+1;
+end; $$;
+
+
+ALTER FUNCTION "public"."set_session_balance"("target_trainee" "uuid", "expected_version" integer, "new_balance" integer, "change_reason" "text", "request_nonce" "uuid") OWNER TO "postgres";
 
 
 CREATE OR REPLACE FUNCTION "public"."set_trainee_archived"("target_trainee" "uuid", "expected_version" integer, "archive_profile" boolean) RETURNS integer
@@ -1149,9 +1530,70 @@ $$;
 
 ALTER FUNCTION "public"."submit_daily_checkin"("checkin_note" "text", "meal_photo_path" "text", "meal_photo_mime_type" "text", "meal_photo_size_bytes" integer) OWNER TO "postgres";
 
-SET default_tablespace = '';
 
-SET default_table_access_method = "heap";
+CREATE OR REPLACE FUNCTION "public"."withdraw_appointment_change"("target_request" "uuid", "request_nonce" "uuid") RETURNS "text"
+    LANGUAGE "plpgsql" SECURITY DEFINER
+    SET "search_path" TO ''
+    AS $$
+declare a public.coaching_appointments; r public.appointment_change_requests; appointment uuid;
+begin
+  select appointment_id into appointment from public.appointment_change_requests where id=target_request;
+  a:=private.lock_participant_appointment(appointment);
+  select * into r from public.appointment_change_requests where id=target_request for update;
+  if auth.uid() is distinct from a.learner_id or r.requested_by is distinct from auth.uid() then raise exception 'Request owner required' using errcode='42501'; end if;
+  if request_nonce is null then raise exception 'Nonce required' using errcode='22023'; end if;
+  if r.state='withdrawn' and r.decision_request_id=request_nonce then return r.state; end if;
+  if r.state<>'pending' then raise exception 'Request no longer pending' using errcode='40001'; end if;
+  update public.appointment_change_requests set state='withdrawn',decided_by=auth.uid(),decision_request_id=request_nonce,decided_at=statement_timestamp() where id=r.id;
+  return 'withdrawn';
+end; $$;
+
+
+ALTER FUNCTION "public"."withdraw_appointment_change"("target_request" "uuid", "request_nonce" "uuid") OWNER TO "postgres";
+
+
+CREATE TABLE IF NOT EXISTS "public"."appointment_change_requests" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "appointment_id" "uuid" NOT NULL,
+    "requested_by" "uuid" NOT NULL,
+    "client_request_id" "uuid" NOT NULL,
+    "base_version" integer NOT NULL,
+    "kind" "text" NOT NULL,
+    "proposed_starts_at" timestamp with time zone,
+    "proposed_ends_at" timestamp with time zone,
+    "reason" "text" NOT NULL,
+    "state" "text" DEFAULT 'pending'::"text" NOT NULL,
+    "decision_request_id" "uuid",
+    "decided_by" "uuid",
+    "decided_at" timestamp with time zone,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    CONSTRAINT "appointment_change_range" CHECK (((("kind" = 'cancel'::"text") AND ("proposed_starts_at" IS NULL) AND ("proposed_ends_at" IS NULL)) OR (("kind" = 'reschedule'::"text") AND ("proposed_starts_at" IS NOT NULL) AND ("proposed_ends_at" IS NOT NULL) AND "isfinite"("proposed_starts_at") AND "isfinite"("proposed_ends_at") AND ("proposed_ends_at" > "proposed_starts_at") AND (("proposed_ends_at" - "proposed_starts_at") <= '24:00:00'::interval)))),
+    CONSTRAINT "appointment_change_requests_base_version_check" CHECK (("base_version" > 0)),
+    CONSTRAINT "appointment_change_requests_kind_check" CHECK (("kind" = ANY (ARRAY['reschedule'::"text", 'cancel'::"text"]))),
+    CONSTRAINT "appointment_change_requests_reason_check" CHECK ((("length"("btrim"("reason")) >= 3) AND ("length"("btrim"("reason")) <= 500))),
+    CONSTRAINT "appointment_change_requests_state_check" CHECK (("state" = ANY (ARRAY['pending'::"text", 'accepted'::"text", 'rejected'::"text", 'withdrawn'::"text", 'stale'::"text"])))
+);
+
+
+ALTER TABLE "public"."appointment_change_requests" OWNER TO "postgres";
+
+
+CREATE TABLE IF NOT EXISTS "public"."appointment_events" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "appointment_id" "uuid" NOT NULL,
+    "version" integer NOT NULL,
+    "actor_id" "uuid",
+    "kind" "text" NOT NULL,
+    "previous_starts_at" timestamp with time zone,
+    "previous_ends_at" timestamp with time zone,
+    "starts_at" timestamp with time zone NOT NULL,
+    "ends_at" timestamp with time zone NOT NULL,
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    CONSTRAINT "appointment_events_kind_check" CHECK (("kind" = ANY (ARRAY['created'::"text", 'rescheduled'::"text", 'retired'::"text"])))
+);
+
+
+ALTER TABLE "public"."appointment_events" OWNER TO "postgres";
 
 
 CREATE TABLE IF NOT EXISTS "public"."billing_requests" (
@@ -1183,34 +1625,6 @@ CREATE TABLE IF NOT EXISTS "public"."checkins" (
 
 
 ALTER TABLE "public"."checkins" OWNER TO "postgres";
-
-
-CREATE TABLE IF NOT EXISTS "public"."coaching_appointments" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "trainee_id" "uuid" NOT NULL,
-    "pt_id" "uuid" NOT NULL,
-    "learner_id" "uuid" NOT NULL,
-    "client_request_id" "uuid" NOT NULL,
-    "title" "text" NOT NULL,
-    "kind" "text" NOT NULL,
-    "starts_at" timestamp with time zone NOT NULL,
-    "ends_at" timestamp with time zone NOT NULL,
-    "status" "text" DEFAULT 'scheduled'::"text" NOT NULL,
-    "retired_at" timestamp with time zone,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    CONSTRAINT "coaching_appointments_kind_check" CHECK (("kind" = ANY (ARRAY['training'::"text", 'consultation'::"text"]))),
-    CONSTRAINT "coaching_appointments_retirement" CHECK ((("status" = 'retired'::"text") = ("retired_at" IS NOT NULL))),
-    CONSTRAINT "coaching_appointments_status_check" CHECK (("status" = ANY (ARRAY['scheduled'::"text", 'retired'::"text"]))),
-    CONSTRAINT "coaching_appointments_time_bounds" CHECK (("isfinite"("starts_at") AND "isfinite"("ends_at") AND ("ends_at" > "starts_at") AND (("ends_at" - "starts_at") <= '24:00:00'::interval))),
-    CONSTRAINT "coaching_appointments_title_check" CHECK (((("char_length"("title") >= 1) AND ("char_length"("title") <= 100)) AND ("title" = "btrim"("title")) AND ("title" ~ '[^[:space:]]'::"text")))
-);
-
-
-ALTER TABLE "public"."coaching_appointments" OWNER TO "postgres";
-
-
-COMMENT ON TABLE "public"."coaching_appointments" IS 'Shared appointments; PT creates, current participant pair reads. No session debit. Relationship changes retire slots without transferring private history. Change requests/completion belong to later slices.';
-
 
 
 CREATE TABLE IF NOT EXISTS "public"."coaching_membership_versions" (
@@ -1443,6 +1857,31 @@ CREATE TABLE IF NOT EXISTS "public"."pt_profiles" (
 ALTER TABLE "public"."pt_profiles" OWNER TO "postgres";
 
 
+CREATE TABLE IF NOT EXISTS "public"."session_ledger" (
+    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
+    "entitlement_id" "uuid" NOT NULL,
+    "actor_id" "uuid" NOT NULL,
+    "client_request_id" "uuid" NOT NULL,
+    "version" integer NOT NULL,
+    "kind" "text" NOT NULL,
+    "delta" integer NOT NULL,
+    "balance_after" integer NOT NULL,
+    "reason" "text" NOT NULL,
+    "appointment_id" "uuid",
+    "reverses_id" "uuid",
+    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
+    CONSTRAINT "session_ledger_balance_after_check" CHECK (("balance_after" >= 0)),
+    CONSTRAINT "session_ledger_check" CHECK (((("kind" = 'completion'::"text") AND ("appointment_id" IS NOT NULL) AND ("delta" = ANY (ARRAY[0, '-1'::integer]))) OR (("kind" <> 'completion'::"text") AND ("appointment_id" IS NULL)))),
+    CONSTRAINT "session_ledger_check1" CHECK ((("kind" = 'reversal'::"text") = ("reverses_id" IS NOT NULL))),
+    CONSTRAINT "session_ledger_kind_check" CHECK (("kind" = ANY (ARRAY['opening'::"text", 'adjustment'::"text", 'completion'::"text", 'reversal'::"text"]))),
+    CONSTRAINT "session_ledger_reason_check" CHECK ((("length"("btrim"("reason")) >= 3) AND ("length"("btrim"("reason")) <= 500))),
+    CONSTRAINT "session_ledger_version_check" CHECK (("version" >= 0))
+);
+
+
+ALTER TABLE "public"."session_ledger" OWNER TO "postgres";
+
+
 CREATE TABLE IF NOT EXISTS "public"."trainee_invitations" (
     "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
     "pt_id" "uuid" NOT NULL,
@@ -1480,33 +1919,24 @@ CREATE TABLE IF NOT EXISTS "public"."trainee_profile_events" (
 ALTER TABLE "public"."trainee_profile_events" OWNER TO "postgres";
 
 
-CREATE TABLE IF NOT EXISTS "public"."trainee_profiles" (
-    "id" "uuid" DEFAULT "gen_random_uuid"() NOT NULL,
-    "assigned_pt_id" "uuid" NOT NULL,
-    "primary_goal" "public"."fitness_goal" DEFAULT 'fat_loss'::"public"."fitness_goal" NOT NULL,
-    "status" "public"."trainee_status" DEFAULT 'active'::"public"."trainee_status" NOT NULL,
-    "total_sessions" integer DEFAULT 12 NOT NULL,
-    "remaining_sessions" integer DEFAULT 12 NOT NULL,
-    "last_checkin_date" "date",
-    "archived_at" timestamp with time zone,
-    "created_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "updated_at" timestamp with time zone DEFAULT "now"() NOT NULL,
-    "profile_id" "uuid",
-    "display_name" "text" NOT NULL,
-    "phone" "text",
-    "engagement_started_on" "date",
-    "roster_version" integer DEFAULT 1 NOT NULL,
-    CONSTRAINT "remaining_sessions_within_total" CHECK (("remaining_sessions" <= "total_sessions")),
-    CONSTRAINT "trainee_display_name_length" CHECK ((("char_length"("display_name") >= 2) AND ("char_length"("display_name") <= 100))),
-    CONSTRAINT "trainee_engagement_date_consistent" CHECK (((("profile_id" IS NULL) AND ("engagement_started_on" IS NULL)) OR (("profile_id" IS NOT NULL) AND ("engagement_started_on" IS NOT NULL)))),
-    CONSTRAINT "trainee_phone_length" CHECK ((("phone" IS NULL) OR (("char_length"("phone") >= 8) AND ("char_length"("phone") <= 20)))),
-    CONSTRAINT "trainee_profiles_remaining_sessions_check" CHECK (("remaining_sessions" >= 0)),
-    CONSTRAINT "trainee_profiles_roster_version_check" CHECK (("roster_version" > 0)),
-    CONSTRAINT "trainee_profiles_total_sessions_check" CHECK (("total_sessions" >= 0))
-);
+ALTER TABLE ONLY "public"."appointment_change_requests"
+    ADD CONSTRAINT "appointment_change_requests_pkey" PRIMARY KEY ("id");
 
 
-ALTER TABLE "public"."trainee_profiles" OWNER TO "postgres";
+
+ALTER TABLE ONLY "public"."appointment_change_requests"
+    ADD CONSTRAINT "appointment_change_requests_requested_by_client_request_id_key" UNIQUE ("requested_by", "client_request_id");
+
+
+
+ALTER TABLE ONLY "public"."appointment_events"
+    ADD CONSTRAINT "appointment_events_appointment_id_version_key" UNIQUE ("appointment_id", "version");
+
+
+
+ALTER TABLE ONLY "public"."appointment_events"
+    ADD CONSTRAINT "appointment_events_pkey" PRIMARY KEY ("id");
+
 
 
 ALTER TABLE ONLY "public"."billing_requests"
@@ -1659,6 +2089,36 @@ ALTER TABLE ONLY "public"."pt_profiles"
 
 
 
+ALTER TABLE ONLY "public"."session_entitlements"
+    ADD CONSTRAINT "session_entitlements_pkey" PRIMARY KEY ("id");
+
+
+
+ALTER TABLE ONLY "public"."session_entitlements"
+    ADD CONSTRAINT "session_entitlements_trainee_id_key" UNIQUE ("trainee_id");
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_actor_id_client_request_id_key" UNIQUE ("actor_id", "client_request_id");
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_entitlement_id_version_key" UNIQUE ("entitlement_id", "version");
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_pkey" PRIMARY KEY ("id");
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_reverses_id_key" UNIQUE ("reverses_id");
+
+
+
 ALTER TABLE ONLY "public"."trainee_invitations"
     ADD CONSTRAINT "trainee_invitations_pkey" PRIMARY KEY ("id");
 
@@ -1681,6 +2141,10 @@ ALTER TABLE ONLY "public"."trainee_profile_events"
 
 ALTER TABLE ONLY "public"."trainee_profiles"
     ADD CONSTRAINT "trainee_profiles_pkey" PRIMARY KEY ("id");
+
+
+
+CREATE UNIQUE INDEX "appointment_one_pending_change" ON "public"."appointment_change_requests" USING "btree" ("appointment_id") WHERE ("state" = 'pending'::"text");
 
 
 
@@ -1772,6 +2236,10 @@ CREATE INDEX "product_event_week_idx" ON "public"."product_events" USING "btree"
 
 
 
+CREATE UNIQUE INDEX "session_one_completion_per_appointment" ON "public"."session_ledger" USING "btree" ("appointment_id") WHERE ("kind" = 'completion'::"text");
+
+
+
 CREATE INDEX "trainee_invitations_trainee_idx" ON "public"."trainee_invitations" USING "btree" ("trainee_id", "created_at" DESC);
 
 
@@ -1793,6 +2261,18 @@ CREATE INDEX "trainee_profiles_warning_reference_idx" ON "public"."trainee_profi
 
 
 CREATE UNIQUE INDEX "workspace_daily_event_once" ON "public"."product_events" USING "btree" ("actor_id", "event_key", "event_day") WHERE ("event_key" = 'workspace_opened'::"text");
+
+
+
+CREATE OR REPLACE TRIGGER "appointment_completed_time_guard" BEFORE UPDATE ON "public"."coaching_appointments" FOR EACH ROW EXECUTE FUNCTION "private"."guard_completed_appointment_change"();
+
+
+
+CREATE OR REPLACE TRIGGER "appointment_created_event" AFTER INSERT ON "public"."coaching_appointments" FOR EACH ROW EXECUTE FUNCTION "private"."audit_appointment_revision"();
+
+
+
+CREATE OR REPLACE TRIGGER "appointment_revision_event" BEFORE UPDATE ON "public"."coaching_appointments" FOR EACH ROW EXECUTE FUNCTION "private"."audit_appointment_revision"();
 
 
 
@@ -1856,6 +2336,10 @@ CREATE OR REPLACE TRIGGER "pt_profiles_set_updated_at" BEFORE UPDATE ON "public"
 
 
 
+CREATE OR REPLACE TRIGGER "session_first_learner_identity" AFTER UPDATE OF "profile_id" ON "public"."trainee_profiles" FOR EACH ROW EXECUTE FUNCTION "private"."attach_first_session_identity"();
+
+
+
 CREATE OR REPLACE TRIGGER "trainee_invitations_set_updated_at" BEFORE UPDATE ON "public"."trainee_invitations" FOR EACH ROW EXECUTE FUNCTION "public"."set_updated_at"();
 
 
@@ -1877,6 +2361,31 @@ CREATE OR REPLACE TRIGGER "trainee_profiles_set_engagement_started_on" BEFORE IN
 
 
 CREATE OR REPLACE TRIGGER "trainee_profiles_set_updated_at" BEFORE UPDATE ON "public"."trainee_profiles" FOR EACH ROW EXECUTE FUNCTION "public"."set_updated_at"();
+
+
+
+ALTER TABLE ONLY "public"."appointment_change_requests"
+    ADD CONSTRAINT "appointment_change_requests_appointment_id_fkey" FOREIGN KEY ("appointment_id") REFERENCES "public"."coaching_appointments"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."appointment_change_requests"
+    ADD CONSTRAINT "appointment_change_requests_decided_by_fkey" FOREIGN KEY ("decided_by") REFERENCES "public"."profiles"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."appointment_change_requests"
+    ADD CONSTRAINT "appointment_change_requests_requested_by_fkey" FOREIGN KEY ("requested_by") REFERENCES "public"."profiles"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."appointment_events"
+    ADD CONSTRAINT "appointment_events_actor_id_fkey" FOREIGN KEY ("actor_id") REFERENCES "public"."profiles"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."appointment_events"
+    ADD CONSTRAINT "appointment_events_appointment_id_fkey" FOREIGN KEY ("appointment_id") REFERENCES "public"."coaching_appointments"("id") ON DELETE RESTRICT;
 
 
 
@@ -2030,6 +2539,41 @@ ALTER TABLE ONLY "public"."pt_profiles"
 
 
 
+ALTER TABLE ONLY "public"."session_entitlements"
+    ADD CONSTRAINT "session_entitlements_learner_id_fkey" FOREIGN KEY ("learner_id") REFERENCES "public"."profiles"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."session_entitlements"
+    ADD CONSTRAINT "session_entitlements_pt_id_fkey" FOREIGN KEY ("pt_id") REFERENCES "public"."pt_profiles"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."session_entitlements"
+    ADD CONSTRAINT "session_entitlements_trainee_id_fkey" FOREIGN KEY ("trainee_id") REFERENCES "public"."trainee_profiles"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_actor_id_fkey" FOREIGN KEY ("actor_id") REFERENCES "public"."profiles"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_appointment_id_fkey" FOREIGN KEY ("appointment_id") REFERENCES "public"."coaching_appointments"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_entitlement_id_fkey" FOREIGN KEY ("entitlement_id") REFERENCES "public"."session_entitlements"("id") ON DELETE RESTRICT;
+
+
+
+ALTER TABLE ONLY "public"."session_ledger"
+    ADD CONSTRAINT "session_ledger_reverses_id_fkey" FOREIGN KEY ("reverses_id") REFERENCES "public"."session_ledger"("id") ON DELETE RESTRICT;
+
+
+
 ALTER TABLE ONLY "public"."trainee_invitations"
     ADD CONSTRAINT "trainee_invitations_accepted_by_fkey" FOREIGN KEY ("accepted_by") REFERENCES "public"."profiles"("id") ON DELETE SET NULL;
 
@@ -2062,6 +2606,24 @@ ALTER TABLE ONLY "public"."trainee_profiles"
 
 ALTER TABLE ONLY "public"."trainee_profiles"
     ADD CONSTRAINT "trainee_profiles_profile_id_fkey" FOREIGN KEY ("profile_id") REFERENCES "public"."profiles"("id") ON DELETE CASCADE;
+
+
+
+ALTER TABLE "public"."appointment_change_requests" ENABLE ROW LEVEL SECURITY;
+
+
+ALTER TABLE "public"."appointment_events" ENABLE ROW LEVEL SECURITY;
+
+
+CREATE POLICY "appointment_events_current_pair" ON "public"."appointment_events" FOR SELECT TO "authenticated" USING ((EXISTS ( SELECT 1
+   FROM "public"."coaching_appointments" "a"
+  WHERE ("a"."id" = "appointment_events"."appointment_id"))));
+
+
+
+CREATE POLICY "appointment_requests_current_pair" ON "public"."appointment_change_requests" FOR SELECT TO "authenticated" USING ((EXISTS ( SELECT 1
+   FROM "public"."coaching_appointments" "a"
+  WHERE ("a"."id" = "appointment_change_requests"."appointment_id"))));
 
 
 
@@ -2223,6 +2785,25 @@ CREATE POLICY "pt_profiles_update_own" ON "public"."pt_profiles" FOR UPDATE TO "
 
 
 
+CREATE POLICY "session_entitlement_current_pair" ON "public"."session_entitlements" FOR SELECT TO "authenticated" USING ((EXISTS ( SELECT 1
+   FROM ("public"."trainee_profiles" "t"
+     JOIN "public"."profiles" "actor" ON (("actor"."id" = "auth"."uid"())))
+  WHERE (("t"."id" = "session_entitlements"."trainee_id") AND ("t"."status" <> 'archived'::"public"."trainee_status") AND ("t"."assigned_pt_id" = "session_entitlements"."pt_id") AND ((("actor"."role" = 'pt'::"public"."user_role") AND ("auth"."uid"() = "session_entitlements"."pt_id")) OR (("actor"."role" = 'trainee'::"public"."user_role") AND ("auth"."uid"() = "session_entitlements"."learner_id") AND ("t"."profile_id" = "session_entitlements"."learner_id")))))));
+
+
+
+ALTER TABLE "public"."session_entitlements" ENABLE ROW LEVEL SECURITY;
+
+
+ALTER TABLE "public"."session_ledger" ENABLE ROW LEVEL SECURITY;
+
+
+CREATE POLICY "session_ledger_current_pair" ON "public"."session_ledger" FOR SELECT TO "authenticated" USING ((EXISTS ( SELECT 1
+   FROM "public"."session_entitlements" "e"
+  WHERE ("e"."id" = "session_ledger"."entitlement_id"))));
+
+
+
 CREATE POLICY "trainee_events_read_owner" ON "public"."trainee_profile_events" FOR SELECT TO "authenticated" USING ((("actor_id" = "auth"."uid"()) AND (EXISTS ( SELECT 1
    FROM "public"."trainee_profiles" "t"
   WHERE (("t"."id" = "trainee_profile_events"."trainee_id") AND ("t"."assigned_pt_id" = "auth"."uid"()))))));
@@ -2261,11 +2842,86 @@ GRANT USAGE ON SCHEMA "public" TO "service_role";
 
 
 
+REVOKE ALL ON FUNCTION "private"."attach_first_session_identity"() FROM PUBLIC;
+
+
+
+REVOKE ALL ON FUNCTION "private"."audit_appointment_revision"() FROM PUBLIC;
+
+
+
 REVOKE ALL ON FUNCTION "private"."guard_appointment_creation"() FROM PUBLIC;
 
 
 
 REVOKE ALL ON FUNCTION "private"."guard_coaching_note"() FROM PUBLIC;
+
+
+
+REVOKE ALL ON FUNCTION "private"."guard_completed_appointment_change"() FROM PUBLIC;
+
+
+
+GRANT ALL ON TABLE "public"."coaching_appointments" TO "service_role";
+GRANT SELECT ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("trainee_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("pt_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("learner_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("client_request_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("title") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("kind") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("starts_at") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+GRANT INSERT("ends_at") ON TABLE "public"."coaching_appointments" TO "authenticated";
+
+
+
+REVOKE ALL ON FUNCTION "private"."lock_participant_appointment"("target" "uuid") FROM PUBLIC;
+
+
+
+GRANT ALL ON TABLE "public"."trainee_profiles" TO "service_role";
+GRANT SELECT,INSERT ON TABLE "public"."trainee_profiles" TO "authenticated";
+
+
+
+GRANT UPDATE("last_checkin_date") ON TABLE "public"."trainee_profiles" TO "authenticated";
+
+
+
+REVOKE ALL ON FUNCTION "private"."lock_session_profile"("target" "uuid") FROM PUBLIC;
+
+
+
+GRANT ALL ON TABLE "public"."session_entitlements" TO "service_role";
+GRANT SELECT ON TABLE "public"."session_entitlements" TO "authenticated";
+
+
+
+REVOKE ALL ON FUNCTION "private"."open_session_entitlement"("t" "public"."trainee_profiles") FROM PUBLIC;
 
 
 
@@ -2299,10 +2955,22 @@ GRANT ALL ON FUNCTION "public"."capture_product_event"() TO "service_role";
 
 
 
+REVOKE ALL ON FUNCTION "public"."change_coaching_appointment"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."change_coaching_appointment"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."change_coaching_appointment"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") TO "authenticated";
+
+
+
 REVOKE ALL ON FUNCTION "public"."checkin_warning_starts_on"("reference_date" "date") FROM PUBLIC;
 GRANT ALL ON FUNCTION "public"."checkin_warning_starts_on"("reference_date" "date") TO "anon";
 GRANT ALL ON FUNCTION "public"."checkin_warning_starts_on"("reference_date" "date") TO "authenticated";
 GRANT ALL ON FUNCTION "public"."checkin_warning_starts_on"("reference_date" "date") TO "service_role";
+
+
+
+REVOKE ALL ON FUNCTION "public"."complete_coaching_appointment"("target_appointment" "uuid", "expected_appointment_version" integer, "expected_session_version" integer, "consume_session" boolean, "completion_reason" "text", "request_nonce" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."complete_coaching_appointment"("target_appointment" "uuid", "expected_appointment_version" integer, "expected_session_version" integer, "consume_session" boolean, "completion_reason" "text", "request_nonce" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."complete_coaching_appointment"("target_appointment" "uuid", "expected_appointment_version" integer, "expected_session_version" integer, "consume_session" boolean, "completion_reason" "text", "request_nonce" "uuid") TO "authenticated";
 
 
 
@@ -2384,15 +3052,33 @@ GRANT ALL ON FUNCTION "public"."reissue_trainee_invitation"("target_trainee_id" 
 
 
 
+REVOKE ALL ON FUNCTION "public"."request_appointment_change"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."request_appointment_change"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."request_appointment_change"("target_appointment" "uuid", "expected_version" integer, "change_kind" "text", "proposed_start" timestamp with time zone, "proposed_end" timestamp with time zone, "change_reason" "text", "request_nonce" "uuid") TO "authenticated";
+
+
+
 REVOKE ALL ON FUNCTION "public"."request_pt_upgrade"("request_nonce" "uuid") FROM PUBLIC;
 GRANT ALL ON FUNCTION "public"."request_pt_upgrade"("request_nonce" "uuid") TO "service_role";
 GRANT ALL ON FUNCTION "public"."request_pt_upgrade"("request_nonce" "uuid") TO "authenticated";
 
 
 
+REVOKE ALL ON FUNCTION "public"."resolve_appointment_change"("target_request" "uuid", "decision" "text", "expected_version" integer, "request_nonce" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."resolve_appointment_change"("target_request" "uuid", "decision" "text", "expected_version" integer, "request_nonce" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."resolve_appointment_change"("target_request" "uuid", "decision" "text", "expected_version" integer, "request_nonce" "uuid") TO "authenticated";
+
+
+
 REVOKE ALL ON FUNCTION "public"."reverse_finance_entry"("target_entry" "uuid", "request_nonce" "uuid", "reason" "text") FROM PUBLIC;
 GRANT ALL ON FUNCTION "public"."reverse_finance_entry"("target_entry" "uuid", "request_nonce" "uuid", "reason" "text") TO "service_role";
 GRANT ALL ON FUNCTION "public"."reverse_finance_entry"("target_entry" "uuid", "request_nonce" "uuid", "reason" "text") TO "authenticated";
+
+
+
+REVOKE ALL ON FUNCTION "public"."reverse_session_completion"("target_entry" "uuid", "expected_session_version" integer, "change_reason" "text", "request_nonce" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."reverse_session_completion"("target_entry" "uuid", "expected_session_version" integer, "change_reason" "text", "request_nonce" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."reverse_session_completion"("target_entry" "uuid", "expected_session_version" integer, "change_reason" "text", "request_nonce" "uuid") TO "authenticated";
 
 
 
@@ -2411,6 +3097,12 @@ GRANT ALL ON FUNCTION "public"."save_coaching_membership"("target_trainee" "uuid
 REVOKE ALL ON FUNCTION "public"."save_trainee_profile"("target_trainee" "uuid", "expected_version" integer, "trainee_name" "text", "contact_phone" "text", "goal" "public"."fitness_goal") FROM PUBLIC;
 GRANT ALL ON FUNCTION "public"."save_trainee_profile"("target_trainee" "uuid", "expected_version" integer, "trainee_name" "text", "contact_phone" "text", "goal" "public"."fitness_goal") TO "service_role";
 GRANT ALL ON FUNCTION "public"."save_trainee_profile"("target_trainee" "uuid", "expected_version" integer, "trainee_name" "text", "contact_phone" "text", "goal" "public"."fitness_goal") TO "authenticated";
+
+
+
+REVOKE ALL ON FUNCTION "public"."set_session_balance"("target_trainee" "uuid", "expected_version" integer, "new_balance" integer, "change_reason" "text", "request_nonce" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."set_session_balance"("target_trainee" "uuid", "expected_version" integer, "new_balance" integer, "change_reason" "text", "request_nonce" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."set_session_balance"("target_trainee" "uuid", "expected_version" integer, "new_balance" integer, "change_reason" "text", "request_nonce" "uuid") TO "authenticated";
 
 
 
@@ -2440,6 +3132,22 @@ GRANT ALL ON FUNCTION "public"."submit_daily_checkin"("checkin_note" "text", "me
 
 
 
+REVOKE ALL ON FUNCTION "public"."withdraw_appointment_change"("target_request" "uuid", "request_nonce" "uuid") FROM PUBLIC;
+GRANT ALL ON FUNCTION "public"."withdraw_appointment_change"("target_request" "uuid", "request_nonce" "uuid") TO "service_role";
+GRANT ALL ON FUNCTION "public"."withdraw_appointment_change"("target_request" "uuid", "request_nonce" "uuid") TO "authenticated";
+
+
+
+GRANT ALL ON TABLE "public"."appointment_change_requests" TO "service_role";
+GRANT SELECT ON TABLE "public"."appointment_change_requests" TO "authenticated";
+
+
+
+GRANT ALL ON TABLE "public"."appointment_events" TO "service_role";
+GRANT SELECT ON TABLE "public"."appointment_events" TO "authenticated";
+
+
+
 GRANT ALL ON TABLE "public"."billing_requests" TO "service_role";
 GRANT SELECT ON TABLE "public"."billing_requests" TO "authenticated";
 
@@ -2447,43 +3155,6 @@ GRANT SELECT ON TABLE "public"."billing_requests" TO "authenticated";
 
 GRANT ALL ON TABLE "public"."checkins" TO "service_role";
 GRANT SELECT ON TABLE "public"."checkins" TO "authenticated";
-
-
-
-GRANT ALL ON TABLE "public"."coaching_appointments" TO "service_role";
-GRANT SELECT ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("trainee_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("pt_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("learner_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("client_request_id") ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("title") ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("kind") ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("starts_at") ON TABLE "public"."coaching_appointments" TO "authenticated";
-
-
-
-GRANT INSERT("ends_at") ON TABLE "public"."coaching_appointments" TO "authenticated";
 
 
 
@@ -2613,6 +3284,11 @@ GRANT UPDATE("gym_affiliation") ON TABLE "public"."pt_profiles" TO "authenticate
 
 
 
+GRANT ALL ON TABLE "public"."session_ledger" TO "service_role";
+GRANT SELECT ON TABLE "public"."session_ledger" TO "authenticated";
+
+
+
 GRANT ALL ON TABLE "public"."trainee_invitations" TO "service_role";
 GRANT SELECT ON TABLE "public"."trainee_invitations" TO "authenticated";
 
@@ -2620,23 +3296,6 @@ GRANT SELECT ON TABLE "public"."trainee_invitations" TO "authenticated";
 
 GRANT ALL ON TABLE "public"."trainee_profile_events" TO "service_role";
 GRANT SELECT ON TABLE "public"."trainee_profile_events" TO "authenticated";
-
-
-
-GRANT ALL ON TABLE "public"."trainee_profiles" TO "service_role";
-GRANT SELECT,INSERT ON TABLE "public"."trainee_profiles" TO "authenticated";
-
-
-
-GRANT UPDATE("total_sessions") ON TABLE "public"."trainee_profiles" TO "authenticated";
-
-
-
-GRANT UPDATE("remaining_sessions") ON TABLE "public"."trainee_profiles" TO "authenticated";
-
-
-
-GRANT UPDATE("last_checkin_date") ON TABLE "public"."trainee_profiles" TO "authenticated";
 
 
 

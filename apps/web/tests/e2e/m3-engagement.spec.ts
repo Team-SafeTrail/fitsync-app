@@ -105,6 +105,7 @@ test("trainee check-in reaches the PT with private media, session updates, and m
   await expect(ptPage.getByTestId("private-meal-photo")).toBeVisible();
   await ptPage.getByRole("tab", {name:"Membership & buổi",exact:true}).click();
   await ptPage.getByRole("spinbutton", { name: /Số buổi còn lại/ }).fill("8");
+  await ptPage.getByLabel("Lý do điều chỉnh số buổi").fill("SYNTHETIC: reconciled package balance");
   await ptPage.getByRole("button", { name: "Cập nhật số buổi" }).click();
   await expect(ptPage.getByRole("status")).toContainText("Đã cập nhật số buổi còn lại");
   await ptPage.reload();
@@ -180,8 +181,8 @@ test("trainee check-in reaches the PT with private media, session updates, and m
     .update({ remaining_sessions: 0 })
     .eq("id", traineeId)
     .select("id");
-  expect(deniedMutationError).toBeNull();
-  expect(deniedMutation).toEqual([]);
+  expect(deniedMutationError?.code).toBe("42501");
+  expect(deniedMutation).toBeNull();
   const { data: deniedSignedMedia, error: deniedSignedMediaError } = await outsiderApi.storage
     .from("meal-media")
     .createSignedUrl(privatePhotoPath, 60);

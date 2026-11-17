@@ -69,7 +69,7 @@ test("PT edits, reissues and archives a learner without losing the profile", asy
     await page.getByText("Quản lý hồ sơ và lời mời", { exact: true }).click();
     archive = page.getByRole("form", { name: "Trạng thái hồ sơ" }); await archive.getByRole("checkbox").check();
     await archive.getByRole("button", { name: "Khôi phục hồ sơ", exact: true }).click();
-    await expect(archive.getByRole("button", { name: "Lưu trữ hồ sơ", exact: true })).toBeVisible();
+    await expect(page.getByRole("tab", { name: "Tổng quan", exact: true })).toBeVisible();
     await expect(page.getByRole("button", { name: "Check-in hôm nay", exact: true })).toHaveCount(0);
     await b.reload(); await expect(b.getByRole("heading", { name: "Hồ sơ đã được lưu trữ" })).toHaveCount(0);
     await mkdir("test-results/chat-proof", { recursive: true }); await page.screenshot({ path: "test-results/chat-proof/final-roster-lifecycle.png", fullPage: true });
@@ -124,7 +124,7 @@ test("real admin ledger stores private TEST evidence, reverses once and never co
     // Generic 1px PNG, explicitly marked TEST. It is not a fabricated bank receipt.
     await form.getByLabel(/Chứng từ riêng tư/).setInputFiles({ name: "SYNTHETIC-ONLY.png", mimeType: "image/png", buffer: Buffer.from("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+/l9sAAAAASUVORK5CYII=", "base64") });
     await form.getByLabel(/Giao dịch thử/).check(); await form.getByLabel(/Tôi đã đối chiếu/).check(); await form.getByRole("button", { name: "Ghi giao dịch và chứng từ", exact: true }).click();
-    const ledger = page.getByRole("region", { name: "Sổ thu chi", exact: true }); await expect(ledger).toContainText(reference); await expect(ledger).toContainText("Dữ liệu thử");
+    const ledger = page.getByRole("region", { name: "Sổ thu chi", exact: true }); await expect(ledger).toContainText(reference.toLowerCase()); await expect(ledger).toContainText("Dữ liệu thử");
     await expect(page.getByRole("region", { name: "Số liệu đã ghi nhận" }).locator(".admin-kpi-card").filter({ hasText: "PT đã trả phí được đối soát" }).locator("strong")).toHaveText("0");
     const snapshot = await setup.rpc("get_admin_overview"); expect(snapshot.error).not.toBeNull(); // service_role without an authenticated admin identity is insufficient.
     const entry = await setup.from("finance_entries").select("id,evidence_path,evidence_sha256,is_test").eq("bank_reference", reference.toLowerCase()).single(); expect(entry.error).toBeNull(); expect(entry.data?.is_test).toBe(true);

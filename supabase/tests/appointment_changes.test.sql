@@ -12,6 +12,8 @@ insert into public.trainee_profiles(id,profile_id,assigned_pt_id,display_name,pr
  ('ae000000-0000-0000-0000-000000000002','74000000-0000-0000-0000-000000000004','74000000-0000-0000-0000-000000000001','Change B','recomp');
 set local role authenticated;
 select set_config('request.jwt.claim.sub','74000000-0000-0000-0000-000000000001',true);
+-- Fixed primary keys are test setup only; normal API callers cannot choose IDs.
+reset role;
 insert into public.coaching_appointments(id,trainee_id,pt_id,learner_id,client_request_id,title,kind,starts_at,ends_at) values
  ('af000000-0000-0000-0000-000000000001','ae000000-0000-0000-0000-000000000001',auth.uid(),'74000000-0000-0000-0000-000000000003','ab000000-0000-0000-0000-000000000001','Change A','training','2035-01-01 09:00+07','2035-01-01 10:00+07'),
  ('af000000-0000-0000-0000-000000000002','ae000000-0000-0000-0000-000000000002',auth.uid(),'74000000-0000-0000-0000-000000000004','ab000000-0000-0000-0000-000000000002','Busy slot','training','2035-01-02 09:00+07','2035-01-02 10:00+07');

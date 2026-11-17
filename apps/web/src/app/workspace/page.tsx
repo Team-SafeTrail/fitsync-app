@@ -3,6 +3,7 @@ import ProgressHistory from "@/components/workspace/ProgressHistory";
 import {Suspense} from "react";
 import CoachingProfileContext from "@/components/workspace/CoachingProfileContext";
 import CoachingScheduleSummary from "@/components/workspace/CoachingScheduleSummary";
+import SessionHistory from "@/components/workspace/SessionHistory";
 import { AlertTriangle, ArrowRight, CheckCircle2, Dumbbell, UserRoundCheck, Users } from "lucide-react";
 import CheckinActivityList from "@/components/workspace/CheckinActivityList";
 import CheckinForm from "@/components/workspace/CheckinForm";
@@ -60,6 +61,7 @@ export default async function WorkspacePage({ searchParams: searchParamsPromise 
 
             <ProgressHistory records={records} />
             <Suspense fallback={<p role="status">Đang tải membership và ghi chú…</p>}><CoachingProfileContext traineeId={trainee.id}/></Suspense>
+            <Suspense fallback={null}><SessionHistory traineeId={trainee.id}/></Suspense>
             <section className="workspace-record-list" aria-labelledby="trainee-records-title">
               <div className="workspace-section-heading"><div><p className="workspace-kicker">Tiến trình</p><h2 id="trainee-records-title">Kết quả InBody gần nhất</h2></div><Link href="/workspace/progress">Xem đủ {records.length} bản ghi</Link></div>
               {records.length === 0

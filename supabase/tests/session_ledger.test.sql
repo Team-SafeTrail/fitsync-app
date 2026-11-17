@@ -30,8 +30,11 @@ select throws_ok($$select pg_temp.adjust(1,0,6)$$,'23505',null,'nonce payload ca
 select throws_ok($$select pg_temp.adjust(2,0,6)$$,'40001',null,'stale adjustment rejected');
 select throws_ok($$select pg_temp.adjust(2,1,-1)$$,'22023',null,'negative rejected');
 select throws_ok($$select pg_temp.adjust(2,1,13)$$,'22023',null,'balance cannot exceed package total');
+-- Fixed ID supplied by database-owner fixture setup, not an expanded API grant.
+reset role;
 insert into public.coaching_appointments(id,trainee_id,pt_id,learner_id,client_request_id,title,kind,starts_at,ends_at) values
  ('ab200000-0000-0000-0000-000000000001','ab000000-0000-0000-0000-000000000001',auth.uid(),'75000000-0000-0000-0000-000000000003','ab300000-0000-0000-0000-000000000001','Synthetic session','training','2035-01-01 09:00+07','2035-01-01 10:00+07');
+set local role authenticated;
 select throws_ok($$select public.complete_coaching_appointment('ab200000-0000-0000-0000-000000000001',1,1,true,'Synthetic complete','ab400000-0000-0000-0000-000000000001')$$,'23514',null,'future appointment cannot be called completed');
 reset role;
 -- Test-only clock fixture: ordinary users still cannot edit appointment rows.

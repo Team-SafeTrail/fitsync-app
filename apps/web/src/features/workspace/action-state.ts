@@ -4,6 +4,7 @@ export type WorkspaceActionState = {
   fieldErrors?: Record<string, string>;
   invitationUrl?: string;
   invitationExpiresAt?: string;
+  nonce?: string;
   ocrAttemptId?: string;
   ocrDraft?: import("./ocr-validation").OcrNormalizedDraft;
   ocrErrorCode?: import("./ocr-validation").OcrFailureCode;

@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useActionState } from "react";
 import { useFormStatus } from "react-dom";
 import { useRouter } from "next/navigation";
@@ -17,7 +17,6 @@ export default function ChatComposer({ traineeId, refreshAutomatically }: { trai
       const result = await sendChatMessage(traineeId, previous, form);
       if(result.status === "success" && result.nonce === form.get("clientMessageId")) {
         setBody(""); setNonce(crypto.randomUUID());
-        if(!refreshAutomatically) router.replace(`/workspace/chat/${traineeId}`);
       }
       return result;
     }
@@ -25,7 +24,13 @@ export default function ChatComposer({ traineeId, refreshAutomatically }: { trai
   }, initialChatState);
   const [body, setBody] = useState("");
   const [nonce, setNonce] = useState("");
+  const navigated=useRef<string|undefined>(undefined);
   useEffect(() => setNonce(crypto.randomUUID()), []);
+  useEffect(()=>{
+    if(state.status==="success"&&state.nonce&&!refreshAutomatically&&navigated.current!==state.nonce){
+      navigated.current=state.nonce;router.replace(`/workspace/chat/${traineeId}`);
+    }
+  },[state,refreshAutomatically,router,traineeId]);
   useEffect(() => {
     if (!refreshAutomatically) return;
     const refresh = () => { if (document.visibilityState === "visible") router.refresh(); };
