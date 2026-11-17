@@ -9,6 +9,13 @@ async function capture(page:Page,path:string) {
  await page.evaluate(()=>window.scrollTo(0,0));
  await page.screenshot({path,fullPage:(page.viewportSize()?.width??1440)>900});
 }
+async function saveIntake(page:Page) {
+ const [response]=await Promise.all([
+  page.waitForResponse(r=>r.request().method()==="POST"&&Boolean(r.request().headers()["next-action"])),
+  page.locator("#intake").getByRole("button",{name:"Xác nhận và lưu",exact:true}).click(),
+ ]);
+ expect(response.ok()).toBe(true);expect(await response.finished()).toBeNull();
+}
 test.use({actionTimeout:15000});
 test.beforeAll(()=>{
  const url=process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -48,8 +55,8 @@ test("handoff web: profile context, membership revisions, private/shared notes a
   console.info("[handoff-acceptance] verified records, metric switch and phone dossier");
   await a.getByRole("tab",{name:"Nhập số đo",exact:true}).click();
   const intake=a.locator("#intake");await expect(intake.locator('input[name="weightKg"]')).toBeVisible();
-  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("70");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("14");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await intake.getByRole("button",{name:"Xác nhận và lưu",exact:true}).click();await expect(a.getByTestId("verified-record")).toHaveCount(1);
-  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("69");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30.2");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("13.8");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await intake.getByRole("button",{name:"Xác nhận và lưu",exact:true}).click();await expect(a.getByTestId("verified-record")).toHaveCount(2);
+  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("70");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("14");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await saveIntake(a);await expect(a.getByTestId("verified-record")).toHaveCount(1);
+  await intake.getByLabel("Cân nặng (kg)",{exact:true}).fill("69");await intake.getByLabel("Khối cơ xương (kg)",{exact:true}).fill("30.2");await intake.getByLabel("Khối mỡ (kg)",{exact:true}).fill("13.8");await intake.getByLabel("Tỷ lệ mỡ (%)",{exact:true}).fill("20");await intake.locator('input[name="confirmed"]').check();await saveIntake(a);await expect(a.getByTestId("verified-record")).toHaveCount(2);
   await b.reload();await b.getByRole("button",{name:"Khối cơ xương",exact:true}).click();await expect(b.getByRole("button",{name:"Khối cơ xương",exact:true})).toHaveAttribute("aria-pressed","true");
   await a.getByRole("tab",{name:"Tiến trình",exact:true}).click();await expect(a.getByTestId("verified-record").first()).toBeVisible();
   await capture(a,`${root}/handoff-pt-progress.png`);
