@@ -1,6 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef } from "react";
+import {useRouter} from "next/navigation";
 import { Camera, CheckCircle2, NotebookPen } from "lucide-react";
 import { submitDailyCheckin } from "@/features/workspace/actions";
 import { initialWorkspaceActionState, type WorkspaceActionState } from "@/features/workspace/action-state";
@@ -9,10 +10,16 @@ import { PendingFields, usePreservedForm } from "./PreservedForm";
 
 export default function CheckinForm() {
   const { ref: formRef, reset, onReset } = usePreservedForm();
-  const [state, action] = useActionState(async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
-    try { const result=await submitDailyCheckin(previous,form); if(result.status==="success")reset(); return result; }
+  const router=useRouter();
+  const handled=useRef<WorkspaceActionState|null>(null);
+  const [state, action, isPending] = useActionState(async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
+    try { return await submitDailyCheckin(previous,form); }
     catch { return {status:"error",message:"Chưa xác nhận được check-in. Ảnh và ghi chú được giữ; kiểm tra lịch sử trước khi gửi lại."}; }
   }, initialWorkspaceActionState);
+  useEffect(()=>{
+    if(isPending||state.status!=="success"||handled.current===state)return;
+    handled.current=state;reset();router.refresh();
+  },[state,isPending,reset,router]);
 
   return (
     <section className="workspace-panel workspace-checkin-panel" aria-labelledby="daily-checkin-title">
@@ -30,7 +37,7 @@ export default function CheckinForm() {
         </p>
       )}
 
-      <form ref={formRef} onReset={onReset} action={action} className="workspace-checkin-form"><PendingFields>
+      <form ref={formRef} onReset={onReset} action={action} className="workspace-checkin-form"><PendingFields disabled={isPending||state.status==="success"}>
         <label className="workspace-field" htmlFor="checkin-note">
           <span><NotebookPen size={15} /> Ghi chú (không bắt buộc)</span>
           <textarea

@@ -79,12 +79,23 @@ test("trainee check-in reaches the PT with private media, session updates, and m
     "base64",
   );
   await traineePage.getByLabel("Ghi chú").fill("Năng lượng tốt, đã hoàn thành buổi chân.");
+  await traineePage.getByLabel(/Thêm ảnh bữa ăn/).setInputFiles({name:"invalid.png",mimeType:"image/png",buffer:Buffer.from("Synthetic invalid image, no PNG signature")});
+  await traineePage.getByRole("button",{name:"Gửi check-in hôm nay"}).click();
+  await expect(traineePage.getByRole("region",{name:"Check-in trong một phút"}).getByRole("alert")).toBeVisible();
+  await expect(traineePage.getByLabel("Ghi chú")).toHaveValue("Năng lượng tốt, đã hoàn thành buổi chân.");
+  expect(await traineePage.getByLabel(/Thêm ảnh bữa ăn/).evaluate(input=>(input as HTMLInputElement).files?.[0]?.name)).toBe("invalid.png");
   await traineePage.getByLabel(/Thêm ảnh bữa ăn/).setInputFiles({
     name: "bua-trua.png",
     mimeType: "image/png",
     buffer: onePixelPng,
   });
-  await traineePage.getByRole("button", { name: "Gửi check-in hôm nay" }).click();
+  // File upload and streamed RSC rendering may still be running after click.
+  // Await the actual action transport; the persisted UI assertions remain below.
+  const [saved]=await Promise.all([
+    traineePage.waitForResponse(response=>response.request().method()==="POST"&&Boolean(response.request().headers()["next-action"])),
+    traineePage.getByRole("button", { name: "Gửi check-in hôm nay" }).click(),
+  ]);
+  expect(saved.ok()).toBe(true);expect(await saved.finished()).toBeNull();
   await expect(traineePage.getByTestId("checkin-complete-today")).toBeVisible();
   await expect(traineePage.getByTestId("checkin-activity")).toContainText("Năng lượng tốt");
   await expect(traineePage.getByTestId("private-meal-photo")).toBeVisible();
