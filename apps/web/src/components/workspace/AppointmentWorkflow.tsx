@@ -11,7 +11,7 @@ function WorkflowForm({action,label,children}:{action:Action;label:string;childr
  const preserved=usePreservedForm();const [nonce,setNonce]=useState("");
  useEffect(()=>setNonce(crypto.randomUUID()),[]);
  const [state,dispatch]=useActionState(async(previous:ContextState,form:FormData):Promise<ContextState>=>{
-  try{const result=await action(previous,form);if(result.status==="success"){preserved.reset();setNonce(crypto.randomUUID());}return result;}
+  try{return await action(previous,form);}
   catch{return {status:"error",notice:"Chưa nhận được xác nhận. Thông tin vẫn ở đây; kiểm tra lịch sử trước khi gửi lại."};}
  },initialContextState);
  return <form aria-label={label} className="coaching-context-form" action={dispatch} ref={preserved.ref} onReset={preserved.onReset}><PendingFields disabled={!nonce}>
@@ -39,7 +39,7 @@ export default function AppointmentWorkflow({appointment,isPt,requests,completio
    </WorkflowForm>
   </section>}
   {a.status==="scheduled"&&!completion&&(isPt||!pending)&&<details><summary>{isPt?"Đổi hoặc hủy cuộc hẹn":"Đề nghị đổi hoặc hủy"}</summary>
-   <WorkflowForm key={`change-${a.version}`} label="Thay đổi cuộc hẹn" action={changeAppointment.bind(null,a.id,a.version)}>
+   <WorkflowForm key={`change-${a.version}-${requests[0]?.id??"new"}-${requests[0]?.state??"new"}`} label="Thay đổi cuộc hẹn" action={changeAppointment.bind(null,a.id,a.version)}>
     <label>Thao tác<select name="kind" value={kind} onChange={e=>setKind(e.target.value)}><option value="reschedule">Đổi thời gian</option><option value="cancel">Hủy cuộc hẹn</option></select></label>
     {kind==="reschedule"&&<div className="coaching-date-fields"><label>Bắt đầu mới<input type="datetime-local" name="startLocal" required defaultValue={instant(a.starts_at)}/></label><label>Kết thúc mới<input type="datetime-local" name="endLocal" required defaultValue={instant(a.ends_at)}/></label></div>}
     <label>Lý do thay đổi<textarea name="reason" minLength={3} maxLength={500} required rows={2}/></label>
