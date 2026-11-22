@@ -1,123 +1,123 @@
-# FitSync — kịch bản báo cáo Week 8–9
+# FitSync — kịch bản sản phẩm và Week8–9
 
-Bản 10 slide, khoảng 8–10 phút. Đối soát 17/11/2026. Dùng deck “Final verified deck” trong CANVA_DELIVERY.md hoặc PDF đi kèm. Các nguồn đọc sau tuần học được giới thiệu là cập nhật hồi cứu. Không dùng bản Canva AI draft bị loại vì có giao diện dựng giả.
+10 slide, khoảng8–10 phút. Đối soát22/11/2026. Dùng deck hiện hành trongCANVA_DELIVERY.md. Số liệu có nguồn; không trình bày synthetic như khách hoặc paid actual.
 
 ## Slide 1 — FitSync
 
-**Key Message:** Nhóm báo cáo tiến độ theo bằng chứng và ưu tiên hoàn thành học phần.
+**Key Message:** Báo cáo gắn sản phẩm với bằng chứng, không chỉ hoàn thiện form.
 
-**Speaking Script:** Em chào thầy và các bạn. Nhóm SafeTrail xin báo cáo FitSync theo yêu cầu Week 8 và Week 9. Nội dung hôm nay được đối soát lại ngày 17 tháng 11, nên nhóm sẽ phân biệt rõ kết quả đã kiểm tra, dữ liệu còn thiếu và kế hoạch. Nhóm cũng đã quyết định dừng kinh doanh sau học phần, vì vậy trọng tâm hiện tại là hoàn thiện bài nộp, demo và bàn giao có trách nhiệm.
+**Speaking Script:** Em chào thầy và các bạn. Nhóm SafeTrail xin trình bày FitSync, đồng thời cập nhật nội dung Week8 và Week9 trong bản cập nhật để nộp bổ sung. Lần này nhóm tập trung vào sản phẩm web có database, các luồng hai vai trò và bộ minh chứng. Số liệu mới được đối soát ngày22 tháng11, nên nhóm không trình bày như đã có ở đúng tuần học. Nhóm đã quyết định dừng kinh doanh sau môn. Phần nào chưa đủ bằng chứng hoặc chưa đạt điều kiện, nhóm sẽ nêu rõ để thầy đánh giá.
 
-**Visual Explanation:** Trang bìa chỉ có tên dự án, kỳ báo cáo và ngày đối soát. Không có số người dùng hoặc kết quả kinh doanh chưa được kiểm chứng.
+**Visual Explanation:** Bìa ghi sản phẩm, phạm vi báo cáo và mốc đối soát, không đưa traction giả.
 
-**Transition:** Trước tiên, nhóm nhắc lại công việc mà FitSync muốn hỗ trợ.
+**Transition:** Trước hết, đây là quy trình mà sản phẩm muốn hỗ trợ.
 
-**Evidence:** Yêu cầu Week 8/9 và quyết định trực tiếp của người dùng trong phiên 17/11.
+**Evidence:** Bản hồi cứu theo W8/W9/Final Guidelines và quyết định owner. Chưa xác nhận đã nộp hoặc đạt học phần.
 
-## Slide 2 — Hồ sơ coaching có ngữ cảnh
+## Slide 2 — Một hồ sơ cho quá trình coaching
 
-**Key Message:** FitSync giữ thông tin và thao tác coaching trong bối cảnh của từng học viên.
+**Key Message:** Giữ ngữ cảnh coaching từ tiếp nhận đến theo dõi.
 
-**Speaking Script:** Vấn đề nhóm tập trung là PT phải tìm lại thông tin qua nhiều nơi, từ tin nhắn đến bảng tính và phiếu đo. FitSync tổ chức quy trình từ tiếp nhận học viên, nhập số đo có bước PT xác nhận, đến xem tiến trình và check-in. Giá trị nhóm muốn tạo ra là giảm việc nhập và tìm dữ liệu. Hiện chưa có phép đo đủ để nói đã tiết kiệm bao nhiêu giờ hoặc tăng doanh thu, nên nhóm giữ đây là giá trị cần kiểm chứng.
+**Speaking Script:** PT thường phải tìm thông tin trong nhiều nơi như tin nhắn, bảng tính và phiếu đo. FitSync tổ chức thành ba giai đoạn: tiếp nhận hồ sơ và mời học viên; nhập số đo có validation và PT xác nhận; sau đó đồng hành bằng check-in, chat, lịch và ghi chú. Membership theo ngày và số buổi PT là hai thứ khác nhau. Nhóm muốn giảm việc nhập và tìm thông tin, nhưng chưa có nghiên cứu tác vụ đủ để khẳng định đã tiết kiệm bao nhiêu giờ. Đây là mục tiêu giá trị, không phải kết quả đã đo.
 
-**Visual Explanation:** Ba bước là sơ đồ luồng minh họa. Sơ đồ mô tả quy trình, không phải dữ liệu chuyển đổi thực tế.
+**Visual Explanation:** Ba cột là sơ đồ quy trình minh họa. Các số01–03 là thứ tự tác vụ, không phải tỷ lệ chuyển đổi.
 
-**Transition:** Đây là hai giao diện thật trong bộ nghiệm thu tổng hợp của sản phẩm.
+**Transition:** Hai giao diện tiếp theo cho thấy quy trình này trong bản nghiệm thu.
 
-**Evidence:** PRODUCT_DECISIONS.md, ARCHITECTURE.md và source main `3c816e9`.
+**Evidence:** Kiến trúc source PR48. Sơ đồ quy trình minh họa, không phải funnel hoặc mức hiệu quả đã đo.
 
-## Slide 3 — Giao diện sản phẩm đã nghiệm thu
+## Slide 3 — Giao diện thật của bản nghiệm thu
 
-**Key Message:** Screenshot thật của ứng dụng được phân biệt với tour và dữ liệu khách hàng.
+**Key Message:** Ảnh lấy từ ứng dụng chạy thật trên DB synthetic.
 
-**Speaking Script:** Bên trái là hồ sơ PT, bên phải là web học viên trên màn hình điện thoại. Hai ảnh này lấy từ bài nghiệm thu trên stack Supabase tạm, dùng tài khoản và số liệu synthetic ngày 30 tháng 10. Chúng chứng minh giao diện đã có trong bản nghiệm thu đó, không phải hình khách hàng đang dùng production. Luồng có tài khoản nằm ở workspace; phần app công khai là tour dùng dữ liệu mẫu. OCR provider thật, Android và thanh toán vẫn chưa được nhóm nghiệm thu đầy đủ.
+**Speaking Script:** Bên trái là hồ sơ PT và bên phải là giao diện học viên trên điện thoại. Đây là ảnh gốc từ CI chạy ứng dụng với Supabase tạm, không phải hình UI do công cụ thiết kế tự dựng. Các tài khoản và số đo đều synthetic. Những bài kiểm liên quan kiểm việc lưu dữ liệu, đọc lại ở hai vai trò và chặn người ngoài. Ảnh chứng minh bản nghiệm thu tương ứng, không tự chứng minh website hiện có của Huy đã rollout. Khi demo, nhóm phân biệt workspace có tài khoản với public tour dùng fixture.
 
-**Visual Explanation:** Hai ảnh nguyên bản được đặt trên slide, không dựng lại UI hoặc thêm số lượng học viên giả vào ảnh.
+**Visual Explanation:** Giữ nguyên bytes của hai PNG, đặt trong bố cục slide; caption ghi run và phạm vi synthetic.
 
-**Transition:** Với ranh giới đó, nhóm trình bày số liệu người dùng đã đọc lại.
+**Transition:** Từ sản phẩm, nhóm chuyển sang số liệu so với KPI của Week8.
 
-**Evidence:** `docs/handoff/screenshots/README.md`, backend run 41092400099, hai PNG nguyên bản được nhúng trong HTML/PDF.
+**Evidence:** Nguồn PNG nguyên bản: docs/evidence/exe201-2026-11-18/demo/handoff-pt-dossier.png và handoff-trainee-home.png. CI44155536123/artifact14360972525. Hai vai trò có dữ liệu persist; /app là tour riêng. Không dựng lại UI.
 
 ## Slide 4 — Week 8: kết quả so với KPI
 
-**Key Message:** Có 10 tài khoản ngoài seed, tương đương 16,7% mốc 60 theo cách tính tài khoản.
+**Key Message:** 10 tài khoản ngoài seed vẫn cần xác minh độc lập.
 
-**Speaking Script:** Cloud hiện có 27 tài khoản Auth. Nhóm loại 17 tài khoản được gắn cờ synthetic, còn 10 tài khoản ngoài seed, gồm 5 PT và 5 học viên. Nếu mốc 60 tính cả hai vai trò thì tiến độ là 16,7%, còn thiếu 50. Tuy nhiên, bộ lọc kỹ thuật chưa xác nhận toàn bộ 10 tài khoản là khách độc lập ngoài team hoặc test. Vì vậy nhóm dùng đúng tên “tài khoản ngoài seed”, đồng thời không lấy tổng 27 làm số khách hàng thật.
+**Speaking Script:** Snapshot cloud đọc lại ngày22 tháng11 có27 tài khoản Auth. Nhóm loại17 tài khoản synthetic, còn10 candidate, gồm5 PT và5 học viên. Nếu mốc60 tính cả hai vai trò thì tiến độ theo tài khoản là16,7 phần trăm. Nhóm chưa xác minh toàn bộ10 tài khoản là khách độc lập ngoài team hoặc test, nên chưa gọi đây là10 khách hàng đã được chứng minh. Nếu giảng viên chỉ tính PT, nhóm cần đối chiếu lại mẫu số. Tài khoản đăng ký và khách trả phí được theo dõi riêng.
 
-**Visual Explanation:** Ba số 27, 17 và 10 thể hiện phép lọc cohort. Tỷ lệ 16,7% được tính từ 10 chia 60, không phải tỷ lệ thanh toán.
+**Visual Explanation:** Ba số27,17,10 đối soát được; tỷ lệ10/60 có điều kiện về cách tính.
 
-**Transition:** Kế hoạch tiếp cận được đặt cạnh quyết định dừng kinh doanh sau môn.
+**Transition:** Vậy nhóm đã có kế hoạch kênh và quyết định sau môn như thế nào?
 
-**Evidence:** Cloud snapshot 17/11 trong `docs/evidence/exe201-2026-11-17/cloud-metrics.json`.
+**Evidence:** Cloud-metrics snapshot. Mốc60 chưa định nghĩa PT-only; không dùng tổng kỹ thuật làm khách thật. Candidate không phải paying.
 
 ## Slide 5 — Week 8: kênh và quyết định
 
-**Key Message:** Kênh và mốc 60 là kế hoạch thử trong học phần; nhóm chọn dừng sau môn.
+**Key Message:** Kế hoạch kênh chưa phải kết quả chiến dịch; nhóm chọnNo.
 
-**Speaking Script:** Nhóm đề xuất thử Facebook cộng đồng PT và referral hoặc tiếp cận PT trực tiếp; Zalo hỗ trợ nhận invite và onboarding. Chưa có export analytics cùng kỳ để gọi hai kênh này là hiệu quả nhất. Kế hoạch tham chiếu 60 tài khoản gồm 20 PT và 40 học viên, cần bổ sung ròng 15 PT và 35 học viên nếu baseline hợp lệ. Đây là mục tiêu thử, chưa phải kết quả. Có 60 tài khoản cũng chưa bảo đảm 20 người trả phí. Nhóm sẽ kết thúc kinh doanh sau môn theo quyết định đã xác nhận.
+**Speaking Script:** Trello có nhiều kế hoạch kênh, nhưng chưa có export cùng kỳ đủ để nói kênh nào hiệu quả nhất. Nhóm đề xuất Facebook cộng đồng PT và referral hoặc direct PT là hai nguồn acquisition; Zalo hỗ trợ onboarding. Kế hoạch60 tài khoản là20 PT và40 học viên. Nếu baseline hợp lệ, cần thêm50 tài khoản. Tuy nhiên, kế hoạch14 ngày không thể bắt đầu ngày18 để đạt trước19 tháng11, nên nhóm không cam kết sai mốc. Nhóm chọnNo cho việc tiếp tục kinh doanh sau môn, tập trung bàn giao và xử lý nghĩa vụ còn lại.
 
-**Visual Explanation:** Hai cột tách kênh đề xuất và quyết định của nhóm. Các số cộng thêm chỉ là khoảng cách kế hoạch.
+**Visual Explanation:** Hai cột tách lựa chọn kênh và quyết định của nhóm. Target20+40 không được thể hiện như actual.
 
-**Transition:** Week 9 cần nhìn sâu hơn việc đăng ký, đặc biệt là sử dụng và thanh toán.
+**Transition:** Week9 yêu cầu nhìn sâu hơn vào hoạt động của cohort này.
 
-**Evidence:** CAP_AND_ANALYTICS.md, Week 8 Step 3–5 và quyết định người dùng.
+**Evidence:** W8 Step2–5, owner chọnNo. CAP là kế hoạch, chưa chạy outreach/ads hoặc có export đủ2 kênh.
 
-## Slide 6 — Week 9: customer analytics
+## Slide 6 — Week 9: analytics chưa thành traction
 
-**Key Message:** Đăng ký và plan Pro chưa chứng minh activation hay trả tiền.
+**Key Message:** Chưa có bằng chứng activation hoặc giao dịch thật.
 
-**Speaking Script:** Cả 10 tài khoản ngoài seed đã xác nhận email và từng đăng nhập. Tuy nhiên, tại snapshot này không có tài khoản trong nhóm có last sign-in trong 7 ngày gần nhất, và chưa có InBody hoặc check-in thuộc cohort. Do đó chưa có cặp đạt định nghĩa activation đề xuất của nhóm. Last sign-in cũng không phải WAU coaching, nên nhóm chưa suy ra churn từ con số này. Trong 5 PT có 4 plan Pro, nhưng chưa có chứng từ để nói đó là 4 khách trả tiền.
+**Speaking Script:** Cả10 candidate đã xác nhận email và từng đăng nhập, nhưng cohort này chưa có bản ghi InBody hoặc check-in trong snapshot. Tổng số đo và check-in toàn database thuộc bộ thử, không tính thành hoạt động khách. Chủ dự án xác nhận chưa có giao dịch thật, nên actual paying PT bằng0. Bốn nhãn Pro không thay chứng từ thanh toán. Ứng viên mới đã có event tối thiểu và tổng hợp theo tuần, nhưng chưa rollout và không thể suy lại reach, click hoặc retention quá khứ. Nhóm cũng không dùng last-sign-in như WAU coaching.
 
-**Visual Explanation:** Các số 0 có mẫu số và phạm vi cohort rõ ràng. Không sử dụng record/check-in của seed làm hoạt động khách.
+**Visual Explanation:** Ba chỉ tiêu10,0,0 có nhãn và mẫu số rõ; không gắn health values hoặc danh tính.
 
-**Transition:** Vì chưa đối soát thanh toán, phần tài chính được trình bày thành actual chưa rõ và kịch bản riêng.
+**Transition:** Vì vậy phần tài chính cần tách actual với kịch bản.
 
-**Evidence:** Cloud snapshot 17/11, metric definitions và limitations trong CAP_AND_ANALYTICS.md.
+**Evidence:** W9 Step1/3. Candidate last-sign-in7 ngày0 không bằng WAU coaching hoặc churn. Synthetic demo không vào KPI.
 
-## Slide 7 — Week 9: tài chính
+## Slide 7 — Week 9: tài chính và offer đã chốt
 
-**Key Message:** Có thể phân tích logic hòa vốn, chưa thể kết luận lợi nhuận thực.
+**Key Message:** Offer đã chốt, hòa vốn vẫn là dự toán.
 
-**Speaking Script:** Giá 199 nghìn đồng mỗi PT mỗi tháng là mức tham chiếu hiện hành, còn cần làm rõ offer và hạn mức. Doanh thu và paid users chưa đối soát bằng ledger hoặc biên lai. Hai số hòa vốn trên slide là kịch bản học thuật: fixed cash 3 triệu với contribution 182.010 đồng cần 17 PT; khi tính công nhóm và support, fixed 7,8 triệu với contribution 167.010 đồng cần 47 PT. Đây không phải FitSync đã đạt hòa vốn. Báo cáo online giữ rõ các giả định và những phần chưa đủ chứng từ.
+**Speaking Script:** Giá đã được owner chốt199 nghìn đồng mỗi PT mỗi tháng. Free tối đa3 hồ sơ chưa lưu trữ, gồm hồ sơ chờ nhận lời mời; Pro còn hạn không giới hạn học viên và cùng chức năng coaching. Actual hiện chưa có tiền thu từ khách, chi phí chưa đối soát. Trong kịch bản cash, fixed3 triệu và variable16.990 đồng mỗi PT dẫn đến hòa vốn17 PT. Nếu tính thêm công thì cần47 PT. Với20 PT giả định, thu3,98 triệu và cash result640.200 đồng; kết quả tính công vẫn âm. Đây là dự toán, không là doanh thu thật. PDF và giao dịch TEST chỉ kiểm phần mềm.
 
-**Visual Explanation:** Hai phép tính dùng cùng giá tham chiếu nhưng khác phạm vi chi phí. Contribution margin không phải net margin.
+**Visual Explanation:** Hai mứcBEP dùng cùng giá199k nhưng cấu trúc chi phí khác nhau. Bảng actual trong báo cáo không lấy số scenario thay thế.
 
-**Transition:** Về kỹ thuật, nhóm có các kết quả kiểm lại cụ thể nhưng cũng giữ giới hạn môi trường.
+**Transition:** Tiếp theo là phần kỹ thuật nhóm có thể chỉ ra bằng kiểm thử thực tế.
 
-**Evidence:** FINANCIAL_REPORT.md, link Drive trong DELIVERY_LINKS.md, phép tính được kiểm bằng script.
+**Evidence:** Hai gói cùng chức năng coaching. FINANCIAL_REPORT và link Drive18SJXm70350xOMlOvkuLelAmP6xPavRRd. BEP là dự toán, không actual. TEST ledger không cấpPro/không doanh thu; chưa bank receiver.
 
-## Slide 8 — Kiểm tra kỹ thuật ngày 17/11
+## Slide 8 — Kỹ thuật: có bằng chứng thực thi
 
-**Key Message:** Public demo và quality gates đã qua; full authenticated demo mới có CI lịch sử.
+**Key Message:** Kiểm thử có revision và môi trường; source khác production.
 
-**Speaking Script:** Lần kiểm local này qua 103 domain tests, 4 bài kiểm guard cô lập và 16 public browser tests. Lint, typecheck và production build cũng thành công. Các browser tests kiểm landing, tour, legal và auth guard, không ghi dữ liệu lên cloud. Full authenticated end-to-end có bằng chứng CI synthetic lịch sử, nhưng chưa chạy lại local vì máy thiếu Docker. PR 47 về auth còn mở; bốn bảng coaching mới chưa truy cập được qua REST cloud. Nhóm không đồng nhất code đã merge với tính năng đã rollout.
+**Speaking Script:** Bản ứng viên có114 domain tests,363 assertions SQL vàRLS chạy cả DB mới và rehearsal nâng cấp. Bộ browser core có28 luồng và4 bài demo qua ngay lần đầu ở revision0ba9821. Các lần thất bại trước đó được giữ trong lịch sử kiểm thử. Seed demo được chạy hai lần để kiểm không ghi trùng, tổng22 TEST entries và KPI tài chính thật không đổi. Source hiện20 bảng và14 migrations, cloud vẫn8 bảng nên nhóm chưa nói đã triển khai lên website. Docker vàWSL2 đã được cài theo chấp thuận, không reboot. Ngày22 tháng11, local production build đã chạy, cùng4 bài demo qua trên máyWindows với Auth, database vàstorage riêng. Đây là kết quả local thực tế, tách với các bộ SQL vàcore trên CI.
 
-**Visual Explanation:** Các số test là kết quả thật, không phải ảnh terminal dựng. Phần giới hạn nằm ngay trên slide.
+**Visual Explanation:** Các số thuộc từng loại kiểm, không cộng363 của hai lần chạy thành số tình huống độc lập mới. Không hiển thị credential.
 
-**Transition:** Vì vậy, nhóm đối chiếu những khoảng thiếu với yêu cầu final thay vì tự tuyên bố market-ready.
+**Transition:** Kiểm thử kỹ thuật vẫn khác việc đáp ứng mọi điều kiện final.
 
-**Evidence:** TEST_EVIDENCE.md, logs 17/11, GitHub snapshot và database probe PGRST205.
+**Evidence:** Quality và backend CI qua checkpoint; core28 bài qua ngay lần đầu ở0ba9821. Demo UI4 tests và seed idempotence qua. Lint/type/build và audit production0 đã kiểm ở checkpoint. Docker/WSL2 đã cài, không reboot. Local22/11 production build/start và4/4 demo PASS; xem local-demo-verification.json. Source không đồng nghĩa siteHuy đãrollout.
 
-## Slide 9 — Khoảng thiếu trước khi nộp final
+## Slide 9 — Khoảng thiếu của Final Guidelines
 
-**Key Message:** Final còn thiếu evidence kinh doanh, truy cập và xác nhận đóng góp.
+**Key Message:** 0/20 paying là khoảng thiếu thật, không lấp bằng seed.
 
-**Speaking Script:** Guideline yêu cầu CAP có ít nhất hai kênh, số liệu theo tuần và toàn kỳ, bảng doanh thu–chi phí, phân tích tài chính và phản hồi khách hàng. Với mô hình PT cá nhân trả thuê bao, điều kiện kết quả là ít nhất 20 khách trả phí; hiện nhóm chưa đủ bằng chứng đáp ứng. Ngoài ra cần kiểm truy cập database cho giảng viên, phiên bản video/demo, bảng contribution và lịch hẹn mentor. Nhóm đã tìm thấy file walkthrough ngày 25 tháng 10, nhưng metadata chưa thay việc xem lại nội dung và receipt nộp.
+**Speaking Script:** Final Guidelines yêu cầu tối thiểu20 paying customers khi khách mục tiêu là cá nhân. FitSync hiện0 trên20 theo xác nhận owner, nên nhóm chưa đáp ứng điều kiện này. Web đầy đủ được chấp nhận thay APK không tự miễn điều kiện kinh doanh. Nhóm cũng còn thiếu analytics hai kênh cùng kỳ, cost actual và review có nguồn. Database cần owner xem trước rồi mới cấp quyền giảng viên. Phần contribution và mentoring cần xác nhận attendance; booking email không tự chứng minh đã tham dự. Bộ mô phỏng có nhãn giúp demo kỹ thuật, không làm bằng chứng khách đã chuyển tiền.
 
-**Visual Explanation:** Danh sách là những khoảng thiếu thực tế. “Ít nhất” được giữ đúng, không đổi thành “trên” 2 kênh hoặc 20 khách.
+**Visual Explanation:** Danh sách ưu tiên là khoảng thiếu để thầy đánh giá, không phải checklist đã hoàn thành.
 
-**Transition:** Phần cuối là thứ tự hoàn tất học phần và kết thúc dự án.
+**Transition:** Nhóm kết thúc bằng cách mở và kiểm bộ bàn giao.
 
-**Evidence:** Final Guidelines, FINAL_REPORT_READINESS.md và Drive metadata video.
+**Evidence:** Final5parts, individuals>=20paid. Web đầy đủ được giảng viên chấp nhận theo owner nênAPK không làblocker. Booking Calendly khácattendance và2mentorofficialsessions.
 
-## Slide 10 — Hoàn tất học phần và bàn giao
+## Slide 10 — Hoàn tất bản bàn giao có thể kiểm
 
-**Key Message:** Hoàn tất bài nộp bằng chứng đúng, rồi bàn giao và kết thúc theo quyết định nhóm.
+**Key Message:** Bản bàn giao có đường dẫn, trạng thái và phần cần owner xử lý.
 
-**Speaking Script:** Trong thời gian còn lại, nhóm ưu tiên kiểm lại form, demo và evidence theo đúng phiên bản; nộp theo hướng dẫn LMS và lưu receipt. Source, tài liệu, cách chạy và phần còn thiếu cần được bàn giao rõ ràng. Sau học phần, owner rà tài khoản, dữ liệu, chi phí và những nghĩa vụ đã cam kết nếu có. Lượt này chưa tự tắt cloud hoặc xóa dữ liệu. Nhóm không trình bày roadmap mở rộng như cam kết kinh doanh sau môn. Em cảm ơn thầy và sẵn sàng giải thích các nguồn đối soát.
+**Speaking Script:** Nhóm đã gom một product review để mở ảnh giao diện, các video thao tác, database review và runbook. Source được lưu trên branch riêng và PR để review, không tự merge vào main hoặc đổi production. Bước còn lại là duyệt ứng viên, mở bản local đã kiểm và duyệt database, nộp đúng form hoặcLMS và lưu receipt. Nhóm dừng kinh doanh sau học phần nên cần bàn giao source, quyền và nghĩa vụ rõ ràng. Phần chưa đạt được ghi thẳng trong final report. Nhóm xin trình diễn sản phẩm và tiếp nhận đánh giá của thầy.
 
-**Visual Explanation:** Bốn bước thể hiện thứ tự cần thực hiện, không phải các bước đã hoàn thành.
+**Visual Explanation:** Bốn bước là luồng bàn giao và nộp; không ngụ ý đã có receipt hoặc quyền lecturer.
 
-**Transition:** Chuyển sang demo public có nhãn hoặc phần hỏi đáp. Nếu được yêu cầu demo backend, nêu rõ giới hạn và dùng evidence synthetic có nguồn.
+**Transition:** Chuyển sang demo local đã kiểm, hoặc mở video có provenance trong product review.
 
-**Evidence:** Quyết định người dùng, DEMO_WORKFLOW.md và FINAL_DELIVERY.md.
+**Evidence:** reports/LOCAL_PRODUCT_REVIEW.html, docs/DEMO_WORKFLOW.md, project-management/FINAL_DELIVERY.md. Owner kiểmDB trướcGmaillecturer. Chưa tự submit/merge/deploy/chia sẻ quyền.

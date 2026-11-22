@@ -1,90 +1,109 @@
 # FitSync — Final Report EXE201
 
-**Nhóm:** SafeTrail. **Bản nháp đối soát:**17/11/2026. **Sản phẩm:** workspace coaching dành cho PT và học viên. **Trạng thái:** có baseline kỹ thuật và tài liệu, chưa đủ bằng chứng đáp ứng toàn bộ điều kiện kết quả kinh doanh. Nhóm quyết định dừng kinh doanh sau học phần.
+**Cập nhật22/11/2026:** bản chuẩn bị nộp bổ sung. Cloud đã đọc lại22/11:27Auth,17synthetic,10candidate(5PT+5học viên),0InBody/check-in trong cohort; chưa xác minh toàn bộ là khách độc lập. CI0ba9821 qua114domain/363SQL fresh+upgrade/28core+4demo không retry. Windows đã cài Docker/WSL2 theo chấp thuận, không reboot; local production build/start và4/4demo PASS. Website cloud chưa rollout. [Evidence hiện hành](../docs/TEST_EVIDENCE.md), [readiness](FINAL_REPORT_READINESS.md), [bộ nộp](SUBMISSION_READY_2026-11-22.md). Phần0/20paying/cost/CAP/reviews/attendance vẫn thiếu thực tế; không thay bằng synthetic.
 
-Cấu trúc giữ đúng 5 phần của FINAL REPORT EXE201 GUIDELINES. Nội dung unknown được giữ rõ để giảng viên đánh giá. Chưa gửi báo cáo hoặc tự xác nhận điểm/Outcome.
+Nhóm SafeTrail · Bản cập nhật đối soát22/11/2026 để nộp bổ sung. Mốc trước19/11 theo owner đã qua. Nhóm dừng kinh doanh sau học phần. Cấu trúc đúng 5 phần Guidelines; bản này không xác nhận đã nộp hoặc đạt học phần. Web đầy đủ được giảng viên chấp nhận theo xác nhận owner, nên APK không là điều kiện bàn giao hiện tại.
 
 ## Part 1 / Outcome 1: Minimum Viable Product (MVP)
 
-### Product và phạm vi
+FitSync là workspace coaching cho PT độc lập và học viên tại Việt Nam. PT tiếp nhận hồ sơ, mời học viên, nhập/xác nhận số đo, xem tiến trình, theo dõi check-in, chat và quản lý lịch. Học viên chỉ thấy hồ sơ của mình, gửi cập nhật và đề nghị đổi/hủy lịch. Giải pháp tập trung ngữ cảnh coaching; chưa có phép đo chứng minh tiết kiệm giờ hoặc cải thiện sức khỏe.
 
-FitSync tập trung hồ sơ học viên, số đo đã được PT xác nhận và quá trình coaching. PT tạo hồ sơ/lời mời, nhập tay và review số đo; học viên nhận invite, xem dữ liệu của mình và check-in. Web dùng Next.js/Supabase với session, role và RLS; source có miền chat/lịch/context mới nhưng không được trình bày như đã rollout khi cloud chưa có evidence tương ứng.
+Ứng viên bàn giao ở branch `agent/fitsync-final-product`, [draft PR48](https://github.com/Team-SafeTrail/fitsync-app/pull/48). Next.js15.5.29/React19.3.1 và Supabase Auth/PostgreSQL/private Storage.20 bảng public,14 migrations, session/role/quan hệ và RLS kiểm quyền. Không rewrite kiến trúc. Main và website của Huy chưa được cập nhật bằng PR này.
 
-| Deliverable guideline | Evidence | Trạng thái |
-|---|---|---|
-| Video demonstration + screenshots |[Walkthrough25/10](https://drive.google.com/file/d/1gjgn76IERkSat_4sFSLkezkrif2_m4Vu/view); [ảnh synthetic](../docs/handoff/screenshots/README.md) |Cófile/ảnh có provenance; chưa xem lại toàn video và receipt |
-| Link sản phẩm để tải/sử dụng về sau |[Website](https://fitsync-app-one.vercel.app/), source GitHub |HTTP 200; chưa cóAPK/bản release tải được nghiệm thu. Web link chưa tự đáp ứng mọi cách hiểu “download” |
-| Admin account to database |Cloud FitSync đã đọc số đếm; owner có cấu hình server |Chưa xác minh credential/viewer/admin access cho giảng viên. Không nhúng password/service-role vàoGit/form |
-| Database thực tế theo ghi chú riêng FitSync |Project cloud ref`uqjqkvalzdrcvxayhtre`, 8 bảng core có data; 4 coaching relation REST 404 |ERD/schema không thay truy cập. Owner cần bàn giao truy cập theo quyền được duyệt |
-| Runs well, market-ready |103 domain+4 guard+16 public browser, lint/typecheck/build17/11; backend historical CI |PARTIAL: chưa rerun 2 vai trò local/không Docker; auth/ops/provider/rollout còn gate |
+| Luồng | Hành vi ứng viên |
+|---|---|
+| Identity/roster | Đăng ký/đăng nhập/reset PKCE; invite một lần, cấp lại/thu hồi, sửa/lưu trữ/khôi phục hồ sơ |
+| Tiến trình | Nhập tay 5 chỉ số, validation, PT xác nhận, biểu đồ và lịch sử; OCR chỉ draft khi có adapter |
+| Coaching | Check-in/ảnh riêng, chat hai chiều, notes private/shared và membership theo ngày |
+| Lịch/buổi | Đổi/hủy có đề nghị/chấp nhận, chặn overlap/version cũ; completion/đảo buổi có ledger append-only |
+| Offer | Free tối đa 3 hồ sơ chưa lưu trữ; Pro còn hạn không giới hạn học viên, cùng coaching |
+| Quản trị | Dashboard DB thật, sổ thu–chi/chứng từ private, đảo giao dịch, CSV, yêu cầu nâng cấp và event tổng hợp |
 
-Không dùng tour fixture để chứng minh persistence, không dùng fake OCR như OCR provider thật, không dùng ảnh mockup thay giao diện sản phẩm. [Demo runbook](../docs/DEMO_WORKFLOW.md), [test evidence](../docs/TEST_EVIDENCE.md) mô tả cách kiểm lại và giới hạn.
+Tạo lịch/check-in không tự trừ buổi. Membership phòng tập và buổi PT khác thuê bao FitSync. Giao dịch TEST không cấp Pro hoặc tính doanh thu. Admin không dùng fixture thay dữ liệu thật. Dữ liệu demo có nhãn, không dùng sức khỏe khách thật.
+
+| Deliverable | Evidence và giới hạn |
+|---|---|
+| Video/screenshots | [Product review ảnh/video](LOCAL_PRODUCT_REVIEW.html) chứa media gốc0ba9821, walkthrough36,36giây trên dữ liệu synthetic; [manifest](../docs/evidence/exe201-2026-11-18/media-manifest.json) ghi hash vàrun. Video25/10 là lịch sử |
+| Sử dụng sản phẩm | [Runbook local](../docs/DEMO_WORKFLOW.md), source PR48; [website của Huy](https://fitsync-app-one.vercel.app/) là deployment cũ chưa xác định SHA |
+| Database thực tế/admin access | [Owner review](DATABASE_REVIEW.html), Supabase cloud 8 bảng core/RLS; ứng viên 20 bảng trên stack isolated. Owner kiểm trước khi cung cấp Gmail giảng viên; chưa mở quyền |
+| Runs well / market-ready | 114domain tests,lint/types/build;363SQL/RLS mỗiDB fresh/upgrade;28core+4demo CI khôngretry. Windowslocal production build/start và4/4demo PASS22/11; không tự chứng nhận market-ready |
+
+Docker/WSL2 đã cài theo chấp thuận, không reboot. Web http://127.0.0.1:3000 vàStudio http://127.0.0.1:54323 đã chạy22/11. Local20bảng đều bậtRLS;4/4demo PASS, chưa chia sẻ giảng viên. CI dùng DB loopback tạm và dữ liệu synthetic để kiểm hành vi thật. Chưa migration/deploy production. OCR provider/full PDF và nutrition publication mở rộng, retention/delete/support/abuse còn giới hạn trước pilot dữ liệu thật.
 
 ## Part 2: A customer acquisition plan (CAP)
 
-[CAP_AND_ANALYTICS](../docs/CAP_AND_ANALYTICS.md) chứa phân khúc, 5 kênh có thể thử, kế hoạch theo ngày tương đối, lịch 7 bài và weekly metric contract. Hai nguồn đề xuất là Facebook/communityPT và referral/directPT; Zalo hỗ trợ onboarding, chỉ tính là acquisition riêng nếu chứng minh tạo lead mới. Chưa có bộ kết quả 2 kênh cùng kỳ.
+Khách mục tiêu là PT độc lập có học viên đang coach; PT là buyer, học viên dùng cùng PT. Persona là giả thuyết workflow, không giả tên/thu nhập hoặc số phỏng vấn. Định vị đề xuất: hồ sơ coaching tiếng Việt với bước PT xác nhận và hai vai trò. Chưa đủ dữ liệu tính TAM/SAM/SOM đáng tin cậy.
 
-| Kỳ/kênh | Awareness/reach | Clicks/downloads | Registrations | Trial/activation | Paid | Evidence |
-|---|---|---|---|---|---|---|
-| W8 – Facebook/community |Unknown|Unknown|Unknown nguồn|Unknown|Unknown|Thiếu export/bài đăng|
-| W8 – referral/directPT |Unknown|Unknown|Unknown nguồn|Unknown|Unknown|Thiếu log ẩn danh|
-| W9 – Facebook/community |Unknown|Unknown|Unknown nguồn|Unknown|Unknown|Thiếu export|
-| W9 – referral/directPT |Unknown|Unknown|Unknown nguồn|Unknown|Unknown|Thiếu log|
-| Snapshot toànDB 17/11 |Không có attribution|Không có download ledger|10 candidate ngoài seed|0 cặp đạt activation đề xuất|Unknown|Cloud chỉ đọc|
+Hai nguồn acquisition đề xuất: Facebook cộng đồng PT và referral/direct PT. Zalo hỗ trợ nhận invite/onboarding, YouTube làm walkthrough. Chưa kết luận đây là hai kênh hiệu quả nhất. [CAP_AND_ANALYTICS](../docs/CAP_AND_ANALYTICS.md) có 5 kênh, lịch nội dung và metric contract.
 
-Overall funnel: awareness unknown, visits unknown, 10 candidate registrations, 10confirmed/ever signed-in, 0 cặp đủ activation, paid unknown. Không lấy reach1500/click210 trong tài liệu cũ khi chưa đối soát nguồn gốc. Không cộng những kênh trùng người thành unique audience.
+| Kỳ/kênh | Awareness/click | Registrations | Activated pairs | Paid | Evidence |
+|---|---|---|---|---|---|
+| W8 Facebook/community |Chưa có export|Chưa attribution|Chưa đối soát theo kênh|0 toàn dự án theo owner|Thiếu URL/export gốc|
+| W8 referral/direct |Chưa có log|Chưa attribution|Chưa đối soát theo kênh|Không phân bổ|Thiếu log ẩn danh|
+| W9 Facebook/community |Chưa có export|Chưa attribution|Chưa đối soát theo kênh|0 toàn dự án theo owner|Thiếu export|
+| W9 referral/direct |Chưa có log|Chưa attribution|Chưa đối soát theo kênh|Không phân bổ|Thiếu log|
+
+Funnel hiện có: awareness/click unknown →10 candidate accounts →10 confirmed/ever signed-in →0 cặp đạt activation đề xuất →0 paying PT theo owner. Không gán nguồn cho 10 tài khoản nếu không có attribution. Mốc 60 trong form được lập kế hoạch 20 PT+40 học viên, còn 50 nếu baseline hợp lệ. Kế hoạch 14 ngày không còn khả thi trước 19/11; không tạo tài khoản giả để báo đạt. Mọi target/conversion trong kế hoạch là giả định cần kiểm chứng.
 
 ## Part 3: Results
 
-### User analytics
+### Users' analytics
 
-[Snapshot17/11](../docs/evidence/exe201-2026-11-17/cloud-metrics.json) có 27 Auth, 17 synthetic, 10 candidate=5 PT+5 học viên.9 candidate tạo 27/10 và 1 tạo 29/10; dữliệu phản ánh tài khoản còn tồn tại, không là đăng ký lịch sử đầyđủ sauxóa. Cả 10 confirmed/từng sign in; 0 last sign in 7 ngày, 0candidateInBody/check-in. Bốn Pro không là 4 paid. Không có retention event log đểtínhWAUcoaching/churn.
+[Cloud aggregate22/11](../docs/evidence/exe201-2026-11-22/cloud-metrics.json): 27 Auth,17 synthetic,10 candidate=5 PT+5 học viên. Cả 10 confirmed và từng đăng nhập;9 tạo 27/10,1 tạo 29/10. Chưa xác minh toàn bộ candidate độc lập với team/test. Cohort có 0 InBody/check-in và 0 last-sign-in 7 ngày; chưa có cặp đạt activation đề xuất. Tổng 15 InBody/8 check-in toàn DB thuộc synthetic. Không suy last-sign-in thành WAU coaching, số 0 thành churn hoặc lịch sử đầy đủ sau xóa.
 
-### Revenue/cost và financial analysis
+| Kỳ đăng ký của candidate còn tồn tại | Số tài khoản | Giới hạn |
+|---|---:|---|
+|27/10/2026|9|Không là attribution hoặc lịch sử tài khoản đã xóa|
+|29/10/2026|1|Cần xác minh độc lập|
+|Snapshot22/11|10|5 PT+5 học viên; không là 20 paying customers|
 
-[Báo cáo tài chính mới](https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk) có bảng tuần/lũykế, phân loại fixed/variable/cash/công, ledger template và kịch bản. Doanhthu/paid/chi phí actual chưa đối soát bằng chứng từ. Cash 0 đ là leaderreported06/11, không là billing audit 17/11. Mô hình giá PT 199 k là tham chiếu, không cam kết unlimited. BEP 17 cash/47 tính công là dựtoán, không kết quả thật.
+Bản ứng viên có product_events tối thiểu và tổng hợp theo tuần/kênh tự khai báo, loại synthetic; chưa rollout cloud và không thể phục dựng event quá khứ. Bộ demo 20 PT/8 học viên mới phục vụ trình bày phần mềm, tách KPI thật.
 
-### Customers' reviews
+### Revenue, costs và financial analysis
 
-Trello cócard phỏngvấnW05 được HuyAPPROVED21/10, tài liệu ghi 10 người thử 4 PT+6 học viên. Chưa kiểm raw/consent/matching với 5 PT+5 học viên trên DB, chưa dùng SUS 83,25/taskcompletion96,5% hoặcquote cá nhân như đã xác minh. Cần đính kèm review được phép trích, cóngày, phiên bản và tác vụ. Không tạo testimonial.
+Giá owner chốt 199.000đ/PT/tháng, Free 3/Pro còn hạn unlimited cùng coaching. **Chưa có giao dịch thật: 0 paying PT,0 đ thu khách hàng theo owner.** Chưa có sao kê độc lập; không tạo biên lai giả.4 nhãn Pro trong cloud không thay chứng từ. Chi phí chưa đối soát, không mặc định 0; tiền học viên trả PT không tự là doanh thu FitSync.
 
-### Paying-customer condition
+| Kỳ | Tiền thu khách | Cash chi/công | Kết luận |
+|---|---|---|---|
+|W1–W7 từng tuần|0 theo owner đến snapshot, chưa audit phân kỳ|Chưa có ledger/timesheet đầy đủ|Chưa tính profit|
+|W8 nội bộ26/10–01/11|0 theo xác nhận chưa có giao dịch|Chưa đối soát|Ngày nội bộ không thay LMS|
+|W9 nội bộ02/11–08/11|0 theo xác nhận chưa có giao dịch|Chưa đối soát|Không suy cost 0|
+|Đến xác nhận17/11|0|Chưa đối soát|0/20 paying PT|
 
-Với mô hình PT cá nhân trả thuê bao hiện đề xuất, áp điều kiện ít nhất 20 paying customers. Chưa có đủproofđápứng. Hai phương án 2 tổchức/tổng 20 employees và 100 active users freemium có doanh thu nguồn khác chỉ áp dụng khi môhình thực sự tương ứng, không tựchọnđểlấp khoảng thiếu. Không lấy tài khoản học viên hoặc synthetic thay người trả phí. Mô hình không phải two-sidedpaidtransactionplatform đã nghiệm thu.
+[Financial report trên Drive](https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk) và [bản local](FINANCIAL_REPORT.md) tách actual với scenario. Kịch bản cash fixed 3 triệu, variable 16.990đ/PT, contribution 182.010 đ →BEP 17 PT. Tính thêm công fixed 7,8 triệu, variable 31.990đ/PT, contribution 167.010 đ →BEP 47 PT.20 PT giả định có thu 3.980.000 đ, cash result 640.200 đ, economic result−4.459.800 đ. Đây là dự toán, không phải FitSync đã hòa vốn. Chưa đủ dữ liệu CAC/LTV/churn.
+
+### Customers' reviews và điều kiện trả phí
+
+Trello W05 có approval tài liệu phỏng vấn 10 người (4 PT+6 học viên). Chưa đủ raw/consent/matching với cohort 5 PT+5 học viên; không trích testimonial/SUS/task completion chưa kiểm gốc. Không tạo review mới giả như người đã trải nghiệm.
+
+Mô hình PT cá nhân áp điều kiện **ít nhất 20 paying customers** trong Guidelines. Thực tế hiện **0/20**, chưa đáp ứng. Không chuyển sang ngưỡng tổ chức hoặc freemium quảng cáo để né điều kiện khi mô hình không tương ứng. TEST ledger và PDF có nhãn mô phỏng chỉ chứng minh kỹ thuật; không là paid proof. Phần này cần trình bày thẳng với giảng viên, không tự xác nhận đạt Outcome 3.
 
 ## Part 4: Conclusion
 
-### Lessons learn ed
+Nhóm đã phát triển một workspace web có lưu DB và các kiểm soát quyền, tách membership/ngày, lịch và số buổi; thiết kế workflow có validation, idempotency và audit. Bài học là card DONE, UI đẹp, nhãn Pro và tài khoản seed không thay nghiệm thu hoặc bằng chứng khách hàng. Nâng cấp framework phải kiểm lại form reset, navigation và nhiều lần lưu liên tiếp.
 
-Nhóm học được cách tách kế hoạch khỏi kết quả, kiểm quyền theo quan hệ PT–học viên, giữ bước PT review số đo và dùng test tổng hợp để chứng minh hành vi. Bản đẹp/tour không thay kiểm persistence; trạng thái card/plan không thay evidence. Cần cùng định nghĩa cohort và cùng kỳ đo khi so sánh KPI.
+Giới hạn: chưa đạt paid condition; thiếu analytics kênh/review gốc/cost actual, chưa rollout ứng viên lên site của Huy; local đã chạy với Docker, phải giữ Engine/dịch vụ mở khi demo. OCR/full-report và hợp đồng vận hành trước pilot thật chưa đủ. Không có cơ sở kết luận sản phẩm đã tạo hiệu quả kinh doanh hoặc đủ market readiness với dữ liệu sức khỏe thật.
 
-### Limitations
-
-Chưa xác minh khách độc lập, kênh acquisition/paid/cost và review gốc đầy đủ. Full authenticated test chỉ có CI lịch sử trong lượt đối soát; cloud còn drift, auth/ops/provider/billing/mobile chưa đủ release gate. Số liệu mẫu không đại diện thị trường và chưa chứng minh giá trị giảm thời gian.
-
-### Suggestions for improving
-
-Trong thời gian học phần còn lại, ưu tiên nghiệm thu core nhập tay trong môi trường cô lập, đối soát evidence thật, làm rõ database access và nộp đúng LMS. Nhóm quyết định dừng sau môn; đề xuất phát triển chỉ là bài học cho bên nhận bàn giao nếu có, không cam kết roadmap kinh doanh mới. Owner cần rà chi phí/cam kết hoàn tiền/hỗ trợ, xuất tài liệu và xử lý vòng đời dữ liệu. Không tự tắt cloud hoặc xóa dữ liệu trong lượt này.
+Bộ ứng viên, video/screenshots/database review,form/final/slides đã chuẩn bị và kiểm. Trước gửi: owner duyệt database, nhóm xác nhận contribution/attendance và nội dung thiếu, sau đó nộp qua nguồn chính thức và lưu receipt. Nhóm dừng sau môn; owner cần rà nghĩa vụ, công nợ, quyền truy cập và vòng đời dữ liệu. Chưa tự đóng/xóa dịch vụ hoặc hứa tiếp tục kinh doanh. Các gợi ý cải tiến về sau là bài học bàn giao, không cam kết roadmap.
 
 ## Part 5: Members' Contribution
 
-Không tự gán phần trăm hoặc giờ làm. Bảng dưới là vai trò/artefact có nguồn, chưa là đánh giá đóng góp cuối. Cần từng người và nhóm xác nhận trước nộp.
+| Thành viên | Vai trò và artefact có thể đối chiếu | Cần nhóm xác nhận |
+|---|---|---|
+|Huỳnh Quốc Việt (`Am2uocVi3t`)|Điều phối, quyết định sản phẩm, tài liệu/review; Git/Trello|Đóng góp thực/giờ, review và receipt nộp|
+|Lê Nguyễn Gia Hưng (`hei1sme`)|OCR/research/UI; issues/PR lịch sử|Benchmark và phần đã nghiệm thu|
+|Dương Quang Huy (`huydqse180459-art`)|Backend/database/ops, quản lý site hiện có|Review migrations, vận hành và cost thực|
+|Diệp Khai (`DiepKhai`)|Web/auth/Android theo issue; PR47 auth tích hợp trên branch ứng viên|Review web/auth, không cần APK cho nộp hiện tại|
+|Lê Văn Toàn (GitHub chưa chốt)|Design/marketing theo Trello|URL nội dung/analytics, media và công thực|
 
-| Thành viên | Vai trò/nguồn hiện có | Artefact có thể đối chiếu | Phần cần xác nhận |
-|---|---|---|---|
-| Huỳnh Quốc Việt |Product coordination, docs/review, Am 2 uocVi 3 t |Issue27/24, Trello report/docs, source history |Giờ/đóng góp thực, review, receipt nộp |
-| Lê Nguyễn Gia Hưng |OCR/research/UI, hei 1 sme |Issue2/16/18/20/22, draft PR 15 và chuỗi UI |Phần thực hiện/đã merge, benchmark chưa đạt gate |
-| Dương Quang Huy |Backend/DB/ops, huydqse180459-art |Issue 3 closed, issues 32–46 có dependency, TrelloapprovalW05 |Vận hành/payment actual và review |
-| Diệp Khai |Web/Android, DiepKhai |Issue4closed/PR11merged, PR 47 open |Auth delivery/Android thực tế vàgiờ |
-| Lê Văn Toàn |Design/marketing, GitHub account chưa chốt |Trelloassets/ERD/channelplans |URL nội dung/analytics, slide/media, giờ |
+Không tự gán phần trăm/giờ hoặc phân bổ công agent cho thành viên. Git author cấu hình máy không chứng minh mỗi người đã tự làm mọi thay đổi.
 
-Tài liệu/automation mới trong phiên 17/11 do agent chuẩn bị theo yêu cầu, không tự phân bổ cho thành viên. Git commit auth or là cấu hình máy, không chứng minh mọi nội dung do bạn đó tự viết.
+| Cuộc hẹn theo nguồn | Loại/người | Mức bằng chứng |
+|---|---|---|
+|08/10/2026 16:00 ICT|Lecturer Khiem Tran,30 phút|Email Calendly booking; chưa chứng minh attendance|
+|29/10/2026, giờ chưa xác minh|Mentor Nguyễn Thị Phương Loan theo report nhóm|Report/ảnh lịch sử, thiếu booking/attendance đủ|
+|03/11/2026 09:00 ICT|Lecturer Khiem Tran,30 phút|Email booking; chưa chứng minh attendance|
+|06/11/2026, giờ/loại chưa xác minh|Ảnh trong Mentor Evidence|Metadata không tự xác nhận meeting|
+|13/11/2026 09:00 ICT|Lecturer Khiem Tran,30 phút|Email booking; chưa chứng minh attendance|
 
-### Previous booked meetings, theo thời gian
-
-| Thời điểm theo nguồn | Lecturer/mentor | Evidence | Trạng thái |
-|---|---|---|---|
-|29/10/2026 buổi tối, giờ cụthể chưa có |Nguyễn Thị Phương Loan theo mentor report |Report local + JPGtên 29/10 trong Drive |Reported, chưa receiptbooking/tham dự đầyđủ |
-|06/11/2026, giờ cụthể chưa có |Chưa xác minh từ metadata ảnh |JPGtên 06/11 trong Mentor Evidence |Chưa xác minh loại meeting/người/booking |
-
-Cần bổsung meetingID/linkbooking, giờICT, lecturer/mentor, attendees, feedback/action và receipt. Tên file/ngày created trên Drive không đủ chứng minh cuộc hẹn. Khôngtựtạolịchgặppast.
+[MENTORING_EVIDENCE](MENTORING_EVIDENCE.md) ghi nguồn tối thiểu, không lộ email private/credential. Booking giảng viên không thay 2 buổi mentor chính thức/F-Spark/FAP. Chưa có đủ receipt attendance; không tạo lịch hẹn quá khứ giả.

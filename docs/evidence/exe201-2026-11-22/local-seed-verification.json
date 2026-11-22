@@ -1,0 +1,15 @@
+{
+  "syntheticOnly": true,
+  "ptAccounts": 20,
+  "learnerAccounts": 8,
+  "adminAccounts": 1,
+  "illustrativeIncomeVnd": 3980000,
+  "illustrativeCostVnd": 3339800,
+  "illustrativeCashResultVnd": 640200,
+  "actualRevenueCreatedVnd": 0,
+  "actualPayingCustomersCreated": 0,
+  "verified": true,
+  "checkedAt": "2026-11-22T13:04:00.900Z",
+  "actualFinanceKpiUnchanged": true,
+  "simulatedLedgerEntries": 22
+}

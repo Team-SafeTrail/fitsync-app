@@ -1,26 +1,24 @@
-# Week 9 — nội dung điền form EXE201
+# Week 9 — nội dung điền Google Form
 
-Nguồn: Week9_EXE201.pdf, 2 trang, đúng 5 Step và Email. Bản đối soát hồi cứu ngày 17/11/2026, chưa gửi form. Copy phần Trả lời vào từng ô. Không backdate số liệu mới về tuần học.
-
-**Email:** dùng tài khoản đại diện nhóm khi nộp. Email hiển thị trong PDF chưa tự xác nhận tài khoản phải dùng.
+Bản cập nhật 22/11/2026 để chuẩn bị nộp bổ sung. Giữ đúng câu hỏi PDF; chỉ copy phần Trả lời. Email: dùng tài khoản đại diện nhóm, không dùng mật khẩu hoặc service key. Số liệu cloud đã đọc lại ngày22/11; không backdate về tuần học. Chưa gửi form hoặc có receipt.
 
 ## Step 1: How is your results to date? compare to KPIs
 
 **Trả lời:**
 
-Snapshot cloud ngày 17/11 ghi nhận 10 tài khoản ngoài seed gồm 5 PT và 5 học viên trên tổng 27 Auth, sau khi loại 17 synthetic. Theo cách tính cả hai vai trò, đây là 16,7% mốc 60, nhưng chưa xác nhận đầy đủ khách độc lập. Cả 10 đã xác nhận email và từng đăng nhập; cohort chưa có InBody/check-in, chưa có cặp đạt activation đề xuất và last-sign-in 7 ngày là 0. Paid users và doanh thu chưa có chứng từ đối soát nên nhóm chưa khẳng định đạt Outcome 3. Main 3c816e9 có baseline web; lần kiểm local ngày 17/11 qua 103 domain tests, 4 bài kiểm guard cô lập, lint/typecheck/build và 16 public browser tests. Bốn bảng coaching trong source chưa truy cập được qua REST cloud, mã 404/PGRST205; PR47 auth vẫn mở. Source và test không đồng nghĩa mọi tính năng đã rollout.
+Theo snapshot cloud đọc lại ngày 22/11, hệ thống có 27 tài khoản Auth; loại 17 tài khoản synthetic còn 10 tài khoản cần xác minh, gồm 5 PT và 5 học viên. Nếu tính cả hai vai trò, tiến độ tài khoản là 10/60 = 16,7%; chưa đủ bằng chứng gọi cả 10 là khách độc lập. Cohort này chưa có số đo/check-in. Tại lần xác nhận gần nhất, chủ dự án cho biết chưa có giao dịch thật: 0 khách trả phí; nhãn Pro không thay chứng từ. Về sản phẩm, revision 0ba9821 đã qua 114 domain tests, 363 kiểm tra SQL/RLS trên cả database mới và nâng cấp, 28 luồng browser và 4 bài demo trên CI. Các kiểm tra browser qua ngay lần đầu. Đây là kết quả kiểm lại sau tuần học; không backdate thành kết quả trong Week 8 hoặc Week 9. Bản cloud hiện hành chưa được cập nhật bằng branch này. Local ngày22/11 đã build/start và qua4/4 bài demo với Auth/DB/Storage cô lập.
 
 ## Step 2: Plans for improvements
 
 **Trả lời:**
 
-Nhóm ưu tiên hoàn thành học phần: kiểm lại luồng PT tạo hồ sơ, mời học viên, nhập tay và xác nhận, học viên check-in, PT xem cập nhật trên stack synthetic cô lập. Giữ manual fallback thay vì chờ OCR provider. Rà auth và source–cloud drift theo quy trình nhóm, không tự áp migration production trong lượt báo cáo. Hoàn thiện cohort, event dictionary, CAP có ít nhất hai nguồn acquisition và evidence theo tuần; đối soát thu–chi/paid cùng phản hồi được phép trích. Sau đó kiểm form, slide, database access, video và lưu receipt khi nộp. Nhóm dừng kinh doanh sau môn; Android, full OCR và billing được ghi là phần còn thiếu, không cam kết phát triển sau học phần.
+Nhóm ưu tiên ổn định demo web hai vai trò, kiểm quyền truy cập, quota Free/Pro, lưu số đo, chat, đổi/hủy lịch, ledger buổi và sổ tài chính. Các luồng đã được kiểm trên CI cô lập; ngày22/11 bản production build/start local qua4/4 bài demo trên Windows với Supabase riêng và dữ liệu synthetic. Giữ nhập tay và PT xác nhận khi OCR provider/full PDF chưa đủ bằng chứng. Hoàn thiện video, database review, form và final cùng một nguồn số liệu. Chưa có thông tin ngân hàng nhận tiền nên chưa bật thu tiền thật. Nhóm dừng kinh doanh sau môn và không cam kết roadmap mở rộng.
 
 ## Step 3: Customer analytics
 
 **Trả lời:**
 
-Lần đọc ngày 17/11 dùng Auth Admin và REST select chỉ đọc, không lấy giá trị sức khỏe. Có 27 Auth: 17 synthetic và 10 tài khoản ngoài seed, gồm 5 PT + 5 học viên. Cả 10 đã xác nhận email và từng đăng nhập; 9 được tạo ngày 27/10, một được tạo ngày 29/10. Đây là các tài khoản còn tồn tại tại snapshot, không phải lịch sử đăng ký đầy đủ nếu đã có xóa. Trong 7 ngày trước snapshot, không có tài khoản trong cohort có last-sign-in và không có học viên trong cohort check-in. Toàn cohort có 0 InBody và 0 check-in, chưa có cặp đạt activation đề xuất. Không dùng last-sign-in như WAU coaching hoặc suy churn từ số 0. Tổng 15 InBody và 8 check-in toàn DB không được báo thành hoạt động khách vì không thuộc cohort ngoài seed. Có 4 Pro/1 Free trong 5 PT, nhưng Pro chưa chứng minh trả tiền. Chưa có đủ attribution, event retention và ledger để tính CAC/LTV, paid conversion hoặc funnel đầy đủ. Cần xác minh team/test và khách độc lập trước khi gọi số này là traction thực.
+Snapshot 22/11 ghi nhận 10 tài khoản ngoài seed: 5 PT và 5 học viên; cả 10 xác nhận email và từng đăng nhập. Có 9 tài khoản tạo ngày 27/10 và 1 tài khoản ngày 29/10. Cohort này có 0 bản ghi InBody và 0 check-in; chưa có cặp đạt activation đề xuất. Tổng 15 InBody và 8 check-in toàn DB thuộc dữ liệu synthetic. Bốn nhãn Pro không chứng minh khách đã trả phí. Chưa có attribution/retention và analytics kênh lịch sử đủ để tính CAC, LTV hoặc churn. Bản mới có product_events và tổng hợp theo tuần, loại dữ liệu thử; không suy lại lịch sử trước khi đo. Bộ demo 20 PT, 8 học viên và 1 admin chỉ dùng kiểm phần mềm, không cộng vào khách thật.
 
 ## Step 4: Upload your financial report (link)
 
@@ -28,12 +26,11 @@ Lần đọc ngày 17/11 dùng Auth Admin và REST select chỉ đọc, không l
 
 https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk
 
-Báo cáo mới ngày 17/11 đã upload theo chấp thuận cụ thể của người dùng và đọc lại thành công. Chưa thử quyền xem bằng tài khoản giảng viên. Báo cáo giữ rõ actual chưa đối soát và các giả định.
-
 ## Step 5: What are your financial analysis of your business?
 
 **Trả lời:**
 
-Mô hình phù hợp core là PT trả thuê bao FitSync, học viên sử dụng cùng PT. Giá 199.000đ/PT/tháng là tham chiếu, cần chốt phạm vi, hạn mức và offer. Tiền gói PT hoặc membership học viên trả cho PT không tự là doanh thu FitSync. Hiện thiếu biên lai/ledger để xác nhận paid users, doanh thu và lợi nhuận; 4 Pro trên DB không thay chứng từ. Leader từng báo cash 0đ ngày 06/11 do hạ tầng Free và chưa tích hợp AI, nhưng chưa audit billing ngày 17/11; công nhóm vẫn có chi phí kinh tế. Trong kịch bản học thuật, fixed cash 3 triệu/tháng, variable 16.990đ/PT và giá 199.000đ tạo contribution 182.010đ/PT, BEP 17 PT. Khi tính công, fixed 7,8 triệu và variable 31.990đ/PT tạo contribution 167.010đ/PT, BEP 47 PT. Contribution margin tương ứng 91,46% và 83,92%, không phải net margin. Ví dụ 20 PT trả đủ giá tạo 3,98 triệu/tháng, cash result 640.200đ nhưng result tính công âm 4.459.800đ. Đây là dự toán, chưa có 20 khách thực được chứng minh. Nhóm chưa tính CAC/LTV/churn khi thiếu dữ liệu và sẽ kết thúc kinh doanh sau môn, ưu tiên đối soát nghĩa vụ và bàn giao.
+PT là người trả thuê bao 199.000đ/tháng; học viên dùng cùng PT. Tại lần xác nhận gần nhất: 0 khách trả phí và 0đ tiền thu khách theo chủ dự án, chưa có sao kê độc lập; chi phí chưa đối soát nên chưa tính lợi nhuận thực. Cash scenario: fixed 3 triệu/tháng và variable 16.990đ/PT, hòa vốn 17 PT. Scenario tính thêm công: fixed 7,8 triệu, variable 31.990đ/PT, hòa vốn 47 PT. Với 20 PT giả định: thu 3.980.000đ, cash result 640.200đ; tính công âm 4.459.800đ. Đây là phân tích giả định. Bộ demo có 22 bút toán TEST/PDF ghi rõ mô phỏng; chúng không chứng minh chuyển khoản hoặc điều kiện 20 paying customers. Chưa có đủ dữ liệu tính CAC/LTV/churn.
 
-Nguồn: FINANCIAL_REPORT.md, DELIVERY_LINKS.md và docs/SOURCE_REGISTER.md.
+
+Bằng chứng: docs/evidence/exe201-2026-11-22/cloud-metrics.json; docs/evidence/exe201-2026-11-22/local-demo-verification.json; docs/evidence/exe201-2026-11-18/engineering-checks.json; reports/FINANCIAL_REPORT.md; project-management/FINAL_DELIVERY.md.

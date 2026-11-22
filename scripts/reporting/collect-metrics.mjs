@@ -55,7 +55,7 @@ try {
   const cutoff = Date.now() - 7 * 86400000;
   const recent = checkins.filter(c => traineeIds.has(c.trainee_id) && Date.parse(c.created_at) >= cutoff);
   const tableInventory = {};
-  for (const table of ['profiles', 'pt_profiles', 'trainee_profiles', 'trainee_invitations', 'inbody_records', 'checkins', 'meal_logs', 'ocr_attempts', 'coaching_messages', 'coaching_appointments', 'coaching_membership_versions', 'coaching_notes']) {
+  for (const table of ['profiles', 'pt_profiles', 'trainee_profiles', 'trainee_invitations', 'inbody_records', 'checkins', 'meal_logs', 'ocr_attempts', 'coaching_messages', 'coaching_appointments', 'coaching_membership_versions', 'coaching_notes', 'trainee_profile_events', 'finance_entries', 'billing_requests', 'product_events', 'appointment_change_requests', 'appointment_events', 'session_entitlements', 'session_ledger']) {
     // HEAD errors have no JSON body and can be ambiguous in SDKs. GET limit 0
     // verifies the relation without returning any row or health value.
     const { error, status, count } = await db.from(table).select('id', { count: 'exact' }).limit(0);

@@ -1,14 +1,14 @@
-# FitSync — slide outline
+# FitSync — outline22/11/2026
 
-Bản cố định 10 slide, 16:9. Dùng nội dung và screenshot nguyên bản; không dùng bản AI draft bị QA loại.
+10 slide16:9, dùng ảnh UI gốc từ run CI synthetic. Form/final/slide cùng dữ kiện0 paid và owner dừng sau môn.
 
-1. **FitSync.** Bản cập nhật hồi cứu theo tài liệu Week8_EXE201, Week9_EXE201 và Final Report Guidelines. Không xác nhận đã nộp hoặc đạt Outcome.
-2. **Hồ sơ coaching có ngữ cảnh.** Sơ đồ luồng minh họa từ PRODUCT_DECISIONS và source main 3c816e9. Không khẳng định tiết kiệm giờ hoặc tăng doanh thu.
-3. **Giao diện sản phẩm đã nghiệm thu.** Hai ảnh nguyên bản: docs/handoff/screenshots/handoff-pt-dossier.png và handoff-trainee-home.png. Backend acceptance run41092400099. /workspace cần tài khoản, /app/* là tour fixture. Không dựng lại hoặc thay chữ trong UI.
-4. **Week 8: kết quả so với KPI.** Nguồn: cloud-metrics.json 17/11. Số đếm tổng kỹ thuật không đồng nghĩa khách hàng. Không backdate snapshot về tuần học.
-5. **Week 8: kênh và quyết định.** Quyết định dừng do người dùng xác nhận17/11. Cơ cấu60 và kênh là kế hoạch mới phục vụ học phần, chưa là actual. Cần thống nhất giảng viên có tính cả hai vai trò.
-6. **Week 9: customer analytics.** Nguồn cloud-metrics.json. 15InBody/8check-in toànDB không thuộc cohort ngoài seed. Không suy churn hoặc paid từ các số này.
-7. **Week 9: tài chính.** FINANCIAL_REPORT.md. BEP=ceil(fixed/(price-variable)). Cash0đ chỉ là leaderreported06/11, chưa audit billing17/11. Không coi contribution margin là net margin.
-8. **Kiểm tra kỹ thuật ngày 17/11.** TEST_EVIDENCE.md, logs17/11. Public16/16exit0. Full backend historicalrun41092400099,202SQL/23browser30/10. Bốn bảng coaching RESTcloud404/PGRST205. Không dùng CI củaPR47 cho main.
-9. **Khoảng thiếu trước khi nộp final.** Final Guidelines5parts. VideoDrive25/10đãtìmmetadata, chưa xem lại toànvideo/receipt. ERD không thay DBaccess. Không chuyển sang điều kiện khác khi businessmodel không tương ứng.
-10. **Hoàn tất học phần và bàn giao.** Quyết định người dùng17/11. Chưa tự submit form, tắt cloud, đổi quyền hoặc xóa dữ liệu. Trạng thái cuối xem FINAL_DELIVERY.md.
+1. **FitSync.** Bản hồi cứu theo W8/W9/Final Guidelines và quyết định owner. Chưa xác nhận đã nộp hoặc đạt học phần.
+2. **Một hồ sơ cho quá trình coaching.** Kiến trúc source PR48. Sơ đồ quy trình minh họa, không phải funnel hoặc mức hiệu quả đã đo.
+3. **Giao diện thật của bản nghiệm thu.** Nguồn PNG nguyên bản: docs/evidence/exe201-2026-11-18/demo/handoff-pt-dossier.png và handoff-trainee-home.png. CI44155536123/artifact14360972525. Hai vai trò có dữ liệu persist; /app là tour riêng. Không dựng lại UI.
+4. **Week 8: kết quả so với KPI.** Cloud-metrics snapshot. Mốc60 chưa định nghĩa PT-only; không dùng tổng kỹ thuật làm khách thật. Candidate không phải paying.
+5. **Week 8: kênh và quyết định.** W8 Step2–5, owner chọnNo. CAP là kế hoạch, chưa chạy outreach/ads hoặc có export đủ2 kênh.
+6. **Week 9: analytics chưa thành traction.** W9 Step1/3. Candidate last-sign-in7 ngày0 không bằng WAU coaching hoặc churn. Synthetic demo không vào KPI.
+7. **Week 9: tài chính và offer đã chốt.** Hai gói cùng chức năng coaching. FINANCIAL_REPORT và link Drive18SJXm70350xOMlOvkuLelAmP6xPavRRd. BEP là dự toán, không actual. TEST ledger không cấpPro/không doanh thu; chưa bank receiver.
+8. **Kỹ thuật: có bằng chứng thực thi.** Quality và backend CI qua checkpoint; core28 bài qua ngay lần đầu ở0ba9821. Demo UI4 tests và seed idempotence qua. Lint/type/build và audit production0 đã kiểm ở checkpoint. Docker/WSL2 đã cài, không reboot. Dịch vụ local cần kiểm lại trong phiên22/11. Source không đồng nghĩa siteHuy đãrollout.
+9. **Khoảng thiếu của Final Guidelines.** Final5parts, individuals>=20paid. Web đầy đủ được giảng viên chấp nhận theo owner nênAPK không làblocker. Booking Calendly khácattendance và2mentorofficialsessions.
+10. **Hoàn tất bản bàn giao có thể kiểm.** reports/LOCAL_PRODUCT_REVIEW.html, docs/DEMO_WORKFLOW.md, project-management/FINAL_DELIVERY.md. Owner kiểmDB trướcGmaillecturer. Chưa tự submit/merge/deploy/chia sẻ quyền.

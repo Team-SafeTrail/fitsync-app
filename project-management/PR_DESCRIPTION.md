@@ -1,11 +1,9 @@
-# EXE201 Week 8/9 reports, verified presentation and evidence audit
+# Complete FitSync web workflows and verified EXE201 delivery
 
-FitSync's course reports and Trello state contain conflicting scope, pricing and completion claims. This change prepares the exact Week8/9 form fields, a five-part final report draft, source/gap audits and a reproducible demo runbook, separating verified behavior from plans and missing business evidence.
+FitSync lacked reliable roster lifecycle, plan enforcement, administration, finance and scheduling/session workflows. This branch integrates auth, implements those workflows with scoped server validation/RLS, and fixes repeated-save/navigation behavior in React19. It retains the existing Next.js/Supabase architecture and does not deploy production.
 
-The package includes a read-only aggregate collector, delivery verification, a new editable Canva presentation, its original screenshot assets embedded in a standalone HTML source, a ten-page PDF and a Vietnamese speaker script. The owner has confirmed that the business will stop after the course.
+Validation at app revision0ba9821: quality44155536467 success; backend44155536123 success;363SQL/RLS assertions each on fresh/upgrade DB, legacy fingerprints preserved, exact generated types,28core and4demo browser tests passed without retry. Local Windows production build/start and4demo tests also passed22November with isolated Supabase.114domain tests pass.
 
-Validation executed locally on17/11/2026:103domain tests,4local-environment guard tests,16public Chromium checks, lint, typecheck and production build pass. Collector execution uses GET/HEAD only; it exports aggregate counts, no credential or health values. Presentation text, previews, original image bytes and PDF page count were checked.
+The EXE201 package contains exact6+5form answers, a five-part final draft, financial scenarios separated from actuals, new10slide Canva/PDF/script and original media with hashes. The owner confirmed0actualpaying customers; the required20paying condition and actual channel/cost/review/attendance evidence remain unmet. No fabricated receipts or traction. No production migration, merge, role change or real health data.
 
-Limitations: full authenticated/RLS local acceptance could not be rerun without Docker; historical CI is labeled by run/date. Paid customers, revenue/cost receipts, acquisition analytics, customer independence, lecturer database access, contribution and booking receipts remain incomplete. No production rollout, shared-branch merge, teammate reassignment, deleted history or fabricated traction.
-
-This is a prepared PR description. Remote branch/PR creation is blocked by connector HTTP403 and unavailable local Git credentials. No issue number or PR URL is invented. Once a permitted Git session is available, push the existing branch and open a draft PR against main; independent review and CI remain required.
+Related #33,#34. Human review required before merge/release. Draft PR48 remains open. Current handover: project-management/FINAL_DELIVERY.md.

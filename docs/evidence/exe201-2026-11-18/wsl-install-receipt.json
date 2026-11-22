@@ -1,0 +1,21 @@
+{
+    "authorizedByOwner":  true,
+    "noAutomaticReboot":  true,
+    "startedAt":  "2026-11-17T19:02:11.2084301Z",
+    "features":  [
+                     {
+                         "restartNeeded":  false,
+                         "name":  "VirtualMachinePlatform",
+                         "state":  "AlreadyEnabled"
+                     },
+                     {
+                         "restartNeeded":  true,
+                         "name":  "Microsoft-Windows-Subsystem-Linux",
+                         "state":  ""
+                     }
+                 ],
+    "wslInstallExitCode":  0,
+    "rebootRequired":  true,
+    "complete":  true,
+    "finishedAt":  "2026-11-17T19:05:28.1009871Z"
+}

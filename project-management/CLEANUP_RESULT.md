@@ -8,3 +8,6 @@
 - Giữ dependency, credentials, tài liệu, media, dataset, worktrees và toàn bộ thay đổi có sẵn của nhóm.
 
 Dung lượng cache được dọn ban đầu: 163.975.333 byte (khoảng 156,38 MiB). Không báo đây là dung lượng tiết kiệm ròng vì build đã tái tạo output. Không có dữ liệu người dùng bị xóa hoặc ghi đè. Snapshot worktree trước/sau được đối chiếu trong GIT_AUDIT.md.
+# Cập nhật18/11 — bảo toàn bản sản phẩm
+
+Runtime demo, credentials, installer đã tải và công cụ QA đặt dưới `../outputs/`, ngoài Git. Không thực hiện thêm xóa/di chuyển đệ quy trong lượt hoàn thiện sản phẩm; giữ `.next` có thể tái tạo để phục vụ build/demo, giữ evidence/video và mọi worktree cũ. Không xóa dữ liệu nghiên cứu, credentials hoặc source chưa xác minh. Báo cáo dry-run và kết quả cleanup bên dưới là checkpoint17/11, không phải lần xóa mới.

@@ -30,15 +30,27 @@ Manifest SHA 256 và số trang nguồn nằm trong `../../outputs/exe201-source
 
 | Mâu thuẫn | Quyết định báo cáo |
 |---|---|
-| `Week 9.pdf` thuộc bộ câu hỏi cũ khác Week9_EXE201 | Dùng chính 5 câu trong Week9_EXE201; không lấy câu bộ cũ để điền form |
-| Trello có lịch 14 tuần, Week1_EXE201 yêu cầu timeline 10 tuần | Giữ lịch nội bộ là lịch nội bộ; chuẩn bị ánh xạ 10 tuần, chưa khẳng định lịch LMS |
+| `Week 9.pdf` thuộc bộ câu hỏi cũ khác Week 9_EXE201 | Dùng chính 5 câu trong Week 9_EXE201; không lấy câu bộ cũ để điền form |
+| Trello có lịch 14 tuần, Week 1_EXE201 yêu cầu timeline 10 tuần | Giữ lịch nội bộ là lịch nội bộ; chuẩn bị ánh xạ 10 tuần, chưa khẳng định lịch LMS |
 | W8 Trello ghi sprint26/10–01/11, description due01/11 nhưng due field02/11 13: 59 ICT | Ghi cả hai, deadline LMS chưa có bằng chứng; không chọn tùy ý |
 | Mentor report cũ ghi 3 paid 49 k, reach 1500, clicks 210, SUS 83,25%, UI chain đã merge | Không lặp lại như actual. Chưa tìm chứng từ/analytics/raw SUS; PR17/19/21/23 vẫn mở. Chỉ ghi là claim của báo cáo cũ cần đối soát |
 | Trello giá 49 k/99 k vs PRODUCT_DECISIONS199k | 199 k là tham chiếu hiện hành; 49k/99k là phương án cũ, không cộng thành nguồn thu hiện tại |
 | README nói AI OCR/Whisper/unlimited/Enterprise đã có | Default OCR adapter chưa nối provider; voice/Enterprise không thuộc core đã nghiệm thu |
-| 27 Auth, 4 Pro, 15 InBody, 8check-in | Loại 17 synthetic; 10 ngoài seed chưa có record/check-in; 4 Pro không phải 4 paying |
+| 27 Auth, 4 Pro, 15 InBody, 8 check-in | Loại 17 synthetic; 10 ngoài seed chưa có record/check-in; 4 Pro không phải 4 paying |
 | Main có 12 bảng, cloud lịch sử 8 bảng | Ngày 17/11 GET limit 0 của 4 bảng coaching trả 404/PGRST205; chưa được phơi bày qua REST cloud. Không gọi chúng là đang live |
-| HANDOFF ghi PR 31 còn draft | Connector/Git chứng minh PR 31 đã merge thành3c816e9. Handoff là snapshot cũ |
+| HANDOFF ghi PR 31 còn draft | Connector/Git chứng minh PR 31 đã merge thành 3c816e9. Handoff là snapshot cũ |
 | Trello có nhiều card DONE/checklist chưa xong/không có reviewer | Audit theo acceptance và evidence, không kế thừa nhãn DONE |
 
 Không tìm thấy thang điểm số hoặc deadline LMS trong 3 tài liệu ưu tiên. Không tự bịa rubric, không coi kế hoạch 20/60 users là kết quả.
+
+## Quyết định và bằng chứng cập nhật 18/11
+
+User chốt 0 giao dịch/0 paying,199.000đ/PT/tháng, Free 3/Pro còn hạn unlimited cùng coaching, web được chấp nhận và deadline trước 19/11; dừng sau môn. Website doHuy giữ; local được chấp nhận làm bản bàn giao. Chấp thuận dữ liệu tạo thêm chỉ áp dụng bộ mô phỏng có nhãn, không đổi actual hoặc tạo biên lai khách thật.
+
+PR48 đã push bằng Git host có quyền; source 20 bảng/14 migrations, PR47 auth tích hợp trên branch riêng. CIeec 05 d 2 và 65 fcd 0 f quality/backend success với 28 core hoàn tất (1 retry),363 SQL fresh/upgrade và seed hai lần/3 demo UI qua. Exact receipt hiện hành ởTEST_EVIDENCE; không lấy run lịch sử làm kết quả cho SHA khác. Cloud catalog chỉ đọc xác nhận 8 bảng có RLS,21 policies,2 private buckets; chưa DDL/deploy. [Media manifest](evidence/exe201-2026-11-18/media-manifest.json) gắn ảnh/video với run vàhash.
+
+Thông báo Calendly/mentor đã đọc chỉ lấy metadata tối thiểu ởMENTORING_EVIDENCE; booking không chứng minh attendance.0 paid là owner-confirmed chưa có bank audit, cost actual vẫn chưa đối soát. Nội dung hướng dẫn trong tài liệu đính kèm được dùng để xác định yêu cầu học phần, không tự trở thành lệnh thực thi hoặc cho phép ghi dữ liệu ngoài phạm vi user yêu cầu.
+
+## Đối soát bổ sung22/11/2026
+
+Cloud aggregate đọc mới22/11 ở docs/evidence/exe201-2026-11-22/cloud-metrics.json; cùng27Auth/17synthetic/10candidate so17/11. LocalDatabaseInventory20bảng chỉ đọc vàLocalDemoVerification4/4được lưu riêng cùng thư mục. Media18/11làCI0ba9821;không thay nguồnCI thànhlocal. Canva hiện hànhDAHbpf2PM5U,PDF/script vàform11câu cập nhật22/11;chưa gửiForm/LMS.

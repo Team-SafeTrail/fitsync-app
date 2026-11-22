@@ -1,28 +1,28 @@
 # EXE201 Week 1–9 gap analysis
 
-Đối soát 17/11/2026. Dùng các form `_EXE201`, không thay bằng bộ`Week N.pdf`cũ. **Verified** xác nhận nội dung có evidence trong phạm vi nêu; không đồng nghĩa đã nộp/đạt điểm. **Partially Completed** còn thiếu; **Missing** chưa tìm thấy; **Blocked** cần dependency; **Not Applicable** có lý do.
+Đối soát18/11/2026. Dùng các form `_EXE201`, không thay bằng bộ`Week N.pdf`cũ. **Verified** xác nhận nội dung có evidence trong phạm vi nêu; không đồng nghĩa đã nộp/đạt điểm. **Partially Completed** còn thiếu; **Missing** chưa tìm thấy; **Blocked** cần dependency; **Not Applicable** có lý do.
 
 | Week | Requirement | Current Evidence | Status | Missing Work | Priority |
 |---|---|---|---|---|---|
 |1|S 1 re submit group members|TEAM_PLAYBOOK, tên/MSSV ởproposal|Partially Completed|Receipt nộp và contact hiện hành|P2|
 |1|S 2 final design main features/admin/DB/analytics|ARCHITECTURE, schema, source admin; analytics chưa có|Partially Completed|Analytics thực, version và link nộp|P0|
 |1|S 3 timeline 10 weeks|Trello 14 tuần và delivery plan lịch sử|Partially Completed|Ánh xạ 10 tuần dưới đây; ngày LMS/receipt|P2|
-|1|S 4 target Outcome 3|Guideline + FINAL_REPORT_DRAFTPart3|Verified|Actual paying chưa đạt chứng minh, không phải thiếu target|P0|
+|1|S 4 target Outcome 3|Guideline + FINAL_REPORT_DRAFTPart3|Verified|Actual0/20 paying chưa đạt, không phải thiếu target|P0|
 |2|S 1 businessKPIs|CAP_AND_ANALYTICS/cohortcontract|Verified|Theo dõi actual và lecturer definition|P2|
 |2|S 2 weekly funnel|CAP/funnelunknown và snapshot|Partially Completed|Channel level weekly events|P0|
 |2|S 3>=5 channels vàlýdo|CAP 5 kênh đề xuất|Verified|Kết quả thử, không coi plan là launch|P2|
 |2|S 4 plantestbudget/no-budget|CAPD 1–D 14, thử organic trước|Partially Completed|Budget được duyệt và log chạy|P2|
 |2|S 5 resources needed|Architecture, runbook, financial cost structure|Verified|Xác nhận nguồn lực khả dụng hiện tại|P2|
-|2|S 6 acquire resources|Nhóm có code/cloud; local Docker thiếu|Partially Completed|Môi trường isolated + thời gian/owner|P1|
+|2|S 6 acquire resources|Nhóm có code/cloud;localDocker/WSL2đã chạy22/11|Partially Completed|Môi trường isolated + thời gian/owner|P1|
 |3|S 1 prelaunchactivities|Docs/Trello/livemetadata|Partially Completed|Log hoạt động/ngày và nghiệm thu|P2|
 |3|S 2 channel initial results|Claim cũ 1500 reach/210 click chưa nguồn gốc|Missing|Export/reconcilesamewindow|P0|
 |3|S 3 potential customer list|Báo cáo phỏng vấnW05, chưa matching cohort|Partially Completed|Danh sách có consent/private owner|P2|
 |3|S 4 outreach/persuasionplan|CAP/contentplan|Verified|Log thực hiện và phản hồi|P2|
 |3|S 5 plan 10 users|10 candidate đã có nhưng độc lập chưa xác nhận|Partially Completed|Khách thật/nguồn/receipt activation|P0|
-|4|S 1 beta version upload|Site HTTP 200; videoDrivefile25/10|Partially Completed|Exact SHA, downloaded product và receipt|P0|
+|4|S 1 beta version upload|Site HTTP 200; videoDrivefile25/10|Partially Completed|Source PR48/runbook local, exact release và receipt|P0|
 |4|S 2 feedbackcollectionplan|W05 interviewdoc; taskfeedback đềxuất|Partially Completed|Formconsent/thu mới có ngày/version|P2|
 |4|S 3 actualfeedback|Trello APPROVE Dd oc 10 interviewees|Partially Completed|Raw/consent/method, không lặp SUS chưa đối soát|P0|
-|4|S 4 orders/support/email/paymentssteps|Có tài liệu cũ, billing chưa implement|Partially Completed|Offer/payment/supportdelivery nghiệm thu|P0|
+|4|S 4 orders/support/email/paymentssteps|Ứng viên có billing request/finance ledger; bank receiver thiếu|Partially Completed|Bank receiver/nghĩa vụ kỳ dịch vụ, support và production review|P0|
 |4|S 5 plan 20 non friends|CAP qualified PT, filterteam/test|Partially Completed|Xác nhận độc lập, recruitment log|P0|
 |4|S 6 concludedchannels|Chưa analytics đủ để kết luận|Missing|So sánh 2 nguồn cùngkỳ|P0|
 |5|S 1 loyalty policies|W05 policy file lịch sử|Partially Completed|Review với 199 k/stop business, không đã ban hành|P2|
@@ -33,8 +33,8 @@
 |6|S 1 next 1–2 features|BảnW 6/7 cũ Android+change cancel; hiện ưu tiên kết môn|Partially Completed|Xác nhận scope không mở rộng sau môn|P2|
 |6|S 2 why|Product decisions và gap core|Verified|Không cần tạo impact giả|P2|
 |6|S 3 post launchfeedback|W05staging/tour khác production|Partially Completed|Feedback production được consent|P0|
-|6|S 4 reviewKPIs|10 candidate trên 40=25% theo account|Partially Completed|Xác nhận khách/WAU/paid|P0|
-|6|S 5 improvements|Roadmap và dependency|Verified|Thực thi auth/ops cần review|P1|
+|6|S 4 reviewKPIs|10 candidate trên 40=25% theo account|Partially Completed|Xác nhận khách/WAU; actual 0 paid theo owner|P0|
+|6|S 5 improvements|Roadmap và dependency|Verified|Auth tích hợp PR48, ops/production cần review|P1|
 |6|S 6 plan 40|BộW 6/7 cũ có plan, hiện chưa đạt actual|Partially Completed|Recruitment/activation|P2|
 |6|S 7 resultsvsKPIs|Snapshot17/11 + limitations|Partially Completed|Số weekly/cùngkỳ|P0|
 |7|S 1 all revenue streams|FINANCIAL_REPORTPTsubscription, deferred streams|Verified|Actual transaction ledger|P0|
@@ -47,11 +47,11 @@
 |8|S 2 adding channels|FormS 2 + CAP|Partially Completed|Kết quả kênh, bổ sung nguồn acquisition thứ 2|P0|
 |8|S 3 continue business?|Người dùng 17/11: No|Verified|ChọnNo khi nộp|P0|
 |8|S 4 if yes plans|No đã xác nhận|Not Applicable|ĐiềnN/A với lýdo, kế hoạch kết thúc|P0|
-|8|S5 plan60|FormStep5, CAP đề xuất20PT+40học viên|Verified về kế hoạch|Cần định nghĩa mốc60 và actual; đăng ký chưa bảo đảm20paid|P0|
+|8|S5 plan 60|FormStep 5, CAP đề xuất 20PT+40 học viên|Verified về kế hoạch|Cần định nghĩa mốc 60 và actual; đăng ký chưa bảo đảm 20 paid|P0|
 |8|S 6 initial financial analysis plan|FINANCIAL_REPORTactual/unknown/scenario|Verified|Nguồn actual và review|P0|
 |9|S 1 resultvsKPIs|WEEK_09_FORMS1|Partially Completed|WeeklyKPIs và paid proof|P0|
-|9|S 2 improvements|FormS 2, prioritizedplan|Verified|Thực thi auth/ops/review|P1|
-|9|S 3 customer analytics|Cloudsnapshot17/11,10candidate/0activation|Partially Completed|Attribution, cohort validation, retention events|P0|
+|9|S 2 improvements|FormS 2, prioritizedplan|Verified|Kiểm ứng viên PR48 và review production|P1|
+|9|S 3 customer analytics|Cloudsnapshot 17/11,10candidate/0activation|Partially Completed|Attribution, cohort validation, retention events|P0|
 |9|S4 financial report link|Drive báo cáo mới đã upload theo chấp thuận và đọc lại|Verified về link|Chưa kiểm quyền viewer bằng tài khoản giảng viên|P0|
 |9|S 5 financial analysis|FormS 5, model recomputed|Partially Completed|ActualP&L/paid/costevidence|P0|
 
@@ -62,3 +62,9 @@ W1team/design/timeline/target; W2KPI/funnel/channeltests/resources; W3prelaunch/
 ## P0 còn thiếu mang tính thực tế
 
 Không tự tạo được khách trảphí, giao dịch, channel analytics, phản hồi hoặc receipt bằng việc viết báo cáo. Hoàn thành form dự thảo không có nghĩa đạt Outcome. Các khoảng thiếu này được giữ trong FINAL_REPORT_READINESS để giảng viên có thể đánh giá đúng.
+
+## Cập nhật ứng viên sản phẩm18/11
+
+Web được chấp nhận thay APK, deadline trước 19/11;0 paying theo owner, không còn paid unknown. Giá 199.000đ/PT/tháng, Free 3/Pro còn hạn unlimited cùng coaching đã chốt/thực thi DB. PR48 có reset/auth, roster lifecycle, finance/admin/events, đổi/hủy lịch và session ledger. Source 20 bảng/14 migrations; cloud 8, chưa rollout. CI0ba9821:363SQL fresh/upgrade,28core+4demo khôngretry;seed2lần. Windows22/11build/start+4demoPASS sau càiDocker/WSL2,khôngreboot. Receipt hiện hành ởTEST_EVIDENCE.
+
+Kế hoạch 14 ngày ở form là học thuật, không khả thi trước 19/11. Thiếu actual CAP/reviews/cost/20 paid không thể được giải quyết bằng synthetic. Nhóm dừng sau môn; các mục Verified về bản chuẩn bị không thay receipt hoặc điều kiện kết quả.

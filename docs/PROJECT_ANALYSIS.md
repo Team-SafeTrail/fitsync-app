@@ -1,88 +1,78 @@
-# FitSync — Project Analysis
+# FitSync — phân tích dự án
 
-Đối soát 17/11/2026, main `3c816e9`. Phân loại: **Verified** = có nguồn/test cụ thể; **Reported** = tài liệu nhóm báo, chưa tái xác minh gốc; **Hypothesis/Plan** = cần thử. Quyết định mới của nhóm: dừng kinh doanh sau khi hoàn thành EXE201.
+**Checkpoint22/11/2026:** localWindows đã cài Docker/WSL2 theo chấp thuận, không reboot; production build/start và4/4demo PASS. CI0ba9821:114domain/363SQL fresh+upgrade/28core+4demo khôngretry. Cloud đọc lại22/11 vẫn27Auth/17synthetic/10candidate;0/20paid theo xác nhận owner gần nhất. [Evidence hiện hành](TEST_EVIDENCE.md). Các snapshot lịch sử bên dưới giữ nguyên thời điểm.
+
+Đối soát18/11/2026 trên ứng viên PR48, không phải trạng thái đã rollout của website. Verified chỉ dùng cho nguồn/kiểm thử nêu rõ; Owner-confirmed là quyết định trực tiếp; Reported là tài liệu nhóm chưa kiểm lại gốc; Scenario/Hypothesis không phải actual.
 
 ## A. Product Overview
 
-FitSync là không gian coaching cho PT và học viên tại Việt Nam, nhằm giảm việc nhập và tìm thông tin phân tán giữa bảng tính, tin nhắn cá nhân và phiếu đo. PT tiếp nhận học viên, lưu số đo đã xác nhận, xem tiến trình và đồng hành qua check-in; các miền chat/lịch/context mới còn cần rollout. Người dùng học viên xem dữ liệu của mình và tương tác với PT.
+FitSync là workspace coaching cho PT độc lập và học viên tại Việt Nam. Vấn đề giả thuyết là thông tin tiếp nhận, số đo, lịch và trao đổi phân tán giữa bảng tính/tin nhắn/phiếu đo. Giải pháp giữ một hồ sơ có ngữ cảnh, có bước PT kiểm và xác nhận, rồi đồng hành bằng check-in, chat, lịch và tiến trình. Chưa có phép đo chứng minh tiết kiệm giờ, tăng retention hoặc kết quả sức khỏe.
 
-Giá trị đề xuất là giữ bối cảnh của một học viên trong cùng hồ sơ, có validation và quyền truy cập theo quan hệ. Chưa có phép đo chứng minh tiết kiệm 10 giờ/tuần, tăng doanh thu hoặc tăng retention. Khác biệt tiếng Việt/quy trình coaching địa phương là giả thuyết định vị cần thử, chưa chứng minh đối thủ không làm được.
-
-Khách mục tiêu hiện hành là PT độc lập có học viên đang được coach; PT là người trả thuê bao đề xuất, học viên dùng cùng PT. Chủ gym nhiều PT, iOS, voice/community và wearable là mở rộng trước đây, không phải capability core đã nghiệm thu. Giữ cách phân biệt PT cá nhân với tổ chức khi áp điều kiện trả phí của guideline.
+Buyer là PT cá nhân; học viên dùng cùng PT. Use cases chính: tiếp nhận/invite, nhập số đo, tra cứu tiến trình, nhận check-in, quản lý lịch và số buổi, chia sẻ hướng dẫn. Chủ gym nhiều PT, voice/wearable/community không tự thuộc core. Ngôn ngữ tiếng Việt và workflow địa phương là giả thuyết khác biệt, chưa chứng minh đối thủ không làm được.
 
 ## B. Product Architecture
 
-[ARCHITECTURE](ARCHITECTURE.md) mô tả npm monorepo, Next14/React18, Supabase Auth/PostgreSQL/RLS/private Storage, Server Actions và adapter OCR. Code chính ở `apps/web`; migrations ở `supabase/migrations`; CI ở `.github/workflows`.
+Next.js15.5.29/React19.3.1, npm monorepo, Supabase Auth/PostgreSQL/RLS/private Storage, Server Actions và adapter OCR;20 bảng/14 migrations. [ARCHITECTURE](ARCHITECTURE.md) là mô tả hiện hành; migrations/types là nguồn cấu trúc. Không có backend REST tách riêng hoặc app Android bắt buộc cho bài nộp.
 
-Luồng cốt lõi: PT đăng ký → tạo hồ sơ/link mời → học viên nhận invite → PT nhập tay/đối chiếu/xác nhận → học viên xem/check-in → PT theo dõi. OCR chỉ hỗ trợ draft và không tự lưu; fake adapter không là provider thật. Tiền membership/gói buổi của PT tách thuê bao FitSync. Membership theo ngày khác số buổi PT, chưa có ledger completion/reversal.
+Luồng: PT đăng ký →tạo hồ sơ/link mời →học viên nhận →PT nhập/đối chiếu/xác nhận →học viên xem/check-in →PT theo dõi. Chat/notes/lịch cùng kiểm quan hệ. Membership theo ngày khác số buổi PT và thuê bao FitSync. Chỉ completion được xác nhận mới tiêu thụ buổi; ledger lưu lịch sử/đảo một lần. Sổ tài chính private/append-only khác dữ liệu coaching.
 
 ## C. Product Status
 
-| Miền | Source/test | Cloud/demo hiện tại |
+| Miền | Hiện trạng ứng viên | Giới hạn |
 |---|---|---|
-| Landing/auth/legal/public tour | Local build và 16 browser checks qua17/11 | Website home/login200; workspace307/login. Tour dùng fixture |
-| Identity/invite/nhập tay/check-in/quyền | Code main, 103 domain tests mới; authenticated synthetic acceptance lịch sử | Có DB 8 miền core; chưa chạy lại end-to-end hai vai trò trong phiên này |
-| Progress Weight/SMM/PBF | Component và unit/SSR tests, ảnh synthetic có nguồn | Không suy ảnh là tính năng đang live trên đúng deploy SHA |
-| Chat/lịch/membership/notes | Có 3 migration additive và acceptance CI lịch sử |4 bảng GET limit 0 trả 404/PGRST205 quaRESTcloud17/11; chưa có bằng chứng rollout |
-| Password reset đầy đủ | PR 47 mở base dev | Chưa nhập main, chưa xác minh email production |
-| Roster edit/archive | Source actions kiểm tra có create/record/check-in/session; chưa xác minh edit/archive theo cardW 8 | Không gọi cardW 8 đã xong |
-| OCRprovider/fullPDF | Adapter draft/fallback có; provider thật và full report chưa hoàn tất | Chưa đủ benchmark/consent/provider; accuracy/latency unknown |
-| Android/billing/GA4 | Có kế hoạch/issues; chưa thấy client analytics integration trong src | Chưa có bằng chứng release/payment/event delivery |
+|Auth/roster|Reset PKCE, invite/reissue/revoke, edit/archive/restore, optimistic version|PR47 tích hợp trên branch riêng, chưa merge main|
+|Số đo/progress/check-in|Manual5 chỉ số/PT confirm, trends, ảnh private, cảnh báo ngày Việt Nam|Không coi draft nutrition là chỉ định y tế|
+|Chat/context|Tin nhắn persist hai chiều, notes private/shared, membership revisions|Chưa read receipts/realtime full hoặc SLA|
+|Lịch/buổi|Đổi/hủy đề nghị/chấp nhận, overlap/version, completion/reversal ledger|Không tự trừ buổi khi tạo lịch/check-in; không tái tạo attendance cũ|
+|Offer/admin/finance|Free 3/Pro, admin RPC DB thật, evidence private/hash, CSV, test exclusion|Bank receiver chưa có; chưa thu tiền thật|
+|Analytics|9 event keys trong DB, nguồn tự khai báo, weekly aggregate loại synthetic|Chưa rollout; không phục dựng reach/click/attribution cũ|
+|Local demo|Launcher isolated và seed 29 synthetic accounts/22 TEST entries; CI seed hai lần và 3 UI tests qua ởeec 05 d 2|Windows chưa Docker/WSL2 tại lần kiểm; không giả vờ đã chạy local DB|
+|Cloud/production|8 bảng core, RLS,21 policies/2 private buckets qua catalog chỉ đọc|12 bảng ứng viên chưa rollout; Huy giữ website|
 
-**Technical debt và bug/risk:** source–cloud drift; metadata/handoff cũ; auth delivery còn PR; legacy authorization/ops/retention/abuse chưa qua đầy đủ gate; mutable session balance; schema 5 field chưa đủ full InBody; telemetry chưa triển khai. Không coi risk là exploit đã tái hiện. Trong các check local đã chạy chưa tái hiện lỗi nghiêm trọng của public demo, nên không rewrite app hoặc sửa task đang trùng PR 47. Full demo market-ready chưa thể chứng nhận.
+Lần kiểm local 114 domain tests/lint/typecheck/build qua. CIeec 05 d 2 fresh/upgrade363 SQL assertions qua,28 browser hoàn tất với 1 retry,3 bài demo qua. Bản sửa check-in tiếp theo đang kiểm; [TEST_EVIDENCE](TEST_EVIDENCE.md) ghi đúng revision. Không dùng bảng này làm chứng nhận production/market readiness.
+
+Technical debt: full-report/PDF và provider benchmark, nutrition publication/multi-meal/workout mở rộng, retention/delete/support/abuse và vận hành dữ liệu sức khỏe thật. Production rollout cần review; không nhập schema snapshot thay migrations. Ngân hàng và nghĩa vụ kỳ dịch vụ khi dừng còn quyết định owner. Không gọi risk là exploit đã tái hiện.
 
 ## D. Business & Marketing Analysis
 
 ### Business Model Canvas
 
-| Ô | Nội dung và mức xác nhận |
+| Ô | Nội dung và mức bằng chứng |
 |---|---|
-| Customer segments | PT độc lập ởVN, học viên củaPT; chưa có cỡ thị trường đại diện |
-| Value proposition | Hồ sơ có ngữ cảnh, nhập tay có kiểm tra, tiến trình và follow-up. Hiệu quả giảm nhập/tìm cần đo |
-| Channels | Facebook/community, Zalo onboarding, referral/directPT, video; selection còn giả thuyết |
-| Relationships | Assisted onboarding và hỗ trợ có giới hạn; chưa hứa SLA24/7 |
-| Revenue | Thuê baoPT tham chiếu 199 k/tháng; chưa xác nhận paid actual |
-| Key activities | Duy trì core, RLS/ops, demo, đo activation, đối soát học phần và bàn giao |
-| Key resources | Code, schema, thời gian team, test synthetic, môi trường web/cloud |
-| Key partners | Hạ tầng Vercel/Supabase là vendor, không tự gọi là đối tác thương mại đã ký; PT thử là nhóm cần xác nhận |
-| Costs | Hạ tầng/AI/marketing/thu tiền/công/support; actual thiếu ledger, dự toán tách riêng |
+|Segments|PT độc lập và học viên của PT; buyer PT, không tự mở sang gym tổ chức|
+|Value|Hồ sơ/coaching có ngữ cảnh và PT confirm; hiệu quả cần đo|
+|Channels|Facebook/community +referral/direct đề xuất; Zalo onboarding, YouTube demo|
+|Relationships|Onboarding có hỗ trợ; không hứa24/7/SLA chưa vận hành|
+|Revenue|Owner chốt 199.000đ/PT/tháng; actual 0 paying theo owner|
+|Activities|Phát triển/kiểm quyền, hỗ trợ demo, đối soát học phần, bàn giao/kết thúc|
+|Resources|Source/schema, thời gian nhóm, synthetic tests, web/cloud; local Docker đang chờ|
+|Partners|Vercel/Supabase là vendor, chưa có partnership thương mại đã ký|
+|Costs|Hạ tầng/AI/marketing/công/support; actual thiếu ledger, dự toán tách riêng|
 
-### Persona và segmentation/STP
+### Persona, segmentation và positioning
 
-Persona giả thuyết chính: PT đang phải tra cứu thông tin học viên qua nhiều công cụ, thường dùng điện thoại trong ca tập và máy tính khi chuẩn bị coaching. Nhu cầu: mở nhanh đúng hồ sơ, tránh nhập nhầm, biết ai cần follow-up. Buyer/user/champion có thể cùng mộtPT; học viên là người dùng thứ hai, quan tâm xem kết quả và gửi cập nhật riêng tư. Không đặt tên, thu nhập hoặc độ tuổi giả như khách đã phỏng vấn.
+Persona giả thuyết: PT phải tra thông tin qua nhiều công cụ, dùng phone trong ca tập và desktop khi chuẩn bị. Muốn mở đúng hồ sơ, tránh nhập nhầm và biết ai cần follow-up. Học viên quan tâm dữ liệu của mình, lịch và cập nhật riêng tư. Không tạo danh tính/phỏng vấn giả. Segment theo online/hybrid/trực tiếp, mức phân mảnh tác vụ và cohort sẵn để thử; chưa lấy số 5–20 học viên như ràng buộc owner. Anti-persona hiện tại là tổ chức cần nhiều PT/chi nhánh hoặc yêu cầu chẩn đoán y tế.
 
-Phân đoạn theo vai trò, cách coaching (online/hybrid/trực tiếp), số học viên và mức phân mảnh workflow. Chọn phân đoạn PT độc lập có cohort sẵn và đồng ý thử tác vụ; tránh multi-branch gym ở giai đoạn này. Định vị đề xuất: workspace coaching tiếng Việt có bước PT xác nhận, không chỉ máy quét/calorie tracker. Anti-persona hiện tại: tổ chức cần quản trị nhiều PT, medical decision/diagnosis, yêu cầu iOS/Android đã phát hành hoặc thanh toán tự động đầy đủ.
+### Research / TAM / SAM / SOM
 
-### Research và TAM/SAM/SOM
+[Survey evidence](research/survey-evidence.md) ghi 104 responses,84 chọn trên 3 giờ admin/tuần,73 quản lý ít nhất 5 học viên,101 dùng tool mix có Zalo/Messenger. Đây là tổng hợp lịch sử, chưa tính lại raw lượt này; mẫu không xác suất/có open text gần trùng, không đại diện toàn PT Việt Nam. README92 cũ không thay nguồn 104 có ngày. Chưa đủ số PT mục tiêu/khả năng tiếp cận/WTP đại diện để ước lượng TAM/SAM/SOM; không nhân thị trường fitness toàn cầu với thị phần tự đặt.
 
-[Survey evidence](research/survey-evidence.md) ghi 104 responses, 84 chọn trên 3 giờ admin/tuần, 73 quản lý ít nhất 5 học viên, 101 dùng tool mix cóZalo/Messenger. Đây là tổng hợp nội bộ lịch sử, chưa tính lại raw trong phiên. Mẫu không xác suất, có open-text gần trùng; không suy ra đại diện cho toàn bộPTVN hoặc FitSync đã giải quyết vấn đề. README cũ ghi 92, nên giữ nguồn 104 có ngày và hạn chế, không trộn mẫu.
-
-Không tínhTAM/SAM/SOM bằng cách lấy doanh thu fitness toàn cầu nhân thị phần tự đặt. Chưa có sốPT mục tiêu, khả năng tiếp cận và willingness-to-pay đại diện đủ tin cậy; ghi **not estimated**. Chi phí/người, funnel giả định không phải market size.
-
-### SWOT
+### SWOT và cạnh tranh
 
 | Strengths | Weaknesses |
 |---|---|
-| Baseline source/test/RLS và luồng 2 vai trò; nhập tay/PT review | Drift cloud, chưa activation ngoài seed, auth/ops/provider/billing/mobile còn thiếu |
+|Workflow hai vai trò, manual/PT review, RLS và kiểm thử|Chưa activation ngoài seed/paid; drift cloud và vận hành còn gate|
 | Opportunities | Threats |
-| Thử workflow PT địa phương, học từ cách users dùng tác vụ thật trong môn | Đối thủ mature/free tiers, thói quenExcel/Zalo, onboarding khó, chi phí health data/support |
+|Thử workflow PT địa phương trong học phần và học từ tác vụ thật|Đối thủ mature/free, thói quen Excel/Zalo, onboarding và chi phí dữ liệu sức khỏe|
 
-### Competitor benchmarking
+Nguồn chính thức đã đọc17/11: [Trainerize](https://www.trainerize.com/pricing/), [Everfit](https://everfit.io/pricing/), [TrueCoach](https://truecoach.co/pricing/); chi tiết ở `../competitor-profiles/`. Các nền tảng đều có coaching/client management; chưa trial đủ để tuyên bố thiếu tính năng hoặc cần VPN. Giá có billing/điều kiện khác nhau, chưa chuẩn hóa FX, không claim FitSync rẻ nhất. Cần chứng minh workflow giúp PT hoàn thành tác vụ, thay vì coi giá thấp là khác biệt đủ mạnh.
 
-Đọc official pricing17/11: [Trainerize](https://www.trainerize.com/pricing/), [Everfit](https://everfit.io/pricing/), [TrueCoach](https://truecoach.co/pricing/). Cả ba quảng bá nhiều chức năng coaching/clientmanagement; không lặp lại bảng cũ “đối thủ không có” hoặc “phải VPN” khi chưa có trial/evidence. Trainerize trang có bảng vàFAQ số giá khác nhau, không chọn một giá để tuyên bố FitSync rẻ nhất. Everfit công bố Starter free 5 clients và Pro monthly từ 19 USD/5 clients; TrueCoach có billing toggle nên số hiển thị phải kèm kỳ/điều kiện, chưa chuẩn hóa bảngso sánhFX.
+### Offer, cost và GTM
 
-Hàm ý: chỉ có giá thấp hoặc gộp tool chưa đủ tạo lợi thế. Cần chứng minh PT hoàn thành intake/tra cứu/coaching nhanh hơn trong pilot. Profile nguồn ngắn nằm ở `../competitor-profiles/`. Chưa có SEOtraffic/marketshare/reviewscore được đo.
+Owner chốt Free tối đa 3 hồ sơ chưa lưu trữ (pending giữ slot), Pro199.000đ/tháng không giới hạn khi còn hạn, cùng coaching. Hết hạn giữ hồ sơ cũ; tạo/restore theo cap Free. Manual transfer cần admin đối soát; chưa bank receiver. Chưa có giao dịch thật. [FINANCIAL_REPORT](../reports/FINANCIAL_REPORT.md) tính BEP 17 cash/47 tính công theo giả định; không là lợi nhuận thực.
 
-### Pricing, costs và GTM
+[CAP](CAP_AND_ANALYTICS.md) có 5 kênh và 2 acquisition sources đề xuất. Chưa export thực cùng kỳ. Plan 14 ngày/60 users là học thuật, không còn thời gian thực hiện trước 19/11; synthetic bị loại KPI.0/20 paying PT chưa đáp ứng condition. Nhóm dừng sau môn; GTM dài hạn chỉ là bài học, không cam kết chạy ads/outreach hoặc mở rộng. Không gửi tin cho khách/đăng bài trong lượt này.
 
-Giữ 199.000 đ/PT/tháng là tham chiếu theo quyết định hiện hành, không tự thay giá hoặc hứa unlimited. Offer cần rõ active-roster cap, AI allow an ce, người trả, support và hủy/hoàn tiền. WTP49k/99k cũ chưa có raw 4 câu/đường giao để tái lậpOPP, không chứng minh revenueoptimal.
+### Risks & Assumptions
 
-[FINANCIAL_REPORT](../reports/FINANCIAL_REPORT.md) tách actual unknown khỏiBEP 17 cash/47 tính công theo kịch bản. [CAP_AND_ANALYTICS](CAP_AND_ANALYTICS.md) có 5 kênh đề xuất, lịch 7 bài, kế hoạch 60 tài khoản, event dictionary 12 event và metric contract. Mốc 60 không đồng nghĩa 20 paying PT. Không gửi outreach/đăng bài/chạy ads trong lượt này.
-
-### Risks & assumptions
-
--10 candidate có thể vẫn có team/test, cần owner xác minh độc lập; cohort phỏng vấn 4 PT+6 học viên không tự trùng 5 PT+5 học viên trên DB.
--4 Pro không chứng minh thanh toán; claim3paid/1500reach/210click/SUS cũ chưa đủ nguồn gốc.
--6weeks/14weeks/Trello không thay ngày LMS; báo cáo hiện là hồi cứu.
--Kịch bản tài chính không là chứng từ, giá trị time-saving chưađo.
--Quyết định dừng sau học phần thay kế hoạch mở rộng 5 năm; owner cần bàn giao và xử lý nghĩa vụ hiện có, chưa tự tắt dịch vụ/xóa dữ liệu.
+10 candidate có thể còn team/test;4 Pro không là paid;10 interviewees 4 PT+6 học viên không tự trùng cohort 5+5. Claim cũ 3 paid/1.500 reach/210 clicks/SUS thiếu raw đã loại. Giá 49k/99k cũ bị thay bởi quyết định 199 k. Demo/financial scenarios không phải survey, traction hoặc chứng từ. Hạn/LMS/receipt không suy từ Trello. Trước dữ liệu thật cần consent/governance/retention review; kết thúc sau môn phải rà nghĩa vụ và quyền, không tự xóa dữ liệu.

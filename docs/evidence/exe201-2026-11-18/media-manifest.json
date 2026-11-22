@@ -1,0 +1,145 @@
+{
+  "sourceCommit": "0ba9821e39e7cec559473e6aae3262e4294e33b7",
+  "workflowRun": 44155536123,
+  "artifactId": 14360972525,
+  "syntheticOnly": true,
+  "cloudDeployment": false,
+  "windowsDatabaseRun": false,
+  "browserCore": {
+    "total": 28,
+    "firstAttemptPassed": 28,
+    "retryPassed": 0
+  },
+  "browserDemo": {
+    "passed": 4,
+    "failed": 0
+  },
+  "files": [
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/admin-1440.png",
+      "sourceArtifactPath": "local-demo-proof/admin-1440.png",
+      "sha256": "5928a2ae0445a66873f8b9d6719d8ea6489cac9e8cad66894042794e0f877f42",
+      "bytes": 928634
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/admin-390.png",
+      "sourceArtifactPath": "local-demo-proof/admin-390.png",
+      "sha256": "fc2896893c1b3de846be664f9d53aabc42ecfbc9334ca924f2750c79e7837f6a",
+      "bytes": 447581
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/learner-home-mobile.png",
+      "sourceArtifactPath": "local-demo-proof/learner-home-mobile.png",
+      "sha256": "24185bc3e38a99fe3a1a130fa1567e12d382c669b87f3095be28695405f61905",
+      "bytes": 196861
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/learner-progress-mobile.png",
+      "sourceArtifactPath": "local-demo-proof/learner-progress-mobile.png",
+      "sha256": "2a49bc0338756a08c4b3d6a7fbb8a0e69b3e58cc8f11552fa7bcea4a85f681a6",
+      "bytes": 173400
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/pt-calendar.png",
+      "sourceArtifactPath": "local-demo-proof/pt-calendar.png",
+      "sha256": "f15ec61aa8dd798caa38432114a455f82c08666655c90804ce101126b6bf2650",
+      "bytes": 133228
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/pt-free-billing.png",
+      "sourceArtifactPath": "local-demo-proof/pt-free-billing.png",
+      "sha256": "78994739a89c628b7bdbdd58f76067fee84e510849e7840acc30d58920e71f54",
+      "bytes": 89170
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/pt-membership.png",
+      "sourceArtifactPath": "local-demo-proof/pt-membership.png",
+      "sha256": "a09eaa6f8d4b03e0d34435018549c110640299dc7429d3e7ac564b1d7afc6165",
+      "bytes": 127894
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/pt-notes.png",
+      "sourceArtifactPath": "local-demo-proof/pt-notes.png",
+      "sha256": "25414799b5f82fee2af2462cbb07815f91f7a67aa5c78c5765442feec15e3901",
+      "bytes": 117235
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/pt-pro-roster.png",
+      "sourceArtifactPath": "local-demo-proof/pt-pro-roster.png",
+      "sha256": "2c5e8a6a3b6235716c97aecd9661c016be672f7f3ea0a74568bb383ca243c6da",
+      "bytes": 139945
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/pt-progress.png",
+      "sourceArtifactPath": "local-demo-proof/pt-progress.png",
+      "sha256": "0e3eb18f2753ed7c960b9f4e79a501098a9c9de3e8e1e558bdcc9fc749fe6a34",
+      "bytes": 208371
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/final-calendar-ledger-1440.png",
+      "sourceArtifactPath": "chat-proof/final-calendar-ledger-1440.png",
+      "sha256": "a86d33a33a2b32cdb4f2bc0219990f36cd1ad70889a75730716f8d40e4a2d25f",
+      "bytes": 134138
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/final-calendar-ledger-390.png",
+      "sourceArtifactPath": "chat-proof/final-calendar-ledger-390.png",
+      "sha256": "70ba2f20766efb41b6ca14bc6761909ce47604a791c8f0c234fc75f0815a310f",
+      "bytes": 110134
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/handoff-pt-dossier.png",
+      "sourceArtifactPath": "chat-proof/handoff-pt-dossier.png",
+      "sha256": "347fed2a60b9b0585a9590401ad95c8d936c0a6976ea72917bda5f8108bb9433",
+      "bytes": 106133
+    },
+    {
+      "path": "docs/evidence/exe201-2026-11-18/demo/handoff-trainee-home.png",
+      "sourceArtifactPath": "chat-proof/handoff-trainee-home.png",
+      "sha256": "4c2ac16d38f18b5cec9610a424ea649279ab7c8179f01da01cc5638ca6aa1185",
+      "bytes": 44814
+    },
+    {
+      "path": "presentations/demo-videos/walkthrough.webm",
+      "sourceArtifactPath": "local-demo/local-demo-recorded-walkth-cc80b--and-separated-demo-finance-chromium/video.webm",
+      "sha256": "f23f605c017b04597a144ac7210f1f5b09324262fb5b69cbf4653d5d9301c190",
+      "bytes": 3043714
+    },
+    {
+      "path": "presentations/demo-videos/admin-demo.webm",
+      "sourceArtifactPath": "local-demo/local-demo-demo-admin-keep-89121-onciles-labelled-simulation-chromium/video.webm",
+      "sha256": "95c03ff0a33f385b9beaaf515f2b51ddec88d93ec1f49a751525043992de5ba1",
+      "bytes": 216146
+    },
+    {
+      "path": "presentations/demo-videos/pt-demo.webm",
+      "sourceArtifactPath": "local-demo/local-demo-demo-Pro-roster-5e52b-ofiles-and-a-shared-dossier-chromium/video.webm",
+      "sha256": "e9db7378e16c79099ed59601997dc5fe048e8f56af25176a886ffaa40ab9d3eb",
+      "bytes": 302967
+    },
+    {
+      "path": "presentations/demo-videos/free-demo.webm",
+      "sourceArtifactPath": "local-demo/local-demo-demo-Free-reser-1974f-s-only-shared-coaching-data-chromium/video.webm",
+      "sha256": "d392d7c345c6798b89136215a19adf8c4688a06bcf7242a676bf3661e02ee7b9",
+      "bytes": 239279
+    },
+    {
+      "path": "presentations/demo-videos/learner-demo.webm",
+      "sourceArtifactPath": "local-demo/page@ea7abb4666f696bb0197b77e4b6c0707.webm",
+      "sha256": "e8fac350f30831a011929e7b62bb9dff3b17f49c4c911c3e896b37d39178bd04",
+      "bytes": 144860
+    },
+    {
+      "path": "presentations/demo-videos/roster-workflow.webm",
+      "sourceArtifactPath": "final-product-PT-edits-rei-3f4c0--without-losing-the-profile-chromium/video.webm",
+      "sha256": "06afd0f04d1f6d553f521e79b73dfb1251fa4383c3a3f58b9e817ca5363bd8cc",
+      "bytes": 564822
+    },
+    {
+      "path": "presentations/demo-videos/finance-workflow.webm",
+      "sourceArtifactPath": "final-product-real-admin-l-27654-d-never-counts-test-revenue-chromium/video.webm",
+      "sha256": "64bddb473f4fd7137d2df08342f1b2441359983b0afcc977d76391f862bff16a",
+      "bytes": 528648
+    }
+  ]
+}

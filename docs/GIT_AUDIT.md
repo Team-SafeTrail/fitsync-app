@@ -1,34 +1,19 @@
-# Git audit — 17/11/2026
+# Git audit — cập nhật22/11/2026
 
-## Repository và baseline
+Đã fetch --all --prune lại22/11. Trước commit bộ tài liệu mới, HEAD0ba9821 vàorigin/agent/fitsync-final-product đồng bộ0ahead/0behind. Không merge main hoặc đổi worktree nhóm.
 
-Repository thực: `fitsync-app/`, remote HTTPS `https://github.com/Team-SafeTrail/fitsync-app.git`; connector xác nhận repository public, default branch `main`. `.git` ở workspace ngoài không phải repository hoạt động. Ban đầu working tree `main` sạch; `main...origin/main` = `0 0` sau fetch. Base: `3c816e977d50f8a9bda1703cf4d6f3a417f86d0c`, PR #31 đã merge. `dev` và `Khai/dev-backend` cùng SHA tại snapshot.
+Repo đúng: `fitsync-app/`, remote `https://github.com/Team-SafeTrail/fitsync-app.git`, default main. Outer `.git` không là repo làm việc. Base `3c816e977d50f8a9bda1703cf4d6f3a417f86d0c`; main sạch/không diverged ở audit ban đầu sau fetch. Đã đọc status, remote-v, branches-a/-vv, fetch-all-prune, log graph 20 và worktree list trước thay đổi.
 
-Đã chạy status, remote -v, branch -a/-vv, fetch --all --prune, log --oneline --graph --decorate -20 và worktree list. Fetch chỉ cập nhật `origin/codex/apply-approved-coaching-design` từ d9a012a đến f51265c, không đổi main. Dùng `git -c safe.directory=<repo>` cho từng lệnh do sandbox chạy bằng SID khác owner; không thêm trust toàn cục.
+Branch hiện hành `agent/fitsync-final-product`; [draft PR48](https://github.com/Team-SafeTrail/fitsync-app/pull/48). Git host/GCM đăng nhập hoạt động, branch đã push; connector write 403 không còn chặn Git push. Không lấy/ghi credential vào file/chat. Dùng safe.directory chính xác theo từng lệnh do SID sandbox khác owner, không trust toàn cục.
 
-Đã tạo branch `agent/exe201-fitsync-completion` từ đúng base. Không đổi source trên main. Commit đầu `8641fbc`: kế hoạch audit và cleanup. Danh sách commit cuối xem FINAL_DELIVERY.md.
+Commit ứng dụng chính: d278851 (auth/admin/finance/Next15),74a7ef1 (React 19),23bd428 (preserve native reset),bee273b/4454a7e (calendar/ledger SQL),824410d (UI/types),210b189/fba54c2 (navigation sau save),eec05d2 (isolated demo),65fcd0f (check-in giữ input/transport acknowledgement). PR47 được tích hợp trên branch riêng theo yêu cầu hoàn thiện; không merge PR47 lên main/dev. Docs/evidence còn thay đổi trong lượt; exact final HEAD theo receipt bàn giao.
 
-## Branch và PR đang hoạt động
+Tài liệu từ `agent/exe201-fitsync-completion` được giữ trong lịch sử:8641fbc,afa123f,76a5dca,294c4ca và các commit bàn giao. Gói17/11 là checkpoint docs, không là gói sản phẩm cuối.
 
-Snapshot connector có 8 PR mở: #47 auth (base dev); #30 OC2 checklist; #25 định hướng coaching; chuỗi #17/#19/#21/#23 UI; #15 OCR benchmark (draft). Không merge/cherry-pick/ghi đè các PR này. PR #47 có CI riêng trên `131dda2`, không thuộc base main và không được báo password reset đã ship. #15 chưa phải bằng chứng OCR provider được chọn.
+## Công việc nhóm được bảo toàn
 
-Các branch local không tracking upstream hoặc tracking `gone` được giữ nguyên. Chưa push từ Viet và các commit của worktree cũ không bị sửa hoặc xóa. Chi tiết issue/PR/CI: [snapshot](evidence/exe201-2026-11-17/github-snapshot.json).
+8 PR mở ở snapshot ban đầu: 47 auth,30 OC2,25 định hướng,17/19/21/23 UI,15 OCR draft. Không approve/merge hoặc rewrite history. PR48 chứa tích hợp/đổi mới để reviewer đánh giá; không kết luận mọi PR cũ đã ship.
 
-## Worktree safety
+6 worktree khác đã kiểm. `mentor-review-20261106`, `oc2-27`, `oc2-docs-update`, `pr-order-fix`, `pr28-after-pr26` sạch. `ui-before-sync-20261106` có .gitignore, admin layout, auth actions, Supabase env và untracked docs/TRELLO_BOARD_STATE/scripts; giữ nguyên, không reset/move/delete. Các branch gone/nontracking vẫn giữ.
 
-6 worktree khác được kiểm tra. `mentor-review-20261106`, `oc2-27`, `oc2-docs-update`, `pr-order-fix`, `pr28-after-pr26` sạch. `ui-before-sync-20261106` có thay đổi ở .gitignore, admin layout, auth actions, Supabase env và untracked docs/TRELLO_BOARD_STATE.md, scripts/. Tất cả được giữ nguyên. Không di chuyển thư mục .worktrees hoặc xóa branch.
-
-## Remote write blocker
-
-GitHub connector đọc được repository/issue/PR/Actions nhưng tạo issue và tạo remote branch trả HTTP403 `Resource not accessible by integration`. Git push qua local cũng thất bại: Credential Manager không lưu được credential, terminal prompts đã tắt. Vì vậy chưa có remote branch hoặc PR của lượt này. Đây là giới hạn quyền/đăng nhập hiện tại, không phải thay đổi đã publish.
-
-Đã chuẩn bị patch/bundle và PR description để owner push khi có phiên Git có quyền. Không nhúng key/token vào file hoặc xin secret qua chat. Không thực hiện force push, reset hard, merge hay production deployment.
-
-## Commit và kiểm tra cuối
-
-- 8641fbc — docs: establish EXE201 evidence audit and safe cleanup plan.
-- afa123f — feat: add read-only course metrics and delivery verification.
-- 76a5dca — docs: reconcile EXE201 forms, final draft and project evidence.
-- 294c4ca — docs: add verified Week 8 and 9 presentation package.
-
-Sau đó bổ sung commit bàn giao cuối; exact HEAD và manifest nằm trong receipt ngoài repo. Dirty worktree ui-before-sync-20261106 được đọc lại và giữ nguyên cùng danh sách thay đổi; không thao tác các checkout khác. Source app không thay đổi so với base, chỉ thêm scripts/reporting và tài liệu/evidence.
+Không main push, force push, reset hard, remote branch delete, tự merge hoặc production deploy/migration. Cleanup theo [dry-run](../project-management/CLEANUP_DRY_RUN.md) và [kết quả](../project-management/CLEANUP_RESULT.md), không đụng source/credentials/dataset không xác minh. Local runtime/demo credentials để ngoài Git. [TEST_EVIDENCE](TEST_EVIDENCE.md) phân biệt checks theo SHA; không lấy CI của branch khác thay proof.

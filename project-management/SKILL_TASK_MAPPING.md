@@ -18,5 +18,8 @@
 | computer-use | Thử fallback xem Canva khi API đọc/chỉnh sửa thiếu | Browserhost không khả dụng, native approval timeout; cuối cùng dùng fetch + từng preview, không sửa UI |
 | Git + PowerShell + Node | Audit branch/worktree, kiểm thử dự án | Dùng safe.directory chỉ theo từng lệnh cho repo đã xác định |
 | Python standard library + pypdf | Trích nguồn, inventory, kiểm tra liên kết và tính toán | Không thực thi mã tải từ nguồn không tin cậy |
+| frontend-design + React best practices | Sửa form/navigation React19 và giữ design FitSync | Native reset preservation, server/client boundary, UI pending/error và responsive; không rewrite kiến trúc |
+| Supabase CLI + pgTAP + Playwright | Fresh/upgrade database, RLS, persistence và demo | Loopback synthetic trên CI vàWindowslocal22/11; exact types, seed idempotence, private evidence và role isolation |
+| Official Docker docs + Authenticode/SHA-256 | Chuẩn bị dependency local có thể review | Đã kiểm chữ ký/checksum,cài theo chấp thuận,Engine hoạt động;không reboot |
 
 Không cài skill/plugin bổ sung. Tool được phát hiện qua catalog ALL_TOOLS của phiên. Các skill được đọc trước khi áp dụng. Skill bổ sung hoặc giới hạn công cụ phát sinh sẽ được ghi vào báo cáo bàn giao.

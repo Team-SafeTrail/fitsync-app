@@ -1,89 +1,72 @@
-# FitSync EXE201 — bàn giao ngày 17/11/2026
+# FitSync — bàn giao22/11/2026
 
 ## A. Executive Summary
 
-Đã chuẩn bị bộ Week 8/9 và final theo tài liệu thực tế, kiểm lại public demo, audit 106 card Trello, đọc số đếm cloud chỉ bằng truy vấn không ghi và tạo Canva mới với screenshot sản phẩm thật. Nhóm đã xác nhận **dừng kinh doanh sau học phần**.
-
-**Chưa thể xác nhận đã hoàn thành học phần hoặc toàn bộ dự án.** Còn thiếu bằng chứng khách trả phí, ledger và analytics kênh, review gốc, quyền database cho giảng viên, xác nhận đóng góp/lịch hẹn và nghiệm thu full authenticated hiện tại. Form chưa gửi và chưa có receipt nộp. Những phần này giữ trạng thái PARTIAL, BLOCKED hoặc NOT VERIFIED.
+Đã có sản phẩm web chạy local với DB/Auth/Storage riêng, bộ kiểm thử thực tế,29tài khoản synthetic/22bút toán TEST, ảnh/video gốc, Canva mới và11câu copy form. Bắt đầu tại [bộ chuẩn bị nộp](../reports/SUBMISSION_READY_2026-11-22.md). Chưa xác nhận đạt toàn học phần:0/20paying theo owner, thiếu cost/CAP/reviews/attendance vàreceipt. Deadline trước19/11 đã qua; đây là bản cập nhật để nộp bổ sung.
 
 ## B. Completed Tasks
 
-- Xác minh văn bản Week 1–9 và Final Guidelines, tạo source register/manifest và ma trận gap.
-- Đối chiếu scope, giá và claim giữa tài liệu cũ, Trello, GitHub và cloud; không kế thừa số paid/reach/click/SUS thiếu bằng chứng gốc.
-- Audit Git, tạo branch riêng từ đúng main, giữ dirty worktree của nhóm.
-- Lập dry-run trước cleanup; dọn cache tái tạo, archive 3 file test cũ và build lại.
-- Đọc 8 list/106 card, 17 checklist/82 items, 25 comments, 0 attachments trả về và 102 activity entries. Phân loại 7 nhóm, phát hiện 5 card trùng exact title. Không xóa/archive/move/mark DONE hoặc đổi assignee.
-- Chuẩn bị đúng 6 Step Week 8, 5 Step Week 9, final draft 5 phần, tài chính/ledger template, CAP/analytics/customer insights, kiến trúc và demo runbook.
-- Tạo Canva cuối 10 trang 16:9 từ nguồn cố định và 2 screenshot nguyên bản; đọc lại chữ, xem toàn bộ preview, tạo PDF 10 trang và script 10 slide.
-- Upload financial report vào thư mục EXE201 sau chấp thuận cụ thể của người dùng; đọc lại thành công. Không đổi quyền chia sẻ.
-- Ghi chú trạng thái chờ review trên 2 weekly cards Trello và đọc lại comments; không tự nghiệm thu hoặc xác nhận đã nộp.
+- Đọc W1–9/Final, đối chiếu yêu cầu theo nguồn; form đúng6+5câu, final đúng5phần.
+- Audit106Trello cards, Git đúngfolder fitsync-app vàworkspace; cleanup códry-run, bảo toàn dirty worktree của nhóm.
+- Hoàn thiện auth/roster/Free3-Pro/admin/finance private/calendar/session ledger/events;20bảng/14migrations.
+- Sửa form React19, acknowledgement/save/navigation; không giảm assertions hoặc nới quyền.
+- Cài Docker Desktop/WSL2 theo chấp thuận, không reboot; chạy stack riêng, seed/build/start và4/4demo local PASS.
+- Đọc lại cloud22/11 theo aggregate:27Auth,17synthetic,10candidate, không phát sinh traction mới đã xác minh.
+- Tạo mới Canva10slide, PDF/HTML/script, copy-form interface, product/database review; giữ media gốc/hash.
+- Cập nhật tài chính cùngID Drive đã cho phép; actual/scenario được tách riêng.
 
 ## C. Engineering Changes
 
-**Branch:** agent/exe201-fitsync-completion. **Base:** 3c816e977d50f8a9bda1703cf4d6f3a417f86d0c.
+Branch agent/fitsync-final-product; base3c816e977d50f8a9bda1703cf4d6f3a417f86d0c. [Draft PR48](https://github.com/Team-SafeTrail/fitsync-app/pull/48). Ứng dụng nghiệm thu0ba9821e39e7cec559473e6aae3262e4294e33b7; docs bổ sung theo commit đóng gói. Không main push/merge/force/reset hoặc production migration.
 
-Các commit đã lưu: 8641fbc (audit/cleanup plan), afa123f (collector/verifier), 76a5dca (forms/final/audits/evidence), 294c4ca (presentation). Commit bàn giao cuối được xác định bằng HEAD trong receipt đóng gói. Xem [GIT_AUDIT](../docs/GIT_AUDIT.md). Chưa có remote branch hoặc PR mới do connector ghi trả HTTP 403 và Git local thiếu credential. [PR description đã chuẩn bị](PR_DESCRIPTION.md).
+| Kiểm tra | Kết quả |
+|---|---|
+|Domain/lint/types/build|114/114domain; quality CI44155536467 success|
+|Fresh+upgrade|363SQL/RLS mỗiDB;13files; legacy fingerprints giữ nguyên, exact types|
+|CoreCI/demoCI|28+4PASS lần đầu,0retry; backend44155536123|
+|LocalWindows|Production build/start PASS22/11;4/4demo PASS,0retry|
+|Seed|29synthetic accounts/22TESTentries; actual KPI không đổi|
+|Media|14ảnh/7video gốc0ba9821,hash; không dùng failed-runvideo|
+|PDF|10trang16:9,hash khớp,HTML overflow0|
 
-Gói chuyển giao được lưu ngoài repo tại outputs/exe201-delivery-2026-11-17: ZIP artefacts, incremental Git bundle, patches và receipt có SHA256/danh sách file. Không chứa .env, credential, node_modules hoặc raw dữ liệu cá nhân.
-
-Thay đổi code gồm collector chỉ đọc và verifier trong scripts/reporting. Collector giới hạn đúng HTTPS host FitSync, GET/HEAD, timeout, pagination và đối soát cohort; chỉ xuất số đếm tổng hợp. Verifier kiểm file, trường form, số slide, bytes ảnh gốc, phép tính tài chính, link local và PDF/hash. Không sửa architecture/app source hoặc chồng PR47 khi chưa tái hiện lỗi cần sửa.
-
-| Check ngày 17/11 | Kết quả | Phạm vi |
-|---|---|---|
-| Domain tests |103/103 PASS |Không phải DB integration |
-| Local environment guard |4/4 PASS |Kiểm điều kiện môi trường cô lập |
-| Lint/typecheck/build |PASS, exit 0 |Dependencies có sẵn; chưa clean install local |
-| Chromium public |16/16 PASS, exit 0 |Landing/tour/legal/auth guard, không ghi cloud |
-| Cloud collector |PASS |Aggregate mới; không xác nhận khách độc lập/paid; nhiều query không là một transaction snapshot |
-| Full authenticated/RLS local |BLOCKED |Thiếu Docker; CI lịch sử được ghi ngày/run riêng |
-| Gói tài liệu |PASS ở lần kiểm cuối |76 check, không có lỗi; receipt bên dưới |
-
-[Evidence và logs](../docs/evidence/exe201-2026-11-17/), [test report](../docs/TEST_EVIDENCE.md). Không dùng CI của PR47 để chứng minh main có password reset hoặc dùng screenshot làm bằng chứng rollout.
+[TEST_EVIDENCE](../docs/TEST_EVIDENCE.md), [receipt local](../docs/evidence/exe201-2026-11-22/local-demo-verification.json). Cloud vẫn8bảng, source20bảng; website Huy chưa cập nhật. Không gọi CI là production.
 
 ## D. EXE201 Deliverables
 
-| Tệp | Tình trạng |
+| Artefact | Trạng thái |
 |---|---|
-| [Week 8 form](../reports/WEEK_08_FORM.md) |PASS bản chuẩn bị; chưa gửi |
-| [Week 9 form](../reports/WEEK_09_FORM.md) |PASS bản chuẩn bị; chưa gửi |
-| [Báo cáo hai tuần](../reports/WEEK_08_09_PROGRESS_REPORT.md) |PASS, có giới hạn actual rõ |
-| [Final draft](../reports/FINAL_REPORT_DRAFT.md) |PASS cấu trúc; PARTIAL kết quả thực tế |
-| [Final readiness](../reports/FINAL_REPORT_READINESS.md) |PASS ma trận đối chiếu; không chứng nhận đạt |
-| [Financial report](../reports/FINANCIAL_REPORT.md) |PARTIAL actual; có phân tích/kịch bản |
-| [Financial report trên Drive](https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk) |PASS upload/readback; quyền xem của giảng viên NOT VERIFIED |
-| [Gap Week 1–9](EXE201_GAP_ANALYSIS.md) |PASS đối chiếu; các mục thiếu giữ trạng thái |
-| [Product analysis](../docs/PROJECT_ANALYSIS.md) |PASS trong phạm vi nguồn và giả thuyết đã ghi |
-| [Trello audit](TRELLO_AUDIT.md) |PASS 106 card; lịch sử còn nguyên |
-| [Demo workflow](../docs/DEMO_WORKFLOW.md) |PASS runbook/public; PARTIAL full backend |
+|[W8](../reports/WEEK_08_FORM.md),[W9](../reports/WEEK_09_FORM.md),[copyHTML](../reports/GOOGLE_FORM_COPY_W8_W9.html)|PASS bản chuẩn bị, chưa gửi|
+|[Progress](../reports/WEEK_08_09_PROGRESS_REPORT.md)|PARTIAL evidence kinh doanh|
+|[FinalPDF](../reports/FINAL_REPORT_SUBMISSION.pdf),[nguồn5phần](../reports/FINAL_REPORT_DRAFT.md),[readiness](../reports/FINAL_REPORT_READINESS.md)|PASS cấu trúc,PARTIAL actual|
+|[Financial](../reports/FINANCIAL_REPORT.md),[Drive](https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk)|PASS scenario/update-readback;PARTIALcost,lecturer quyền NOT VERIFIED|
+|[Product/video](../reports/LOCAL_PRODUCT_REVIEW.html),[database review](../reports/DATABASE_REVIEW.html)|PASS bộ xem; quyền giảng viên PARTIAL|
+|[Gap](EXE201_GAP_ANALYSIS.md),[Trello](TRELLO_AUDIT.md),[skillmapping](SKILL_TASK_MAPPING.md)|PASS audit snapshot; không coi cards là nghiệm thu|
 
 ## E. Canva Presentation
 
-**[Mở Canva cuối để chỉnh sửa](https://www.canva.com/d/JP90mzolqoYNL2Z)**. Design ID: DAHbJ4OqVNk, 10 trang 1920×1080.
-
-[PDF 10 trang](../presentations/FitSync_Week_08_09.pdf), [kịch bản](../presentations/WEEK_08_09_SCRIPT.md), [outline](../presentations/SLIDE_OUTLINE.md), [HTML nguồn](../presentations/WEEK_08_09_CANVA_SOURCE.html), [QA/provenance](../presentations/CANVA_DELIVERY.md).
-
-PDF được render từ cùng HTML, không phải export byte-for-byte từ Canva. Connector hiện không có PPTX export. AI draft trước bị loại vì dựng UI giả; không dùng bản đó để trình bày.
+**[Canva mới chỉnh sửa](https://www.canva.com/d/ynAwdDFZ410e9dW)**, DAHbpf2PM5U,10trang1920×1080. [PDF](../presentations/FitSync_Week_08_09.pdf),[script](../presentations/WEEK_08_09_SCRIPT.md),[QA/phạm vi](../presentations/CANVA_DELIVERY.md). Text/metadata đã đọc lại; HTML/PDF đã xem10slide. Không ghi đè deck18/11. ChưaPPTX. Dữ liệu mô phỏng có nhãn,0/20paying được giữ nguyên.
 
 ## F. Remaining Issues
 
-1. **Kinh doanh:** chưa có ledger/biên lai và analytics kênh cùng kỳ. 4 Pro không phải 4 paid; 10 tài khoản ngoài seed chưa được xác nhận là khách độc lập. Cohort này có 0 InBody/check-in.
-2. **Nộp học phần:** cần form/LMS chính thức, deadline/receipt, contribution và booking receipts. Chưa tự nộp hoặc xác nhận điểm.
-3. **Database/demo:** owner cần bàn giao quyền được duyệt cho giảng viên. Full auth/RLS rerun cần Docker hoặc CI có quyền. Bốn bảng coaching REST trả 404; PR47 auth chưa merge; OCR provider, Android, billing và ops còn dependency.
-4. **Remote Git:** cần phiên Git có quyền hoặc connector có quyền ghi. Có local commits và gói patch/bundle; chưa push/PR, không merge/force push.
-5. **Kết thúc sau môn:** owner rà cam kết với người tham gia, hoàn tiền nếu có, chi phí và vòng đời dữ liệu. Lượt này không đổi quyền hoặc tắt/xóa dịch vụ.
+1. Actual0/20paying, thiếu chứng từ khách thật; không tạo biên lai/chuyển khoản/reviews giả. Costactual/analytics2kênh/consent/mentoringattendance/contribution còn thiếu nguồn.
+2. Owner kiểm [Studio local](http://127.0.0.1:54323) trước rồi mới cung cấp Gmail lecturer; chưa cấp quyền hoặc chia sẻ dữ liệu/credentials.
+3. Bank receiver chưa có, chưa bật thu tiền thật. Nhóm dừng kinh doanh sau môn; cần chốt hỗ trợ/nghĩa vụ còn lại.
+4. Website Huy chưa rollout; local được chấp nhận. OCR/fullPDF/provider, real-data consent/retention/delete/load/pentest còn ngoài phạm vi đã nghiệm thu.
+5. Chưa gửi GoogleForm/LMS hoặc córeceipt. Không backdate nộp đúng hạn.
+6. Credential rotation đã hỏi riêng ở phiên trước, chưa có xác nhận; không thay quyền production trong bước này.
 
 ## G. Readiness Assessment
 
 | Hạng mục | Đánh giá |
 |---|---|
-| Week 8 Submission Readiness |PARTIAL: nội dung đầy đủ, actual và receipt còn thiếu |
-| Week 9 Submission Readiness |PARTIAL: có link tài chính mới, actual và receipt còn thiếu |
-| Final Report Readiness |PARTIAL: đúng 5 phần, thiếu proof kinh doanh/access |
-| Technical Demo Readiness |PASS public tour/guard; PARTIAL authenticated/release |
-| Git/Workspace Health |PASS local và giữ dữ liệu; BLOCKED remote publication |
+|Week8/9form|PASS bản chuẩn bị;PARTIAL actual,NOT VERIFIED receipt|
+|FinalReport|PARTIAL:5phần có sẵn,thiếu20paid/CAPactual/cost/access|
+|TechnicalDemo|PASS CI28+4 vàWindowslocal4trong phạm vi test|
+|Git/workspace|PASS bảo toàn branch/worktree;chưa merge/release|
+|Presentation|PASS HTML/PDF/script/textmetadata và10previewCanva; nếu chỉnh layout cần xem lại|
 
 ## H. Final Verification
 
-[Receipt tự động](../docs/evidence/exe201-2026-11-17/delivery-verification.json) kiểm file, số trường, số slide, ảnh nguyên bản, tài chính, link local và PDF/hash. [Trello readback](../docs/evidence/exe201-2026-11-17/trello-sync-readback.json) xác nhận hai ghi chú mới tồn tại. [Dry-run](CLEANUP_DRY_RUN.md) và [kết quả cleanup](CLEANUP_RESULT.md) ghi rõ phạm vi dọn.
+[Delivery verification](../docs/evidence/exe201-2026-11-22/delivery-verification.json) được tạo bởi verifier sau kiểm thật: tệp/link/form/script/PDF/hash/ảnh gốc/phép tính. [Media manifest](../docs/evidence/exe201-2026-11-18/media-manifest.json) là provenance CI; windowsDatabaseRun=false trong manifest mô tả bộ media CI, không phủ nhận receipt local22/11 riêng.
 
-PASS chỉ áp dụng cho phần đã chạy, xem hoặc đọc lại. Đây là kiểm tra gói bàn giao, không phải chứng nhận market-ready, thanh toán hoặc đạt EXE201.
+Gói source/báo cáo/deck/video được tạo bằng git archive sau commit, bên ngoàiGit; loại.env/credentials/node_modules/private outputs. Không bao gồm file đăng nhập demo. Gói17/18là lịch sử. Không đánh dấu mục tiêu tổng thể hoàn thành khi điều kiện học phần còn thiếu thực tế.

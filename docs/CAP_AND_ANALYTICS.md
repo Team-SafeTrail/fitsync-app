@@ -1,6 +1,8 @@
 # Customer Acquisition Plan và analytics
 
-17/11/2026. Kế hoạch phục vụ hoàn thành học phần; nhóm sẽ dừng kinh doanh sau môn. Các target dưới đây chưa phải kết quả chiến dịch.
+**Checkpoint22/11/2026:** localWindows đã cài Docker/WSL2 theo chấp thuận, không reboot; production build/start và4/4demo PASS. CI0ba9821:114domain/363SQL fresh+upgrade/28core+4demo khôngretry. Cloud đọc lại22/11 vẫn27Auth/17synthetic/10candidate;0/20paid theo xác nhận owner gần nhất. [Evidence hiện hành](TEST_EVIDENCE.md). Các snapshot lịch sử bên dưới giữ nguyên thời điểm.
+
+18/11/2026. Kế hoạch phục vụ hoàn thành học phần; nhóm sẽ dừng kinh doanh sau môn. Các target dưới đây chưa phải kết quả chiến dịch.
 
 ## Đối tượng và kênh
 
@@ -33,21 +35,27 @@ Các tỷ lệ 30/90,22/30,15/22 và số học viên được mời là **giả
 | D 6 | Zalo | Hỗ trợ check-in, thu phản hồi tác vụ | Check-in/feedback tự nguyện | Event và review được phép trích |
 | D 7 | Referral PT | Mời PT phù hợp qua người đang thử, chưa áp incentive chưa duyệt | Demo | Nguồn lead và chống đếm trùng |
 
-Roster edit/archive và OCR live chưa đủ evidence để quảng cáo là đã hoạt động. Video mới nên demo tạo hồ sơ/nhập tay/nhận invite trong stack synthetic được cô lập, hoặc gắn nhãn rõ public tour.
+Roster edit/archive có trong ứng viên PR48 và CI; production chưa rollout. OCR provider thật chưa đủ evidence để quảng cáo đã hoạt động. Video mới nên demo tạo hồ sơ/nhập tay/nhận invite trong stack synthetic được cô lập, hoặc gắn nhãn rõ public tour.
 
 ## Weekly metrics và funnel
 
 Mỗi dòng báo cáo cần `week_start_ict`, `week_end_ict`, `channel`, `content_url`, `reach`, `clicks`, `registrations_pt`, `registrations_trainee`, `activated_pairs`, `paid_pt`, `cash_received_vnd`, `spend_vnd`, `evidence_url`. Dùng `unknown` khi thiếu, không điền 0. Tổng reach giữa kênh không thể de duplicate khi thiếu source identity.
 
-Snapshot17/11: 27 Auth; 17 synthetic; 10 candidate gồm 5 PT+5 học viên; 10 email confirmed và từng sign-in; 0 candidate last-sign-in7 ngày; 0 candidate record/check-in; 4Pro/1Free trong 5 PT. Có 9 candidate tạo 27/10 và 1 tạo 29/10. Đây là các tài khoản còn tồn tại tại snapshot, không phải hệ thống đăng ký lịch sử đầy đủ sau các lần xóa tài khoản. Chưa có channel attribution và transaction ledger.
+Snapshot17/11: 27 Auth; 17 synthetic; 10 candidate gồm 5 PT+5 học viên; 10 email confirmed và từng sign-in; 0 candidate last-sign-in 7 ngày; 0 candidate record/check-in; 4Pro/1Free trong 5 PT. Có 9 candidate tạo 27/10 và 1 tạo 29/10. Đây là các tài khoản còn tồn tại tại snapshot, không phải hệ thống đăng ký lịch sử đầy đủ sau các lần xóa tài khoản. Cloud chưa có attribution/ledger mới. Ứng viên có ledger append-only và product_events, chưa rollout; không phục dựng lịch sử.
 
-Funnel hiện tại: awareness **unknown** → clicks **unknown** →10 candidate registrations →10confirmed/ever signed-in →0 cặp đạt activation đề xuất →paid **unknown**. Không tính click-to-signup, CAC hay trial-to-paid khi thiếu mẫu số và kỳ đo phù hợp.
+Funnel hiện tại: awareness **unknown** → clicks **unknown** →10 candidate registrations →10confirmed/ever signed-in →0 cặp đạt activation đề xuất →paid **0 theo owner**. Không tính click-to-signup, CAC hay trial-to-paid khi thiếu mẫu số và kỳ đo phù hợp.
 
 Định nghĩa activation đề xuất: một cặp PT/học viên đã nhận invite, có record được PT xác nhận và có check-in trong 7 ngày của cohort onboarding. Không lấy last_sign_in_at làm WAU coaching. Retention cần cohort đủ thời gian và event log, chưa tính được.
 
-## Event dictionary đề xuất, chưa tích hợp GA4
+## Đo lường hiện có trong ứng viên
 
-Source scan17/11 chưa thấy gtag/GTM/dataLayer/UTM integration trong src. Chỉ có từ analytics trong copy. Không báo card GA4 hoàn thành. Nếu triển khai sau review, chỉ page landing marketing nhận measurement có đồng ý; không gửi URL lời mời/token hoặc đường dẫn chứa ID hồ sơ tới analytics.
+PR48/migration finance_and_product_analytics có 9 event keys: registered, workspace_opened, trainee_created, invitation_accepted, inbody_confirmed, checkin_submitted, chat_sent, appointment_created, upgrade_requested. Server triggers/RPC ghi tác vụ và nguồn tự khai báo trong allow-list; workspace_opened dedupe theo ngày ICT, synthetic bị loại. Không ghi health/chat/ảnh/PII/URL. Admin tổng hợp tuần/kênh, chưa GA4 hoặc client-side reach/click tracking, chưa rollout cloud. Không coi nguồn tự khai báo là attribution đo đầy đủ. Kết quả actual đến xác nhận owner vẫn 0 paying PT; ngân hàng chưa có.
+
+Kế hoạch 14 ngày dưới đây là thiết kế học thuật/hồi cứu. Đến 18/11 không còn 14 ngày trước hạn19/11, nên không cam kết 60 accounts hoặc 20 paid trước hạn. Không tự phát outreach/ads hoặc seed số để báo đạt.
+
+## Event dictionary mở rộng đề xuất, chưa tích hợp GA4
+
+Chưa thấy GA4/gtag/GTM/dataLayer trong source. Internal product_events ở trên đã có; bảng mở rộng dưới đây là kế hoạch, không gọi tất cả 12 event đã implement. Không báo card GA4 hoàn thành. Nếu triển khai sau review, chỉ page landing marketing nhận measurement có đồng ý; không gửi URL lời mời/token hoặc đường dẫn chứa ID hồ sơ tới analytics.
 
 | Event nội bộ | Trigger | Allow list tối thiểu | Test bắt buộc |
 |---|---|---|---|

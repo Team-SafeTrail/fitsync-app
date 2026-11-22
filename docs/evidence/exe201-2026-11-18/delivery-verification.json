@@ -1,0 +1,735 @@
+{
+  "checked_at_utc": "2026-11-17T19:00:32.979Z",
+  "pass": true,
+  "checks": [
+    {
+      "description": "Exists: docs/PROJECT_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/ARCHITECTURE.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/DEMO_WORKFLOW.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/GIT_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: docs/TEST_EVIDENCE.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/WEEK_08_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/WEEK_09_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/WEEK_08_09_PROGRESS_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/FINAL_REPORT_READINESS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/FINAL_REPORT_DRAFT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/FINANCIAL_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/DELIVERY_LINKS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/WEEK_08_09_SCRIPT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/SLIDE_OUTLINE.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/CANVA_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/WEEK_08_09_CANVA_SOURCE.html",
+      "pass": true
+    },
+    {
+      "description": "Exists: presentations/FitSync_Week_08_09.pdf",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/SKILL_TASK_MAPPING.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/TRELLO_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/EXE201_GAP_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/FINAL_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/CLEANUP_DRY_RUN.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/CLEANUP_RESULT.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: project-management/PR_DESCRIPTION.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/LOCAL_PRODUCT_REVIEW.html",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/DATABASE_REVIEW.html",
+      "pass": true
+    },
+    {
+      "description": "Exists: reports/MENTORING_EVIDENCE.md",
+      "pass": true
+    },
+    {
+      "description": "Exists: scripts/local-demo/start.mjs",
+      "pass": true
+    },
+    {
+      "description": "Exists: scripts/local-demo/seed.mjs",
+      "pass": true
+    },
+    {
+      "description": "Exists: scripts/local-demo/config.mjs",
+      "pass": true
+    },
+    {
+      "description": "Week8 exact six fields",
+      "pass": true
+    },
+    {
+      "description": "Week9 exact five fields",
+      "pass": true
+    },
+    {
+      "description": "Week8 stop decision is No",
+      "pass": true
+    },
+    {
+      "description": "Week9 verified financial URL",
+      "pass": true
+    },
+    {
+      "description": "Five-part final structure",
+      "pass": true
+    },
+    {
+      "description": "Ten slide scripts",
+      "pass": true
+    },
+    {
+      "description": "Ten Key Message fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Speaking Script fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Visual Explanation fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Transition fields",
+      "pass": true
+    },
+    {
+      "description": "Ten Evidence fields",
+      "pass": true
+    },
+    {
+      "description": "Ten annotated HTML pages",
+      "pass": true
+    },
+    {
+      "description": "Exactly two embedded product screenshots",
+      "pass": true
+    },
+    {
+      "description": "Embedded screenshots match original bytes",
+      "pass": true
+    },
+    {
+      "description": "Current Canva ID and ten pages",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 20 PT + 40 học viên",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 17 PT",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 47 PT",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 0 / 20 khách trả phí",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 199.000",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: 363",
+      "pass": true
+    },
+    {
+      "description": "Canva checked text: Nhóm quyết định dừng kinh doanh",
+      "pass": true
+    },
+    {
+      "description": "Rejected mock UI text absent",
+      "pass": true
+    },
+    {
+      "description": "Role counts reconcile to candidates",
+      "pass": true
+    },
+    {
+      "description": "Date groups independently reconcile to candidates",
+      "pass": true
+    },
+    {
+      "description": "Break-even scenarios recomputed",
+      "pass": true
+    },
+    {
+      "description": "20 PT scenario cross-check",
+      "pass": true
+    },
+    {
+      "description": "All106 Trello cards classified once",
+      "pass": true
+    },
+    {
+      "description": "Five exact-title duplicate cards reconciled",
+      "pass": true
+    },
+    {
+      "description": "Ten-page16:9 PDF matches verified hash",
+      "pass": true
+    },
+    {
+      "description": "Media environment is explicitly synthetic isolated CI",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/admin-1440.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/admin-390.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/learner-home-mobile.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/learner-progress-mobile.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/pt-calendar.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/pt-free-billing.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/pt-membership.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/pt-notes.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/pt-pro-roster.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/pt-progress.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/final-calendar-ledger-1440.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/final-calendar-ledger-390.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/handoff-pt-dossier.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: docs/evidence/exe201-2026-11-18/demo/handoff-trainee-home.png",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: presentations/demo-videos/admin-demo.webm",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: presentations/demo-videos/pt-demo.webm",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: presentations/demo-videos/free-demo.webm",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: presentations/demo-videos/learner-demo.webm",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: presentations/demo-videos/roster-workflow.webm",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: presentations/demo-videos/finance-workflow.webm",
+      "pass": true
+    },
+    {
+      "description": "Media path stays inside repository",
+      "pass": true
+    },
+    {
+      "description": "Original media hash: presentations/demo-videos/walkthrough.webm",
+      "pass": true
+    },
+    {
+      "description": "Forms supersede unknown paying count with owner-confirmed zero",
+      "pass": true
+    },
+    {
+      "description": "Final draft preserves unmet actual paying-customer condition",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/PROJECT_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/ARCHITECTURE.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/DEMO_WORKFLOW.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/GIT_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: docs/TEST_EVIDENCE.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/WEEK_08_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/WEEK_09_FORM.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/WEEK_08_09_PROGRESS_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/FINAL_REPORT_READINESS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/FINAL_REPORT_DRAFT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/FINANCIAL_REPORT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/DELIVERY_LINKS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: presentations/WEEK_08_09_SCRIPT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: presentations/SLIDE_OUTLINE.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: presentations/CANVA_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/SKILL_TASK_MAPPING.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/TRELLO_AUDIT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/EXE201_GAP_ANALYSIS.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/IMPLEMENTATION_PLAN.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/FINAL_DELIVERY.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/CLEANUP_DRY_RUN.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/CLEANUP_RESULT.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: project-management/PR_DESCRIPTION.md",
+      "pass": true
+    },
+    {
+      "description": "No credential literal: reports/MENTORING_EVIDENCE.md",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "finance": {
+    "price": 199000,
+    "cash": {
+      "fixed": 3000000,
+      "variable": 16990,
+      "contribution": 182010,
+      "break_even": 17,
+      "margin": 0.9146231155778894,
+      "cases": [
+        {
+          "pt": 20,
+          "revenue": 3980000,
+          "result": 640200
+        },
+        {
+          "pt": 50,
+          "revenue": 9950000,
+          "result": 6100500
+        },
+        {
+          "pt": 100,
+          "revenue": 19900000,
+          "result": 15201000
+        }
+      ]
+    },
+    "economic": {
+      "fixed": 7800000,
+      "variable": 31990,
+      "contribution": 167010,
+      "break_even": 47,
+      "margin": 0.8392462311557789,
+      "cases": [
+        {
+          "pt": 20,
+          "revenue": 3980000,
+          "result": -4459800
+        },
+        {
+          "pt": 50,
+          "revenue": 9950000,
+          "result": 550500
+        },
+        {
+          "pt": 100,
+          "revenue": 19900000,
+          "result": 8901000
+        }
+      ]
+    }
+  },
+  "manifest": [
+    {
+      "file": "docs/PROJECT_ANALYSIS.md",
+      "bytes": 8970,
+      "sha256": "61fd60b5c009d21492ef88165a3797b59b8d2fe23af7ad3d642e5923603eeaf4"
+    },
+    {
+      "file": "docs/ARCHITECTURE.md",
+      "bytes": 5091,
+      "sha256": "2841cad7dbfe2fa1bf043e6fb29faf092ba445ea6eddfd434601c2f0ed396380"
+    },
+    {
+      "file": "docs/DEMO_WORKFLOW.md",
+      "bytes": 6181,
+      "sha256": "e43a0456ad8d2374dbdf8d06b625d67d1ade8e5096b03df6a73b3ab3b44db721"
+    },
+    {
+      "file": "docs/GIT_AUDIT.md",
+      "bytes": 2593,
+      "sha256": "f6c086fc3510850c6d0f5db3e4a6f88e8fdd0d6fc3195f3062542803233a5b6b"
+    },
+    {
+      "file": "docs/TEST_EVIDENCE.md",
+      "bytes": 4895,
+      "sha256": "473b0829c979baa4a049e99f690a19641879e6f4ff4c3cd16b3f0e63da46c188"
+    },
+    {
+      "file": "reports/WEEK_08_FORM.md",
+      "bytes": 4696,
+      "sha256": "265bbef45ff716c04a24ad51e0206c45d637294391e9dcd6a1bb418bf9f8c4a5"
+    },
+    {
+      "file": "reports/WEEK_09_FORM.md",
+      "bytes": 4605,
+      "sha256": "3ac2c792d7de44cd7223c0d1fc8f037f725908b033ed2f80e8a59e164f09e04b"
+    },
+    {
+      "file": "reports/WEEK_08_09_PROGRESS_REPORT.md",
+      "bytes": 3026,
+      "sha256": "b30204cdf6a0b74342c826544f8a246e9b263dcef110b3816a4b34d1cd648b8b"
+    },
+    {
+      "file": "reports/FINAL_REPORT_READINESS.md",
+      "bytes": 3376,
+      "sha256": "7632ef9866621ef8f8731605c3c1b46d175f50ef58abf86a16d3f19f534cb7c3"
+    },
+    {
+      "file": "reports/FINAL_REPORT_DRAFT.md",
+      "bytes": 12502,
+      "sha256": "7c3f375009ab41ce767fff2dcf73e7268f3e05d0beb6d19b5f3b004f6402a10b"
+    },
+    {
+      "file": "reports/FINANCIAL_REPORT.md",
+      "bytes": 8012,
+      "sha256": "573c0eb3641878055249fc28a86bcc499edf04a5902c9f2ff21dee87615d3260"
+    },
+    {
+      "file": "reports/DELIVERY_LINKS.md",
+      "bytes": 1927,
+      "sha256": "c3e665f7c5d5be7a2557884d7dc9e6a110f2fb72ac9c045ff6e29d4ef24f8173"
+    },
+    {
+      "file": "presentations/WEEK_08_09_SCRIPT.md",
+      "bytes": 12707,
+      "sha256": "0c39c876273be8ea954316bc8f8ccad023d6256fe134dcd81078af8b5f4a53a9"
+    },
+    {
+      "file": "presentations/SLIDE_OUTLINE.md",
+      "bytes": 2409,
+      "sha256": "e1384ca01892c61b39fb2665667f0af13354293d0ed44c4d99fd74994241a72a"
+    },
+    {
+      "file": "presentations/CANVA_DELIVERY.md",
+      "bytes": 1597,
+      "sha256": "18f80f89f42d5572b0a10a822d3acc2ba79ceb5e37773a6a808c51923ff27c54"
+    },
+    {
+      "file": "presentations/WEEK_08_09_CANVA_SOURCE.html",
+      "bytes": 214076,
+      "sha256": "e976240007b17077439a29aeb78aada3570d56eb25cba93673c9efcfd792140f"
+    },
+    {
+      "file": "presentations/FitSync_Week_08_09.pdf",
+      "bytes": 200950,
+      "sha256": "a6909399ec8d00a7377c60409635f6febd2cea9a31ce80d14d467cd9d4025f6e"
+    },
+    {
+      "file": "project-management/SKILL_TASK_MAPPING.md",
+      "bytes": 3542,
+      "sha256": "78665f99a01773f9d9ac30da3e94df90accf7cff84143a489e38bc6805f1a215"
+    },
+    {
+      "file": "project-management/TRELLO_AUDIT.md",
+      "bytes": 44826,
+      "sha256": "4009aec6f4156cff04b4e5059117118ea497f2bea7ac133832b69c16ac2b7e6a"
+    },
+    {
+      "file": "project-management/EXE201_GAP_ANALYSIS.md",
+      "bytes": 8660,
+      "sha256": "c416ef5fdb66ccb3f719cd032a81b6d3da22f5f39c099fead31973e8d03968cd"
+    },
+    {
+      "file": "project-management/IMPLEMENTATION_PLAN.md",
+      "bytes": 2333,
+      "sha256": "dc58411fc192437a1f2b96a3ca2c653b262ae2dd13283f22b8da66405ace184a"
+    },
+    {
+      "file": "project-management/FINAL_DELIVERY.md",
+      "bytes": 7992,
+      "sha256": "66f68740452a6950c01331266a3d721c6d7e38383ee834e8b14497bbef0395cf"
+    },
+    {
+      "file": "project-management/CLEANUP_DRY_RUN.md",
+      "bytes": 2968,
+      "sha256": "5c4082addb2cbf802ad4575abe93f7b7966e5d4666567902fef7f542d2aaf615"
+    },
+    {
+      "file": "project-management/CLEANUP_RESULT.md",
+      "bytes": 1597,
+      "sha256": "826d76719cbf5d487e52594501ac30c830d83588943cd4bd5a251db9f72fe044"
+    },
+    {
+      "file": "project-management/PR_DESCRIPTION.md",
+      "bytes": 1743,
+      "sha256": "527266167700c297f727f6d22416b6972296ae1caf2776cc526b2da6d03f7694"
+    },
+    {
+      "file": "reports/LOCAL_PRODUCT_REVIEW.html",
+      "bytes": 8760,
+      "sha256": "5ce70cf7a1bd69eaa78a6dab6b21c4f0fba15d53741dd1289ca3ea7be170f344"
+    },
+    {
+      "file": "reports/DATABASE_REVIEW.html",
+      "bytes": 10736,
+      "sha256": "e05cc9dd08e56f200790c3767b9ede6d9dbdff11d0f3fdc627687599a3c7dfd0"
+    },
+    {
+      "file": "reports/MENTORING_EVIDENCE.md",
+      "bytes": 2680,
+      "sha256": "f77c58aa38e11d34f09937dd097d40f7b0b6d025795c835755add478a3a16c6c"
+    },
+    {
+      "file": "scripts/local-demo/start.mjs",
+      "bytes": 4424,
+      "sha256": "47cc01b6a02ad8934e0243764b516f7af70b4280ccd901e9cc2a08a1055be12c"
+    },
+    {
+      "file": "scripts/local-demo/seed.mjs",
+      "bytes": 14490,
+      "sha256": "9acc390dac2a984612648086503f48aa67fd5383217cea79e16cdf1f205a3359"
+    },
+    {
+      "file": "scripts/local-demo/config.mjs",
+      "bytes": 3408,
+      "sha256": "d0b34f9dd6a1e790b3e0e1e8db04a9e95a3f9a56960d25f84caca3f876022281"
+    }
+  ]
+}

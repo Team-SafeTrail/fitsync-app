@@ -1,19 +1,12 @@
-# Link phục vụ nộp Week 8/9
+# FitSync — đường dẫn bàn giao22/11/2026
 
-## Financial report
+- [Bắt đầu: bộ chuẩn bị nộp](SUBMISSION_READY_2026-11-22.md)
+- [Copy11câu Google Form](GOOGLE_FORM_COPY_W8_W9.html), [W8](WEEK_08_FORM.md), [W9](WEEK_09_FORM.md)
+- [Canva mới](https://www.canva.com/d/ynAwdDFZ410e9dW), [PDF](../presentations/FitSync_Week_08_09.pdf), [script](../presentations/WEEK_08_09_SCRIPT.md)
+- [Final Report PDF](FINAL_REPORT_SUBMISSION.pdf), [bản nguồn5phần](FINAL_REPORT_DRAFT.md), [readiness](FINAL_REPORT_READINESS.md), [tài chính](FINANCIAL_REPORT.md)
+- [Financial Drive](https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk): cùngID được owner cho phép upload; đã readback18/11, chưa xác minh quyền lecturer.
+- [Product ảnh/video](LOCAL_PRODUCT_REVIEW.html), [database review](DATABASE_REVIEW.html), [runbook](../docs/DEMO_WORKFLOW.md)
+- [Web local](http://127.0.0.1:3000), [Studio local](http://127.0.0.1:54323): đã chạy22/11, chỉ trên máy này khi dịch vụ đang mở.
+- [PR48](https://github.com/Team-SafeTrail/fitsync-app/pull/48), [test evidence](../docs/TEST_EVIDENCE.md), [handover](../project-management/FINAL_DELIVERY.md)
 
-**URL đã upload và đọc lại thành công:**
-
-https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk
-
-Tệp `FitSync_Financial_Report_Week8_9_2026-11-17.md`, MIMEtext/markdown, nằm trong thư mụcEXE 201 được người dùng xác nhận cho phép upload cụ thể trong phiên 17/11. Connector đọc lại 5.056 ký tự, đúng tiêu đề và nội dung. Không thay quyền chia sẻ; chưa thử bằng tài khoản giảng viên. Nhóm cần kiểm quyền viewer trước nộp. Link này là báo cáo mới có unknown/assumptions, không phải model EXE101 tháng 07.
-
-## Source và evidence
-
-- [Website](https://fitsync-app-one.vercel.app/): HTTPsmoke17/11, không chứng nhận market-ready.
-- [Repository](https://github.com/Team-SafeTrail/fitsync-app): branch/commit mới còn local do quyền write bị chặn.
-- [Trello](https://trello.com/b/nkyUhT5E/fitsync-exe201-delivery): audit trongproject-management/TRELLO_AUDIT.md.
-- [Walkthrough25/10](https://drive.google.com/file/d/1gjgn76IERkSat_4sFSLkezkrif2_m4Vu/view): metadata đã kiểm, chưa xem lại toàn bộ/receipt.
-- Canva mới: trạng thái và URL cuối trong `../presentations/CANVA_DELIVERY.md`; không dùng bản bị QA loại làm bằng chứng sản phẩm.
-
-Link Google Forms Week8/9 chưa được xác minh từ PDF annotations hoặc LMS trong lượt này. Giữ nguyên câu hỏi từ PDF, dùng form chính thức do giảng viên cung cấp khi nộp. Chưa gửi form.
+Chưa gửi form/LMS, chưa receipt hoặc quyền giảng viên. Website của Huy chưa rollout ứng viên. Credential riêng không được đưa vào repo hoặc gói bài nộp.

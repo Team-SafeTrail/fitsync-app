@@ -1,5 +1,5 @@
 {
-  "checked_at_utc": "2026-11-17T09:49:35.110Z",
+  "checked_at_utc": "2026-11-17T12:35:54.818Z",
   "source": "FitSync cloud Auth Admin + read-only REST selects",
   "method": "No mutations, no health metric values selected. Contact identifiers used only in memory for test filtering.",
   "counts": {
@@ -111,6 +111,46 @@
       "code": "PGRST205"
     },
     "coaching_notes": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "trainee_profile_events": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "finance_entries": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "billing_requests": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "product_events": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "appointment_change_requests": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "appointment_events": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "session_entitlements": {
+      "readable": false,
+      "status": 404,
+      "code": "PGRST205"
+    },
+    "session_ledger": {
       "readable": false,
       "status": 404,
       "code": "PGRST205"

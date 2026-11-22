@@ -1,69 +1,67 @@
-# FitSync — demo workflow có thể tái lập
+# FitSync — hướng dẫn demo sản phẩm
 
-Đối soát 17/11/2026. Public demo được kiểm lại, 16/16browser tests qua. Full authenticated end-to-end **chưa chạy lại local** vì thiếu Docker; bằng chứng synthetic lịch sử có trong TEST_EVIDENCE.md. Không gọi tour là demo persistence hoặc market-ready.
+Cập nhật22/11/2026. Owner chấp nhận demo local; website production do Huy quản lý. Web đầy đủ được giảng viên chấp nhận, không yêu cầu APK. Kết quả kiểm thử theo revision nằm ở [TEST_EVIDENCE](TEST_EVIDENCE.md), Local production build/start và4/4 bài demo đã PASS22/11 trên máy Windows với Supabase cô lập.
 
-## Prerequisites và cài đặt
+## Chuẩn bị
 
-Node>=20 (CI 20, máy kiểm 24.13), npm workspaces; Docker chỉ cần cho Supabase local. Từ repo `fitsync-app/`, đọc AGENTS/HANDOFF và kiểm `git status` trước. Giữ `.env.local` và worktree cá nhân.
+Từ folder Git `fitsync-app`, cần Node >=20, npm, Docker Engine chạy Linux containers. CI dùng Node 20; máy hiện có Node 24.13. Docker/WSL2 đã cài theo chấp thuận; Engine29.9.3 hoạt động, không reboot. Xem [review cài đặt](../project-management/LOCAL_SETUP_REVIEW.md).
 
 ```powershell
-npm.cmd ci
-npm.cmd run test
+npm.cmd ci --ignore-scripts --cache ../outputs/npm-cache
+npm.cmd run demo:plan
+npm.cmd run demo:prepare
+npm.cmd run demo:start
+```
+
+`demo:plan` chỉ in kế hoạch; `demo:prepare` chỉ tạo config/migrations riêng. `demo:start` kiểm Docker/port, khởi động DB cô lập, seed, đối soát, build và chạy Next.js. Không ghi đè `.env.local`, không dùng secret cloud cho demo, không reset hoặc xóa volume. Nếu runtime cũ khác migration/config, launcher dừng để bảo toàn dữ liệu.
+
+## Environment và dữ liệu
+
+Launcher lấy khóa từ đúng Supabase loopback và truyền qua môi trường tiến trình; không in khóa. Nó đặt site URL `http://127.0.0.1:3000`, bật ba cờ coaching, `FITSYNC_DEMO_MODE=true`; để trống OCR API key và thông tin nhận tiền. Không copy khóa vào chat, slide hoặc Trello.
+
+- Web: http://127.0.0.1:3000
+- Database Studio local: http://127.0.0.1:54323
+- File truy cập private: `../outputs/local-demo-private/LOCAL_DEMO_ACCESS.html`
+- Receipt seed, chỉ xuất sau khi thực chạy: `../outputs/local-demo-private/seed-verification.json`
+
+Demo tạo 20 PT, 8 học viên và 1 admin synthetic, tên có DEMO, email example.test. PT01 Pro có 5 hồ sơ; PT02 Free có 3. Có số đo, notes, membership, chat và lịch lưu thật trong DB local. Credential ngẫu nhiên nằm ngoài Git, không nhúng mật khẩu vào runbook.
+
+20 khoản thu TEST × 199.000 đ =3.980.000 đ; chi TEST3.339.800 đ; chênh lệch 640.200 đ là kịch bản giảng dạy. PDF ghi rõ **SIMULATED DEMO ENTRY / NOT A REAL PAYMENT RECEIPT**. Không có tiền thật được chuyển. Admin phải tiếp tục hiển thị actual paid=0 và actual revenue=0. Bộ này không chứng minh điều kiện 20 paying customers.
+
+## Kịch bản trình bày 6–8 phút
+
+1. Mở landing, giải thích PT/học viên và vào account PT01. Cho thấy 5 hồ sơ lưu trong DB, mở học viên 01 và biểu đồ 3 lần đo synthetic.
+2. Mở membership và ghi chú. Chỉ ra ngày membership tách số buổi; ghi chú private khác shared. Đăng nhập học viên 01 bằng browser profile khác, kiểm chỉ thấy shared và số đo của mình.
+3. Tạo hồ sơ/invite bằng PT phù hợp, nhận bằng tài khoản mới synthetic; PT nhập tay số đo, sửa lỗi validation và xác nhận. Reload hai vai trò để kiểm persistence. Không trình bày OCR giả làm provider thật.
+4. Học viên check-in; PT tải lại xem cập nhật. Mở chat, gửi tin hai chiều. Không quay màn hình credential/invitation token.
+5. Mở lịch, tạo slot tương lai, learner đề nghị đổi, PT chấp nhận. Chứng minh slot cũ giữ đến lúc chấp nhận; overlap bị chặn. Hoàn thành chỉ dành cho cuộc hẹn đã qua, trừ buổi khi chọn rõ và có ledger; có thể đảo một lần.
+6. Đăng nhập admin. Mở số liệu thật và panel mô phỏng riêng, tải PDF mô phỏng private và CSV. Nhấn mạnh actual 0 khác scenario 20. Không chuyển khoản hoặc tự chế biên lai ngân hàng.
+7. Mở Studio local để kiểm cấu trúc 20 bảng, RLS và dữ liệu DEMO. Owner kiểm database trước; chưa chia sẻ cloud/admin cho giảng viên.
+
+Expected: luồng được lưu DB, quyền hai bên đúng, không lộ private note/media, quota Free được kiểm DB, không tự trừ buổi khi tạo lịch, không đếm dữ liệu thử vào doanh thu.
+
+## Kiểm thử tái lập
+
+```powershell
+npm.cmd test
 npm.cmd run lint
-npm.cmd run build
 npm.cmd run typecheck
-```
-
-Trong phiên đã dùng dependencies có sẵn, chưa chạy clean install `npm ci`. Nếu thiếu browser, cài Chromium từ package Playwright đã khóa: `node node_modules/@playwright/test/cli.js install chromium`. Không nâng dependency để thay test.
-
-## A. Public demonstration đã kiểm tra
-
-```powershell
 npm.cmd run build
-npm.cmd run start --workspace @fitsync/web -- --hostname 127.0.0.1
+node --test scripts/test/local-environment.test.mjs scripts/local-demo/config.test.mjs
 ```
 
-Mở `http://127.0.0.1: 3000/`. Trình bày hai vai trò, mở public sample, tìm học viên trong fixture, xem learner tour, rồi quay về form đăng ký. Chỉ xem form và auth guard; không gửi signup/reset/upload vào cloud trong smoke này. Expected: landing/tour có nhãn dữ liệu mẫu, không hứaAPK/OCRlive/paid; `/workspace` và`/admin` khi chưa đăng nhập chuyển login; viewport320/390/768/1440 không tràn ngang trong các luồng đã test.
+Backend CI tự dựng DB loopback tạm: migrations →363 SQL/RLS assertions →generated types →production build →28 browser flows →seed hai lần →3 bài demo. Không đổi URL guard để chạy các test có ghi dữ liệu vào cloud. Xem `.github/workflows/backend-acceptance.yml` và receipt của run tương ứng; số mục tiêu trong workflow chưa phải kết quả PASS.
 
-Chạy public assertions trên server đang mở, từ `apps/web/`:
-
-```powershell
-$env:PLAYWRIGHT_EXTERNAL_SERVER='true'
-node ../../node_modules/@playwright/test/cli.js test tests/e2e/public-journey.spec.ts tests/e2e/approved-design.spec.ts tests/e2e/oc2-admin-landing.spec.ts --project=chromium --reporter=line
-```
-
-Expected: 16 passed, exit 0. Direct CLI tránh root npm truyền`--project` thành npm config và tránh teardownwrapper trên Windows. Dừng server bằngCtrl+C trong terminal đã chạy; không kill toàn bộ process node của người dùng.
-
-Website hiện hành [fitsync-app-one.vercel.app](https://fitsync-app-one.vercel.app/) đã HTTP smoke 200/login 200/workspace 307 ngày 17/11; chưa xác định deploy SHA và chưa đăng nhập hai vai trò trong phiên này.
-
-## B. Full synthetic demo khi có local database cô lập
-
-Chỉ dùng stack loopback dùng riêng cho synthetic. Không dùng cloud lịch sử làm sandbox. Không nhập schema snapshot thay migration và không chạy reset/delete như bước mặc định.
-
-1. Khởi động Docker, đọc `supabase/config.toml` và 8 migration.
-2. Từroot chạy `node node_modules/supabase/dist/supabase.js start`. Stack mới áp migrations; stack local cũ cần review và `migration up --local` khi phù hợp, không `db push --linked`.
-3. Tạo file env riêng theo `.env.example` nếu chưa có; không ghi đè `.env.local` đang trỏ cloud. Dùng checkout/worktree riêng cho bài testDB. `NEXT_PUBLIC_SUPABASE_URL=http://127.0.0.1: 54321`, publishable/service-role của chính stack local, site URL localhost. Không chụp/in credential. Bật 3 flag coaching chỉ khi migrations/tôi quyền và test tương ứng qua.
-4. Chạy `node --test scripts/test/local-environment.test.mjs`, `supabase test db`, build và browser suite theo `.github/workflows/backend-acceptance.yml`. `FITSYNC_E2E_LOCAL_DB=true` chỉ cho loopback. CI helper trong repo có guard rõ ràng, không được bỏ guard để chạy cloud.
-5. Dùng hai browser context riêng. PT synthetic tạo hồ sơ và single-uselink; learner nhận invite. PT nhập 70 kg, 30 kgSMM, 14 kgfat, 20%PBF (số **synthetic**), xác nhận rồi reload; learner phải thấy cùng record. Learner gửi check-in; PT thấy update sau reload. Kiểm outsider PT nhận 404/không thấy dữ liệu. Các test hiện có tự sinh identityexample.test để không dùng khách thật.
-6. Nếu demo thêm chat/lịch/context, chạy đủ 3 migration mới và suitechat-private/calendar-private/web-handoff. Expected: tin nhắn lưu hai chiều, lịch có overlap guards, private note không lộ, số buổi không tự giảm do tạo lịch. Không demo đổi/hủy/ledger/full PDF như đã có.
-
-Ảnh authenticated thật trên stack synthetic ngày 30/10: [hồ sơPT](handoff/screenshots/handoff-pt-dossier.png), [learner](handoff/screenshots/handoff-trainee-home.png); [provenance](handoff/screenshots/README.md). Chúng là evidence lịch sử, không chứng minh production hoặc khách thật.
-
-## Test/demo data và video
-
-Không dùng sức khỏe thật. Không đưa password/service-role/tokeninvitation vào slide/log/Trello. Existing [walkthrough25/10](https://drive.google.com/file/d/1gjgn76IERkSat_4sFSLkezkrif2_m4Vu/view) đã xác nhận metadata file, chưa xem lại toàn bộ; cần kiểm version, nội dung và quyền xem giảng viên trước khi coi là video nộp đã đạt.
-
-## Troubleshooting và known limitations
+## Xử lý lỗi và giới hạn
 
 | Triệu chứng | Xử lý |
 |---|---|
-| Dubiousownership | Sau xác định đúng repo, dùng `git -c safe.directory=<đường dẫn chính xác>` cho từng lệnh |
-| Port 3000 bận | Kiểm server đã mở; dùng external server cho tests. Không tắt process không thuộc lượt này |
-| Không Supabase/Docker | Demo public và dùng evidence historical có nhãn; fullE2EB LOCKED |
-| PGRST205 coaching table cloud | Source có migration, REST cloud chưa phơi bày bảng; không tự rollout production |
-| OCR provider unavailable | Nhập tay/PT review, không quảng cáo accuracy/latency |
-| Reset password | Chức năng đầy đủ ởPR 47 chưa merge; chưa có mail delivery receipt |
-|4Pro/27Auth trên admin | Đây không phải paid/customer độc lập, xem cohort filter |
-| GitHub write403/Gitlogin thiếu | Giữ local commit/bundle/PRdrafttext, owner push khi có quyền |
+| Docker Engine không sẵn sàng | Khởi động Docker đã được cài; không tự cài/reboot từ launcher |
+| Port3000/54321 đang dùng | Xác định dịch vụ; bảo toàn tiến trình đang chạy, không kill toàn bộ Node |
+| Runtime migration/config khác | Review dữ liệu và file trước khi thay; launcher không tự reset |
+| Cloud thiếu bảng | Không dùng cloud cũ cho demo mới hoặc tự rollout để né lỗi |
+| OCR chưa cấu hình | Nhập tay và PT review, không claim accuracy/latency |
+| Chưa có ngân hàng nhận tiền | Chỉ demo yêu cầu nâng cấp và TEST ledger; chưa bật thu tiền thật |
+| Pro/số tài khoản tăng | Không coi nhãn gói hoặc synthetic là paying customers |
 
-Đọc [TEST_EVIDENCE](TEST_EVIDENCE.md), [FINAL_REPORT_READINESS](../reports/FINAL_REPORT_READINESS.md). Không có bằng chứng Android physical/PlayStore/Safari/livepayment/market ready trong phiên này.
+Ctrl+C dừng web con của launcher; DB volumes giữ lại. Không có chứng nhận Safari/thiết bị Android, market readiness với dữ liệu sức khỏe thật, thu tiền thật hoặc website production mới. Consent/retention/delete/support cần review trước pilot thật. Nhóm dừng kinh doanh sau môn; không tự tắt/xóa cloud.

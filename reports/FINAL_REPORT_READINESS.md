@@ -1,35 +1,30 @@
-# Final Report Readiness — 17/11/2026
+# Final Report Readiness —22/11/2026
 
-Nguồn bắt buộc là Final Guidelines với 5 phần và ghi chú FitSync cần truy cập database thực tế. Không thấy deadline LMS hoặc thang điểm số trong file. Readiness không tự xác nhận đã đạt học phần.
+Nguồn: Final Guidelines5phần, W8/W9; owner chấp nhận web, chốt199.000đ/PT/tháng, Free3/Pro và dừng sau môn. Deadline trước19/11 đã qua; bộ hiện tại là bản cập nhật/nộp bổ sung, chưa có xác nhận nộp hoặc chấm đạt.
 
-| Deliverable/điều kiện | Trạng thái | Bằng chứng và giới hạn |
+| Deliverable/điều kiện | Trạng thái | Evidence/giới hạn |
 |---|---|---|
-| Week 8 form đúng 6 Step |PASS về bản chuẩn bị |No đã được nhóm xác nhận; chưa gửi form |
-| Week 9 form đúng 5 Step |PASS về bản chuẩn bị |Link tài chính đã upload/đọc lại; chưa thử bằng tài khoản giảng viên |
-| Final draft đúng 5 phần |PASS cấu trúc, PARTIAL nội dung thực tế |Còn các mục unknown có giải thích |
-| Video và screenshots |PARTIAL |Có MP4 trên Drive và ảnh synthetic có nguồn; chưa xem lại toàn video/receipt/version |
-| Sản phẩm tải/sử dụng và market-ready |PARTIAL |Web HTTP 200/build/tests; chưa APK/full auth/ops release |
-| Database account/access |BLOCKED |Owner cần bàn giao quyền được duyệt cho giảng viên; ERD không thay truy cập |
-| CAP ít nhất 2 kênh và evidence theo tuần |PARTIAL |Có plan và metric contract, chưa có actual channel reports |
-| Overall funnel |PARTIAL |Có số đăng ký/xác nhận và giới hạn activation; awareness/click/paid unknown |
-| Analytics tổng và tuần |PARTIAL |Snapshot mới và ngày tạo tài khoản; chưa có event history/attribution |
-| Thu–chi tổng và tuần |PARTIAL |Có template/kịch bản, thiếu ledger actual |
-| Phân tích tài chính |PARTIAL |BEP tính đúng theo giả định; chưa có profit/CAC/LTV actual |
-| Customer reviews |PARTIAL |Report W05 có approval; raw/consent/matching còn thiếu |
-| Ít nhất 20 paying PT cá nhân |NOT VERIFIED |Chưa có biên lai/ledger; 4 Pro không thay paid proof |
-| Contribution table |PARTIAL |Có vai trò/issue artefact, chưa xác nhận giờ/phần trăm |
-| Lịch hẹn lecturer/mentor |PARTIAL |Có report và metadata ảnh; thiếu booking/time/attendance đủ bằng chứng |
-| Canva/script/PDF |PASS trong phạm vi nội dung đã kiểm |10 slide 16:9, text/preview và PDF 10 trang; ảnh UI thật có nhãn synthetic |
-| Git/workspace |PASS local, BLOCKED remote |Branch riêng và giữ dữ liệu; connector 403/Git login thiếu |
+|W8 đúng6Step/chọnNo|PASS bản chuẩn bị|[W8](WEEK_08_FORM.md), chưa gửi|
+|W9 đúng5Step/financialURL|PASS bản chuẩn bị|[W9](WEEK_09_FORM.md), quyền lecturer chưa thử|
+|Final5phần|PASS cấu trúc, PARTIAL kết quả|[Draft](FINAL_REPORT_DRAFT.md)|
+|Web/build/domain/lint/types|PASS ứng viên|0ba9821,114tests, quality CI44155536467|
+|Fresh+upgrade SQL/RLS|PASS|363assertions mỗi DB, giữ fingerprints, exact types|
+|Core browser vàdemo CI|PASS|28core+4demo,0retry tại0ba9821|
+|Windows local DB/Auth/Storage/demo|PASS trong phạm vi kiểm|Build/start thành công22/11;4/4demo PASS,0retry|
+|Video/screenshots/PDF/script|PASS bộ chuẩn bị|Media gốc0ba9821;PDF10trang16:9; script10slide|
+|Canva mới|PASS bộ chuẩn bị đã QA|DAHbpf2PM5U,10trang; HTML/PDF và10preview Canva đã QA; nếu sửa cần xem lại|
+|Production mới|NOT VERIFIED|Site Huy chưa rollout branch này|
+|Database giảng viên|PARTIAL|Owner xem Studio trước, chưa có Gmail/quyền lecturer|
+|CAP>=2channels|PARTIAL|Có kế hoạch, thiếu export/URL actual cùng kỳ|
+|Analytics total/weekly|PARTIAL|Cloud đọc22/11,27Auth-17synthetic=10candidate; chưa xác minh khách độc lập/attribution|
+|Thu–chi actual|PARTIAL|0thu khách theo owner lần xác nhận gần nhất; cost chưa đối soát|
+|Phân tích tài chính|PASS phép tính, PARTIAL actual|BEP17/47 là scenario|
+|20paying individuals|PARTIAL — chưa đạt|**0/20**; TEST/PDF/Pro không thay chứng từ thật|
+|Customer reviews|PARTIAL|Thiếu raw/consent/version đủ nguồn|
+|Contribution/mentoring|PARTIAL|Có artefact/booking, thiếu xác nhận giờ/attendance|
+|Git/workspace|PASS bảo toàn branch|PR48 draft, không merge/main/force/reset dirty worktree|
+|Form/LMS/receipt|NOT VERIFIED|Chưa gửi hoặc có receipt|
 
-## Kiểm tra tính nhất quán
+[Chi tiết kiểm thử](../docs/TEST_EVIDENCE.md), [bộ nộp](SUBMISSION_READY_2026-11-22.md). Không đánh dấu toàn học phần PASS khi điều kiện thực tế chưa đủ. Chi phí unknown không đổi thành0;29synthetic accounts/22TESTentries chỉ chứng minh phần mềm.
 
-PT trả thuê bao là mô hình đề xuất hiện hành, học viên dùng cùng PT. Không chọn ngưỡng tổ chức, 100 active freemium hoặc two-sided để thay điều kiện 20 paid cá nhân khi sản phẩm không theo mô hình đó. Giá 199k là tham chiếu; không cộng 49k/99k cũ thành dòng thu mới. Plan Pro, seed, tour và screenshot không phải doanh thu hoặc khách độc lập.
-
-Source main và test không chứng minh rollout cloud. PR47 auth đang mở; OCR provider, Android và billing chưa được nghiệm thu. Nhóm đã quyết định dừng sau học phần; không viết roadmap mở rộng như cam kết.
-
-## Phần cần nhóm xác nhận
-
-Ledger/biên lai đã che và billing; export kênh/bài đăng cùng kỳ; cohort khách độc lập; raw feedback/consent; exact deploy SHA và full auth acceptance; database access cho giảng viên; contribution và booking receipts; deadline/form LMS chính thức. Khi chưa có, giữ unknown hoặc “chưa đối soát”.
-
-Có thể dùng bộ nội dung để chuẩn bị nộp và trình bày trung thực. Chưa có cơ sở kết luận FitSync đáp ứng toàn bộ Final Guidelines hoặc đã hoàn thành học phần.
+Phụ thuộc nhóm: owner duyệt database rồi cho Gmail lecturer; bổ sung actual cost/kênh/reviews nếu có; xác nhận contribution/mentoring; gửi bản cập nhật theo form/LMS và lưu receipt. Ngân hàng nhận chưa có nên không bật thu tiền thật. Không tự đổi quyền hoặc gửi credentials.
