@@ -4,16 +4,21 @@ FitSync is a mobile-first coaching workspace for independent Vietnamese personal
 
 ## Current product status
 
-The web baseline is implemented and verified through M3:
+The EXE201 release candidate is on `agent/fitsync-final-product` in [draft PR48](https://github.com/Team-SafeTrail/fitsync-app/pull/48). Open [the product review](reports/LOCAL_PRODUCT_REVIEW.html), [database review](reports/DATABASE_REVIEW.html), [test evidence](docs/TEST_EVIDENCE.md), and [final delivery](project-management/FINAL_DELIVERY.md). These describe the candidate; the existing production website has not been upgraded.
 
 - PT registration, sign-in, protected workspace, and tenant-isolated profiles;
 - trainee creation and single-use invitation acceptance;
 - manual five-field InBody validation, confirmation, history, and nutrition drafts;
 - trainee daily check-ins with optional notes and private meal photos;
-- PT activity review, remaining-session updates, and a deterministic inactivity queue;
+- PT activity review and a deterministic inactivity queue;
+- password recovery, invitation reissue/revocation and roster edit/archive/restore;
+- private chat, shared calendar change requests and decisions, membership revisions, and private/shared notes;
+- explicit appointment completion and an append-only session ledger with one-time reversals;
+- database-enforced Free cap of three nonarchived profiles, and current Pro at 199,000 VND/PT/month with unlimited trainees and the same coaching features;
+- session-scoped admin data, private finance evidence, TEST exclusion, upgrade requests and minimal first-party product events;
 - responsive browser coverage for PT and trainee workflows.
 
-M4 OCR-assisted InBody entry is in progress. [PR #13](https://github.com/Team-SafeTrail/fitsync-app/pull/13) merged the corrected private-storage, persistence, authorization, and server-boundary foundation, and [PR #11](https://github.com/Team-SafeTrail/fitsync-app/pull/11) merged the upload, draft-review, correction, explicit-confirmation, and manual-fallback interface. The core synthetic browser workflow is locally verified, but the production adapter intentionally remains unavailable until [Issue #2](https://github.com/Team-SafeTrail/fitsync-app/issues/2) benchmarks at least two candidates on an approved corpus. No OCR accuracy or latency claim, installable Android application, Play Store release, payment processing, or analytics implementation is verified yet.
+The candidate has 20 public tables and 14 additive migrations; the existing cloud still has eight core tables. Do not apply a schema snapshot to production. OCR provider benchmarking, full-report/PDF, expanded nutrition publication and real-data operational gates remain incomplete. Manual entry and mandatory PT confirmation work independently. The owner confirmed zero real paying customers; Pro labels and the synthetic demo are not payment evidence. Actual costs remain unreconciled. Web delivery is accepted for this course; Android/Play Store is not required for the current submission.
 
 ## Quick start
 
@@ -24,6 +29,19 @@ M4 OCR-assisted InBody entry is in progress. [PR #13](https://github.com/Team-Sa
 - Docker for the local Supabase stack
 
 ### Run locally
+
+For a course demo, use a separate local Supabase project with labelled synthetic data:
+
+```powershell
+npm.cmd ci --ignore-scripts --cache ../outputs/npm-cache
+npm.cmd run demo:plan
+npm.cmd run demo:prepare
+npm.cmd run demo:start
+```
+
+Docker Engine must already be running. The launcher preserves `.env.local`, uses only loopback database credentials and stores generated demo credentials outside Git in `../outputs/local-demo-private/LOCAL_DEMO_ACCESS.html`. It does not install Windows components, reset another database or create real customer transactions. See [the complete demo workflow](docs/DEMO_WORKFLOW.md). Full database acceptance passed on isolated CI. On 22 November, the Windows local production build/start and all four local demo browser tests also passed with isolated Supabase; Docker/WSL2 are installed without a reboot.
+
+For ordinary development, review existing configuration before using the baseline commands below. Never overwrite an existing cloud environment file with local values:
 
 ```bash
 npm ci

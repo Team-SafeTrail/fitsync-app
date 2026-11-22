@@ -1,12 +1,13 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
-import { useFormState } from "react-dom";
+import { useEffect, useState } from "react";
+import { useActionState } from "react";
 import { ChevronDown, Plus, ShieldCheck } from "lucide-react";
 import { createTrainee } from "@/features/workspace/actions";
-import { initialWorkspaceActionState } from "@/features/workspace/action-state";
+import { initialWorkspaceActionState, type WorkspaceActionState } from "@/features/workspace/action-state";
 import CopyInvitationButton from "./CopyInvitationButton";
 import SubmitButton from "./SubmitButton";
+import { PendingFields, usePreservedForm } from "./PreservedForm";
 
 function FieldError({ error }: { error?: string }) {
   return error ? <span className="workspace-field-error">{error}</span> : null;
@@ -19,14 +20,16 @@ const invitationDateFormatter = new Intl.DateTimeFormat("vi-VN", {
 });
 
 export default function CreateTraineeForm({ defaultOpen = false }: { defaultOpen?: boolean }) {
-  const [state, action] = useFormState(createTrainee, initialWorkspaceActionState);
+  const {ref:formRef,reset,onReset}=usePreservedForm();
+  const [state, action] = useActionState(async(previous:WorkspaceActionState,form:FormData):Promise<WorkspaceActionState>=>{
+    try {const result=await createTrainee(previous,form);if(result.status==="success")reset();return result;}
+    catch {return {status:"error",message:"Chưa xác nhận được hồ sơ. Dữ liệu vẫn được giữ; kiểm tra danh sách trước khi tạo lại."};}
+  }, initialWorkspaceActionState);
   const [isOpen, setIsOpen] = useState(defaultOpen);
-  const formRef = useRef<HTMLFormElement>(null);
 
   useEffect(() => {
     if (!state.invitationUrl) return;
     setIsOpen(true);
-    formRef.current?.reset();
   }, [state.invitationUrl]);
 
   useEffect(() => {
@@ -83,7 +86,7 @@ export default function CreateTraineeForm({ defaultOpen = false }: { defaultOpen
           </div>
         )}
 
-      <form ref={formRef} action={action} className="workspace-form-grid">
+      <form ref={formRef} onReset={onReset} action={action} className="workspace-form-grid"><PendingFields>
         <label className="workspace-field workspace-field-wide" htmlFor="trainee-name">
           <span>Tên hiển thị</span>
           <input id="trainee-name" name="displayName" autoComplete="name" minLength={2} maxLength={100} required />
@@ -121,7 +124,7 @@ export default function CreateTraineeForm({ defaultOpen = false }: { defaultOpen
         <div className="workspace-form-action workspace-field-wide">
           <SubmitButton idle="Tạo học viên & link mời" pending="Đang tạo..." />
         </div>
-      </form>
+      </PendingFields></form>
       </div>
     </details>
   );

@@ -1,0 +1,472 @@
+{
+  "issues": [
+    {
+      "number": 46,
+      "title": "[Handoff/P2] PILOT-RELEASE: Chạy pilot có điều kiện phát hành và đo giá trị giảm nhập/tìm thông tin của PT",
+      "state": "open",
+      "labels": [
+        "documentation",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/46"
+    },
+    {
+      "number": 45,
+      "title": "[Handoff/P2] BILLING-OFFER: Làm rõ offer199k đã khảo sát và economics trước khi nối thanh toán thật",
+      "state": "open",
+      "labels": [
+        "documentation",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/45"
+    },
+    {
+      "number": 44,
+      "title": "[Handoff/P2] REALTIME-MEDIA: Thêm media/read state/realtime/notification có quyền và lifecycle rõ",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/44"
+    },
+    {
+      "number": 43,
+      "title": "[Handoff/P2] ANDROID-CORE: Triển khai Android hai vai trò theo domain contract đã ổn định, phù hợp tương tác điện thoại",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/43"
+    },
+    {
+      "number": 42,
+      "title": "[Handoff/P1] ANDROID-SPIKE: Chứng minh đường Android dùng chung backend qua một vertical slice trên máy thật",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/42"
+    },
+    {
+      "number": 41,
+      "title": "[Handoff/P1] TARGETS-MEALS: Tách mục tiêu dinh dưỡng được PT publish và nhật ký nhiều bữa/ngày khỏi legacy record/check-in",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/41"
+    },
+    {
+      "number": 40,
+      "title": "[Handoff/P1] OCR-PDF: Nối OCR/PDF thật sau benchmark và giữ PT là người xác nhận cuối",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/40"
+    },
+    {
+      "number": 39,
+      "title": "[Handoff/P1] FULL-REPORT: Mở model InBody từ năm trường sang report có totals/segments/source/unit/revision và PT review",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/39"
+    },
+    {
+      "number": 38,
+      "title": "[Handoff/P1] LEDGER-01: Thay số dư mutable bằng ledger có completion/debit/reversal và giữ số dư chuyển đổi chính xác",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/38"
+    },
+    {
+      "number": 37,
+      "title": "[Handoff/P1] CALENDAR-02: Cho learner đề nghị đổi/hủy lịch và PT quyết định, giữ nguyên lịch gốc đến khi chấp nhận",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/37"
+    },
+    {
+      "number": 36,
+      "title": "[Handoff/P0] ABUSE-ROLLOUT: Bảo vệ abuse và đưa baseline lên staging đúng thứ tự, tách merge khỏi rollout",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/36"
+    },
+    {
+      "number": 35,
+      "title": "[Handoff/P0] OPS-DATA: Chốt và triển khai vòng đời dữ liệu, xóa tài khoản và quy trình phục hồi có thể diễn tập",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/35"
+    },
+    {
+      "number": 34,
+      "title": "[Handoff/P0] LEGACY-AUTH: Đóng khoảng trống quyền ở health/check-in/OCR/media legacy trước khi dùng dữ liệu khách hàng",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/34"
+    },
+    {
+      "number": 33,
+      "title": "[Handoff/P0] AUTH-DELIVERY: Hoàn thiện delivery và UX vòng đời tài khoản để PT/học viên dùng qua email thật trên staging đã duyệt",
+      "state": "open",
+      "labels": [
+        "enhancement",
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/33"
+    },
+    {
+      "number": 32,
+      "title": "[Handoff/P0] REVIEW-BASELINE: Nhận và review độc lập web/database v1 trước khi tiếp tục implementation",
+      "state": "open",
+      "labels": [
+        "documentation",
+        "team-task"
+      ],
+      "assignees": [
+        "DiepKhai",
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/32"
+    },
+    {
+      "number": 27,
+      "title": "[OC2] Complete Viet + Hung database handoff and submission evidence",
+      "state": "open",
+      "labels": [
+        "documentation",
+        "enhancement",
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "Am2uocVi3t"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/27"
+    },
+    {
+      "number": 24,
+      "title": "[Product/01] Reframe FitSync around a unified coaching timeline",
+      "state": "open",
+      "labels": [
+        "documentation",
+        "enhancement",
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "hei1sme",
+        "Am2uocVi3t"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/24"
+    },
+    {
+      "number": 22,
+      "title": "[UI/04] Remake authenticated FitSync workspace surfaces",
+      "state": "open",
+      "labels": [
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "hei1sme"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/22"
+    },
+    {
+      "number": 20,
+      "title": "[UI/03] Remake the public sample tour with Adaptive FitSync",
+      "state": "open",
+      "labels": [
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "hei1sme"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/20"
+    },
+    {
+      "number": 18,
+      "title": "[UI/02] Remake public and access surfaces with Adaptive FitSync",
+      "state": "open",
+      "labels": [
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "hei1sme"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/18"
+    },
+    {
+      "number": 16,
+      "title": "[UI/01] Establish adaptive FitSync design contract and accessible primitives",
+      "state": "open",
+      "labels": [
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "hei1sme"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/16"
+    },
+    {
+      "number": 5,
+      "title": "[M4/OC2] Review product UI and prepare evidence assets",
+      "state": "open",
+      "labels": [
+        "team-task",
+        "blocked"
+      ],
+      "assignees": [],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/5"
+    },
+    {
+      "number": 4,
+      "title": "[M4/OC1] Build OCR review UI and investigate Android packaging",
+      "state": "closed",
+      "labels": [
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "DiepKhai"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/4"
+    },
+    {
+      "number": 3,
+      "title": "[M4] Add private OCR attempts, storage, and RLS",
+      "state": "closed",
+      "labels": [
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "huydqse180459-art"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/3"
+    },
+    {
+      "number": 2,
+      "title": "[M4] Benchmark InBody 270 OCR candidates",
+      "state": "open",
+      "labels": [
+        "team-task",
+        "agent-ready"
+      ],
+      "assignees": [
+        "hei1sme",
+        "Am2uocVi3t"
+      ],
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/issues/2"
+    }
+  ],
+  "pull_requests": [
+    {
+      "number": 47,
+      "title": "feat(auth): complete invitation lifecycle, password reset, and scoped identity (#33)",
+      "base": "dev",
+      "head": "feat/p0-33-auth-delivery",
+      "draft": false,
+      "sha": "131dda25e1702fc8a7e8f9b33b9949de6748e74c",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/47"
+    },
+    {
+      "number": 30,
+      "title": "docs(oc2): align final checklist and ERD handoff",
+      "base": "main",
+      "head": "docs/oc2-final-checklist",
+      "draft": false,
+      "sha": "4980264cd327d8484ef6acc46abdee1245dd7ea3",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/30"
+    },
+    {
+      "number": 25,
+      "title": "docs: center FitSync on unified coaching",
+      "base": "main",
+      "head": "docs/unified-coaching-plan",
+      "draft": false,
+      "sha": "0b5b65324455ff869c19b8b7435aeb18cb393ed3",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/25"
+    },
+    {
+      "number": 23,
+      "title": "[UI/04] Remake authenticated FitSync workspace surfaces",
+      "base": "feat/ui-20-public-tour",
+      "head": "feat/ui-22-workspace-surfaces",
+      "draft": false,
+      "sha": "4bf37b5a4d3031132b5285870d144fa2ba10c24b",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/23"
+    },
+    {
+      "number": 21,
+      "title": "[UI/03] Remake the public sample tour with Adaptive FitSync",
+      "base": "feat/ui-18-public-surfaces",
+      "head": "feat/ui-20-public-tour",
+      "draft": false,
+      "sha": "d96e88d464ecd3bbc46cc611057d905e3e97d73b",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/21"
+    },
+    {
+      "number": 19,
+      "title": "[UI/02] Remake public and access surfaces with Adaptive FitSync",
+      "base": "feat/ui-16-design-foundation",
+      "head": "feat/ui-18-public-surfaces",
+      "draft": false,
+      "sha": "b35a05b23f0196fb3f16d397b4e1835c4f46ecfc",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/19"
+    },
+    {
+      "number": 17,
+      "title": "feat: establish adaptive FitSync UI foundation",
+      "base": "main",
+      "head": "feat/ui-16-design-foundation",
+      "draft": false,
+      "sha": "8cfbf4fd9fe0b80f28f750baa576b652e460099a",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/17"
+    },
+    {
+      "number": 15,
+      "title": "feat: benchmark InBody 270 OCR candidates",
+      "base": "main",
+      "head": "feat/m4-ocr-benchmark",
+      "draft": true,
+      "sha": "3804bc4dedb16f041edb17e870076751543f0efc",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/pull/15"
+    }
+  ],
+  "main_runs": [
+    {
+      "id": 41579119351,
+      "name": "CI",
+      "result": "success",
+      "sha": "3c816e977d50f8a9bda1703cf4d6f3a417f86d0c",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41579119351",
+      "updated": "2026-11-03T04:38:29Z"
+    },
+    {
+      "id": 40098598365,
+      "name": "CI",
+      "result": "success",
+      "sha": "e1b03ad95b4fa5306ec7c2a4d9f5ca443e22cffd",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/actions/runs/40098598365",
+      "updated": "2026-10-24T13:33:36Z"
+    },
+    {
+      "id": 40097446447,
+      "name": "CI",
+      "result": "success",
+      "sha": "094c5ee36e9c791c11cabac4d4c22d3080279570",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/actions/runs/40097446447",
+      "updated": "2026-10-24T13:17:40Z"
+    },
+    {
+      "id": 38358419644,
+      "name": "CI",
+      "result": "success",
+      "sha": "a771a10cb453a9f05513d5f3622926545674b5eb",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/actions/runs/38358419644",
+      "updated": "2026-10-13T06:45:19Z"
+    },
+    {
+      "id": 37289639064,
+      "name": "CI",
+      "result": "success",
+      "sha": "21c55ce37bedd688e4e1e045c11a6c6cd0c9e1b4",
+      "url": "https://github.com/Team-SafeTrail/fitsync-app/actions/runs/37289639064",
+      "updated": "2026-10-05T09:23:56Z"
+    }
+  ]
+}

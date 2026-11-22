@@ -1,0 +1,22 @@
+{
+  "checked_on": "2026-11-22",
+  "timezone": "Asia/Saigon",
+  "revision": "0ba9821e39e7cec559473e6aae3262e4294e33b7",
+  "environment": "Windows Docker Desktop / isolated Supabase loopback",
+  "command": "node ../outputs/verify-fitsync-local.mjs",
+  "exitCode": 0,
+  "passed": 4,
+  "failed": 0,
+  "retries": 0,
+  "output": [
+    "ok 1 admin keeps actual revenue zero",
+    "ok 2 Pro roster five persisted profiles and shared dossier",
+    "ok 3 Free three slots and learner shared data only",
+    "ok 4 recorded walkthrough persisted PT coaching and separated demo finance",
+    "4 passed (1.0m)"
+  ],
+  "web": "http://127.0.0.1:3000",
+  "studio": "http://127.0.0.1:54323",
+  "syntheticOnly": true,
+  "productionChanged": false
+}

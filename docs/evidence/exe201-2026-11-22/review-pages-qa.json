@@ -1,0 +1,40 @@
+{
+  "checked_on": "2026-11-22",
+  "pass": true,
+  "qa": [
+    {
+      "file": "reports/GOOGLE_FORM_COPY_W8_W9.html",
+      "widths": [
+        1440,
+        390
+      ],
+      "pass": true
+    },
+    {
+      "file": "reports/LOCAL_PRODUCT_REVIEW.html",
+      "widths": [
+        1440,
+        390
+      ],
+      "pass": true
+    },
+    {
+      "file": "reports/DATABASE_REVIEW.html",
+      "widths": [
+        1440,
+        390
+      ],
+      "pass": true
+    },
+    {
+      "surface": "web",
+      "status": 200,
+      "pass": true
+    },
+    {
+      "surface": "studio",
+      "status": 200,
+      "pass": true
+    }
+  ]
+}

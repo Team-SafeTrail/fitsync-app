@@ -1,0 +1,27 @@
+begin;
+create extension if not exists pgtap with schema extensions;
+select plan(12);
+insert into auth.users(id,instance_id,aud,role,email,encrypted_password,email_confirmed_at,raw_app_meta_data,raw_user_meta_data,created_at,updated_at)
+values('86000000-0000-0000-0000-000000000001','00000000-0000-0000-0000-000000000000','authenticated','authenticated','quota@example.test','',now(),'{}','{"display_name":"Quota test","synthetic":true}',now(),now());
+set local role authenticated;
+select set_config('request.jwt.claim.sub','86000000-0000-0000-0000-000000000001',true);
+select lives_ok($$select public.create_trainee_with_invitation('Quota one','recomp','',12,12,'q1@example.test',repeat('1',64),now()+interval '7 days')$$,'First slot');
+select lives_ok($$select public.create_trainee_with_invitation('Quota two','recomp','',12,12,'q2@example.test',repeat('2',64),now()+interval '7 days')$$,'Second slot');
+select lives_ok($$select public.create_trainee_with_invitation('Quota three','recomp','',12,12,'q3@example.test',repeat('3',64),now()+interval '7 days')$$,'Third slot');
+select throws_ok($$select public.create_trainee_with_invitation('Quota four','recomp','',12,12,'q4@example.test',repeat('4',64),now()+interval '7 days')$$,'P0001',null,'Fourth pending profile exceeds Free');
+select is((select count(*)::integer from public.trainee_profiles where assigned_pt_id=auth.uid()),3,'Failed create is atomic');
+select lives_ok($$select public.set_trainee_archived((select id from public.trainee_profiles where display_name='Quota one'),1,true)$$,'Archive frees slot');
+select lives_ok($$select public.create_trainee_with_invitation('Quota four','recomp','',12,12,'q4@example.test',repeat('4',64),now()+interval '7 days')$$,'New profile after archive');
+select throws_ok($$select public.set_trainee_archived((select id from public.trainee_profiles where display_name='Quota one'),2,false)$$,'P0001',null,'Restore cannot bypass quota');
+reset role;
+update public.pt_profiles set subscription_plan='pro',subscription_valid_until=now()+interval '1 month' where id='86000000-0000-0000-0000-000000000001';
+set local role authenticated;
+select lives_ok($$select public.set_trainee_archived((select id from public.trainee_profiles where display_name='Quota one'),2,false)$$,'Current Pro can restore fourth profile');
+select lives_ok($$select public.create_trainee_with_invitation('Quota five','recomp','',12,12,'q5@example.test',repeat('5',64),now()+interval '7 days')$$,'Current Pro has no three-profile cap');
+reset role;
+update public.pt_profiles set subscription_valid_until=now()-interval '1 second' where id='86000000-0000-0000-0000-000000000001';
+set local role authenticated;
+select throws_ok($$select public.create_trainee_with_invitation('Quota six','recomp','',12,12,'q6@example.test',repeat('6',64),now()+interval '7 days')$$,'P0001',null,'Expired Pro uses Free creation limit');
+select is((select count(*)::integer from public.trainee_profiles where assigned_pt_id=auth.uid()),5,'Expiry never deletes existing profiles');
+select * from finish();
+rollback;

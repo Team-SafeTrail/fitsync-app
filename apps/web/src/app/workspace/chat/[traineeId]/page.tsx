@@ -10,7 +10,8 @@ import ChatHistoryViewport from "@/components/workspace/ChatHistoryViewport";
 
 export const dynamic = "force-dynamic";
 
-export default async function ConversationPage({params, searchParams}: {params: {traineeId: string}; searchParams: {before?: string}}) {
+export default async function ConversationPage({params:route, searchParams:query}: {params: Promise<{traineeId: string}>; searchParams: Promise<{before?: string}>}) {
+  const [params,searchParams]=await Promise.all([route,query]);
   if (!await getWorkspaceViewer()) redirect("/login");
   if (!isChatEnabled()) redirect("/workspace/chat");
   const context = await getChatContext(params.traineeId);

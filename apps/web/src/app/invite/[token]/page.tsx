@@ -10,12 +10,13 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
-export default async function InvitationPage({ params }: { params: { token: string } }) {
+export default async function InvitationPage({ params: route }: { params: Promise<{ token: string }> }) {
+  const params = await route;
   const rawToken = params.token;
   let invitation: { display_name: string; email: string; expires_at: string } | undefined;
 
   if (isInvitationToken(rawToken)) {
-    const supabase = createClient();
+    const supabase = (await createClient());
     const { data } = await supabase.rpc("get_invitation_preview", {
       invite_token_hash: hashInvitationToken(rawToken),
     });

@@ -1,0 +1,8 @@
+
+> fitsync@0.1.0 typecheck
+> npm run typecheck --workspace @fitsync/web
+
+
+> @fitsync/web@0.1.0 typecheck
+> tsc --noEmit
+

@@ -21,6 +21,14 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user && (request.nextUrl.pathname.startsWith("/workspace") || request.nextUrl.pathname.startsWith("/admin"))) {
+    const target = request.nextUrl.clone();
+    target.pathname = "/login"; target.search = "";
+    target.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
+    const login = NextResponse.redirect(target);
+    response.cookies.getAll().forEach(cookie => login.cookies.set(cookie));
+    return login;
+  }
   return response;
 }

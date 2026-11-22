@@ -6,6 +6,7 @@ export default function WorkspaceNav({isPt}:{isPt:boolean}) {
  const path=usePathname();
  return <nav className="workspace-nav" aria-label="Điều hướng workspace">
   {isPt&&<Link href="/workspace/today" aria-current={path==="/workspace/today"?"page":undefined}><LayoutDashboard size={18}/><span>Hôm nay</span></Link>}
+  {isPt&&<Link href="/workspace/billing" aria-current={path==="/workspace/billing"?"page":undefined}>Gói FitSync</Link>}
   <Link href="/workspace" aria-current={path==="/workspace"?"page":undefined}>{isPt?<UsersRound size={18}/>:<LayoutDashboard size={18}/>}<span>{isPt?"Học viên":"Hôm nay"}</span></Link>
   {!isPt && <><Link href="/workspace#trainee-activity-title">Hoạt động của bạn</Link><Link href="/workspace/progress" aria-current={path==="/workspace/progress"?"page":undefined}>Chỉ số và tiến trình</Link><Link href="/workspace#membership">Membership và ghi chú</Link></>}
   <Link href="/workspace/calendar" aria-current={path.startsWith("/workspace/calendar")?"page":undefined}><CalendarDays size={18}/><span>Lịch của bạn</span></Link>

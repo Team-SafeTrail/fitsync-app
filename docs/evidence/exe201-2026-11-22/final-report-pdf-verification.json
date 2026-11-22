@@ -1,0 +1,10 @@
+{
+  "checked_on": "2026-11-22",
+  "pages": 8,
+  "all_a4": true,
+  "required_five_parts": true,
+  "preserves_unmet_zero_of_twenty": true,
+  "no_table_cell_overflow": true,
+  "sha256": "4b6cd12487cac58339ed523d670aaac6e9b0e53d9957e6729685e2206c91686a",
+  "visual_qa": "Rendered and inspected all pages in first iteration; final removes redundant standalone introduction page. Cover and contribution page re-inspected."
+}

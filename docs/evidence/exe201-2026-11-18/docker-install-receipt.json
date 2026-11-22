@@ -1,0 +1,11 @@
+{
+    "authorizedByOwner":  true,
+    "noAutomaticReboot":  true,
+    "mode":  "per-user",
+    "backend":  "wsl-2",
+    "startedAt":  "2026-11-17T19:09:11.5681947Z",
+    "finishedAt":  "2026-11-17T19:10:30.3533492Z",
+    "exitCode":  0,
+    "installed":  true,
+    "rebootAlreadyRequiredByWsl":  true
+}

@@ -1,0 +1,62 @@
+
+> fitsync@0.1.0 build
+> npm run build --workspace @fitsync/web
+
+
+> @fitsync/web@0.1.0 build
+> next build
+
+  ▲ Next.js 14.2.21
+  - Environments: .env.local
+
+   Creating an optimized production build ...
+npm.cmd : <w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (140kiB) impacts deserialization 
+performance (consider using Buffer instead and decode when needed)
+At line:2 char:1
++ npm.cmd run build *> ../outputs/exe201-source-audit-2026-11-17/build. ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (<w> [webpack.ca...de when needed):String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+   Generating static pages (0/19) ...
+   Generating static pages (4/19) 
+   Generating static pages (9/19) 
+   Generating static pages (14/19) 
+ ✓ Generating static pages (19/19)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                              Size     First Load JS
+┌ ○ /                                    9.71 kB         109 kB
+├ ○ /_not-found                          183 B          87.3 kB
+├ ƒ /admin                               4.82 kB        98.8 kB
+├ ○ /app/dashboard                       8.2 kB           98 kB
+├ ○ /app/trainee                         5.5 kB         95.3 kB
+├ ƒ /auth/callback                       0 B                0 B
+├ ○ /icon.svg                            0 B                0 B
+├ ƒ /invite/[token]                      1.92 kB         101 kB
+├ ƒ /login                               187 B          99.2 kB
+├ ○ /privacy                             197 B          94.1 kB
+├ ƒ /register                            187 B          99.2 kB
+├ ○ /terms                               197 B          94.1 kB
+├ ƒ /workspace                           3.44 kB         103 kB
+├ ƒ /workspace/calendar                  1.68 kB        95.6 kB
+├ ƒ /workspace/chat                      176 B          94.1 kB
+├ ƒ /workspace/chat/[traineeId]          1.8 kB         95.8 kB
+├ ƒ /workspace/progress                  2.03 kB          96 kB
+├ ƒ /workspace/today                     176 B          94.1 kB
+└ ƒ /workspace/trainees/[traineeId]      5.2 kB          104 kB
++ First Load JS shared by all            87.1 kB
+  ├ chunks/1dd3208c-9e496311facd5dad.js  53.6 kB
+  ├ chunks/528-07a66ff63a43512b.js       31.6 kB
+  └ other shared chunks (total)          1.94 kB
+
+
+ƒ Middleware                             79.1 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

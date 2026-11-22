@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "images": 10,
+  "videos": [
+    {
+      "src": "../presentations/demo-videos/walkthrough.webm",
+      "duration": 36.36,
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "src": "../presentations/demo-videos/admin-demo.webm",
+      "duration": 2.48,
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "src": "../presentations/demo-videos/pt-demo.webm",
+      "duration": 2.76,
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "src": "../presentations/demo-videos/free-demo.webm",
+      "duration": 2.28,
+      "width": 1280,
+      "height": 900
+    },
+    {
+      "src": "../presentations/demo-videos/learner-demo.webm",
+      "duration": 2.32,
+      "width": 390,
+      "height": 844
+    },
+    {
+      "src": "../presentations/demo-videos/roster-workflow.webm",
+      "duration": 6.68,
+      "width": 800,
+      "height": 450
+    },
+    {
+      "src": "../presentations/demo-videos/finance-workflow.webm",
+      "duration": 7,
+      "width": 800,
+      "height": 450
+    }
+  ],
+  "viewportWidths": [
+    1440,
+    390
+  ]
+}

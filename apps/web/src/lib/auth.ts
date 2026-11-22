@@ -4,7 +4,7 @@ import { isSupabaseConfigured } from "@/lib/supabase/env";
 
 export const getCurrentUser = cache(async () => {
   if (!isSupabaseConfigured()) return null;
-  const supabase = createClient();
+  const supabase = (await createClient());
   const { data, error } = await supabase.auth.getUser();
   if (error) return null;
   return data.user;

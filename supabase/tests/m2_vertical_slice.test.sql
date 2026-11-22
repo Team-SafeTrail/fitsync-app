@@ -72,15 +72,10 @@ select results_eq(
   array[0::bigint],
   'PT B cannot read PT A roster'
 );
-select results_eq(
-  $$with changed as (
-      update public.trainee_profiles
-      set remaining_sessions = 0
-      where id = 'aa000000-0000-0000-0000-000000000001'
-      returning 1
-    ) select count(*)::bigint from changed$$,
-  array[0::bigint],
-  'PT B cannot mutate PT A trainee'
+select throws_ok(
+  $$update public.trainee_profiles set remaining_sessions=0 where id='aa000000-0000-0000-0000-000000000001'$$,
+  '42501',null,
+  'PT B has no direct session mutation privilege'
 );
 select results_eq(
   $$with changed as (
@@ -103,7 +98,7 @@ select throws_ok(
       '22000000-0000-0000-0000-000000000002'
     )$$,
   '42501',
-  'new row violates row-level security policy for table "inbody_records"',
+  'Active linked profile required',
   'PT B cannot insert a record for PT A trainee'
 );
 reset role;
@@ -226,6 +221,11 @@ select results_eq(
 );
 reset role;
 
+-- This atomic-creation scenario already owns three fixture profiles. The owner
+-- approved a Free3 cap on 17 Nov, so the fourth-profile scenario uses a valid
+-- test-only Pro entitlement; roster_plan_limits tests Free rejection separately.
+update public.pt_profiles set subscription_plan='pro',subscription_valid_until=now()+interval '1 month'
+where id='11000000-0000-0000-0000-000000000001';
 set local role authenticated;
 select set_config('request.jwt.claim.sub', '11000000-0000-0000-0000-000000000001', true);
 select lives_ok(

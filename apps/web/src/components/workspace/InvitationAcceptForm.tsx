@@ -1,6 +1,6 @@
 "use client";
 
-import { useFormState } from "react-dom";
+import { useActionState } from "react";
 import { LockKeyhole } from "lucide-react";
 import { acceptInvitation } from "@/features/workspace/actions";
 import { initialWorkspaceActionState } from "@/features/workspace/action-state";
@@ -8,7 +8,7 @@ import SubmitButton from "./SubmitButton";
 
 export default function InvitationAcceptForm({ rawToken, email }: { rawToken: string; email: string }) {
   const boundAction = acceptInvitation.bind(null, rawToken);
-  const [state, action] = useFormState(boundAction, initialWorkspaceActionState);
+  const [state, action] = useActionState(boundAction, initialWorkspaceActionState);
 
   return (
     <form action={action} className="auth-form">
