@@ -3,6 +3,7 @@ import {readFile,mkdir} from "node:fs/promises";
 import {resolve} from "node:path";
 import {createClient} from "@supabase/supabase-js";
 import type {Database} from "../../src/types/database";
+import {getApplicationDate} from "../../src/features/engagement/calendar";
 
 const privateRoot=resolve(process.cwd(),"../../../outputs/local-demo-private");
 type Account={id:string;email:string;password:string;name:string};
@@ -19,6 +20,16 @@ async function login(page:Page,label:string){
  const account=manifest.accounts[label];
  await page.goto("/login");await page.getByLabel("Email",{exact:true}).fill(account.email);await page.getByLabel("Mật khẩu",{exact:true}).fill(account.password);await page.getByRole("button",{name:"Vào workspace",exact:true}).click();await expect(page).toHaveURL(label==="admin"?/\/admin$/:/\/workspace$/);
  await expect(page.getByText("DỮ LIỆU MÔ PHỎNG · EXE201",{exact:true})).toBeVisible();
+}
+async function demoCalendarPath(){
+ // Seed schedules two days ahead. On weekends that belongs to the next week;
+ // read the persisted fixture through the PT's scoped account, not today's date.
+ const api=createClient<Database>(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY!,{auth:{persistSession:false,autoRefreshToken:false}});
+ const account=manifest.accounts.pt01;
+ expect((await api.auth.signInWithPassword({email:account.email,password:account.password})).error).toBeNull();
+ const fixture=await api.from("coaching_appointments").select("starts_at").eq("pt_id",account.id).eq("title","DEMO · Trao đổi tiến trình").single();
+ expect(fixture.error).toBeNull();expect(fixture.data).toBeTruthy();
+ return "/workspace/calendar?week="+getApplicationDate(fixture.data!.starts_at);
 }
 async function capture(page:Page,name:string){
  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)).toBe(true);
@@ -50,7 +61,7 @@ test("demo Pro roster has five persisted profiles and a shared dossier",async({p
  await page.goto(`/workspace/trainees/${trainee.id}#progress`);await expect(page.getByTestId("verified-record")).toHaveCount(3);await capture(page,"pt-progress");
  await page.getByRole("tab",{name:"Membership & buổi",exact:true}).click();await expect(page.getByTestId("membership-summary")).toContainText("DEMO · Membership 30 ngày");await capture(page,"pt-membership");
  await page.getByRole("tab",{name:"Ghi chú",exact:true}).click();await expect(page.getByTestId("coaching-note")).toHaveCount(2);await capture(page,"pt-notes");
- await page.goto("/workspace/calendar");await capture(page,"pt-calendar");
+ await page.goto(await demoCalendarPath());await capture(page,"pt-calendar");
 });
 
 test("demo Free reserves three slots and learner sees only shared coaching data",async({page,browser})=>{
@@ -78,7 +89,7 @@ test("recorded walkthrough of persisted PT coaching and separated demo finance",
  const note=page.getByRole("form",{name:"Thêm ghi chú",exact:true});
  const shared="DỮ LIỆU DEMO · Hướng dẫn chia sẻ trong video, không phải review hoặc tư vấn cho khách thật.";
  await note.getByLabel("Nội dung ghi chú").fill(shared);await note.getByLabel("Ai có thể đọc?").selectOption("shared");await hold();await note.getByRole("button",{name:"Lưu ghi chú",exact:true}).click();await expect(page.getByTestId("coaching-note")).toHaveCount(3);await hold();
- await page.goto("/workspace/calendar");await expect(page.getByText("DEMO · Trao đổi tiến trình",{exact:true}).first()).toBeVisible();await hold();
+ await page.goto(await demoCalendarPath());await expect(page.getByText("DEMO · Trao đổi tiến trình",{exact:true}).first()).toBeVisible();await hold();
  await page.goto(`/workspace/chat/${trainee.id}`);await expect(page.getByText("DEMO · Bạn kiểm tra lịch và gửi check-in ở workspace nhé.",{exact:true})).toBeVisible();await hold();
  const message="DEMO · Tin nhắn được lưu trong database local cho video học phần.";
  await page.getByLabel("Tin nhắn",{exact:true}).fill(message);await page.getByRole("button",{name:"Gửi tin nhắn",exact:true}).click();await expect(page.getByText(message,{exact:true})).toBeVisible();await hold();

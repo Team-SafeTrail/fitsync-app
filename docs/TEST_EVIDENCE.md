@@ -37,3 +37,7 @@ Cloud đọc lại22/11 vẫn8 bảng, candidate cohort chưa có InBody/check-i
 Chưa benchmark provider OCR/full PDF, Safari/Firefox/thiết bị vật lý, tải lớn, real bank settlement hoặc pilot dữ liệu sức khỏe thật. Không có coverage%/pentest/market-ready certification. Nhập tay và PT confirm là luồng được kiểm; consent/retention/delete/support/abuse cần review trước pilot thật.
 
 Tái lập theo [DEMO_WORKFLOW](DEMO_WORKFLOW.md) và workflows CI. Không đóng gói credential, raw contact hoặc health data thật.
+
+## Kiểm tiếp bộ bàn giao22/11
+
+DocsHEAD8311511:quality45027572575 PASS;backend45027572543 fresh/upgrade363SQL,28core vàseed2lần PASS nhưngdemo3/4. Walkthrough giả định cuộc hẹn nằm tuần hiện tại;seed đặt+2ngày nên Chủnhật22/11 rơi sang24/11. Assertion bị lỗi phạm vi ngày,không phải quyền hoặc mấtdata. Đã sửa testđọc ngàyfixture quaPTscopedquery vàmở đúngweek;giữ nguyênassert hiển thị,không tăngtimeout/retry. Kết quả run sau sửa được lưu trong receipt đóng gói ngoàiGit;chưa suy từ code rằng đãPASS.
