@@ -1,56 +1,36 @@
-# ADR 003: Android Packaging Path for Play Store
+# ADR 003: Android Packaging Path
 
 ## Status
-Proposed
+
+Accepted for the local U-01 engineering baseline on 2026-11-25. Issue #42 remains blocked in GitHub pending team dependency and implementation-scope confirmation. The official MAD submission format has not been verified.
 
 ## Context
-As part of the M4 milestone (OC1), there is a course requirement to distribute the FitSync application via the Google Play Store. 
-FitSync is currently built as a Next.js responsive web application utilizing server-side rendering (SSR), Supabase authentication (likely cookie-based for SSR), and server actions for mutations (e.g., InBody record creation). 
 
-We must identify the **smallest viable Android packaging path** that satisfies Play Store policies while supporting our current technical requirements:
-- **Authentication**: Managing Supabase sessions securely.
-- **Server connectivity**: Connecting to Next.js server actions and API routes.
-- **Camera/Upload**: Accessing the device camera for OCR uploads.
-- **Build and Release**: Overhead of maintaining the Play Store pipeline.
+FitSync already has a responsive Next.js web app and a shared backend on Supabase. The core local web journey U-00 passed on draft PR #48 at commit `42573348bfe73ce2ee088b3cb2b7e97b8b31d1f1`. Android U-01 should verify that a second client can read and write through the same backend while preserving the PT–trainee access boundary. It must be testable on a physical phone with synthetic data and the isolated local stack.
 
-We evaluated three primary paths: React Native (Expo), Capacitor, and Trusted Web Activity (TWA).
-
-## Options Evaluated
-
-### Option 1: Trusted Web Activity (TWA) / Bubblewrap
-A TWA runs the existing hosted Next.js web application inside a full-screen, chromeless Chrome browser instance packaged as an Android APK/AAB.
-
-- **Authentication & Connectivity**: Highly compatible. Since it renders the actual hosted website, Next.js Server Components, Server Actions, and cookie-based Supabase auth work seamlessly as they do in a desktop browser.
-- **Camera/Upload**: Uses standard HTML5 `<input type="file" accept="image/*" capture="environment">`, which triggers the native Android camera.
-- **Play Policy**: Google Play permits TWAs as long as the web app meets quality standards (responsive, functional, handles offline gracefully) and proves ownership via `.well-known/assetlinks.json`.
-- **Effort (Smallest Viable)**: Very low. Requires no changes to the Next.js codebase other than a manifest file and asset links. Android build can be generated via Google's `bubblewrap` CLI or PWABuilder with minimal configuration.
-
-### Option 2: Capacitor (Ionic)
-Capacitor packages web assets into a native Android WebView. 
-
-- **Authentication & Connectivity**: High friction. Capacitor requires Next.js to be statically exported (`output: 'export'`). This strictly forbids Next.js Server Actions, SSR, and API routes. We would have to heavily refactor FitSync into a pure Single Page Application (SPA) and decouple the Supabase backend.
-- **Camera/Upload**: Requires native Capacitor plugins for camera access.
-- **Play Policy**: Generally accepted for Play Store distribution.
-- **Effort**: High. Requires significant architectural changes to our current Next.js "modular monolith" setup.
-
-### Option 3: React Native (Expo)
-Rebuilding the mobile application natively using Expo.
-
-- **Authentication & Connectivity**: Requires using Supabase JS client directly on the native side.
-- **Camera/Upload**: Native Expo Camera modules.
-- **Play Policy**: Generally accepted and provides the highest quality native feel.
-- **Effort**: Very High. Requires rewriting the entire UI and maintaining a parallel codebase (or setting up complex React Native Web configurations). Violates the "smallest viable path" constraint for the current milestone.
+The former OC1 proposal prioritized a Trusted Web Activity to package the hosted website. Its Play track and hosted Digital Asset Links goals are historical context. The current EXE201 web decision and this engineering choice leave MAD submission rules open. [Issue #24](https://github.com/Team-SafeTrail/fitsync-app/issues/24) · [Draft PR #48](https://github.com/Team-SafeTrail/fitsync-app/pull/48)
 
 ## Decision
-We will evaluate Option 1: Trusted Web Activity (TWA) as the primary candidate.
 
-TWA preserves our Next.js Server Actions and SSR architecture without requiring a massive refactor. It has the potential to fulfill the Play Store distribution requirement with minimal overhead, allowing the team to focus on the OCR business logic.
+Use **Expo with React Native** for the native Android U-01 slice. Build an installable local debug APK and test it on a physical Android device against the pinned local candidate. Use the version-matched local JDK, Android SDK and platform tools. Connect the phone by USB with a loopback-only route to the dedicated local API. Keep any local HTTP allowance debug-only. Record the exact build and install commands in the handoff after verification. [Expo local Android builds](https://docs.expo.dev/guides/local-app-development/)
 
-### Evidence Requirements & Next Steps
-Before TWA can be confirmed as the final solution for OC1, the following evidence must be demonstrated:
-1. **Lighthouse PWA Validation**: The Next.js app must pass baseline PWA requirements, specifically robust offline fallback behavior.
-2. **Digital Asset Links Verification**: Host `assetlinks.json` on our domain and successfully verify ownership with the built APK/AAB.
-3. **Hardware Integration Proof**: Conduct physical device testing to verify that `<input type="file" capture="environment">` correctly triggers the native camera within the TWA shell.
-4. **Play Console Pipeline Proof**: Deploy the packaged TWA to the Play Store Internal Testing track. 
+Native is the better fit for the desired separate client, local hardware verification, and later camera and voice intake. It also carries a second build and UI maintenance cost. A TWA would reuse the hosted web experience but full TWA verification requires a hosted origin and matching Digital Asset Links. Capacitor remains a possible web-wrapper option and would still need a hosted server or a separate client architecture for FitSync's server-rendered web flows. [Trusted Web Activity verification](https://developer.chrome.com/docs/android/trusted-web-activity/quick-start)
 
-Only upon successful installation and verification of camera integration from the Internal Testing track will TWA be confirmed as satisfying the OC1 constraint. No alternative empty native mobile projects (Expo, Capacitor, Flutter) will be scaffolded until this evaluation fails.
+## Issue #42 scope for team confirmation
+
+- Use the PR #48 commit above for the **local U-01 test backend**. This does not accept it as a release or production baseline.
+- Build only the linked trainee path. Sign in, open Today, see whether today's check-in is due, send one text note, and see the server-confirmed record. The assigned PT opens the web dossier and sees that same note after reload.
+- Use an approved versioned mobile contract over existing auth, permitted reads and `submit_daily_checkin`. Keep service credentials server-side and use the existing row-level security boundary. Next.js Server Actions are web entry points.
+- After an unknown submission result, check the original Vietnam day before retrying. A new day requires an explicit new-day submission. For `already_submitted`, show the saved row and tell the user if changed text was not saved. The returned date is authoritative.
+- Keep photos, invite App Links, guided onboarding, voice, multi-brand report OCR, store distribution and production rollout in follow-up work. The existing web flow handles synthetic account creation and invitation acceptance for this spike.
+
+## Acceptance and release gates
+
+1. Install the debug APK on a physical Android device. Record device, OS, APK/build ID, repo SHA and migration revision.
+2. An already-linked synthetic trainee signs in, can open Today, and submits a text check-in. The assigned PT sees the same saved note after reloading the web dossier.
+3. A network retry produces at most one record for the original Vietnam day and preserves the draft when the result is unknown. Verify date rollover, sign-out and denial for an unrelated synthetic account.
+4. Before treating #42 as ready for implementation, confirm the narrower scope and dependencies with the team. Verify the official MAD rubric before claiming that the local APK meets submission requirements. A signed AAB or Play track, if requested by the rubric, is a separate deliverable.
+
+## Decision history
+
+The previous version of this ADR proposed evaluating a TWA for OC1 and listed a hosted domain, Digital Asset Links, camera testing, and Play Internal Testing as its evidence. The original proposal remains available in Git history.
