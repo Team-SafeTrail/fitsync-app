@@ -73,16 +73,19 @@ npm.cmd test
    ```
    Output APK path: `mobile/android/app/build/outputs/apk/debug/app-debug.apk`.
 
-4. Connect a physical Android device via USB (USB debugging enabled), configure USB loopback forwarding, install the APK, and start Metro:
+4. Start an Android emulator with an ABI-matched debug APK, or connect a physical Android device with USB debugging. Pick its serial from `adb devices -l`, then set up loopback and run Metro:
    ```powershell
-   adb devices
-   adb reverse tcp:54321 tcp:54321
-   adb reverse tcp:8081 tcp:8081
-   adb install -r mobile\android\app\build\outputs\apk\debug\app-debug.apk
+   adb devices -l
+   $serial = 'emulator-5554' # Replace with the serial shown by adb.
+   adb -s $serial reverse tcp:54321 tcp:54321
+   adb -s $serial reverse tcp:8081 tcp:8081
+   adb -s $serial install -r mobile\android\app\build\outputs\apk\debug\app-debug.apk
    cd mobile
    npx.cmd expo start --localhost --port 8081
    ```
    *(If building a standalone debug APK without Metro, bundle JS with `android/app/build.gradle` or use `npx.cmd expo run:android --no-bundler` after bundling; keep `adb reverse tcp:54321 tcp:54321` active for Supabase loopback.)*
+
+The verified Windows build used SDK package `platforms;android-37.0`, short paths for the checkout, Gradle cache and SDK, and a CMake object-path limit of 220 in the generated Android project's app CMake arguments. This was a temporary build workaround for Windows Ninja path limits. An x86_64 emulator uses an APK built with `-PreactNativeArchitectures=x86_64`. Issue #42 retains its separate physical-device acceptance.
 
 ## Reproducing U-01 Android check-in → PT web readback
 

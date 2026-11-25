@@ -24,19 +24,14 @@ Repo có `apps/web/.env.example` và `mobile/.env.example`. Khai hướng dẫn 
 
 Review tài liệu và đối chiếu issue hiện có trước khi push nhánh tài liệu. Sau đó dùng GitHub để giao người, ghi dependency, tiêu chí nghiệm thu và link PR. Xem [tracker](ISSUE_TRACKER.md) để tránh giao trùng hoặc bỏ sót issue bị chặn. Discord dùng để báo link tài liệu, issue của từng người và thứ tự làm. Việt nhận thông báo khi Huy và Khai đã ghi kết quả lên GitHub.
 
-### Nhận nhánh Android qua Git bundle
-
-Huy và Khai lấy `FitSync-U01-source.bundle` cùng bộ bàn giao. Từ clone của repo có mốc PR #48 (`4257334`), chạy:
+### Nhận nhánh bàn giao trên GitHub
 
 ```powershell
-$bundle = 'C:/path/to/FitSync-U01-source.bundle'
-git fetch origin refs/pull/48/head
-git bundle verify $bundle
-git fetch $bundle refs/heads/feat/android-u01-local:refs/heads/handoff/android-u01-local
-git switch handoff/android-u01-local
+git fetch origin feat/android-u01-local
+git switch --track origin/feat/android-u01-local
 ```
 
-Commit `9ad9e64` là mốc code Android đã build. Các commit tài liệu sau mốc đó ghi kết quả và việc còn lại. Bundle chỉ chứa Git objects sau mốc PR #48. Nếu phải build lại APK trên Windows, lượt build đã dùng đường dẫn ngắn cho source/Gradle cache, map SDK vào drive ngắn và đặt `-DCMAKE_OBJECT_PATH_MAX=220` trong CMake arguments của Gradle app được sinh ở bản build tạm. APK debug cần Metro và backend local.
+Commit `9ad9e64` là mốc code Android đã build. Có thể lấy APK debug từ người điều phối hoặc làm theo [mobile runbook](../../mobile/README.md). U-01 đọc lại trên web local dùng cùng Supabase với Android. URL hosted dùng để kiểm deployment web riêng.
 
 ## Mô hình kinh doanh và giá đã cập nhật
 
@@ -46,12 +41,12 @@ Commit `9ad9e64` là mốc code Android đã build. Các commit tài liệu sau 
 
 ## Bộ gửi trước và tài liệu tra cứu
 
-**Gửi 2 Markdown** gồm bản tiếng Việt cho người đọc và bản tiếng Anh cho agent. Team kỹ thuật đọc tài liệu nguồn tại đúng revision. Việt dùng bộ slide và báo cáo hiện có sau khi kỹ thuật bàn giao bằng chứng.
+**Bộ chính gồm 7 tài liệu.** Bắt đầu từ bản tiếng Việt này hoặc [bản agent tiếng Anh](AGENT_HANDOFF_EN.md), rồi đọc [feature EN](product/FEATURES.md), [feature VI](product/FEATURES_VI.md), [luồng người dùng](product/USER_FLOWS.md), [thiết kế web và Android](product/DESIGN.md) và [hướng dẫn agent](product/AGENTS.md). Việt dùng bộ slide và báo cáo hiện có sau khi kỹ thuật bàn giao bằng chứng.
 
 | Nhóm | Tài liệu và file cần giữ |
 | --- | --- |
 | Bàn giao sản phẩm | [Handoff tổng](../HANDOFF.md), [bộ web/database v1](README.md) với danh mục luồng người dùng, work packages, issue, runbook, UI và SQL, [MVP scope](../MVP_EXECUTION_PLAN.md), [quyết định chủ sản phẩm](../PRODUCT_DECISIONS.md), [team playbook](../TEAM_PLAYBOOK.md), [AGENTS](../../AGENTS.md) và [DESIGN](../../DESIGN.md). Bộ v1 ghi mốc PR #31; release candidate của lượt này là PR #48. |
-| Chạy và kiểm | [Demo workflow](../DEMO_WORKFLOW.md), [test evidence](../TEST_EVIDENCE.md), [Android ADR](../architecture/adr-003-android-packaging-path.md), [mobile runbook](../../mobile/README.md), hai APK debug x86_64/ARM64 và biên bản U-00 trong thư mục artifact cùng worktree. |
-| Mô hình và tài chính | [Financial report](../../reports/FINANCIAL_REPORT.md), [bảng tính Drive](https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk), [nghiên cứu giá](../plans/BUSINESS_MODEL_REVIEW.md), [customer insights](../../reports/CUSTOMER_INSIGHTS.md) và [mentor evidence](../../reports/MENTORING_EVIDENCE.md). |
+| Chạy và kiểm | [Demo workflow](../DEMO_WORKFLOW.md), [test evidence](../TEST_EVIDENCE.md), [biên bản U-00](../evidence/U00_LOCAL_VERIFICATION.md), [Android ADR](../architecture/adr-003-android-packaging-path.md) và [mobile runbook](../../mobile/README.md). APK debug x86_64 và ARM64 có thể nhận từ người điều phối. |
+| Mô hình và tài chính | [Financial report](../../reports/FINANCIAL_REPORT.md), [nghiên cứu giá](../plans/BUSINESS_MODEL_REVIEW.md), [customer insights](../../reports/CUSTOMER_INSIGHTS.md) và [mentor evidence](../../reports/MENTORING_EVIDENCE.md). |
 | EXE201 | [Chỉ mục nộp bài](../../reports/SUBMISSION_READY_2026-11-22.md), [final delivery](../../project-management/FINAL_DELIVERY.md), [gap analysis](../../project-management/EXE201_GAP_ANALYSIS.md), [final PDF](../../reports/FINAL_REPORT_SUBMISSION.pdf), [bản thảo 5 phần](../../reports/FINAL_REPORT_DRAFT.md), [readiness](../../reports/FINAL_REPORT_READINESS.md), [W8/W9 progress](../../reports/WEEK_08_09_PROGRESS_REPORT.md), [W8 Form](../../reports/WEEK_08_FORM.md), [W9 Form](../../reports/WEEK_09_FORM.md) và [bản copy form](../../reports/GOOGLE_FORM_COPY_W8_W9.html). |
 | Slide và demo | [Canva/edit & QA](../../presentations/CANVA_DELIVERY.md), [outline](../../presentations/SLIDE_OUTLINE.md), [script](../../presentations/WEEK_08_09_SCRIPT.md), [deck PDF](../../presentations/FitSync_Week_08_09.pdf), [product review](../../reports/LOCAL_PRODUCT_REVIEW.html), [database review](../../reports/DATABASE_REVIEW.html), [video index](../../presentations/demo-videos/README.md) và [delivery links](../../reports/DELIVERY_LINKS.md). |
