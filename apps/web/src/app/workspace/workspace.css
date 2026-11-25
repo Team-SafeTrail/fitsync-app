@@ -601,12 +601,22 @@
 .workspace-nutrition-form input {
   width: 100%;
   height: 2.9rem;
-  padding: 0 0.8rem;
+  padding: 0 0.85rem;
   border: 1px solid var(--color-border-strong);
-  border-radius: var(--radius-base);
-  background: var(--color-surface-muted);
+  border-radius: 12px;
+  background: var(--color-surface);
   color: var(--color-text-primary);
   font: inherit;
+  transition: border-color 150ms ease, box-shadow 150ms ease;
+}
+
+.workspace-field select {
+  padding-right: 2.4rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235F736B' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.85rem center;
+  appearance: none;
+  cursor: pointer;
 }
 
 .workspace-field textarea {
@@ -622,8 +632,8 @@
 .workspace-invite-result input:focus,
 .workspace-nutrition-form input:focus {
   border-color: var(--color-brand);
-  outline: 2px solid rgb(245 166 35 / 12%);
-  outline-offset: 0;
+  box-shadow: 0 0 0 3px rgba(34, 108, 93, 0.12);
+  outline: 0;
 }
 
 .workspace-field-error {
@@ -645,11 +655,13 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0 1rem;
+  gap: 0.45rem;
+  padding: 0 1.05rem;
   border: 1px solid;
-  border-radius: var(--radius-base);
+  border-radius: 12px;
   font: 650 0.8125rem var(--font-sans);
   text-decoration: none;
+  white-space: nowrap;
   cursor: pointer;
   transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
 }
@@ -706,55 +718,158 @@
 
 .workspace-invite-result {
   margin-bottom: 1.25rem;
-  padding: 1rem;
+  padding: 1rem 1.15rem;
   border: 1px solid var(--color-border-accent);
-  border-radius: var(--radius-base);
+  border-radius: 14px;
   background: var(--color-brand-light);
 }
 
 .workspace-invite-heading {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: space-between;
   gap: 1rem;
-  margin-bottom: 0.85rem;
+  margin-bottom: 0.75rem;
 }
 
 .workspace-invite-heading>div {
   display: flex;
-  align-items: center;
-  gap: 0.45rem;
-  color: var(--color-success);
+  align-items: flex-start;
+  gap: 0.5rem;
+  color: var(--color-brand);
 }
 
-.workspace-invite-heading span {
+.workspace-invite-heading>div svg {
+  flex: none;
+  margin-top: 2px;
+}
+
+.workspace-invite-subnote {
+  margin: 0.15rem 0 0;
   color: var(--color-text-secondary);
   font-size: 0.8125rem;
+  line-height: 1.45;
+}
+
+.workspace-invite-expiry {
+  padding: 0.25rem 0.65rem;
+  border-radius: 999px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border-accent);
+  color: var(--color-brand);
+  font-size: 0.75rem;
+  font-weight: 600;
+  white-space: nowrap;
 }
 
 .workspace-invite-result label {
   display: block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.45rem;
   color: var(--color-brand);
   font-size: 0.8125rem;
-  font-weight: 700;
+  font-weight: 650;
 }
 
 .workspace-invite-actions {
   display: grid;
   grid-template-columns: minmax(0, 1fr) auto auto;
-  gap: 0.65rem;
+  gap: 0.55rem;
 }
 
 .workspace-invite-result input {
   font-family: var(--font-mono);
   font-size: 0.8125rem;
+  background: var(--color-surface);
 }
 
-.workspace-invite-result>p {
-  margin: 0.65rem 0 0;
+.workspace-summary-right {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.workspace-invite-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.32rem 0.7rem;
+  border-radius: 999px;
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border-default);
   color: var(--color-text-secondary);
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.workspace-create-split {
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.95fr);
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.workspace-create-group {
+  display: flex;
+  flex-direction: column;
+  padding: 1.1rem 1.2rem;
+  border: 1px solid var(--color-border-default);
+  border-radius: 16px;
+  background: var(--color-surface-muted);
+}
+
+.workspace-create-group-head {
+  margin-bottom: 0.85rem;
+}
+
+.workspace-create-fields {
+  display: grid;
+  gap: 0.85rem;
+  flex: 1;
+  align-content: start;
+}
+
+.workspace-create-pair {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.75rem;
+}
+
+.workspace-create-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  margin-top: 0.35rem;
+  padding-top: 0.85rem;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.workspace-create-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin: 0;
+  color: var(--color-text-secondary);
+  font-size: 0.78rem;
+}
+
+@media (max-width: 960px) {
+  .workspace-create-split {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .workspace-create-pair {
+    grid-template-columns: 1fr;
+  }
+  .workspace-invite-chip {
+    display: none;
+  }
+  .workspace-create-footer .workspace-button {
+    width: 100%;
+  }
 }
 
 .workspace-empty {
