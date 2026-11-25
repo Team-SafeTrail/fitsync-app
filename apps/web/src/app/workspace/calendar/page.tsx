@@ -9,6 +9,7 @@ import { scheduleWeek } from "@/features/scheduling/calendar";
 import { getApplicationDate } from "@/features/engagement/calendar";
 import AppointmentForm from "@/components/workspace/AppointmentForm";
 import AppointmentWorkflow from "@/components/workspace/AppointmentWorkflow";
+import GoogleCalendarGrid from "@/components/workspace/GoogleCalendarGrid";
 
 export const dynamic = "force-dynamic";
 
@@ -20,7 +21,6 @@ export default async function CalendarPage({ searchParams: query }: { searchPara
     return (
       <main id="main-content" className="workspace-main">
         <div style={{ marginBottom: "14px" }}>
-          <Link href="/workspace" className="fs-pill-link"><ArrowLeft size={15} /> Về workspace</Link>
         </div>
         <h1>Lịch của bạn</h1>
         <section className="workspace-empty">
@@ -54,9 +54,9 @@ async function CalendarContent({ viewer, week, selected, saved }: { viewer: NonN
   const ids = (appointments.data ?? []).slice(0, 500).map((a) => a.id);
   const [changes, completions] = ids.length
     ? await Promise.all([
-        supabase.from("appointment_change_requests").select("*").in("appointment_id", ids).order("created_at", { ascending: false }).limit(1001),
-        supabase.from("session_ledger").select("id,delta,appointment_id").eq("kind", "completion").in("appointment_id", ids).limit(501),
-      ])
+      supabase.from("appointment_change_requests").select("*").in("appointment_id", ids).order("created_at", { ascending: false }).limit(1001),
+      supabase.from("session_ledger").select("id,delta,appointment_id").eq("kind", "completion").in("appointment_id", ids).limit(501),
+    ])
     : [{ data: [], error: null }, { data: [], error: null }];
   const completedIds = (completions.data ?? []).map((c) => c.id);
   const reversals = completedIds.length ? await supabase.from("session_ledger").select("reverses_id").in("reverses_id", completedIds) : { data: [], error: null };
@@ -76,9 +76,7 @@ async function CalendarContent({ viewer, week, selected, saved }: { viewer: NonN
   return (
     <>
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap", marginBottom: "14px" }}>
-        <Link href="/workspace" prefetch={true} className="fs-pill-link">
-          <ArrowLeft size={15} /> Không gian của bạn
-        </Link>
+
         <div className="calendar-heading-actions">
           {isPt && <a className="workspace-button" href="#calendar-entry-title">Xếp cuộc hẹn</a>}
           <Link href="/workspace/chat" prefetch={true} className="fs-pill-link is-brand">
@@ -104,6 +102,30 @@ async function CalendarContent({ viewer, week, selected, saved }: { viewer: NonN
         <Link href={`/workspace/calendar?week=${week.next}`} aria-label="Tuần sau" className="fs-pill-link">Tuần sau →</Link>
         <Link href="/workspace/calendar" className="fs-pill-link is-brand">Tuần này</Link>
       </nav>
+
+      {!appointments.error && !trainees.error && (
+        <GoogleCalendarGrid
+          weekMonday={week.monday}
+          isPt={isPt}
+          events={(appointments.data ?? []).slice(0, 500).map((item) => {
+            const completion = completionMap.get(item.id);
+            const hasPendingChange = (changes.data ?? []).some(
+              (r) => r.appointment_id === item.id && r.state === "pending",
+            );
+            return {
+              id: item.id,
+              title: item.title,
+              kind: item.kind,
+              status: item.status,
+              startsAt: item.starts_at,
+              endsAt: item.ends_at,
+              participantLabel: isPt ? names.get(item.trainee_id) ?? "Học viên" : "Cùng PT của bạn",
+              hasPendingChange,
+              isCompleted: !!completion && !reversedIds.has(completion.id),
+            };
+          })}
+        />
+      )}
 
       <div className={isPt ? "calendar-layout" : "calendar-layout is-learner"}>
         <section className="calendar-agenda" aria-label="Lịch đã xếp">
