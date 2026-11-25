@@ -1,5 +1,6 @@
 import Link from "next/link";
-import { ArrowRight, AtSign, LockKeyhole, UserRound } from "lucide-react";
+import { ArrowRight, AtSign, UserRound } from "lucide-react";
+import PasswordInput from "./PasswordInput";
 
 export default function AuthForm({ mode, action, error, message, next }: {
   mode: "login" | "register";
@@ -18,26 +19,27 @@ export default function AuthForm({ mode, action, error, message, next }: {
         {registering && (
           <label>
             <span>Tên hiển thị</span>
-            <div className="auth-input">
-              <UserRound size={17} />
+            <div className="auth-input has-icon">
+              <UserRound size={18} className="auth-input-icon" aria-hidden="true" />
               <input name="displayName" autoComplete="name" minLength={2} maxLength={100} placeholder="Nguyễn Hoàng Nam" required />
             </div>
           </label>
         )}
         <label>
           <span>Email</span>
-          <div className="auth-input">
-            <AtSign size={17} />
+          <div className="auth-input has-icon">
+            <AtSign size={18} className="auth-input-icon" aria-hidden="true" />
             <input name="email" type="email" autoComplete="email" placeholder="coach@fitsync.vn" required />
           </div>
         </label>
-        <label>
-          <span>Mật khẩu</span>
-          <div className="auth-input">
-            <LockKeyhole size={17} />
-            <input name="password" type="password" autoComplete={registering ? "new-password" : "current-password"} minLength={8} placeholder="Ít nhất 8 ký tự" required />
-          </div>
-        </label>
+        <PasswordInput
+          label="Mật khẩu"
+          name="password"
+          autoComplete={registering ? "new-password" : "current-password"}
+          minLength={8}
+          placeholder="Ít nhất 8 ký tự"
+          required
+        />
         {!registering && (
           <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "-10px" }}>
             <Link href="/forgot-password" style={{ fontSize: "13px", color: "var(--coaching-primary-accent, #226C5D)" }}>

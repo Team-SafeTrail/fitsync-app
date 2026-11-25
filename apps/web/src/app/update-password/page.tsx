@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { ArrowRight, LockKeyhole } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import AuthShell from "@/components/auth/AuthShell";
+import PasswordInput from "@/components/auth/PasswordInput";
 import { updatePassword } from "../auth/actions";
 import { getCurrentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
@@ -29,34 +30,22 @@ export default async function UpdatePasswordPage({
         </p>
       )}
       <form action={updatePassword} className="auth-form">
-        <label>
-          <span>Mật khẩu mới</span>
-          <div className="auth-input">
-            <LockKeyhole size={17} />
-            <input
-              name="password"
-              type="password"
-              autoComplete="new-password"
-              minLength={8}
-              placeholder="Ít nhất 8 ký tự"
-              required
-            />
-          </div>
-        </label>
-        <label>
-          <span>Xác nhận mật khẩu mới</span>
-          <div className="auth-input">
-            <LockKeyhole size={17} />
-            <input
-              name="confirmPassword"
-              type="password"
-              autoComplete="new-password"
-              minLength={8}
-              placeholder="Nhập lại mật khẩu mới"
-              required
-            />
-          </div>
-        </label>
+        <PasswordInput
+          label="Mật khẩu mới"
+          name="password"
+          autoComplete="new-password"
+          minLength={8}
+          placeholder="Ít nhất 8 ký tự"
+          required
+        />
+        <PasswordInput
+          label="Xác nhận mật khẩu mới"
+          name="confirmPassword"
+          autoComplete="new-password"
+          minLength={8}
+          placeholder="Nhập lại mật khẩu mới"
+          required
+        />
         <button className="auth-submit">
           Lưu mật khẩu mới <ArrowRight size={17} />
         </button>

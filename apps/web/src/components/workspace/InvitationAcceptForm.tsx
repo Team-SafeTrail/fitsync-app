@@ -1,9 +1,10 @@
 "use client";
 
 import { useActionState } from "react";
-import { LockKeyhole } from "lucide-react";
+import { AtSign } from "lucide-react";
 import { acceptInvitation } from "@/features/workspace/actions";
 import { initialWorkspaceActionState } from "@/features/workspace/action-state";
+import PasswordInput from "../auth/PasswordInput";
 import SubmitButton from "./SubmitButton";
 
 export default function InvitationAcceptForm({ rawToken, email }: { rawToken: string; email: string }) {
@@ -19,13 +20,22 @@ export default function InvitationAcceptForm({ rawToken, email }: { rawToken: st
       )}
       <label>
         <span>Email được mời</span>
-        <div className="auth-input"><input value={email} readOnly aria-readonly="true" /></div>
+        <div className="auth-input has-icon">
+          <AtSign size={18} className="auth-input-icon" aria-hidden="true" />
+          <input value={email} readOnly aria-readonly="true" />
+        </div>
       </label>
-      <label>
-        <span>Tạo mật khẩu</span>
-        <div className="auth-input"><LockKeyhole size={17} /><input name="password" type="password" autoComplete="new-password" minLength={8} placeholder="Ít nhất 8 ký tự" required /></div>
+      <div className="auth-field">
+        <PasswordInput
+          label="Tạo mật khẩu"
+          name="password"
+          autoComplete="new-password"
+          minLength={8}
+          placeholder="Ít nhất 8 ký tự"
+          required
+        />
         {state.fieldErrors?.password && <span className="workspace-field-error">{state.fieldErrors.password}</span>}
-      </label>
+      </div>
       <SubmitButton idle="Chấp nhận lời mời" pending="Đang kết nối..." className="auth-submit" />
     </form>
   );

@@ -34,8 +34,8 @@ export default async function ForgotPasswordPage({
       <form action={requestPasswordReset} className="auth-form">
         <label>
           <span>Email đã đăng ký</span>
-          <div className="auth-input">
-            <AtSign size={17} />
+          <div className="auth-input has-icon">
+            <AtSign size={18} className="auth-input-icon" aria-hidden="true" />
             <input
               name="email"
               type="email"
