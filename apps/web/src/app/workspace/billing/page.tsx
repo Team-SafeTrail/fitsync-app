@@ -18,11 +18,7 @@ export default async function BillingPage() {
 
   return (
     <main id="main-content" className="workspace-main">
-      <div style={{ marginBottom: "14px" }}>
-        <Link href="/workspace" prefetch={true} className="fs-pill-link">
-          <ArrowLeft size={15} /> Về học viên
-        </Link>
-      </div>
+
 
       <header className="coaching-page-header">
         <div>

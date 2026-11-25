@@ -14,9 +14,7 @@ export default async function ConversationsPage() {
     return (
       <main id="main-content" className="workspace-main">
         <div style={{ marginBottom: "14px" }}>
-          <Link href="/workspace" prefetch={true} className="fs-pill-link">
-            <ArrowLeft size={15} /> Về workspace
-          </Link>
+
         </div>
         <h1>Trao đổi</h1>
         <section className="workspace-empty">
@@ -44,9 +42,7 @@ export default async function ConversationsPage() {
   return (
     <main id="main-content" className="workspace-main">
       <div style={{ marginBottom: "14px" }}>
-        <Link href="/workspace" prefetch={true} className="fs-pill-link">
-          <ArrowLeft size={15} /> Về workspace
-        </Link>
+
       </div>
 
       <header className="coaching-page-header">
