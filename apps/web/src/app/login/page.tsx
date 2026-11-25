@@ -8,7 +8,7 @@ export default async function LoginPage({ searchParams: query }: { searchParams:
   const searchParams = await query;
   const configured = isSupabaseConfigured();
   return (
-    <AuthShell eyebrow="Không gian làm việc" title="Tiếp tục cùng học viên." description="Đăng nhập vào khu vực dữ liệu thật. Bản mẫu công khai vẫn nằm ở mục Khám phá trên trang chủ.">
+    <AuthShell eyebrow="Không gian làm việc" title="Tiếp tục cùng học viên." description="Đăng nhập vào không gian làm việc FitSync để quản lý hồ sơ và lịch tập.">
       {configured ? (
         <AuthForm mode="login" action={login} error={searchParams.error} message={searchParams.message} next={searchParams.next} />
       ) : (

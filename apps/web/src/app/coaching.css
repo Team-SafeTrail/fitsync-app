@@ -2363,9 +2363,12 @@
   gap: 8px 16px;
 }
 .coaching-site .closing.compact-closing {
+  display: block;
   padding-block: 24px 48px;
 }
-.coaching-site .closing-banner {
+.coaching-site .closing.compact-closing > .closing-banner {
+  max-width: none;
+  width: 100%;
   background: var(--forest);
   color: var(--white);
   border-radius: 24px;
@@ -2375,6 +2378,11 @@
   justify-content: space-between;
   gap: 24px;
   flex-wrap: wrap;
+}
+.coaching-site .closing.compact-closing > .closing-banner p {
+  margin-bottom: 0;
+  color: #dbe8e0;
+  font-size: 15px;
 }
 .coaching-site .closing-banner h2 {
   font-size: clamp(26px, 3vw, 36px);
@@ -2427,5 +2435,31 @@
   .coaching-site .context-heading.compact-heading {
     flex-direction: column;
     align-items: flex-start;
+  }
+}
+
+
+@media(max-width: 850px) {
+  .coaching-site .hero.compact-hero {
+    min-height: 700px;
+    height: auto;
+  }
+  .coaching-site .hero-copy.compact-hero-copy {
+    padding: 96px var(--space) 196px;
+    max-width: 600px;
+  }
+}
+@media(max-width: 700px) {
+  .coaching-site .hero.compact-hero {
+    min-height: 0;
+    height: auto;
+    padding-top: 302px;
+  }
+  .coaching-site .hero-copy.compact-hero-copy {
+    padding: 152px 24px 32px;
+    max-width: none;
+  }
+  .coaching-site .hero-copy.compact-hero-copy h1 {
+    font-size: clamp(38px, 10.5vw, 52px);
   }
 }
