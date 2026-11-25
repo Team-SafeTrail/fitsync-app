@@ -6,46 +6,201 @@ import type { AdminSnapshot, FinanceEntry } from "@/features/admin/live-data";
 import { initialWorkspaceActionState, type WorkspaceActionState } from "@/features/workspace/action-state";
 import SubmitButton from "@/components/workspace/SubmitButton";
 import { PendingFields, usePreservedForm } from "@/components/workspace/PreservedForm";
-import {simulationSummary} from "@/features/admin/simulation-summary";
+import { simulationSummary } from "@/features/admin/simulation-summary";
 
 const money = (v: number) => new Intl.NumberFormat("vi-VN", { style: "currency", currency: "VND" }).format(v);
 const date = (s: string) => new Intl.DateTimeFormat("vi-VN", { dateStyle: "short", timeStyle: "short", timeZone: "Asia/Ho_Chi_Minh" }).format(new Date(s));
 function exportCsv(entries: FinanceEntry[]) {
-  const rows = [["ID", "Loại", "Nhóm", "VND", "Ngày", "Tham chiếu", "Diễn giải", "Dữ liệu thử", "Đảo mục"], ...entries.map(e => [e.id, e.kind, e.category, e.amount_vnd, e.occurred_at, e.bank_reference ?? "", e.note, String(e.is_test), e.reverses_id ?? ""])];
+  const rows = [["ID", "Loại", "Nhóm", "VND", "Ngày", "Tham chiếu", "Diễn giải", "Dữ liệu thử", "Đảo mục"], ...entries.map((e) => [e.id, e.kind, e.category, e.amount_vnd, e.occurred_at, e.bank_reference ?? "", e.note, String(e.is_test), e.reverses_id ?? ""])];
   const quote = (v: string | number) => `"${String(v).replace(/^[\s\uFEFF]*[=+@-]/, "'$&").replaceAll('"', '""')}"`;
-  const url = URL.createObjectURL(new Blob(["\ufeff" + rows.map(r => r.map(quote).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" }));
-  const a = document.createElement("a"); a.href = url; a.download = "fitsync-finance-recorded.csv"; a.click(); URL.revokeObjectURL(url);
+  const url = URL.createObjectURL(new Blob(["\ufeff" + rows.map((r) => r.map(quote).join(",")).join("\r\n")], { type: "text/csv;charset=utf-8" }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "fitsync-finance-recorded.csv";
+  a.click();
+  URL.revokeObjectURL(url);
 }
 function ReverseForm({ entry }: { entry: FinanceEntry }) {
-  const preserved=usePreservedForm();
+  const preserved = usePreservedForm();
   const [state, action] = useActionState(reverseFinance.bind(null, entry.id), initialWorkspaceActionState);
-  const [nonce,setNonce] = useState("");
-  useEffect(()=>setNonce(crypto.randomUUID()),[]);
-  return <details><summary>Thêm bút toán đảo</summary><form ref={preserved.ref} onReset={preserved.onReset} action={action}><PendingFields disabled={!nonce}><input type="hidden" name="nonce" value={nonce}/><label>Lý do điều chỉnh<input name="reason" minLength={5} maxLength={500} required/></label><label><input name="confirmed" type="checkbox" required/> Đã đối chiếu; cần đảo giao dịch và quyền gói liên quan</label><SubmitButton className="admin-btn admin-btn-primary" idle="Xác nhận điều chỉnh" pending="Đang đối chiếu…"/>{state.message && <p role="status">{state.message}</p>}</PendingFields></form></details>;
+  const [nonce, setNonce] = useState("");
+  useEffect(() => setNonce(crypto.randomUUID()), []);
+  return (
+    <details>
+      <summary>Thêm bút toán đảo</summary>
+      <form ref={preserved.ref} onReset={preserved.onReset} action={action}>
+        <PendingFields disabled={!nonce}>
+          <input type="hidden" name="nonce" value={nonce} />
+          <label>Lý do điều chỉnh<input name="reason" minLength={5} maxLength={500} required /></label>
+          <label><input name="confirmed" type="checkbox" required /> Đã đối chiếu; cần đảo giao dịch và quyền gói liên quan</label>
+          <SubmitButton className="admin-btn admin-btn-primary" idle="Xác nhận điều chỉnh" pending="Đang đối chiếu…" />
+          {state.message && <p role="status">{state.message}</p>}
+        </PendingFields>
+      </form>
+    </details>
+  );
 }
 export default function LiveAdminDashboard({ snapshot: s }: { snapshot: AdminSnapshot }) {
   const [query, setQuery] = useState("");
-  const preserved=usePreservedForm();
-  const [recorded, record] = useActionState(async(previous:WorkspaceActionState,form:FormData):Promise<WorkspaceActionState>=>{
-    try{const result=await recordFinance(previous,form);if(result.status==="success"){preserved.reset();setNonce(crypto.randomUUID());}return result;}
-    catch{return {status:"error",message:"Chưa xác nhận được lần ghi. Chứng từ và thông tin vẫn được giữ; tải lại sổ để đối chiếu trước khi thử lại."};}
-  }, initialWorkspaceActionState);
+  const preserved = usePreservedForm();
+  const [recorded, record] = useActionState(
+    async (previous: WorkspaceActionState, form: FormData): Promise<WorkspaceActionState> => {
+      try {
+        const result = await recordFinance(previous, form);
+        if (result.status === "success") {
+          preserved.reset();
+          setNonce(crypto.randomUUID());
+        }
+        return result;
+      } catch {
+        return { status: "error", message: "Chưa xác nhận được lần ghi. Chứng từ và thông tin vẫn được giữ." };
+      }
+    },
+    initialWorkspaceActionState,
+  );
   const [nonce, setNonce] = useState("");
   useEffect(() => setNonce(crypto.randomUUID()), []);
-  const reversed = new Set(s.financeEntries.flatMap(e => e.reverses_id ? [e.reverses_id] : []));
-  const simulation=simulationSummary(s.financeEntries);
-  const users = s.users.filter(u => u.display_name.toLocaleLowerCase("vi").includes(query.toLocaleLowerCase("vi")));
-  return <div className="admin-content live-admin-dashboard" data-testid="live-admin-dashboard">
-    <p role="status"><strong>Dữ liệu từ database đang kết nối.</strong> Cập nhật {date(s.checkedAt)}. Số đếm hệ thống gồm cả tài khoản thử; doanh thu và khách trả phí loại trừ giao dịch thử.</p>
-    {simulation.visibleTestRows>0&&<details className="admin-section" data-testid="demo-finance-summary"><summary>Kịch bản mô phỏng — không tính kết quả kinh doanh thật</summary><p>Chỉ tính các giao dịch thử đang hiển thị (tối đa 200), có loại trừ bút toán đã đảo trong cùng danh sách. Không dùng các số này thay doanh thu hoặc khách trả phí thực tế.</p><dl><div><dt>PT thuê bao mô phỏng</dt><dd>{simulation.customers}</dd></div><div><dt>Thu mô phỏng</dt><dd>{money(simulation.revenue)}</dd></div><div><dt>Chi mô phỏng</dt><dd>{money(simulation.cost)}</dd></div><div><dt>Chênh lệch mô phỏng</dt><dd>{money(simulation.result)}</dd></div></dl></details>}
-    <section className="admin-kpi-grid" aria-label="Số liệu đã ghi nhận">{[["PT trong hệ thống", s.totalPts], ["Hồ sơ học viên", s.totalTrainees], ["Bản ghi InBody", s.totalInBodyRecords], ["PT đã trả phí được đối soát", s.paidCustomers]].map(([label, value]) => <div className="admin-kpi-card" key={label}><p>{label}</p><strong className="admin-kpi-value">{value}</strong></div>)}</section>
-    <section className="admin-section"><h2>Tài chính đã ghi sổ</h2><p>Thu: <strong>{money(s.recordedRevenueVnd)}</strong> · Chi: <strong>{money(s.recordedCostVnd)}</strong> · Dòng tiền thuần: <strong>{money(s.recordedRevenueVnd - s.recordedCostVnd)}</strong></p><p>Chỉ phản ánh chứng từ đã nhập và đối soát. Sổ trống không có nghĩa mọi chi phí dự án bằng 0. Không dùng nhãn Pro làm chứng từ thanh toán.</p></section>
-    <section id="users-table" className="admin-section"><h2>Tài khoản từ Auth và profiles</h2><label>Tìm tên hiển thị<input type="search" value={query} onChange={e => setQuery(e.target.value)}/></label><p>{s.authAccounts} tài khoản Auth; tối đa 200 hồ sơ mới nhất. Bảng này không tải email, điện thoại hoặc chỉ số sức khỏe.</p><div className="admin-table-container" role="region" tabIndex={0} aria-label="Tài khoản database"><table className="admin-table"><thead><tr><th>Tên hiển thị</th><th>Vai trò</th><th>Nguồn</th><th>Ngày tạo</th></tr></thead><tbody>{users.map(u => <tr key={u.id}><td>{u.display_name}</td><td>{u.role}</td><td>{u.is_test ? "Dữ liệu thử" : "Chưa đánh dấu thử"}</td><td>{date(u.created_at)}</td></tr>)}</tbody></table></div></section>
-    <section id="transactions-table" className="admin-section"><h2>Sổ thu–chi và chứng từ</h2><p>Chứng từ nằm trong bucket riêng tư; link tải có hiệu lực 60 giây. Bút toán đảo chỉ sửa sổ và quyền gói, không chuyển tiền hoặc tự hoàn tiền ngân hàng. Khoản hoàn tiền thực cần chứng từ chi riêng.</p><button className="admin-btn admin-btn-secondary" onClick={() => exportCsv(s.financeEntries)}>Xuất sổ CSV</button>
-      {s.financeEntries.length === 0 ? <p>Chưa có giao dịch được ghi sổ. Chỉ nhập khi có giao dịch và chứng từ; bài kiểm thử phải chọn dữ liệu thử.</p> : <div className="admin-table-container" role="region" tabIndex={0} aria-label="Sổ thu chi"><table className="admin-table"><thead><tr><th>Ngày</th><th>Loại</th><th>Số tiền</th><th>Mã và diễn giải</th><th>Nguồn</th><th>Chứng từ</th></tr></thead><tbody>{s.financeEntries.map(e => <tr key={e.id}><td>{date(e.occurred_at)}</td><td>{e.kind}</td><td>{money(e.amount_vnd)}</td><td>{e.bank_reference}<p>{e.note}</p></td><td>{e.is_test ? "Dữ liệu thử" : "Admin đã đối soát"}</td><td>{e.signedUrl && <a href={e.signedUrl} rel="noreferrer">Tải chứng từ riêng</a>}{e.kind !== "reversal" && !reversed.has(e.id) && <ReverseForm entry={e}/>}<small>SHA-256: {e.evidence_sha256}</small></td></tr>)}</tbody></table></div>}
-      <details><summary>Ghi giao dịch đã đối soát</summary><form ref={preserved.ref} onReset={preserved.onReset} action={record} className="admin-finance-form" aria-label="Ghi sổ tài chính"><PendingFields disabled={!nonce}><input type="hidden" name="nonce" value={nonce}/><label>Loại giao dịch<select name="kind"><option value="income">Thu</option><option value="expense">Chi</option></select></label><label>Nhóm<select name="category"><option value="subscription">Phí FitSync 199.000đ/PT/tháng</option><option value="hosting">Hosting</option><option value="marketing">Marketing</option><option value="tools">Công cụ</option><option value="other">Khác</option></select></label><label>Khách PT<select name="customer"><option value="">Không áp dụng cho chi phí</option>{s.users.filter(u => u.role === "pt").map(u => <option key={u.id} value={u.id}>{u.display_name}{u.is_test ? " (thử)" : ""}</option>)}</select></label><label>Số tiền VND<input name="amount" type="number" min={1} max={1e10} step={1} defaultValue={199000} required/></label><label>Thời gian giao dịch (kèm múi giờ)<input name="transactedAt" placeholder="2026-11-17T17:30:00+07:00" required/></label><label>Mã tham chiếu trên sao kê<input name="reference" minLength={3} maxLength={120} required/></label><label>Diễn giải<input name="note" minLength={5} maxLength={500} required/></label><label>Chứng từ riêng tư (PDF, JPEG, PNG ≤5 MB)<input name="receipt" type="file" accept="application/pdf,image/jpeg,image/png" required/></label><label><input name="isTest" type="checkbox"/> Giao dịch thử, không tính doanh thu hoặc cấp Pro</label><label><input name="verified" type="checkbox" required/> Tôi đã đối chiếu số tiền, khách và mã giao dịch; chứng từ thử được ghi nhãn riêng</label><SubmitButton className="admin-btn admin-btn-primary" idle="Ghi giao dịch và chứng từ" pending="Đang ghi sổ…"/>{recorded.message && <p role={recorded.status === "error" ? "alert" : "status"}>{recorded.message}</p>}</PendingFields></form></details>
-    </section>
-    <section className="admin-section"><h2>Yêu cầu nâng cấp</h2>{s.billingRequests.length ? <ul>{s.billingRequests.map(b => <li key={b.id}>{s.users.find(u => u.id === b.customer_id)?.display_name ?? b.customer_id}: {money(b.amount_vnd)} · {b.state} · {date(b.created_at)}</li>)}</ul> : <p>Chưa có yêu cầu. Yêu cầu nâng cấp chưa phải giao dịch đã trả tiền.</p>}</section>
-    <section className="admin-section"><h2>Hoạt động theo tuần và kênh</h2><p>{s.trackingSince ? `Bắt đầu ghi nhận từ ${date(s.trackingSince)}.` : "Chưa có sự kiện được ghi nhận."} {s.activeUsers7d} tài khoản ngoài bộ thử đã mở workspace trong 7 ngày. Không suy ngược reach, click hoặc hoạt động trước ngày bắt đầu đo.</p><div className="admin-table-container" role="region" tabIndex={0} aria-label="Hoạt động theo tuần"><table className="admin-table"><thead><tr><th>Tuần bắt đầu</th><th>Sự kiện</th><th>Kênh khai báo</th><th>Lượt</th><th>Tài khoản</th></tr></thead><tbody>{s.weeklyEvents.map(e => <tr key={`${e.week}-${e.event_key}-${e.channel}`}><td>{e.week}</td><td>{e.event_key}</td><td>{e.channel}</td><td>{e.events}</td><td>{e.users}</td></tr>)}</tbody></table></div></section>
-  </div>;
+  const reversed = new Set(s.financeEntries.flatMap((e) => (e.reverses_id ? [e.reverses_id] : [])));
+  const simulation = simulationSummary(s.financeEntries);
+  const users = s.users.filter((u) => u.display_name.toLocaleLowerCase("vi").includes(query.toLocaleLowerCase("vi")));
+
+  return (
+    <div className="admin-content live-admin-dashboard" data-testid="live-admin-dashboard">
+      <p role="status" className="admin-status-bar">
+        <strong>Database trực tiếp · Cập nhật {date(s.checkedAt)}</strong> — Doanh thu thực tế loại trừ giao dịch thử.
+      </p>
+
+      {simulation.visibleTestRows > 0 && (
+        <details className="admin-section" data-testid="demo-finance-summary">
+          <summary>Kịch bản mô phỏng — không tính kết quả kinh doanh thật</summary>
+          <dl className="admin-kpi-grid" style={{ marginTop: "14px" }}>
+            <div className="admin-kpi-card"><dt>PT thuê bao mô phỏng</dt><dd className="admin-kpi-value">{simulation.customers}</dd></div>
+            <div className="admin-kpi-card"><dt>Thu mô phỏng</dt><dd className="admin-kpi-value">{money(simulation.revenue)}</dd></div>
+            <div className="admin-kpi-card"><dt>Chi mô phỏng</dt><dd className="admin-kpi-value">{money(simulation.cost)}</dd></div>
+            <div className="admin-kpi-card"><dt>Chênh lệch mô phỏng</dt><dd className="admin-kpi-value">{money(simulation.result)}</dd></div>
+          </dl>
+        </details>
+      )}
+
+      <section className="admin-kpi-grid" aria-label="Số liệu đã ghi nhận">
+        {[
+          ["PT trong hệ thống", s.totalPts],
+          ["Hồ sơ học viên", s.totalTrainees],
+          ["Bản ghi InBody", s.totalInBodyRecords],
+          ["PT đã trả phí được đối soát", s.paidCustomers],
+        ].map(([label, value]) => (
+          <div className="admin-kpi-card" key={label}>
+            <p>{label}</p>
+            <strong className="admin-kpi-value">{value}</strong>
+          </div>
+        ))}
+      </section>
+
+      <section className="admin-section">
+        <h2>Tài chính thực tế</h2>
+        <div className="admin-kpi-grid" style={{ marginTop: "12px" }}>
+          <div className="admin-kpi-card"><p>Thu thực tế</p><strong className="admin-kpi-value">{money(s.recordedRevenueVnd)}</strong></div>
+          <div className="admin-kpi-card"><p>Chi thực tế</p><strong className="admin-kpi-value">{money(s.recordedCostVnd)}</strong></div>
+          <div className="admin-kpi-card"><p>Dòng tiền thuần</p><strong className="admin-kpi-value">{money(s.recordedRevenueVnd - s.recordedCostVnd)}</strong></div>
+        </div>
+      </section>
+
+      <section id="users-table" className="admin-section">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap", marginBottom: "12px" }}>
+          <h2 style={{ margin: 0 }}>Tài khoản ({s.authAccounts} Auth)</h2>
+          <label style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "13px" }}>
+            Tìm tên <input type="search" value={query} onChange={(e) => setQuery(e.target.value)} style={{ minHeight: "36px", padding: "4px 10px", borderRadius: "8px", border: "1px solid var(--color-border-strong)" }} />
+          </label>
+        </div>
+        <div className="admin-table-container" role="region" tabIndex={0} aria-label="Tài khoản database">
+          <table className="admin-table">
+            <thead><tr><th>Tên hiển thị</th><th>Vai trò</th><th>Nguồn</th><th>Ngày tạo</th></tr></thead>
+            <tbody>
+              {users.map((u) => (
+                <tr key={u.id}>
+                  <td>{u.display_name}</td>
+                  <td>{u.role}</td>
+                  <td>{u.is_test ? "Dữ liệu thử" : "Chưa đánh dấu thử"}</td>
+                  <td>{date(u.created_at)}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="transactions-table" className="admin-section">
+        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap", marginBottom: "12px" }}>
+          <h2 style={{ margin: 0 }}>Sổ thu–chi và chứng từ</h2>
+          <button className="admin-btn admin-btn-secondary" onClick={() => exportCsv(s.financeEntries)}>Xuất sổ CSV</button>
+        </div>
+        {s.financeEntries.length === 0 ? (
+          <p>Chưa có giao dịch được ghi sổ.</p>
+        ) : (
+          <div className="admin-table-container" role="region" tabIndex={0} aria-label="Sổ thu chi">
+            <table className="admin-table">
+              <thead><tr><th>Ngày</th><th>Loại</th><th>Số tiền</th><th>Mã và diễn giải</th><th>Nguồn</th><th>Chứng từ</th></tr></thead>
+              <tbody>
+                {s.financeEntries.map((e) => (
+                  <tr key={e.id}>
+                    <td>{date(e.occurred_at)}</td>
+                    <td>{e.kind}</td>
+                    <td>{money(e.amount_vnd)}</td>
+                    <td>{e.bank_reference}<p>{e.note}</p></td>
+                    <td>{e.is_test ? "Dữ liệu thử" : "Admin đã đối soát"}</td>
+                    <td>
+                      {e.signedUrl && <a href={e.signedUrl} rel="noreferrer">Tải chứng từ riêng</a>}
+                      {e.kind !== "reversal" && !reversed.has(e.id) && <ReverseForm entry={e} />}
+                      <small>SHA-256: {e.evidence_sha256.slice(0, 12)}…</small>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
+        <details style={{ marginTop: "14px" }}>
+          <summary>Ghi giao dịch đã đối soát</summary>
+          <form ref={preserved.ref} onReset={preserved.onReset} action={record} className="admin-finance-form" aria-label="Ghi sổ tài chính">
+            <PendingFields disabled={!nonce}>
+              <input type="hidden" name="nonce" value={nonce} />
+              <label>Loại giao dịch<select name="kind"><option value="income">Thu</option><option value="expense">Chi</option></select></label>
+              <label>Nhóm<select name="category"><option value="subscription">Phí FitSync 199.000đ/PT/tháng</option><option value="hosting">Hosting</option><option value="marketing">Marketing</option><option value="tools">Công cụ</option><option value="other">Khác</option></select></label>
+              <label>Khách PT<select name="customer"><option value="">Không áp dụng cho chi phí</option>{s.users.filter((u) => u.role === "pt").map((u) => <option key={u.id} value={u.id}>{u.display_name}{u.is_test ? " (thử)" : ""}</option>)}</select></label>
+              <label>Số tiền VND<input name="amount" type="number" min={1} max={1e10} step={1} defaultValue={199000} required /></label>
+              <label>Thời gian giao dịch (kèm múi giờ)<input name="transactedAt" placeholder="2026-11-17T17:30:00+07:00" required /></label>
+              <label>Mã tham chiếu trên sao kê<input name="reference" minLength={3} maxLength={120} required /></label>
+              <label>Diễn giải<input name="note" minLength={5} maxLength={500} required /></label>
+              <label>Chứng từ riêng tư (PDF, JPEG, PNG ≤5 MB)<input name="receipt" type="file" accept="application/pdf,image/jpeg,image/png" required /></label>
+              <label><input name="isTest" type="checkbox" /> Giao dịch thử, không tính doanh thu hoặc cấp Pro</label>
+              <label><input name="verified" type="checkbox" required /> Đã đối chiếu số tiền, khách và mã giao dịch</label>
+              <SubmitButton className="admin-btn admin-btn-primary" idle="Ghi giao dịch và chứng từ" pending="Đang ghi sổ…" />
+              {recorded.message && <p role={recorded.status === "error" ? "alert" : "status"}>{recorded.message}</p>}
+            </PendingFields>
+          </form>
+        </details>
+      </section>
+
+      <div className="fs-card-grid-2" style={{ marginTop: "20px" }}>
+        <section className="admin-section" style={{ marginTop: 0 }}>
+          <h2>Yêu cầu nâng cấp</h2>
+          {s.billingRequests.length ? (
+            <ul>{s.billingRequests.map((b) => <li key={b.id}>{s.users.find((u) => u.id === b.customer_id)?.display_name ?? b.customer_id}: {money(b.amount_vnd)} · {b.state} · {date(b.created_at)}</li>)}</ul>
+          ) : (
+            <p>Chưa có yêu cầu.</p>
+          )}
+        </section>
+
+        <section className="admin-section" style={{ marginTop: 0 }}>
+          <h2>Hoạt động theo tuần ({s.activeUsers7d} trong 7 ngày)</h2>
+          <div className="admin-table-container" role="region" tabIndex={0} aria-label="Hoạt động theo tuần">
+            <table className="admin-table">
+              <thead><tr><th>Tuần</th><th>Sự kiện</th><th>Kênh</th><th>Lượt</th><th>TK</th></tr></thead>
+              <tbody>{s.weeklyEvents.map((e) => <tr key={`${e.week}-${e.event_key}-${e.channel}`}><td>{e.week}</td><td>{e.event_key}</td><td>{e.channel}</td><td>{e.events}</td><td>{e.users}</td></tr>)}</tbody>
+            </table>
+          </div>
+        </section>
+      </div>
+    </div>
+  );
 }

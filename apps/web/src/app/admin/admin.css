@@ -536,3 +536,24 @@
 .admin-shell .admin-btn{min-height:44px}.admin-shell input,.admin-shell select{min-height:44px;font-size:16px}
 .live-admin-dashboard{padding:24px;display:grid;gap:24px;min-width:0}.live-admin-dashboard .admin-section{padding:20px;min-width:0}.live-admin-dashboard p{line-height:1.7}.live-admin-dashboard details{margin-block:16px}.live-admin-dashboard summary{cursor:pointer;padding-block:12px;font-weight:600}.admin-finance-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;padding-block:16px}.live-admin-dashboard label{display:grid;gap:8px}.live-admin-dashboard input,.live-admin-dashboard select{max-width:100%;width:100%;border:1px solid var(--color-border-default);border-radius:8px;padding:10px;background:var(--color-surface)}.live-admin-dashboard label:has(input[type=checkbox]){display:flex;align-items:flex-start;gap:12px}.live-admin-dashboard input[type=checkbox]{width:22px;min-height:22px;flex-shrink:0}.live-admin-dashboard .admin-table td{max-width:320px;white-space:normal;overflow-wrap:anywhere}.live-admin-dashboard .admin-table small{display:block;max-width:260px;overflow-wrap:anywhere}.live-admin-dashboard :focus-visible{outline:3px solid var(--color-brand);outline-offset:3px}@media(max-width:600px){.live-admin-dashboard{padding:16px}.admin-finance-form{grid-template-columns:1fr}}
 .workspace-submit-fields{display:contents;border:0;margin:0;padding:0;min-width:0}
+
+
+.admin-status-bar {
+  background: var(--color-surface-muted);
+  border: 1px solid var(--color-border-default);
+  border-radius: 12px;
+  padding: 12px 16px;
+  font-size: 13.5px;
+  color: var(--color-text-secondary);
+  margin-bottom: 18px;
+}
+.fs-card-grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+@media (max-width: 900px) {
+  .fs-card-grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
