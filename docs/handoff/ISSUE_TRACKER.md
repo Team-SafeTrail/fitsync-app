@@ -1,8 +1,8 @@
 # Nhận việc qua GitHub Issues
 
-Cập nhật31/10/2026 theo yêu cầu chủ sản phẩm. Đã tạo và xác minh assignment của15 issues dưới đây. GitHub issue là nguồn trạng thái thực thi; repo giữ scope/reference để đọc cùng code. Chưa sửa Trello, gửi Discord, đóng issue cũ hoặc merge/deploy.
+Cập nhật phân công 25/11/2026. Huy phụ trách frontend, Khai phụ trách backend. GitHub giữ trạng thái và assignee thực tế. Bảng dưới ghi assignment hiện có của 15 issues, đọc lại ngày 25/11 trước khi điều phối. Các mục dành cho BE còn gán Huy từ lượt 31/10. Phần phân công đã sửa trong tài liệu và chờ cập nhật trên GitHub.
 
-Bắt đầu bằng [#32: REVIEW-BASELINE](https://github.com/Team-SafeTrail/fitsync-app/issues/32). Huy review DB/security/ops, Khai review web/interactions. Có thể review PR31 trước merge. Sau khi nhận baseline, mỗi người chọn một issue không còn dependency, thống nhất scope rồi mở nhánh riêng.
+Bắt đầu từ [bàn giao 25/11](TEAM_HANDOFF_2026-11-25_VI.md) và [#32: REVIEW-BASELINE](https://github.com/Team-SafeTrail/fitsync-app/issues/32). Dùng PR #48 làm candidate hiện hành. Huy review web/Android client, Khai review DB/security/ops. Ghi scope và bằng chứng theo SHA.
 
 ## Queue và readiness
 
@@ -28,13 +28,12 @@ Chỉ issue32 không mang label blocked. Các issue33–46 đều đang blocked 
 
 Xem [scope chi tiết offline](ISSUE_SCOPES.md) nếu cần đọc toàn bộ acceptance mà chưa mở GitHub.
 
-## Huy nhận gì
+## Đề xuất cập nhật khi giao việc
 
-Huy (`huydqse180459-art`) nhận DB/server/RLS, transaction/idempotency, storage, ops và rollout. Review đầu tiên gồm schema12 bảng, migration upgrade, legacy identity gaps và cách giữ flags off tới khi môi trường sẵn sàng. Trong task đồng sở hữu, Huy làm contract/migration/API và Khai làm UI/device; nêu phần việc mỗi người trong issue trước khi cùng sửa.
-
-## Khai nhận gì
-
-Khai (`DiepKhai`) nhận web UX/responsive/keyboard và Android. Giữ DESIGN.md; không tạo theme hoặc prototype độc lập để thay workspace thật. Android spike42 đi trước core43; đối chiếu issue24 và ADR003 trước chọn setup. Không gọi browser width390 là bằng chứng Android đã chạy.
+- **Huy (`huydqse180459-art`)** phụ trách FE, review UI và điều phối deploy candidate được duyệt. Dùng issue FE hiện có nếu scope còn khớp. Khi giao Android client, Huy ghi kết quả emulator và phía web tại issue đã chọn.
+- **Khai (`DiepKhai`)** phụ trách BE, Supabase, RLS, CI dữ liệu, cấu hình synthetic và release readiness. #34–36, #40 và #45 vẫn mang assignee BE cũ. Rà lại scope và blockers trước khi thay assignee. #45 vẫn thuộc backlog chờ quyết định kinh doanh.
+- **Android U-01.** #42 vẫn blocked và scope ghi thiết bị thật. Ghi kết quả emulator như bằng chứng cục bộ. Nếu team cần chạy ngay phần local, scope riêng lượt emulator với Huy client và Khai backend, link #42 và giữ nguyên điều kiện nghiệm thu issue gốc. Khi rà #43 sau này, cập nhật owner client và backend theo phần việc đã duyệt.
+- **Việt (`Am2uocVi3t`)** bắt đầu slide khi Huy và Khai đã bàn giao URL/revision và bằng chứng nghiệm thu. Discord gửi thông báo kèm link issue/PR sau khi nhiệm vụ đã được ghi trên GitHub.
 
 ## Không trùng hoặc đóng nhầm backlog cũ
 

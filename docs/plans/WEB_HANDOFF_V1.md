@@ -1,6 +1,6 @@
 # Web handoff v1 — Huy / Diệp Khai
 
-2026-10-30. Owner scope: finish web and a reviewable handoff; Android is Khai's next implementation. This narrows the current delivery to a coherent web baseline and explicit data contracts, not completion of the entire B0–B8 roadmap or a production launch.
+2026-10-30. This checkpoint covers a coherent web baseline and explicit data contracts. The [25 November handoff](../handoff/TEAM_HANDOFF_2026-11-25_VI.md) records the current owners, web candidate and Android status.
 
 ## Delivery sequence
 
@@ -20,7 +20,7 @@ PT Today focuses on upcoming appointments, check-in attention and invitation sta
 
 ## Meaning of a v1 freeze
 
-“UI baseline ready for handoff” means implemented surfaces and states have rendered evidence and mapped contracts. It does not mean missing backend actions are simulated as success. “Database v1” means exact versioned migrations plus a domain contract and upgrade plan. It does not mean every future report template, cancellation fee or retention rule has been approved. Huy reviews database/security/operational gates; Khai reviews web interactions and Android parity before release.
+“UI baseline ready for handoff” means implemented surfaces and states have rendered evidence and mapped contracts. It does not mean missing backend actions are simulated as success. “Database v1” means exact versioned migrations plus a domain contract and upgrade plan. It does not mean every future report template, cancellation fee or retention rule has been approved. Khai reviews database, security and operational gates. Huy reviews web interactions and Android client behavior before release.
 
 Keep membership dates, appointment attendance and PT-session ledger separate. Existing remaining_sessions remains an explicit legacy balance until a transactional ledger transition is implemented. Unknown report fields stay absent, with original unit/provenance and PT review; no AI inference fills gaps.
 
@@ -30,6 +30,6 @@ Implemented: PT Today; contextual dossier with five keyboard/hash task tabs and 
 
 Web CI at b75b9d2: [41092400108](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41092400108) SUCCESS (103 unit tests, lint, typecheck, production build). Backend [41092400099](https://github.com/Team-SafeTrail/fitsync-app/actions/runs/41092400099) SUCCESS:202 SQL/RLS checks, strict types diff, production build,23 Chromium tests and baseline upgrade rehearsal with unchanged legacy row fingerprints. Final receipts are recorded in [UI_ACCEPTANCE](../handoff/UI_ACCEPTANCE.md); prior failed/cancelled runs are not presented as all-green checks. The last fixes included a real SVG title SSR/hydration bug and regression test, plus tab-aware navigation in existing browser assertions without removing domain assertions.
 
-The delivery package is [docs/handoff/README.md](../handoff/README.md): current routes, database/ERD/permissions, generated field dictionary, future contracts, work packages and synthetic screenshot evidence. Android remains Khai's next implementation. Full-report/PDF, calendar requests, session ledger and operational gates remain explicit work; the entire B0–B8 plan is not complete.
+The delivery package is [docs/handoff/README.md](../handoff/README.md): current routes, database/ERD/permissions, generated field dictionary, future contracts, work packages and synthetic screenshot evidence. Current Android status and owners are in the [25 November handoff](../handoff/TEAM_HANDOFF_2026-11-25_VI.md). Full-report/PDF, calendar requests, session ledger and operational gates remain explicit work; the entire B0–B8 plan is not complete.
 
 31/10/2026 handoff follow-up: owner requested detailed onboarding and assigned GitHub issues. Added developer runbook, code/action contract map, manual acceptance, merge/Discord guide and detailed issue scopes. Issues32–46 are created and assigned to Huy/Khai;32 is the initial baseline review, dependent tasks remain blocked and are not automatically agent-ready. See [ISSUE_TRACKER](../handoff/ISSUE_TRACKER.md). No merge, deployment, Discord message, Trello update or closure of older issues was performed. These are documentation/coordination changes; no new application-test result is inferred.

@@ -1,13 +1,21 @@
 # Gộp nhánh và gửi bàn giao qua Discord
 
+## Quy trình hiện hành 25/11/2026
+
+1. Review [tài liệu cho người đọc](TEAM_HANDOFF_2026-11-25_VI.md) và [tài liệu cho agent](AGENT_HANDOFF_EN.md) trên nhánh bàn giao. Review độc lập với Claude có thể kiểm vai trò, phạm vi, link và số liệu.
+2. Push nhánh tài liệu và mở PR review. Trên GitHub, kiểm issue đã có, cập nhật owner, dependency và tiêu chí nghiệm thu. Huy phụ trách FE/web preview và Android client. Khai phụ trách BE/Supabase. Ghi việc đã qua kiểm thử cùng revision.
+3. Báo Discord bằng link PR, tài liệu và issue. Sau khi Huy và Khai hoàn thành bàn giao kỹ thuật, báo Việt bắt đầu slide với bộ bằng chứng đã chốt.
+
+## Tham chiếu lịch sử PR #31
+
 Repo sau merge là nguồn bàn giao chính. ZIP là bản lưu ngoại tuyến của một checkpoint; không cần gửi nếu Huy/Khai truy cập được GitHub. Không dùng ZIP cũ để phát triển song song với main.
 
 ## Trước khi chủ sản phẩm merge PR31
 
 1. Mở [PR31](https://github.com/Team-SafeTrail/fitsync-app/pull/31); kiểm base/head, diff và CI của commit mới nhất. Các con số ở UI_ACCEPTANCE thuộc checkpoint ứng dụng được ghi rõ, không tự coi CI của mọi commit sau đó đã qua.
-2. Huy review schema/RLS/upgrade/ops; Khai review layout/interactions và ảnh synthetic. Theo dõi việc nhận baseline ở issue REVIEW-BASELINE trong [tracker](ISSUE_TRACKER.md). Review không đồng nghĩa chấp thuận phát hành thương mại.
+2. Khai review schema/RLS/upgrade/ops. Huy review layout/interactions và ảnh synthetic. Theo dõi việc nhận baseline ở issue REVIEW-BASELINE trong [tracker](ISSUE_TRACKER.md).
 3. Kiểm cấu hình Vercel/GitHub trước merge: nhánh main có thể kích hoạt auto-deploy. Agent chưa xác minh cấu hình deployment hiện hành. Không coi merge chỉ đổi Git mà chắc chắn không ảnh hưởng website.
-4. Kiểm môi trường triển khai, migrations và ba rollout flags. Không bật flags hoặc chạy migration cloud chỉ vì merge code. Nếu rollout chưa sẵn sàng, giữ flags false và thống nhất cách xử lý deployment với Huy.
+4. Khai kiểm migrations, môi trường và rollout flags. Huy điều phối triển khai giao diện sau khi backend và release được duyệt.
 5. Chủ sản phẩm/human reviewer quyết định ready-for-review và merge sau các gate phù hợp. Agent không tự approve/merge PR này. Ghi merge SHA vào issue nhận baseline.
 
 Những issue visual/product cũ như #16/#18/#20/#22/#24 và OC2 #27 vẫn có lịch sử riêng. Reviewer đối chiếu từng acceptance trước khi đóng hoặc đánh superseded; không đóng hàng loạt chỉ vì PR31 merge. #2 vẫn là benchmark OCR, #5 là asset/coursework review, không bị thay thế bằng screenshots v1.
@@ -27,8 +35,8 @@ Huy / Khai ơi, mình đã gộp bản web FitSync và bộ bàn giao v1.
 PR: https://github.com/Team-SafeTrail/fitsync-app/pull/31
 Merge commit: điền SHA sau khi merge
 Đọc docs/handoff/README.md trước, rồi ISSUE_TRACKER.md.
-Huy: nhận backend/DB/RLS/ops theo các issue đã assign.
-Khai: nhận review web/UX và Android theo các issue đã assign.
+Huy: nhận review web/UX và Android client theo issue.
+Khai: nhận backend/DB/RLS và kiểm tra môi trường theo issue.
 Android chưa được implement trong bản này.
 Database là baseline v1; full InBody/PDF, lịch đổi/hủy và ledger còn việc riêng.
 Các issue có dependency đang bị chặn: chưa bắt đầu khi gate chưa qua.

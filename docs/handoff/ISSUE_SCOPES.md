@@ -16,7 +16,7 @@ Phạm vi:
 
 Điều kiện nghiệm thu:
 
-- [ ] Huy ghi nhận schema/grants/legacy auth findings; Khai ghi nhận UI/navigation/responsive findings.
+- [ ] Khai ghi nhận schema/grants/legacy auth findings. Huy ghi nhận UI/navigation/responsive findings.
 - [ ] Liệt kê defects với expected/actual, mức ưu tiên và issue liên quan.
 - [ ] Ghi trạng thái accept/request changes và cổng còn chặn pilot; không coi việc nhận baseline là production approval.
 
@@ -48,7 +48,7 @@ Kiểm chứng: Unit token/redirect/validation, SQL identity/isolation và brows
 
 ## LEGACY-AUTH / #34
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/34). Lead: Huy. Đóng khoảng trống quyền ở health/check-in/OCR/media legacy trước khi dùng dữ liệu khách hàng.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/34). Lead: Khai. Đóng khoảng trống quyền ở health/check-in/OCR/media legacy trước khi dùng dữ liệu khách hàng.
 
 Dependency: #32 REVIEW-BASELINE.
 
@@ -70,7 +70,7 @@ Kiểm chứng: pgTAP role/relationship/storage cases, exact generated types, fr
 
 ## OPS-DATA / #35
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/35). Lead: Huy. Chốt và triển khai vòng đời dữ liệu, xóa tài khoản và quy trình phục hồi có thể diễn tập.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/35). Lead: Khai. Chốt và triển khai vòng đời dữ liệu, xóa tài khoản và quy trình phục hồi có thể diễn tập.
 
 Dependency: #34 LEGACY-AUTH.
 
@@ -92,7 +92,7 @@ Kiểm chứng: Tests FK/cascade/cleanup/isolation; rehearsal logs redacted; hum
 
 ## ABUSE-ROLLOUT / #36
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/36). Lead: Huy. Bảo vệ abuse và đưa baseline lên staging đúng thứ tự, tách merge khỏi rollout.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/36). Lead: Khai. Bảo vệ abuse và đưa baseline lên staging đúng thứ tự, tách merge khỏi rollout.
 
 Dependency: #35 OPS-DATA, #34 LEGACY-AUTH.
 
@@ -114,7 +114,7 @@ Kiểm chứng: Boundary/load smoke có scope, local guard tests, security revie
 
 ## CALENDAR-02 / #37
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/37). Lead: Huy; Khai review states. Cho learner đề nghị đổi/hủy lịch và PT quyết định, giữ nguyên lịch gốc đến khi chấp nhận.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/37). Lead: Khai; Huy review states. Cho learner đề nghị đổi/hủy lịch và PT quyết định, giữ nguyên lịch gốc đến khi chấp nhận.
 
 Dependency: #32 REVIEW-BASELINE.
 
@@ -136,7 +136,7 @@ Kiểm chứng: SQL transaction/RLS/race/overlap, unit action, browser PT+learne
 
 ## LEDGER-01 / #38
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/38). Lead: Huy; Khai nối states. Thay số dư mutable bằng ledger có completion/debit/reversal và giữ số dư chuyển đổi chính xác.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/38). Lead: Khai; Huy nối states. Thay số dư mutable bằng ledger có completion/debit/reversal và giữ số dư chuyển đổi chính xác.
 
 Dependency: #37 CALENDAR-02.
 
@@ -158,7 +158,7 @@ Kiểm chứng: SQL concurrency/double debit/reversal/isolation, balance reconci
 
 ## FULL-REPORT / #39
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/39). Lead: Huy; Khai review field groups. Mở model InBody từ năm trường sang report có totals/segments/source/unit/revision và PT review.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/39). Lead: Khai; Huy review field groups. Mở model InBody từ năm trường sang report có totals/segments/source/unit/revision và PT review.
 
 Dependency: #32 REVIEW-BASELINE, #34 LEGACY-AUTH.
 
@@ -181,7 +181,7 @@ Kiểm chứng: Template fixtures synthetic, conversion/null/review/revision tes
 
 ## OCR-PDF / #40
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/40). Lead: Huy; benchmark phối hợp #2. Nối OCR/PDF thật sau benchmark và giữ PT là người xác nhận cuối.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/40). Lead: Khai; benchmark phối hợp #2. Nối OCR/PDF thật sau benchmark và giữ PT là người xác nhận cuối.
 
 Dependency: #39 FULL-REPORT.
 
@@ -204,7 +204,7 @@ Kiểm chứng: Provider contract tests+bounded malformed fixtures, SQL attempt/
 
 ## TARGETS-MEALS / #41
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/41). Lead: Huy; Khai nối UI. Tách mục tiêu dinh dưỡng được PT publish và nhật ký nhiều bữa/ngày khỏi legacy record/check-in.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/41). Lead: Khai; Huy nối UI. Tách mục tiêu dinh dưỡng được PT publish và nhật ký nhiều bữa/ngày khỏi legacy record/check-in.
 
 Dependency: #32 REVIEW-BASELINE, #34 LEGACY-AUTH.
 
@@ -226,7 +226,7 @@ Kiểm chứng: SQL publication/identity/media, multi-meal/timezone/idempotency 
 
 ## ANDROID-SPIKE / #42
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/42). Lead: Khai; Huy hợp đồng. Chứng minh đường Android dùng chung backend qua một vertical slice trên máy thật.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/42). Huy phụ trách client. Khai phụ trách hợp đồng backend. Chứng minh đường Android dùng chung backend qua một vertical slice trên máy thật.
 
 Dependency: #32 REVIEW-BASELINE, #33 AUTH-DELIVERY.
 
@@ -248,7 +248,7 @@ Kiểm chứng: Physical device script+redacted evidence, API/RLS contract check
 
 ## ANDROID-CORE / #43
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/43). Lead: Khai. Triển khai Android hai vai trò theo domain contract đã ổn định, phù hợp tương tác điện thoại.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/43). Huy phụ trách client, Khai phụ trách backend. Triển khai Android hai vai trò theo domain contract đã ổn định, phù hợp tương tác điện thoại.
 
 Dependency: #42 ANDROID-SPIKE, #37 CALENDAR-02, #39 FULL-REPORT.
 
@@ -292,7 +292,7 @@ Kiểm chứng: Two-role+outsider API/browser/device tests, expired links, dupli
 
 ## BILLING-OFFER / #45
 
-[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/45). Lead: Huy; owner chốt thương mại. Làm rõ offer199k đã khảo sát và economics trước khi nối thanh toán thật.
+[Mở issue](https://github.com/Team-SafeTrail/fitsync-app/issues/45). Lead: Khai; owner chốt thương mại. Làm rõ offer199k đã khảo sát và economics trước khi nối thanh toán thật.
 
 Dependency: #32 REVIEW-BASELINE.
 

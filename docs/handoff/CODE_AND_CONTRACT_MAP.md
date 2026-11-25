@@ -1,6 +1,6 @@
 # Tìm code và nối đúng hợp đồng dữ liệu
 
-Huy dùng bản đồ này để chọn đúng server/data boundary; Khai dùng nó để nối UI và thiết kế Android. Những hàm dưới đây là implementation web hiện hành, không phải REST API công khai hoặc hợp đồng mobile đã ổn định.
+Khai dùng bản đồ này để kiểm server/data boundary. Huy dùng nó để nối UI và Android client. Những hàm dưới đây là implementation web hiện hành, không phải REST API công khai hoặc hợp đồng mobile đã ổn định.
 
 ## Luồng đọc và ghi hiện hành
 

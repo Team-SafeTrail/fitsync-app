@@ -1,6 +1,6 @@
 # FitSync — bàn giao web và database v1
 
-**Dành cho Huy và Diệp Khai. Chốt ngày 31/10/2026; kiểm thử ngày 30/10/2026.** Chủ sản phẩm yêu cầu hoàn thiện web và bộ bàn giao; Android để Khai triển khai tiếp. Đây là bản ứng viên đóng băng để review kỹ thuật, chưa phải xác nhận phát hành thương mại hoặc hoàn thành toàn bộ roadmap.
+**Bản web/database v1, chốt ngày 31/10/2026.** Các kết quả kỹ thuật bên dưới thuộc checkpoint lịch sử. Xem [bàn giao 25/11](TEAM_HANDOFF_2026-11-25_VI.md) cho PR #48, Android U-01 và phân công hiện hành.
 
 ## Đọc nhanh
 
@@ -90,7 +90,7 @@ Các helper `ci-local-supabase.mjs` và `ci-upgrade-rehearsal.mjs` dành riêng 
 
 Web baseline có chức năng thật nhưng chưa gồm mọi phần của ý tưởng ban đầu. Full-report InBody/PDF/provider, yêu cầu đổi/hủy lịch, completion/ledger, target publication, nhiều bữa/ngày, media chat và Android còn có contract/ticket riêng. Không ghi những phần đó là đã implement chỉ vì đã có layout hoặc field dictionary.
 
-Huy review schema, legacy authorization, transaction/race, lưu/xóa dữ liệu và rollout. Khai review UX, desktop/phone, keyboard/focus và Android parity. Chủ sản phẩm duyệt những quy tắc kinh doanh còn mở; human reviewer chấp nhận PR/release. Theo yêu cầu bổ sung ngày31/10, các gói việc đã được tạo thành issues và assign; xem ISSUE_TRACKER. Chưa gửi Discord hoặc thực hiện merge/deploy.
+Khai review schema, legacy authorization, transaction/race và vòng đời dữ liệu. Huy review UX desktop/phone, keyboard/focus và Android client. Chủ sản phẩm duyệt quy tắc kinh doanh còn mở. Người review chấp nhận PR/release. Xem [tracker](ISSUE_TRACKER.md) để đối chiếu assignee trên GitHub.
 
 
 ## Kết quả chốt baseline

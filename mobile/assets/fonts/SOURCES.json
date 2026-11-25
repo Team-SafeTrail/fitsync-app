@@ -1,0 +1,30 @@
+{
+  "stylesheet": "https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&display=swap",
+  "license": "https://raw.githubusercontent.com/google/fonts/main/ofl/bevietnampro/OFL.txt",
+  "files": [
+    {
+      "file": "be-vietnam-pro-0.ttf",
+      "source": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVPSTAyLFyeg_IDWvOJmVES_Eww.ttf",
+      "sha256": "4ad53eac036092be79a34b5fa0aa32d0ebb3c7e5df4bc058764f5614fbf148a0",
+      "bytes": 120228
+    },
+    {
+      "file": "be-vietnam-pro-1.ttf",
+      "source": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HTEJl8y.ttf",
+      "sha256": "557a1c42a7f8eb83f84255d475017b1235c1101b899367f974a1cbfa19cd7c3d",
+      "bytes": 122644
+    },
+    {
+      "file": "be-vietnam-pro-2.ttf",
+      "source": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HToIV8y.ttf",
+      "sha256": "cbf437bf71c8536a7aaed632dce2583ea5ec97c07efffc625c31991d1027ba3b",
+      "bytes": 123064
+    },
+    {
+      "file": "be-vietnam-pro-3.ttf",
+      "source": "https://fonts.gstatic.com/s/bevietnampro/v12/QdVMSTAyLFyeg_IDWvOJmVES_HSMIF8y.ttf",
+      "sha256": "aef76cd15b8c9faa1ff21951bb71963a774aa381526c557e5a52f38d430c4650",
+      "bytes": 126228
+    }
+  ]
+}
