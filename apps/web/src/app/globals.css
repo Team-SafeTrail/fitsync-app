@@ -251,3 +251,12 @@ button:disabled {
 [hidden] {
   display: none!important;
 }
+
+@keyframes route-progress-bar {
+  0% {
+    background-position: 100% 0;
+  }
+  100% {
+    background-position: -100% 0;
+  }
+}

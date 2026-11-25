@@ -6,7 +6,16 @@ import { getSupabaseEnv, isSupabaseConfigured } from "./env";
 export async function updateSession(request: NextRequest) {
   if (!isSupabaseConfigured()) return NextResponse.next({ request });
 
+  const pathname = request.nextUrl.pathname;
+  const isProtected = pathname.startsWith("/workspace") || pathname.startsWith("/admin");
+
   let response = NextResponse.next({ request });
+
+  // For public pages, skip remote auth roundtrip in middleware for instant navigation
+  if (!isProtected) {
+    return response;
+  }
+
   const { url, publishableKey } = getSupabaseEnv();
   const supabase = createServerClient<Database>(url, publishableKey, {
     cookies: {
@@ -22,10 +31,10 @@ export async function updateSession(request: NextRequest) {
   });
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user && (request.nextUrl.pathname.startsWith("/workspace") || request.nextUrl.pathname.startsWith("/admin"))) {
+  if (!user) {
     const target = request.nextUrl.clone();
     target.pathname = "/login"; target.search = "";
-    target.searchParams.set("next", request.nextUrl.pathname + request.nextUrl.search);
+    target.searchParams.set("next", pathname + request.nextUrl.search);
     const login = NextResponse.redirect(target);
     response.cookies.getAll().forEach(cookie => login.cookies.set(cookie));
     return login;

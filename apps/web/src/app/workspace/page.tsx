@@ -128,7 +128,7 @@ export default async function WorkspacePage({ searchParams: searchParamsPromise 
                 <article key={trainee.id} className="workspace-warning-card">
                   <div><AlertTriangle size={19} /><span><strong>{trainee.display_name}</strong><small>Lần check-in gần nhất: {trainee.last_checkin_date ?? "chưa có"}</small></span></div>
                   <FollowUpActions message={followUp.message} zaloUrl={followUp.zaloUrl} />
-                  <Link href={`/workspace/trainees/${trainee.id}`} className="workspace-inline-link">Xem hoạt động <ArrowRight size={15} /></Link>
+                  <Link href={`/workspace/trainees/${trainee.id}`} prefetch={true} className="workspace-inline-link">Xem hoạt động <ArrowRight size={15} /></Link>
                 </article>
               );
             })}
@@ -159,7 +159,7 @@ export default async function WorkspacePage({ searchParams: searchParamsPromise 
               const status = trainee.status === "archived" ? "Đã lưu trữ" : trainee.profile_id ? "Đã kết nối" : invitation?.status === "pending" && !inviteExpired ? "Chờ chấp nhận" : "Lời mời hết hạn";
               const recordCount = verifiedRecordCountByTrainee.get(trainee.id) ?? 0;
               return (
-                <Link key={trainee.id} href={`/workspace/trainees/${trainee.id}`} className="workspace-roster-row">
+                <Link key={trainee.id} href={`/workspace/trainees/${trainee.id}`} prefetch={true} className="workspace-roster-row">
                   <span className="workspace-avatar">{trainee.display_name.split(/\s+/).slice(-2).map((part) => part[0]).join("").toUpperCase()}</span>
                   <span className="workspace-roster-identity"><strong>{trainee.display_name}</strong><small>{goalLabels[trainee.primary_goal]}{trainee.phone ? ` · ${trainee.phone}` : ""}</small></span>
                   <span className={`workspace-badge ${trainee.profile_id ? "is-verified" : "is-pending"}`}>{status}</span>

@@ -368,7 +368,7 @@
 .workspace-activity { display: grid; gap: 0.85rem; padding: clamp(1rem, 3vw, 1.35rem); border: 1px solid var(--color-border-default); border-radius: var(--radius-md); background: var(--color-surface); }
 .workspace-activity > header { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
 .workspace-activity time { color: var(--color-text-secondary); font: 600 0.8125rem var(--font-mono); }
-.workspace-activity > p { margin: 0; line-height: 1.65; }
+.workspace-activity > p { margin: 0; line-height: 1.65; white-space: pre-wrap; overflow-wrap: anywhere; }
 .workspace-muted-copy { color: var(--color-text-secondary); font-size: 0.8125rem; }
 .workspace-meal-photo { width: min(100%, 32rem); margin: 0; overflow: hidden; border: 1px solid var(--color-border-default); border-radius: var(--radius-base); background: var(--color-surface-muted); }
 .workspace-meal-photo img { width: 100%; max-height: 25rem; display: block; object-fit: cover; }
