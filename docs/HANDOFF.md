@@ -1,5 +1,7 @@
 # FitSync — bắt đầu từ đây
 
+**Bàn giao 25/11/2026:** [Bản tiếng Việt cho Việt, Huy và Khai](handoff/TEAM_HANDOFF_2026-11-25_VI.md) và [brief tiếng Anh cho AI làm slide](handoff/EXE201_SLIDE_BRIEF_EN.md). Hai tài liệu ghi revision web PR #48, Android U-01, giá đã duyệt, việc còn lại và danh mục nguồn. Phần bên dưới giữ bối cảnh bàn giao web/database v1 ở PR #31.
+
 Cập nhật31/10/2026. Bộ bàn giao web/database v1 cho Huy và Diệp Khai ở **[docs/handoff/README.md](handoff/README.md)**. Chủ sản phẩm xác nhận: hoàn thiện web và tài liệu, Android để Khai triển khai tiếp. Xem [issues đã assign](handoff/ISSUE_TRACKER.md), [runbook](handoff/DEVELOPER_RUNBOOK.md) và [merge/Discord](handoff/MERGE_AND_SHARE.md).
 
 Branch: `codex/apply-approved-coaching-design`. Draft [PR31](https://github.com/Team-SafeTrail/fitsync-app/pull/31). Chưa merge/deploy/cloud migration hoặc bật cờ production. Giữ các thay đổi chưa commit, video và dữ liệu riêng.

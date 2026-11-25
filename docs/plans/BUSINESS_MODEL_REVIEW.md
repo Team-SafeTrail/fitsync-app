@@ -1,5 +1,13 @@
 # FitSync — xem xét mô hình kinh doanh cho Việt Nam
 
+## Trạng thái bàn giao 25/11/2026
+
+Mức giá và chính sách dùng cho EXE201 nằm trong [quyết định ngày 17/11](../PRODUCT_DECISIONS.md#quyết-định-bổ-sung-17112026--ưu-tiên-cho-bài-nộp-cuối) và [báo cáo tài chính](../../reports/FINANCIAL_REPORT.md). Free có tối đa 3 hồ sơ chưa lưu trữ, gồm lời mời chờ nhận. Pro 199.000đ/PT/tháng không giới hạn học viên trong thời hạn và có cùng chức năng coaching. Học viên dùng kèm. Khi Pro hết hạn, dữ liệu cũ vẫn còn và thao tác tạo/khôi phục áp dụng giới hạn Free. Đối soát thủ công chờ thông tin nhận tiền. Hồ sơ ghi nhận 0 khách trả tiền và 0đ doanh thu thật.
+
+Các phần dưới là nghiên cứu ngày 30/10. Dải học viên, 299.000đ, trial và quota AI là phương án thử trong tương lai. Nếu mở lại thương mại, kiểm soát quota theo hồ sơ chưa lưu trữ ở server, đo khả năng luân phiên hồ sơ để né quota và chi phí thực của roster Pro lớn. Giữ quyền đọc lịch sử khi hết hạn. Phần [bàn giao mới](../handoff/TEAM_HANDOFF_2026-11-25_VI.md) ghi rõ những gì được dùng khi làm slide.
+
+## Nghiên cứu ngày 30/10/2026
+
 Ngày 2026-10-30. Dùng skill pricing; đề xuất để thảo luận, không phải giá mới đã duyệt hoặc dự báo lợi nhuận. Chủ sản phẩm cho biết đã có mô hình cũ, mentor đặt vấn đề và nay yêu cầu xem xét lại. Cập nhật owner xác nhận: đã khảo sát sơ bộ mức 199.000đ/tháng. Đây là mức tham chiếu hiện hành để làm rõ offer, không phải chưa từng chọn mô hình. Free 3 học viên/3 OCR là cấu trúc trong tài liệu cũ; hạn mức và phạm vi hiện hành cần được xác nhận riêng.
 
 ## Khuyến nghị
