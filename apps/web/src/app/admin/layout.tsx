@@ -2,14 +2,14 @@ import React from "react";
 import Brand from "@/components/brand/Brand";
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { 
-  Activity, 
-  LayoutDashboard, 
-  Users, 
-  CreditCard, 
-  ShieldCheck, 
-  ArrowUpRight, 
-  LogOut, 
+import {
+  Activity,
+  LayoutDashboard,
+  Users,
+  CreditCard,
+  ShieldCheck,
+  ArrowUpRight,
+  LogOut,
   Home,
   CheckCircle2,
   Server
@@ -58,61 +58,50 @@ export default async function AdminLayout({
               <LayoutDashboard size={18} />
               <span>Tổng quan KPI</span>
             </Link>
+            <a href="#finance-summary" className="admin-nav-item">
+              <CheckCircle2 size={18} />
+              <span>Tài chính thực tế</span>
+            </a>
             <a href="#users-table" className="admin-nav-item">
               <Users size={18} />
-              <span>Quản lý Người dùng</span>
+              <span>Tài khoản hệ thống</span>
             </a>
             <a href="#transactions-table" className="admin-nav-item">
               <CreditCard size={18} />
-              <span>Sổ thu–chi và chứng từ</span>
+              <span>Sổ thu chi</span>
             </a>
-            <Link href="/workspace" className="admin-nav-item highlight">
-              <Activity size={18} />
-              <span>Vào PT Workspace</span>
-              <ArrowUpRight size={14} />
-            </Link>
-            <Link href="/" className="admin-nav-item">
-              <Home size={18} />
-              <span>Về Trang chủ</span>
-            </Link>
           </nav>
         </div>
 
         <div className="admin-sidebar-foot">
-          {/* System Health */}
           <div className="admin-system-health">
             <div style={{ display: "flex", alignItems: "center", gap: "8px", fontWeight: 600, color: "var(--color-text-primary)" }}>
               <span className="admin-system-health-dot" />
-              <span>Phiên quản trị đã được xác thực</span>
+              <span>Quản trị đã xác thực</span>
             </div>
             <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <Server size={12} color="var(--color-success)" />
-              <span>Supabase: kiểm tra theo môi trường triển khai</span>
-            </div>
-            <div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
-              <ShieldCheck size={12} color="var(--color-success)" />
-              <span>RLS: được khai báo trong migrations</span>
+              <ShieldCheck size={13} color="var(--color-brand)" />
+              <span>RLS bảo vệ theo vai trò</span>
             </div>
           </div>
 
-          {/* User Account */}
           <div className="admin-account-bar">
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", minWidth: 0 }}>
               <div className="admin-avatar">
                 {displayName.charAt(0).toUpperCase()}
               </div>
-              <div style={{ display: "flex", flexDirection: "column" }}>
-                <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--color-text-primary)" }}>
+              <div style={{ display: "flex", flexDirection: "column", minWidth: 0 }}>
+                <span style={{ fontSize: "0.85rem", fontWeight: 700, color: "var(--color-text-primary)", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
                   {displayName}
                 </span>
-                <span style={{ fontSize: "0.75rem", color: "var(--color-brand)", textTransform: "capitalize" }}>
+                <span style={{ fontSize: "0.75rem", color: "var(--color-brand)" }}>
                   {userRole === "admin" ? "System Admin" : userRole === "pt" ? "Coach Admin" : "Trainee"}
                 </span>
               </div>
             </div>
 
             <form action={logout}>
-              <button type="submit" className="admin-logout-btn" title="Đăng xuất">
+              <button type="submit" className="admin-logout-btn" title="Đăng xuất" aria-label="Đăng xuất">
                 <LogOut size={16} />
               </button>
             </form>
@@ -120,29 +109,21 @@ export default async function AdminLayout({
         </div>
       </aside>
 
-      {/* Surface Area */}
       <div className="admin-surface">
-        {/* Top Header */}
         <header className="admin-topbar">
           <div className="admin-topbar-title">
-            <h1>Bảng Điều Khiển Quản Trị Hệ Thống</h1>
-            <p>Quản trị FitSync · Dữ liệu từ database, giao dịch thử được tách riêng</p>
+            <span className="admin-topbar-eyebrow">FitSync Admin Console</span>
+            <h1>Bảng điều khiển quản trị</h1>
+            <p>Theo dõi PT, học viên, bản ghi InBody và sổ thu chi đối soát thực tế.</p>
           </div>
 
           <div className="admin-topbar-actions">
-            <Link href="/workspace" className="admin-btn admin-btn-secondary">
-              <Activity size={16} />
-              <span>Mở PT Workspace</span>
-            </Link>
-            <Link href="/" className="admin-btn admin-btn-primary">
-              <Home size={16} />
-              <span>Trang Chủ</span>
-            </Link>
+
           </div>
         </header>
 
         {/* Content Page */}
-        <main id="main-content"><DemoNotice/>{children}</main>
+        <main id="main-content"><DemoNotice />{children}</main>
       </div>
     </div>
   );

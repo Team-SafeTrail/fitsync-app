@@ -39,18 +39,41 @@ export default async function WorkspacePage({ searchParams: searchParamsPromise 
       );
     }
     const checkedInToday = checkins.some((checkin) => checkin.local_checkin_date === getApplicationDate());
+    const remainingPct = trainee && trainee.total_sessions > 0
+      ? Math.min(100, Math.max(0, Math.round((trainee.remaining_sessions / trainee.total_sessions) * 100)))
+      : 0;
     return (
       <main id="main-content" className="workspace-main">
-        <header className="workspace-page-heading trainee-heading" style={{ marginBottom: "20px" }}>
-          <div>
+        <header className="fs-trainee-hero">
+          <div className="fs-trainee-hero-info">
             <p className="workspace-kicker">Không gian học viên</p>
             <h1>Chào {viewer.profile.display_name}</h1>
-            {coach && <p>PT đồng hành: <strong>{coach.display_name}</strong></p>}
+            <div className="fs-trainee-chips">
+              {coach && (
+                <span className="fs-trainee-chip is-coach">
+                  <UserRoundCheck size={14} /> PT đồng hành: <strong>{coach.display_name}</strong>
+                </span>
+              )}
+              {trainee && (
+                <span className="fs-trainee-chip">
+                  Mục tiêu: <strong>{goalLabels[trainee.primary_goal]}</strong>
+                </span>
+              )}
+            </div>
           </div>
           {trainee && (
-            <div className="workspace-session-stat">
-              <strong>{trainee.remaining_sessions}</strong>
-              <span>buổi PT còn lại / {trainee.total_sessions}</span>
+            <div className="fs-trainee-sessions-card">
+              <div className="fs-trainee-sessions-top">
+                <span className="fs-trainee-sessions-label">Số buổi PT còn lại</span>
+                <span className="fs-trainee-sessions-pct">{remainingPct}%</span>
+              </div>
+              <div className="fs-trainee-sessions-value">
+                <strong>{trainee.remaining_sessions}</strong>
+                <span>/ {trainee.total_sessions} buổi</span>
+              </div>
+              <div className="fs-trainee-progress" aria-hidden="true">
+                <span style={{ width: `${remainingPct}%` }} />
+              </div>
             </div>
           )}
         </header>
@@ -166,12 +189,6 @@ export default async function WorkspacePage({ searchParams: searchParamsPromise 
         <div>
           <p className="workspace-kicker">Danh bạ PT</p>
           <h1>Chào {viewer.profile.display_name}</h1>
-          <div className="workspace-primary-actions" style={{ margin: "14px 0 0" }}>
-            <OpenCreateTraineeButton />
-            <Link className="fs-pill-link is-brand" href="/workspace/today" prefetch={true}>
-              Mở trang Hôm nay
-            </Link>
-          </div>
         </div>
         <div className="workspace-overview-stats">
           <div><Users size={18} /><strong>{trainees.length}</strong><span>học viên</span></div>

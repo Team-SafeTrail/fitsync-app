@@ -29,7 +29,6 @@ export default async function WorkspaceLayout({ children }: { children: React.Re
         <WorkspaceNav isPt={isPt} />
 
         <div className="workspace-sidebar-foot">
-          <Link className="workspace-tour-help" href={isPt?"/app/dashboard":"/app/trainee"}>Xem bản mẫu công khai</Link>
           <div className="workspace-security-note"><ShieldCheck size={16} /><span>Dữ liệu thật được bảo vệ theo vai trò.</span></div>
           <div className="workspace-account">
             <span className="workspace-account-avatar">{viewer.profile.display_name.trim().charAt(0).toUpperCase()}</span>
