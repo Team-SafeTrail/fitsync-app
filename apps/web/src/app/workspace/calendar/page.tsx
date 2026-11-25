@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { Suspense } from "react";
 import { notFound, redirect } from "next/navigation";
-import { ArrowLeft, MessageCircle } from "lucide-react";
 import { getWorkspaceViewer } from "@/features/workspace/data";
 import { createClient } from "@/lib/supabase/server";
 import { isCalendarEnabled } from "@/features/scheduling/config";
@@ -75,16 +74,6 @@ async function CalendarContent({ viewer, week, selected, saved }: { viewer: NonN
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: "12px", flexWrap: "wrap", marginBottom: "14px" }}>
-
-        <div className="calendar-heading-actions">
-          {isPt && <a className="workspace-button" href="#calendar-entry-title">Xếp cuộc hẹn</a>}
-          <Link href="/workspace/chat" prefetch={true} className="fs-pill-link is-brand">
-            <MessageCircle size={15} /> Mở trao đổi
-          </Link>
-        </div>
-      </div>
-
       <header className="calendar-heading">
         <div>
           <p className="workspace-kicker">Lịch đồng bộ · UTC+7</p>
@@ -107,6 +96,7 @@ async function CalendarContent({ viewer, week, selected, saved }: { viewer: NonN
         <GoogleCalendarGrid
           weekMonday={week.monday}
           isPt={isPt}
+          trainees={trainees.data ?? []}
           events={(appointments.data ?? []).slice(0, 500).map((item) => {
             const completion = completionMap.get(item.id);
             const hasPendingChange = (changes.data ?? []).some(

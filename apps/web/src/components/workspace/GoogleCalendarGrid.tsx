@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { CalendarDays, CheckCircle2, Clock3 } from "lucide-react";
+import { CalendarDays, CheckCircle2, Clock3, X } from "lucide-react";
 import { addCalendarDays } from "@/features/engagement/calendar";
+import AppointmentForm from "./AppointmentForm";
 
 export type GoogleCalendarEvent = {
   id: string;
@@ -84,19 +85,37 @@ export default function GoogleCalendarGrid({
   weekMonday,
   events,
   isPt,
+  trainees = [],
 }: {
   weekMonday: string;
   events: GoogleCalendarEvent[];
   isPt: boolean;
+  trainees?: { id: string; display_name: string }[];
 }) {
   const [todayInfo, setTodayInfo] = useState<{ day: string; minuteOfDay: number } | null>(null);
   const [activeSlotHint, setActiveSlotHint] = useState<string | null>(null);
+  const [activeSlot, setActiveSlot] = useState<{
+    dayStr: string;
+    hour: number;
+    startIso: string;
+    endIso: string;
+    formattedTime: string;
+  } | null>(null);
 
   useEffect(() => {
     setTodayInfo(getVietnamToday());
     const timer = window.setInterval(() => setTodayInfo(getVietnamToday()), 60000);
     return () => window.clearInterval(timer);
   }, []);
+
+  useEffect(() => {
+    if (!activeSlot) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setActiveSlot(null);
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeSlot]);
 
   const days = Array.from({ length: 7 }, (_, idx) => addCalendarDays(weekMonday, idx));
 
@@ -136,27 +155,35 @@ export default function GoogleCalendarGrid({
     window.setTimeout(() => target.classList.remove("is-gcal-highlighted"), 1800);
   }
 
-  function prefillSlot(dayStr: string, hour: number) {
+  function openSlotModal(dayStr: string, hour: number) {
     if (!isPt) return;
+    const startIso = `${dayStr}T${String(hour).padStart(2, "0")}:00`;
+    const endHour = hour >= 23 ? 23 : hour + 1;
+    const endMin = hour >= 23 ? 59 : 0;
+    const endIso = `${dayStr}T${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}`;
+
+    const [year, month, day] = dayStr.split("-");
+    const dateObj = new Date(`${dayStr}T12:00:00+07:00`);
+    const dayName = new Intl.DateTimeFormat("vi-VN", { weekday: "long", timeZone: "Asia/Ho_Chi_Minh" }).format(dateObj);
+    const formattedTime = `${dayName}, ${day}/${month}/${year} · ${String(hour).padStart(2, "0")}:00 – ${String(endHour).padStart(2, "0")}:${String(endMin).padStart(2, "0")}`;
+
+    setActiveSlot({
+      dayStr,
+      hour,
+      startIso,
+      endIso,
+      formattedTime,
+    });
+    setActiveSlotHint(`Đã chọn: ${String(hour).padStart(2, "0")}:00 ngày ${day}/${month}`);
+
     const startInput = document.getElementById("appointment-start") as HTMLInputElement | null;
     const endInput = document.getElementById("appointment-end") as HTMLInputElement | null;
-    const titleInput = document.getElementById("appointment-title") as HTMLInputElement | null;
-    if (!startInput || !endInput) return;
-
-    const startVal = `${dayStr}T${String(hour).padStart(2, "0")}:00`;
-    const endVal =
-      hour >= 23
-        ? `${dayStr}T23:59`
-        : `${dayStr}T${String(hour + 1).padStart(2, "0")}:00`;
-
-    startInput.value = startVal;
-    endInput.value = endVal;
-    startInput.dispatchEvent(new Event("input", { bubbles: true }));
-    endInput.dispatchEvent(new Event("input", { bubbles: true }));
-
-    setActiveSlotHint(`Đã chọn khung ${dayStr.split("-").reverse().join("/")} · ${String(hour).padStart(2, "0")}:00`);
-    (titleInput ?? startInput).scrollIntoView({ behavior: "smooth", block: "center" });
-    window.setTimeout(() => titleInput?.focus(), 220);
+    if (startInput && endInput) {
+      startInput.value = startIso;
+      endInput.value = endIso;
+      startInput.dispatchEvent(new Event("input", { bubbles: true }));
+      endInput.dispatchEvent(new Event("input", { bubbles: true }));
+    }
   }
 
   return (
@@ -175,7 +202,7 @@ export default function GoogleCalendarGrid({
           {isPt && (
             <span className="gcal-slot-tip">
               <Clock3 size={13} />
-              {activeSlotHint ?? "Bấm vào ô giờ trống để điền nhanh lịch hẹn"}
+              {activeSlotHint ?? "Bấm vào ô giờ để mở tab đăng ký lịch hẹn"}
             </span>
           )}
         </div>
@@ -231,12 +258,12 @@ export default function GoogleCalendarGrid({
                       key={hour}
                       type="button"
                       disabled={!isPt}
-                      onClick={() => prefillSlot(dayStr, hour)}
+                      onClick={() => openSlotModal(dayStr, hour)}
                       className={`gcal-hour-cell${isPt ? " is-clickable" : ""}`}
                       style={{ height: `${HOUR_HEIGHT}px` }}
                       aria-label={
                         isPt
-                          ? `Chọn giờ ${String(hour).padStart(2, "0")}:00 ngày ${dayStr.split("-").reverse().join("/")}`
+                          ? `Đăng ký lịch hẹn ${String(hour).padStart(2, "0")}:00 ngày ${dayStr.split("-").reverse().join("/")}`
                           : undefined
                       }
                     />
@@ -299,6 +326,70 @@ export default function GoogleCalendarGrid({
           </div>
         </div>
       </div>
+
+      {activeSlot && (
+        <div
+          className="gcal-modal-backdrop"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) setActiveSlot(null);
+          }}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="gcal-modal-title"
+        >
+          <div className="gcal-modal-dialog">
+            <header className="gcal-modal-header">
+              <div>
+                <p className="gcal-modal-kicker">Lịch hẹn mới · UTC+7</p>
+                <h3 id="gcal-modal-title">Đăng ký lịch hẹn với học viên</h3>
+              </div>
+              <button
+                type="button"
+                className="gcal-modal-close"
+                onClick={() => setActiveSlot(null)}
+                aria-label="Đóng bảng đăng ký lịch hẹn"
+              >
+                <X size={18} />
+              </button>
+            </header>
+
+            <div className="gcal-modal-body">
+              <div className="gcal-modal-slot-badge">
+                <Clock3 size={15} />
+                <span>{activeSlot.formattedTime}</span>
+              </div>
+
+              {trainees.length === 0 ? (
+                <div className="gcal-modal-empty">
+                  <p>Bạn chưa có học viên nào được kết nối.</p>
+                  <p style={{ marginTop: "6px", fontSize: "13px", color: "var(--color-text-secondary)" }}>
+                    Hãy kết nối tài khoản học viên qua <a href="/workspace" style={{ color: "var(--color-brand)", textDecoration: "underline" }}>lời mời</a> trước khi xếp lịch.
+                  </p>
+                  <div style={{ marginTop: "16px", textAlign: "right" }}>
+                    <button
+                      type="button"
+                      className="workspace-button secondary"
+                      onClick={() => setActiveSlot(null)}
+                    >
+                      Đóng
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <AppointmentForm
+                  key={`${activeSlot.dayStr}-${activeSlot.hour}`}
+                  trainees={trainees}
+                  formAriaLabel="Đăng ký lịch hẹn"
+                  idPrefix="modal"
+                  defaultStart={activeSlot.startIso}
+                  defaultEnd={activeSlot.endIso}
+                  onCancel={() => setActiveSlot(null)}
+                />
+              )}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
