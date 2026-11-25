@@ -1,10 +1,25 @@
 "use client";
+import { useEffect } from "react";
 import Link from "next/link";
-import {usePathname} from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Activity, Award, CalendarDays, ChartNoAxesCombined, CreditCard, LayoutDashboard, MessageCircle, UsersRound } from "lucide-react";
 
 export default function WorkspaceNav({isPt}:{isPt:boolean}) {
  const path=usePathname();
+ const router=useRouter();
+
+ useEffect(() => {
+  const routes = isPt
+   ? ["/workspace", "/workspace/today", "/workspace/calendar", "/workspace/chat", "/workspace/billing"]
+   : ["/workspace", "/workspace/progress", "/workspace/calendar", "/workspace/chat"];
+  const timer = window.setTimeout(() => {
+   for (const route of routes) {
+    if (route !== path) router.prefetch(route);
+   }
+  }, 150);
+  return () => window.clearTimeout(timer);
+ }, [isPt, path, router]);
+
  return <nav className="workspace-nav" aria-label="Điều hướng workspace">
   {isPt&&<Link href="/workspace/today" prefetch={true} aria-current={path==="/workspace/today"?"page":undefined}><LayoutDashboard size={18}/><span>Hôm nay</span></Link>}
   {isPt&&<Link href="/workspace/billing" prefetch={true} aria-current={path==="/workspace/billing"?"page":undefined}><CreditCard size={18}/><span>Gói FitSync</span></Link>}

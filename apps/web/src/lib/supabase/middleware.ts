@@ -30,8 +30,16 @@ export async function updateSession(request: NextRequest) {
     },
   });
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
+  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
+  let authenticated = Boolean(claimsData?.claims?.sub) && !claimsError;
+
+  // Fall back to GoTrue only when JWT claims are missing/expired so refresh_token rotation still runs.
+  if (!authenticated) {
+    const { data: { user } } = await supabase.auth.getUser();
+    authenticated = Boolean(user);
+  }
+
+  if (!authenticated) {
     const target = request.nextUrl.clone();
     target.pathname = "/login"; target.search = "";
     target.searchParams.set("next", pathname + request.nextUrl.search);
