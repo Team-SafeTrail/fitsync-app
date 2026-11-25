@@ -1,6 +1,14 @@
-# FitSync EXE201 — Evidence brief for slide generation
+# FitSync — Agent handoff and EXE201 evidence
 
-Use this brief to update the existing Vietnamese slides. Audience is the EXE201 lecturer and project reviewers. Date status claims to 25 November 2026. Prefer actual candidate screenshots and the existing walkthrough from the evidence package. Keep the source or revision in speaker notes for every factual claim.
+Read [AGENTS.md](../../AGENTS.md), the [team playbook](../TEAM_PLAYBOOK.md), and the applicable project skills before editing. Use the [Vietnamese handoff](TEAM_HANDOFF_2026-11-25_VI.md) for the human-facing summary. Check the issue and candidate revision before relying on the dated evidence below.
+
+## Ownership and delivery order
+
+- **Huy (`huydqse180459-art`) owns frontend.** He reviews the current web UI, coordinates preview and approved UI deployment, and handles the Android client side of U-01.
+- **Khai (`DiepKhai`) owns backend.** He prepares local Supabase and a linked synthetic PT/trainee pair, checks the check-in RPC and access, and reviews environment, migrations, RLS and release flags. Huy and Khai jointly verify Android submission and PT web readback.
+- **Việt (`Am2uocVi3t`) starts the slide update after Huy and Khai finish engineering handoff and post evidence and release status.** The owner decides whether any remaining open item can appear with a pending label.
+- GitHub issues and linked PRs track owners, scope, dependencies, acceptance and evidence. Reuse matching issues and respect blockers. Post the links in Discord once routing is ready. Keep environment values and demo credentials local.
+- An independent Claude preflight can check ownership, source links, pricing claims and deployment versus test status. Human owners confirm issue acceptance and release.
 
 ## Facts to preserve
 
@@ -33,6 +41,6 @@ Use this brief to update the existing Vietnamese slides. Audience is the EXE201 
 - [Final report PDF](../../reports/FINAL_REPORT_SUBMISSION.pdf), [W8/W9 progress report](../../reports/WEEK_08_09_PROGRESS_REPORT.md), [financial report](../../reports/FINANCIAL_REPORT.md), [financial workbook](https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk).
 - [Product review](../../reports/LOCAL_PRODUCT_REVIEW.html), [database review](../../reports/DATABASE_REVIEW.html), [video index](../../presentations/demo-videos/README.md), [receipt for local demo](../evidence/exe201-2026-11-22/local-demo-verification.json).
 
-## AI output instruction
+## Slide-generation instruction for Việt's agent
 
-Return a Vietnamese storyline, slide titles, up to three short bullets per slide, speaker notes with IDs E01–E08, and an asset pointer per screenshot. Keep the earlier W8/W9 sections where required by the class template. Label unknown dates, financial figures, and production URL as pending when applicable. Use synthetic screenshots approved for the report and keep local environment values, account passwords, and private files out of the slides. Ask Việt to review the draft against the submission index before sharing.
+After Việt confirms engineering evidence is ready, return a Vietnamese storyline, slide titles, up to three short bullets per slide, speaker notes with IDs E01–E08, and an asset pointer per screenshot. Keep the earlier W8/W9 sections where required by the class template. Label unknown dates, financial figures, and production URL as pending when applicable. Use synthetic screenshots approved for the report and keep local environment values, account passwords, and private files out of the slides. Ask Việt to review the draft against the submission index before sharing.

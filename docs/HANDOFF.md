@@ -1,8 +1,8 @@
 # FitSync — bắt đầu từ đây
 
-**Bàn giao 25/11/2026:** [Bản tiếng Việt cho Việt, Huy và Khai](handoff/TEAM_HANDOFF_2026-11-25_VI.md) và [brief tiếng Anh cho AI làm slide](handoff/EXE201_SLIDE_BRIEF_EN.md). Hai tài liệu ghi revision web PR #48, Android U-01, giá đã duyệt, việc còn lại và danh mục nguồn. Phần bên dưới giữ bối cảnh bàn giao web/database v1 ở PR #31.
+**Bàn giao 25/11/2026.** [Bản tiếng Việt cho người đọc](handoff/TEAM_HANDOFF_2026-11-25_VI.md) và [bản tiếng Anh cho agent](handoff/AGENT_HANDOFF_EN.md) ghi revision PR #48, Android U-01, giá đã duyệt và tài liệu nguồn. Huy phụ trách frontend, Khai phụ trách backend. Việt đợi bằng chứng nghiệm thu kỹ thuật rồi làm slide. Phần bên dưới giữ bối cảnh PR #31.
 
-Cập nhật31/10/2026. Bộ bàn giao web/database v1 cho Huy và Diệp Khai ở **[docs/handoff/README.md](handoff/README.md)**. Chủ sản phẩm xác nhận: hoàn thiện web và tài liệu, Android để Khai triển khai tiếp. Xem [issues đã assign](handoff/ISSUE_TRACKER.md), [runbook](handoff/DEVELOPER_RUNBOOK.md) và [merge/Discord](handoff/MERGE_AND_SHARE.md).
+Cập nhật31/10/2026. Bộ bàn giao web/database v1 cho Huy và Diệp Khai ở **[docs/handoff/README.md](handoff/README.md)**. Xem [tracker](handoff/ISSUE_TRACKER.md), [runbook](handoff/DEVELOPER_RUNBOOK.md) và [quy trình GitHub/Discord](handoff/MERGE_AND_SHARE.md).
 
 Branch: `codex/apply-approved-coaching-design`. Draft [PR31](https://github.com/Team-SafeTrail/fitsync-app/pull/31). Chưa merge/deploy/cloud migration hoặc bật cờ production. Giữ các thay đổi chưa commit, video và dữ liệu riêng.
 
@@ -31,6 +31,6 @@ Baseline199k/tháng đã có khảo sát sơ bộ; offer/hạn mức/AI cost/thu
 
 Đọc [WORK_PACKAGES](handoff/WORK_PACKAGES.md) và [REMAINING_CONTRACTS](handoff/REMAINING_CONTRACTS.md): legacy authorization review, retention/delete/rate/support, request/change/cancel, ledger/completion, full-report/PDF/provider, nutrition publication/multi-meal và Android. Baseline12 bảng không có nghĩa mọi miền này đã implement.
 
-Huy nhận review backend/DB/ops; Khai nhận review web/UX và Android theo issues chủ sản phẩm yêu cầu tạo/assign. Human reviewer nhận PR/release; không agent tự approve/merge. Chưa gửi Discord, sửa Trello hoặc triển khai cloud. Các issue phụ thuộc còn blocked cho tới khi review gate và business rules liên quan qua.
+Huy nhận review web/UX và Android client. Khai nhận review backend, DB và cấu hình môi trường. Human reviewer nhận PR/release. Các issue phụ thuộc chờ điều kiện review và business rules liên quan.
 
 Không dùng real health data, reset cloud project hoặc nhập schema snapshot vào production để nhận bàn giao. Windows checkout hiện chưa có Supabase local/Docker; authenticated acceptance chạy trên runner DB tạm. Ba cờ rollout mặc định false; không dùng chúng thay authorization/RLS.

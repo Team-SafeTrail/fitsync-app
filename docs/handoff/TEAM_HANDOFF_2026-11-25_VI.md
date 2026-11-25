@@ -14,15 +14,19 @@ Cập nhật 25/11/2026. Web là sản phẩm trình bày cho EXE201. Theo quy�
 
 ## Ai xử lý phần còn lại
 
-1. **Huy — Web release và môi trường local.** Lấy head được người review duyệt từ PR #48, xác nhận project Vercel, migration và cờ cần thiết trên môi trường dự kiến. Deploy preview và cùng Khai kiểm trên desktop/điện thoại. Sau khi người có quyền duyệt release, deploy UI/UX mới lên URL chính và gửi Việt URL, commit SHA và kết quả smoke test. Kiểm landing, đăng nhập, hai vai trò và một luồng đọc lại check-in. Nếu DB production chưa tương thích, giữ preview cho review đến khi có kế hoạch migration và rollback được duyệt. Dùng [runbook](../DEMO_WORKFLOW.md) để dựng backend local và cấu hình publishable/anon key local cho Khai.
-2. **Khai — Android U-01.** Nhận commit `9ad9e64` từ worktree Android và xác nhận quyền truy cập source trước khi nhận việc từ xa. Dùng APK x86_64 trên emulator và [mobile runbook](../../mobile/README.md). Cấu hình `mobile/.env.local` bằng đích `http://127.0.0.1:54321` và publishable/anon key của stack đó. Cấu hình ADB reverse cho cổng 54321 và 8081 rồi chạy Metro. Vào bằng học viên synthetic đã liên kết, gửi ghi chú mới, kiểm nội dung và ngày server trả về rồi mở lại hồ sơ bằng PT phụ trách trên web. Ghi SHA, ngày, môi trường và kết quả. Hỏi Huy về cấu hình nếu stack local chưa chạy. Android thử được trên laptop và không cần điện thoại.
-3. **Việt — Slide và báo cáo.** Đọc [bản AI tiếng Anh](EXE201_SLIDE_BRIEF_EN.md), [outline hiện có](../../presentations/SLIDE_OUTLINE.md) và [bộ chuẩn bị nộp](../../reports/SUBMISSION_READY_2026-11-22.md). Dùng ảnh/video thật của candidate. Chỉ đổi link demo chính khi Huy gửi URL và xác nhận phiên bản. Có thể làm slide ngay bằng ảnh/video đã kiểm. Dùng một dòng “Android prototype” nếu cần, với trạng thái cross-platform check-in còn chờ nghiệm thu.
+1. **Huy — Frontend (`huydqse180459-art`).** Review UI/UX web từ head được duyệt của PR #48. Deploy preview, kiểm landing, đăng nhập và hai vai trò trên desktop/điện thoại. Phối hợp Khai kiểm môi trường. Khi rollout được duyệt, deploy UI mới lên URL chính và ghi URL, SHA và kết quả smoke test. Huy nhận APK x86_64 để chạy Android client. Dùng Metro và ADB reverse cho 54321/8081 theo [mobile runbook](../../mobile/README.md). Gửi check-in bằng học viên synthetic rồi cùng Khai đối chiếu ghi chú và ngày trả về trên ứng dụng với dữ liệu PT đọc sau khi tải lại web.
+2. **Khai — Backend (`DiepKhai`).** Dựng Supabase local theo [runbook](../DEMO_WORKFLOW.md), chuẩn bị cặp PT/học viên synthetic đã liên kết và hướng dẫn Huy cấu hình client local. Kiểm Auth, RPC check-in, quyền PT đọc lại, migration/RLS và rollout flags. Xác nhận backend tương thích trước khi Huy triển khai UI mới.
+3. **Việt — Slide và báo cáo (`Am2uocVi3t`).** Đợi Huy và Khai hoàn thành phần kỹ thuật và gửi SHA, URL cùng bằng chứng nghiệm thu rồi mới làm slide. Khi có bộ bằng chứng, dùng [bản tiếng Anh cho agent](AGENT_HANDOFF_EN.md), [outline](../../presentations/SLIDE_OUTLINE.md) và [bộ chuẩn bị nộp](../../reports/SUBMISSION_READY_2026-11-22.md).
 
-Repo có `apps/web/.env.example` và `mobile/.env.example`. Hưng chưa có cấu hình local đang dùng. File `.env.local` được tạo riêng trên máy chạy demo. Android chỉ cần URL loopback và key client local. Huy hướng dẫn qua kênh nội bộ đã được team duyệt. File môi trường, khóa cấp quyền server, và đăng nhập demo nằm ngoài bộ slide và tài liệu chia sẻ.
+Repo có `apps/web/.env.example` và `mobile/.env.example`. Khai hướng dẫn Huy cấu hình `mobile/.env.local` với URL `http://127.0.0.1:54321` và key client local tại máy chạy demo. File môi trường, khóa server và đăng nhập demo nằm ngoài tài liệu chia sẻ.
+
+## Cách giao việc
+
+Review tài liệu và đối chiếu issue hiện có trước khi push nhánh tài liệu. Sau đó dùng GitHub để giao người, ghi dependency, tiêu chí nghiệm thu và link PR. Xem [tracker](ISSUE_TRACKER.md) để tránh giao trùng hoặc bỏ sót issue bị chặn. Discord dùng để báo link tài liệu, issue của từng người và thứ tự làm. Việt nhận thông báo khi Huy và Khai đã ghi kết quả lên GitHub.
 
 ### Nhận nhánh Android qua Git bundle
 
-Khai lấy `FitSync-U01-source.bundle` cùng bộ bàn giao. Từ clone của repo có mốc PR #48 (`4257334`), chạy:
+Huy và Khai lấy `FitSync-U01-source.bundle` cùng bộ bàn giao. Từ clone của repo có mốc PR #48 (`4257334`), chạy:
 
 ```powershell
 $bundle = 'C:/path/to/FitSync-U01-source.bundle'
@@ -42,7 +46,7 @@ Commit `9ad9e64` là mốc code Android đã build. Các commit tài liệu sau 
 
 ## Bộ gửi trước và tài liệu tra cứu
 
-**Gửi 2 Markdown trước** gồm tài liệu này và bản AI tiếng Anh. Hai file là điểm vào. Với team kỹ thuật, cấp quyền đọc đúng revision cho các tài liệu nguồn. Việt dùng bộ slide và báo cáo hiện có rồi cập nhật theo bằng chứng.
+**Gửi 2 Markdown** gồm bản tiếng Việt cho người đọc và bản tiếng Anh cho agent. Team kỹ thuật đọc tài liệu nguồn tại đúng revision. Việt dùng bộ slide và báo cáo hiện có sau khi kỹ thuật bàn giao bằng chứng.
 
 | Nhóm | Tài liệu và file cần giữ |
 | --- | --- |

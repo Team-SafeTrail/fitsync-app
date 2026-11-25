@@ -8,10 +8,10 @@ The course schedule and cross-tool workflow are defined in [`EXE201-delivery-pla
 
 | Teammate | Accepted identity names | GitHub | Discord | Primary responsibility |
 | --- | --- | --- | --- | --- |
-| Huỳnh Quốc Việt | Việt, Viet, Huỳnh Quốc Việt | `Am2uocVi3t` | `@2uoc_vi3t` | Product coordination, OCR direction, milestone and evidence alignment |
+| Huỳnh Quốc Việt | Việt, Viet, Huỳnh Quốc Việt | `Am2uocVi3t` | `@2uoc_vi3t` | Product coordination and EXE201 evidence. Starts slide updates after frontend and backend hand over verified results |
 | Lê Nguyễn Gia Hưng | Hưng, Hung, Lê Nguyễn Gia Hưng | `hei1sme` | `@hei.isme` | OCR datasets, preprocessing, evaluation, benchmark evidence |
-| Diệp Khai | Khai, Diệp Khai | `DiepKhai` | `@nottooamaz1ng` | Web/mobile UI, OCR correction experience, Android and Play delivery |
-| Dương Quang Huy | Huy, Dương Quang Huy | `huydqse180459-art` | `@_huymc` | Supabase, server integration, RLS, cloud operations, payments |
+| Diệp Khai | Khai, Diệp Khai | `DiepKhai` | `@nottooamaz1ng` | Backend, Supabase, server integrations, migrations, RLS, and backend release readiness |
+| Dương Quang Huy | Huy, Dương Quang Huy | `huydqse180459-art` | `@_huymc` | Frontend, web UI/UX and deployment coordination, Android client and frontend verification |
 | Lê Văn Toàn | Toàn, Toan, Lê Văn Toàn | Account pending | `@letoan8423` | UI/UX review, Play/marketing assets, channel and growth evidence |
 
 Ownership determines the first coordinator and reviewer. It does not give permission to bypass an issue, validation, privacy rules, or review.
@@ -20,7 +20,7 @@ Ownership determines the first coordinator and reviewer. It does not give permis
 
 - Trello is the course-facing roadmap and Kanban board. Deliverable cards move through `PRODUCT BACKLOG → TO DO THIS WEEK → DOING → REVIEW → DONE`; the reviewer, not the owner, accepts `DONE`. Week labels, title prefixes, and immutable weekly-report cards preserve the lecturer's Week 1–14 view.
 - GitHub Issues own engineering scope, dependencies, acceptance criteria, and implementation status. Every branch and pull request links one issue.
-- Discord carries announcements, meetings, questions, and daily status. Every task message links its Trello card; Discord is not a separate backlog.
+- Discord carries handoff announcements and links to the relevant GitHub issues and repository docs. Add the course card link when applicable.
 - Repository plans, architecture decisions, migrations, and tests remain authoritative for product behavior and data safety.
 
 An engineering task therefore has one Trello card for course tracking and one linked GitHub issue for code. Update both at meaningful state changes; do not copy competing acceptance criteria into Discord.
@@ -114,10 +114,10 @@ The agent must not:
 | Changed area | First reviewers |
 | --- | --- |
 | OCR benchmark, prompts, normalized extraction contract | Hưng and Việt |
-| `supabase/`, RLS, storage, server authorization | Huy and Hưng |
-| `apps/web/` interaction and responsive UI | Khai and Huy |
+| `supabase/`, RLS, storage, server authorization | Khai and Hưng |
+| `apps/web/` interaction and responsive UI | Huy leads and a teammate reviews |
 | Architecture, milestone scope, team automation | Hưng and Việt |
-| Design system and visual evidence | Khai until Toàn joins GitHub; then Toàn and Khai |
+| Design system and visual evidence | Huy with Toàn for design review |
 
 `.github/CODEOWNERS` records this map, but the current private repository is on GitHub Free, where automatic CODEOWNERS review requests are unavailable. Until the plan changes, pull-request authors must request the listed reviewer manually.
 
