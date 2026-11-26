@@ -42,3 +42,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# OCR benchmark private artifacts and Python caches (never commit raw OCR outputs or private images)
+benchmark/ocr/private/
+**/__pycache__/
+*.pyc
+
