@@ -112,10 +112,14 @@ async function withSignedMealMedia(checkins: Checkin[], mealLogs: MealLog[]) {
   }));
 }
 
-export async function getPtTrainee(traineeId: string) {
+export async function getPtTrainee(traineeId: string, assignedPtId?: string) {
   const supabase = (await createClient());
+  let traineeQuery = supabase.from("trainee_profiles").select("*").eq("id", traineeId);
+  if (assignedPtId) {
+    traineeQuery = traineeQuery.eq("assigned_pt_id", assignedPtId);
+  }
   const [traineeResult, recordsResult, checkinsResult, mealLogsResult] = await Promise.all([
-    supabase.from("trainee_profiles").select("*").eq("id", traineeId).maybeSingle(),
+    traineeQuery.maybeSingle(),
     supabase
       .from("inbody_records")
       .select("*")

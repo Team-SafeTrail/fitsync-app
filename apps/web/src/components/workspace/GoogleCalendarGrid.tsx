@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { CalendarDays, CheckCircle2, Clock3, X } from "lucide-react";
 import { addCalendarDays } from "@/features/engagement/calendar";
 import AppointmentForm from "./AppointmentForm";
@@ -102,6 +102,9 @@ export default function GoogleCalendarGrid({
     formattedTime: string;
   } | null>(null);
 
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const openerElementRef = useRef<HTMLElement | null>(null);
+
   useEffect(() => {
     setTodayInfo(getVietnamToday());
     const timer = window.setInterval(() => setTodayInfo(getVietnamToday()), 60000);
@@ -110,11 +113,52 @@ export default function GoogleCalendarGrid({
 
   useEffect(() => {
     if (!activeSlot) return;
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setActiveSlot(null);
+
+    // Focus the first interactive element or dialog after mounting
+    const timer = window.setTimeout(() => {
+      const dialog = dialogRef.current;
+      if (dialog) {
+        const focusable = dialog.querySelector<HTMLElement>(
+          'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        focusable?.focus();
+      }
+    }, 50);
+
+    const handleKeyDown = (e: globalThis.KeyboardEvent) => {
+      if (e.key === "Escape") {
+        e.preventDefault();
+        setActiveSlot(null);
+        openerElementRef.current?.focus();
+        return;
+      }
+
+      if (e.key === "Tab" && dialogRef.current) {
+        const focusables = Array.from(
+          dialogRef.current.querySelectorAll<HTMLElement>(
+            'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          )
+        ).filter((el) => el.offsetParent !== null);
+
+        if (focusables.length === 0) return;
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
+
     window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
+    return () => {
+      window.clearTimeout(timer);
+      window.removeEventListener("keydown", handleKeyDown);
+    };
   }, [activeSlot]);
 
   const days = Array.from({ length: 7 }, (_, idx) => addCalendarDays(weekMonday, idx));
@@ -157,6 +201,7 @@ export default function GoogleCalendarGrid({
 
   function openSlotModal(dayStr: string, hour: number) {
     if (!isPt) return;
+    openerElementRef.current = document.activeElement as HTMLElement | null;
     const startIso = `${dayStr}T${String(hour).padStart(2, "0")}:00`;
     const endHour = hour >= 23 ? 23 : hour + 1;
     const endMin = hour >= 23 ? 59 : 0;
@@ -331,13 +376,16 @@ export default function GoogleCalendarGrid({
         <div
           className="gcal-modal-backdrop"
           onClick={(e) => {
-            if (e.target === e.currentTarget) setActiveSlot(null);
+            if (e.target === e.currentTarget) {
+              setActiveSlot(null);
+              openerElementRef.current?.focus();
+            }
           }}
           role="dialog"
           aria-modal="true"
           aria-labelledby="gcal-modal-title"
         >
-          <div className="gcal-modal-dialog">
+          <div className="gcal-modal-dialog" ref={dialogRef} tabIndex={-1}>
             <header className="gcal-modal-header">
               <div>
                 <p className="gcal-modal-kicker">Lịch hẹn mới · UTC+7</p>
@@ -346,7 +394,10 @@ export default function GoogleCalendarGrid({
               <button
                 type="button"
                 className="gcal-modal-close"
-                onClick={() => setActiveSlot(null)}
+                onClick={() => {
+                  setActiveSlot(null);
+                  openerElementRef.current?.focus();
+                }}
                 aria-label="Đóng bảng đăng ký lịch hẹn"
               >
                 <X size={18} />
@@ -369,7 +420,10 @@ export default function GoogleCalendarGrid({
                     <button
                       type="button"
                       className="workspace-button secondary"
-                      onClick={() => setActiveSlot(null)}
+                      onClick={() => {
+                        setActiveSlot(null);
+                        openerElementRef.current?.focus();
+                      }}
                     >
                       Đóng
                     </button>
@@ -383,7 +437,10 @@ export default function GoogleCalendarGrid({
                   idPrefix="modal"
                   defaultStart={activeSlot.startIso}
                   defaultEnd={activeSlot.endIso}
-                  onCancel={() => setActiveSlot(null)}
+                  onCancel={() => {
+                    setActiveSlot(null);
+                    openerElementRef.current?.focus();
+                  }}
                 />
               )}
             </div>

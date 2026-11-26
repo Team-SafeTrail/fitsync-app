@@ -48,7 +48,7 @@ export default function CreateTraineeForm({ defaultOpen = false }: { defaultOpen
       <summary className="workspace-create-summary">
         <div>
           <span className="workspace-summary-icon"><Plus size={18} /></span>
-          <span><strong id="create-trainee-title">Thêm học viên</strong><small>Tạo hồ sơ, gói buổi tập và liên kết mời bảo mật</small></span>
+          <span><strong id="create-trainee-title">Thêm học viên</strong><small>Gói Free tối đa 3 học viên đang theo dõi, gồm cả hồ sơ chờ kết nối</small></span>
         </div>
         <div className="workspace-summary-right">
           <span className="workspace-invite-chip"><ShieldCheck size={14} /> Link dùng 1 lần · 7 ngày</span>

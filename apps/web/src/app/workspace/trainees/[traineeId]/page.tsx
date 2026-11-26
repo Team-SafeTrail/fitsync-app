@@ -23,9 +23,9 @@ export default async function TraineeDetailPage({ params: route, searchParams: q
   const [params, searchParams] = await Promise.all([route, query]);
   const viewer = await getWorkspaceViewer();
   if (!viewer) redirect("/login");
-  if (viewer.profile.role !== "pt") redirect("/workspace");
-  const { trainee, records, checkins } = await getPtTrainee(params.traineeId);
-  if (!trainee) notFound();
+  if (viewer.profile.role !== "pt") notFound();
+  const { trainee, records, checkins } = await getPtTrainee(params.traineeId, viewer.user.id);
+  if (!trainee || trainee.assigned_pt_id !== viewer.user.id) notFound();
 
   if (trainee.status === "archived") {
     return (

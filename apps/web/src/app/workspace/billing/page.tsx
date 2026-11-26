@@ -40,7 +40,7 @@ export default async function BillingPage() {
           </h3>
           <div className="fs-plan-price">0₫ <small>/ tháng</small></div>
           <ul className="fs-plan-list">
-            <li><Check size={16} /> Tối đa 3 học viên đang hoạt động (gồm lời mời chờ)</li>
+            <li><Check size={16} /> Tối đa 3 học viên đang theo dõi (gồm cả hồ sơ chờ kết nối)</li>
             <li><Check size={16} /> Đầy đủ InBody, lịch hẹn, check-in, chat &amp; ghi chú</li>
             <li><Check size={16} /> Học viên sử dụng miễn phí</li>
           </ul>

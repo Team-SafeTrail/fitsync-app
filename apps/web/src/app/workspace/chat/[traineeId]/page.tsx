@@ -13,8 +13,9 @@ export const dynamic = "force-dynamic";
 
 export default async function ConversationPage({ params: route, searchParams: query }: { params: Promise<{ traineeId: string }>; searchParams: Promise<{ before?: string }> }) {
   const [params, searchParams] = await Promise.all([route, query]);
-  if (!(await getWorkspaceViewer())) redirect("/login");
-  if (!isChatEnabled()) redirect("/workspace/chat");
+  const currentViewer = await getWorkspaceViewer();
+  if (!currentViewer) redirect("/login");
+  if (!isChatEnabled()) notFound();
   const context = await getChatContext(params.traineeId);
   if (!context) notFound();
   const cursor = parseChatCursor(searchParams.before);

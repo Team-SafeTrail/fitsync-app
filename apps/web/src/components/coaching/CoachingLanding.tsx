@@ -18,7 +18,7 @@ import {
 } from "lucide-react";
 import { BrandMark } from "@/components/brand/Brand";
 import WeightPlot from "./WeightPlot";
-import { IntakeJourney, PricingSection } from "./LandingContext";
+import { IntakeJourney, PricingSection, TeamDetails } from "./LandingContext";
 
 export default function CoachingLanding() {
   const [role, setRole] = useState<"pt" | "trainee">("pt");
@@ -73,11 +73,11 @@ export default function CoachingLanding() {
               Không gian làm việc tinh gọn cho PT: Quản lý học viên, xác thực InBody, xếp lịch tập tuần và theo dõi check-in dinh dưỡng mỗi ngày.
             </p>
             <div className="hero-cta-group">
-              <Link className="button sun hero-primary-btn" href="/register" prefetch={true}>
-                Bắt đầu miễn phí <ArrowRight size={16} />
+              <Link className="button sun hero-primary-btn" href="/register" prefetch={true} aria-label="Tạo workspace PT">
+                Tạo workspace PT <ArrowRight size={16} />
               </Link>
-              <Link className="hero-ghost-btn" href="/login" prefetch={true}>
-                Đăng nhập workspace
+              <Link className="hero-ghost-btn hero-sample" href="/app/dashboard" prefetch={true} aria-label="Xem bản mẫu">
+                Xem bản mẫu
               </Link>
             </div>
           </div>
@@ -183,17 +183,17 @@ export default function CoachingLanding() {
               <p className="profile-subtitle">Chọn góc nhìn để xem cách PT và học viên cùng đồng hành trên FitSync.</p>
             </div>
             <div className="role-control" role="group" aria-label="Chọn góc nhìn">
-              <button data-role="pt" aria-pressed={role === "pt"} onClick={() => setRole("pt")}>
-                Huấn luyện viên (PT)
+              <button data-role="pt" aria-label="Huấn luyện viên" aria-pressed={role === "pt"} onClick={() => setRole("pt")}>
+                Huấn luyện viên
               </button>
-              <button data-role="trainee" aria-pressed={role === "trainee"} onClick={() => setRole("trainee")}>
+              <button data-role="trainee" aria-label="Học viên" aria-pressed={role === "trainee"} onClick={() => setRole("trainee")}>
                 Học viên
               </button>
             </div>
           </div>
 
           <div className={role === "pt" ? "profile-surface" : "profile-surface learner-surface"} data-ui>
-            <aside className="profile-rail" hidden={role !== "pt"}>
+            <aside className="profile-rail" hidden={role !== "pt"} data-pt-only>
               <span className="rail-title">Danh sách học viên</span>
               <span className="rail-person selected">
                 <span className="avatar">KL</span>
@@ -215,6 +215,7 @@ export default function CoachingLanding() {
                   <span className="large-avatar">KL</span>
                   <div>
                     <p data-role-label>{role === "pt" ? "Không gian PT" : "Không gian học viên"}</p>
+                    {role === "trainee" && <span data-trainee-only className="workspace-badge is-verified">Góc học viên</span>}
                     <h3>Khánh Linh</h3>
                     <span>Giảm mỡ · Giữ nhịp tập đều</span>
                   </div>
@@ -314,6 +315,11 @@ export default function CoachingLanding() {
                 <summary>Gói Free và Pro khác nhau thế nào?</summary>
                 <p>Gói Free miễn phí trọn đời cho tối đa 3 học viên đang hoạt động với đầy đủ mọi tính năng. Khi bạn kèm từ 4 học viên trở lên, chỉ 199.000đ/tháng để mở khóa không giới hạn số lượng học viên.</p>
               </details>
+              <details id="contact-app">
+                <summary>Đã có ứng dụng Android hay giá chính thức chưa?</summary>
+                <p>Android là nền tảng ưu tiên đang hướng tới. Chưa công bố APK hoặc bản App Store. Mức 199.000đ/tháng đã có khảo sát sơ bộ; chưa mở thanh toán hoặc chương trình dùng thử.</p>
+              </details>
+              <TeamDetails />
             </div>
           </div>
         </section>

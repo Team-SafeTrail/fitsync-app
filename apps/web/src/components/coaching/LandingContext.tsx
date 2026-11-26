@@ -108,3 +108,18 @@ export function PricingSection() {
     </section>
   );
 }
+
+export function TeamDetails() {
+  return (
+    <details id="team">
+      <summary>Đội ngũ phát triển — Team SafeTrail (EXE201)</summary>
+      <dl className="team-roles compact-team-grid">
+        <div><dt>Huỳnh Quốc Việt</dt><dd>Product &amp; OCR</dd></div>
+        <div><dt>Lê Nguyễn Gia Hưng</dt><dd>Data &amp; Benchmark</dd></div>
+        <div><dt>Dương Quang Huy</dt><dd>Web &amp; Mobile UI</dd></div>
+        <div><dt>Diệp Khai</dt><dd>Backend, RLS &amp; Ops</dd></div>
+        <div><dt>Lê Văn Toàn</dt><dd>UI/UX &amp; Nội dung</dd></div>
+      </dl>
+    </details>
+  );
+}
