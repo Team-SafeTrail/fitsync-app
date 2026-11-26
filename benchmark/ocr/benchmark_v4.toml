@@ -1,0 +1,15 @@
+[experiment]
+name = "FitSync OCR v4 multi-profile paired synthetic holdout"
+script = "benchmark_v4.py"
+seed = 27112600
+device = "cpu"
+min_vram_mib = 0
+estimated_seconds = 240
+max_seconds = 600
+dataset = "vendor-informed-synthetic-locked-v4"
+dataset_mib = 0
+compatibility = "tesseract-5.3.4-rapidocr-1.4.4-v4"
+data_class = "synthetic"
+epochs = 1
+[local]
+python = "~/.local/state/fitsync-ai-lab/.venv/bin/python"

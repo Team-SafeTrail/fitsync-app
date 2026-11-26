@@ -1,0 +1,915 @@
+{
+  "protocol": "fitsync-ocr-benchmark-v4",
+  "seed_namespace": "fitsync-v4-holdout-2026-11-26",
+  "base_seed": 27112600,
+  "prior_v3_pixel_overlap": 0,
+  "inputs": {
+    "benchmark_v4.py": "3e363debd236e971fc62a43c961a88ab5e7673d1cd46bbda4bc787705c5ebc83",
+    "benchmark_v4.toml": "caf52ca9819fca93e20d502412ec49a0526fba8492faa9629fbff18d9ac983de",
+    "contract.py": "073050ca9cc35f6d001f3b448838f0a647b5278dc84e56986aa6ae7da063c763",
+    "pipeline.py": "771830804eeb6f75f2a10b10be6b7773ecacec64f4d70c8b61555496c2dab379",
+    "fixtures.py": "eb8d297dd04232280f8e5d3543c3c44a4326291d5507a4b9258cbc081368bff5"
+  },
+  "fixtures": [
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112600,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "e3ad2549c0b85d90bdeab6b5f676113767a6b4d6c177938fb6ea5800f6b18cd7",
+      "expected_sha256": "c445a8ae295a0a6591832148791c0dd43599d022af6eedf61a46710160dffb1a"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112601,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "ecb4fdfc1f748dd93794560bb7b25fdead4d0567b25a86f0e234ced8689d0093",
+      "expected_sha256": "135c0b6121cb63849dcccd293c516b23763241af38454f8aa021481b08c70a63"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112602,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "e0577e1d62d00ec8ae7b0fd47b4efaa6a187ba8901e59134c9139e363171dd7a",
+      "expected_sha256": "c490104f65af7a39c92b056db8297b2b5a93e3170370265fe91ae6ea13a1236b"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112603,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "dfeddf7dc686ed71644392b855ebd5aecc5d66f15661df1bf22ec8d0c43b47d5",
+      "expected_sha256": "26a0a485a38d41a04114ad469b98c44f8170af115ede6cee21c2e865c6a385ab"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112604,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "6c8bfbf366ba403944ccecbca5463a0ecc71fc80d8431910b72e6c7151f504ba",
+      "expected_sha256": "2bf8fcae72b781eab862edb615cecbf964f09a7efc34e2014595c722402ffa51"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112605,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "8a801578a32af8740f171fb34c7fff9714cfbad17c8140d191a9eb40bdab1b18",
+      "expected_sha256": "7d73ba9c4fa9451a1210ea158f019f86dcf81b5584e0dbb0b8b68a9f4f88e2c7"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112606,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "23e0ea8515f2de815d6b5bceaa0b9944a46f9e2a4af85d988c9ec78daf9f7325",
+      "expected_sha256": "675b8aa9253bae93804fbdcd15484d57cc76335e86c89ccff190f95fe5b6e573"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112607,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "275c78ca497f7529a6c1abdd3dde4848af33372ac4ddc6eef4049f939f26a0f4",
+      "expected_sha256": "04630a31e27cdce56c25038e72ab850394dd06d4b4969013ae0ffac455a3829e"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112608,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "1d2e6bc7ac0ec162f5db29c93fa6e33f716371e54f985d8fbced0ee36e14cad7",
+      "expected_sha256": "82442b52fe133af84ddef03c18c436550e2f70fe9c200edba59fa9f5a7513429"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112609,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "ebf9912172ccdf8f460069d84b0974b19ed9b634121e9ce1294446136c1e9e60",
+      "expected_sha256": "17555ec0bf9219d281f5e91ef379fd9631d71f70a32d3bda0b6326f097837c5e"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112610,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "32ef56833abd8125fbee46c302194559018e954f86a7f9c6e81ec3bc0f94688d",
+      "expected_sha256": "dcae5d7e75685b7a95fbe6963461d280d4ce5303bab81d731a231b1f1833f995"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112611,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "9dd30a0e3a49bc3750fbae3bb82fa5d3c46fd65049a45ab9c4ec548d4e88a178",
+      "expected_sha256": "e5f96279c125fe918763dda20e668966a43c5a657c28e96afe7393d4351387d5"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112612,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "fcc368f538f8eb1aead937012640d26d4eca22e9a9e316d8382087bb81a2ac65",
+      "expected_sha256": "cfa4eb823717e63d5baa0c9942c049104a69119b6ccaa6bc10906212834bb85e"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112613,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "9d49e1dbef40d5cce4f37535567cdfdc6212143c1440ff17b98b6419245c3368",
+      "expected_sha256": "d5ad5e39ec7c0577a2e9e977b87de26f59ea1bd164d4661e7949eec490384568"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112614,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "4ca0f38436088a1109f0367a053d04ac43e8e54b5cc43975ae40223037d5f692",
+      "expected_sha256": "29efd5b550bb5a984d1442a09775655e443391c98d1f15efcbd974f848dfb46a"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112615,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "8e06361de96ec6cad3269c440705ad5c95aad25a63437385126c666c19c59c5c",
+      "expected_sha256": "5ffb7639cf715818e6180fc921ba8bf4a8b723d9102a27ab4a2c7fe336aa3536"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112616,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "556fc774dab0e543f6290f8f63bc24489b19a20c86b0f78f366e217d97d0974d",
+      "expected_sha256": "dd54adb048b47d1e9816677cf788ee8d9c6e9337ef2dced80ca967d3305ba880"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112617,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "e42ed5dc3a32c5348101cf1c9c110f0eb21ea52a3f3d12e5b2e8a6630f070606",
+      "expected_sha256": "74f9a26fd3f166708273c1c608e5fc634e4684bf1ced18ee27d3cd8df3b7d0bf"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112618,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "78fd01f8e8db93a5dd85bac4f7e14373a006e30fe4bf489460bcdf3b89e39c52",
+      "expected_sha256": "21d37e2cddd2b22f7f25ace650941e70f2dec0cfb0bae16e660cebbe40d92293"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112619,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "f950a1320f3173d03717534a2481f53c9c3866eba0ab8a1f0292d878e2ae3cd6",
+      "expected_sha256": "9487957f064e766f25a647f83a7ec77a8065cd60b60493eb9a897fe143290e55"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112620,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "836b3a283c54a8850d2d94dd0fc58da6147ba1089d6f496430454e9070880e0a",
+      "expected_sha256": "8de31155617c5e2d45c0f49169d30d7cdcb0a276dc9a235f697b517da52b9995"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112621,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "c30569470613ed34df15a60dde18920f3fedd955397f9daacfde1f43fbd2dad1",
+      "expected_sha256": "1f362fe88890bd808e10be8891e1a7b2234c0938b187b8dc46a9221cd6a23917"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112622,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "089530afab1ff92f0ae5ce05e6458f96bdeb2152381d57f98b69a2f3f478a827",
+      "expected_sha256": "235c41f4f97100b494cf7b9b473f7ad7f24497d1a52f73ec396d67476b9ee7c8"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112623,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "94e8bfb39bee24bdb27a5f39fb4c497b3eb5b41a09b658414b883306aed373d2",
+      "expected_sha256": "549a89b9310aa71f48840389369316ae74d2d3c4d90f76cf736cd023eb0846dc"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112624,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "c2e6ce3cf30272bb5f88d61e051d6b0839e0f8edad68ed9440c216297a1e8d5e",
+      "expected_sha256": "d0c9eb6aa8015c02a4efd58b377298e4888f6053ffd1b4ef9621e707361ad779"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112625,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "d28eb64789bd55b8a0d8ea25913a6704147bdf288befb69c72d6cd69417f1732",
+      "expected_sha256": "f83e6ddc9c3cc7c68a2f47b886a844a5a6277c7b9073a8e835c387a34ff64bad"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112626,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "47e48d3d7c949f30458d0535658554231765462db8f5d0360bf676930616ea11",
+      "expected_sha256": "08e6a74a468921dc4c3ab9e30d110e4b7937cd36d6365edc213a8d906f6224d4"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112627,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "f4e221e4b22a30c3d5384e68693eee745ee9ad3df4daa39d92687f1dbfe68bf3",
+      "expected_sha256": "f858bca4c8b67bcc07d078b1112f93060b086becac8d4d47502bedf67084ee6d"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112628,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "a9c87f68b0937a8e98cfd83c2480a53fb57edbdf9def16d5318ec1ec324777a6",
+      "expected_sha256": "e36ba658f5d008606efda7125b86025fd985db5aa9c1acc1585c2ccd04aafa97"
+    },
+    {
+      "suite": "standard",
+      "family": "inbody_270_style",
+      "source_id": 27112629,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "dba62ea8d5c80b5b528c047b41e890f1688e7cdcab079b3fe8e1e36aa48967b9",
+      "expected_sha256": "b55bc1088b084f88e0bb932890cbf257ae564ea3ef77779acff0094869bbac3f"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112700,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "babe96a9a531c5c0ade24a2bda2a9fcac7135f3711011a7729de501eec478a13",
+      "expected_sha256": "49f17bc35c7c32beb982baa9c40547b7d45d96dc61c104b0a0deb26d668197b6"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112701,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "6911b97721317c9ca054f05a22fe7ea2ef1c6a865d054bdfb4aa38df7ece193c",
+      "expected_sha256": "658c218564051bc4cf380e0bc5ead613dc1f829208135c5383e849be2ab22f57"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112702,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "d62536c2c47bb802a3a53923d7119ed8d107151ced42f4db335039fcc54c36e8",
+      "expected_sha256": "6d8ad34d4d48cf3d05f99571b4c7e92679e5c4b0ff004a35be1900d4a5b81c9e"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112703,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "2ac7873562c03bbf3cdea87730e5ad7566dbbc8d3a0ea4fccb0883f6adc18f81",
+      "expected_sha256": "984ee220ca58443b2cf1f48d1eb3f50551b4960f495a01454e76aa2fb760f5f4"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112704,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "db1bff31976d07b458fb1cc93bbc2914b9fb097f4541a407e7bd2ce66b9258bc",
+      "expected_sha256": "9c2f41698bd5160a0a703d82e18668d9834a89cc3e107c38557fd7877c054531"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112705,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "0d60453bbcd904f6354603cff0632e405e9cb074f0deb013f241b9f2409adf65",
+      "expected_sha256": "36447259f37daccb30e382eb5dd51696545e401fbf30ee586651ac35abd83f63"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112706,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "ae3236de0a3025b725f35c83b6ce9b7e19f2323cfd4f17eab93073545d81b8c4",
+      "expected_sha256": "8a181443ed465b25d48b4be8843fd04139fe61ae61f120a97f47da19efe638ea"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112707,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "842b56091f7cadf7a6506ec7e1a75d972c5499c631c79af565dda4fe6482d551",
+      "expected_sha256": "4a71284e4abfcb25b5a881b355c6104b91006d860661f47cd89ca68f89842f91"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112708,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "f6c066d92c3501a5f6dfd3ebe4eeb506f01a23b564182aba4c08325d7279ba73",
+      "expected_sha256": "35d360634a83b2e098c85586885c946c5753c8184fe842d5b0fef7de16c69e4f"
+    },
+    {
+      "suite": "stress",
+      "family": "inbody_270_style",
+      "source_id": 27112709,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "63a2f47c8a93a557d926c6c27b9460e8391b1e0893cf25466eb635ded6e7a9e3",
+      "expected_sha256": "29f84e9ea9bbee9996f8df3b343be0ce8cca2da6db473c7531dd510c9585538d"
+    },
+    {
+      "suite": "challenge",
+      "family": "inbody_270_style",
+      "source_id": 27112800,
+      "mode": "flat",
+      "variant": "unknown",
+      "mutated_field": "",
+      "pixels_sha256": "b5893b437090a5b7a5c791239ac28699f8b0f6873fbe7c2602c7618dd0c9c774",
+      "expected_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "suite": "challenge",
+      "family": "inbody_270_style",
+      "source_id": 27112801,
+      "mode": "flat",
+      "variant": "ambiguous_panel",
+      "mutated_field": "",
+      "pixels_sha256": "533af1e60654512e473a6cb7eb1a6da08d73a8224754e395ad7b21773e970a46",
+      "expected_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "suite": "challenge",
+      "family": "inbody_270_style",
+      "source_id": 27112802,
+      "mode": "flat",
+      "variant": "swapped_laterality",
+      "mutated_field": "L arm / Lean mass",
+      "pixels_sha256": "de78063e5f574cf6d638a21cf3094563c08a9195824d0a6ada22062d9c885c7d",
+      "expected_sha256": "9480dbb6babb7d1bf752d043801d65446bdfb0fefd4b5938ae626546ed57620d"
+    },
+    {
+      "suite": "challenge",
+      "family": "inbody_270_style",
+      "source_id": 27112803,
+      "mode": "flat",
+      "variant": "wrong_unit",
+      "mutated_field": "L arm / Lean mass",
+      "pixels_sha256": "82201299873041f416281080809a2dc13f69ea06047628dcf935e287284478fa",
+      "expected_sha256": "029354f6acdd636a298718f1246c84c8469647618329fe33e107831ff317a1ae"
+    },
+    {
+      "suite": "challenge",
+      "family": "inbody_270_style",
+      "source_id": 27112804,
+      "mode": "flat",
+      "variant": "wrong_metric_identity",
+      "mutated_field": "L arm / Lean mass",
+      "pixels_sha256": "bc6f866dca2e7da4bc8df58f4dd253fd2fe75d2ff6a1520581f8d14384547a47",
+      "expected_sha256": "a2d48892965841c979a5271d126397a36680658fd4f1539cf10dba5977a25012"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113600,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "7c25bb00dedc58cae93c707bbaa70d80d52e8427cece6e0b4f09d5c961418a25",
+      "expected_sha256": "411cc090dca49b7a6025cd56dedd53b517df32b5c017a98b81c0d0213ea98d1b"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113601,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "5629e24c8930cdddb2fc6501b0f570f3b65835e9bdda0461f63e0aaa94e98297",
+      "expected_sha256": "ba0a91826d349c55eae8ffef1673a57bda0ead9c2bab3eb86d2f7c751821aece"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113602,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "5e3f96ce4fc1cb8a921e6ce8218ad3e5e268a593fec1a80ee3cad6a3dd34d28d",
+      "expected_sha256": "6f7169514d1f1a3a0ce3e226215690ad48d643d3be205eaaedf765fa7ed98dec"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113603,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "7f0fa462bc22f1ea73e5c45620c3bc5d7ff1035d7174bb1410221b5bb3859a1a",
+      "expected_sha256": "644a0beb6efc5a97fec7f1e58b47448cbb43d7246ded219ade937400b6b58ccf"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113604,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "ff85efd5a59a2f739ed84bf1fe3c65a4c330ed6d2d778277d0b1ed8c7dfccf64",
+      "expected_sha256": "f80cc3ea517e3eb5faa896f04c4446e47bb3b893d61ead1fef6fb0ecc71cda17"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113605,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "f18049f9a07f8599c889321519f5fbd02279bc693e0e1cc27d944679906db05c",
+      "expected_sha256": "2a1c76cba1cde6ef88995446663ddb7d9b4ff74402a561bb7fa1dac3b1d55bd2"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113606,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "8bc60dd2f7c5ba51f5f4e2c9d45a065d2a8bd9c1d30cdb8328f1357c7232cd98",
+      "expected_sha256": "5da30cf9c20fa033b36bf1cbe2ebd59c913b57558af97f1bdb40bfc33074a866"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113607,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "b4260c277b1287be8d2c399d23d3513c79de10ad84cef6c667636429b9d84f85",
+      "expected_sha256": "d48d4ca538424bca05d501c23e2b9f07b3149e47b386ebb577c7181f89e991cb"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113608,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "c97907188f0f68fa0012a1b161dee99610ae8cfe9591b52aabd42b0dcc34a119",
+      "expected_sha256": "219725492ebb28a48f9821d0f2c9498540a301098895913fe5fb252d132307c4"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113609,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "8ac0be481b1b7c8db70a1c2cf70c73b1b1c7448de55201f7dc6f85f239a1bf54",
+      "expected_sha256": "ad4a8444693963c3bdad3ec51bd1a6ad2eabad1959fd9d5f73fcb4563bd269b6"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113610,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "7ee83e553bfadc427267b329d999eabf83dad818aca25f544bedf39ec3d5f879",
+      "expected_sha256": "ffaf451b9513fd8135edf19a897991b1520d413ff1275b35b7875524c0a5cbb6"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113611,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "f7f1192c7ddf192c9a38c867f1075aa653a740df622a2f42897fe3b9e27903ea",
+      "expected_sha256": "9a03aa48e4fe2c70d275158979bf1a9778bc3e16491280ecedb15e3a0080a2ff"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113612,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "6259c132e00db4416a9f7a1c6ceb4df5f89a6857589deb90faa1ac0434058853",
+      "expected_sha256": "7f1a692444d0dd6616c2d2ff11be5335798bb90f8cfe7000a32207e0a5b4bf83"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113613,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "d42f964dc7c76c09aa5d11b7dad8e65b1c6c4e8d7d39d91023f9caf03fce89ba",
+      "expected_sha256": "ba1881bb78cb1a518cbb85bf5aa75f3b75d52e114f24ceffc1b00addf0f9c37d"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113614,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "01fa329c3eb9d75e5788c61e331f31de8559d807c8cc3b2e43e71b6e6f652421",
+      "expected_sha256": "cb1350ef35558cc149290b30c45e9cde185e0ad9e1b4f48f097996463bfd1110"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113615,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "076db34d1150d8b4582513f2bbf87afc812b81a202b4768298ad12aa3a5a626c",
+      "expected_sha256": "2504868149937d36c0906c97697f020ae982b4d41462b1f5216e485f493a0db4"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113616,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "35c0cd196031403797dc61755e9ccb54f425f5365396cc7f0b81e37ef015c91a",
+      "expected_sha256": "cb4f37891e3c5910231492f203f19bff41db6bf3adbdc87589abdc6e9a551257"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113617,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "5dd53cbea823bc04bb391f9567b027a19a3e6cd4f75ff51fdc3d9dd8ee92fd99",
+      "expected_sha256": "4f50ef9a7d484adac030f4709c05ca7a65b52e6b9e3466725d9f3c0b3ff085d1"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113618,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "d8cf6f9be3a9ab17023a26ebb06c6579d2af0775d386e0b9a57b66b9a8dc9e10",
+      "expected_sha256": "aa4aae315045b5767cc86a131e6e4c71879e779ceb5c8e0036c277fe53ebfa67"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113619,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "938f448321f06c3c64fa7afe02369955fd7037fab6116acddaaed408c83754f7",
+      "expected_sha256": "775f307a59963a91fba311d3f1397c401ed29e541db5818dcc76a9e39b5e6bd2"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113620,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "a31b08e3a72bac2a9a6317f66d9cb1fe9fa88d9371d418ca443ed921dc065231",
+      "expected_sha256": "16b3aee09c3e5624b49bcd8e0772e5ae2ab29babc5123261323ab641d7b541ae"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113621,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "f6894c41bd9d19878587dbeeea48371ea66a28344d723b548ffe1aa72e86ff54",
+      "expected_sha256": "cf353a7783dea39ff3e992fe320a64447c86b8cea7be74b36c63dad29cf69f06"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113622,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "804a6091beaea3bbd491ab851d7dca4967dfcaa76768ba957e72cd30981722d0",
+      "expected_sha256": "c74006b9d9446af63e6bd25c8141ab22e9c9e88f29e2335777b93328eb49aab8"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113623,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "6e4a4f4e109833ca1d0c07e4cec593c85fcae9891e3fc3550bc077000e56f6be",
+      "expected_sha256": "bb8dafa7b201b3ad96401eca5bce2532e9fdb17a2d3f66b66278f0837d05c427"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113624,
+      "mode": "flat",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "05764d96854da57bf761477924de8ff87547eea4a76400a5a61ea1d1605fb43f",
+      "expected_sha256": "8296d68afa2bcb5dfc636c9a07a834da7ecb11282f18ace4f84b900a92501019"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113625,
+      "mode": "tilt",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "6ff4d3af3854ec5d869375c6564e331d013dc15b00c12829e6ddafa2b04188d4",
+      "expected_sha256": "aad014c937b4bfe00f8e69ef41a7949c205df45b80c0c046a5e69c801b0d77b7"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113626,
+      "mode": "shadow",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "1f51ccaecaf7565ecadb7b28ceeb1f346cb4b6e11f5ea43c7218d8484764c8ca",
+      "expected_sha256": "12ed811f013d8b7be83bc1ddb4446aaccd22d0a4b4ea88a1584ea83a337d4a4a"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113627,
+      "mode": "jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "610474e9cf47db37a194e2e17da8bba303eccb50a88239f0415c7b02a3c3d062",
+      "expected_sha256": "2162bf2642a58919140e53d16ee368c3666515a7cff9f0d7d5fd52a674d3b3ea"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113628,
+      "mode": "washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "cc193c299380ce1de75f229725e18622f3ee45b149321ce29c1b3fbde6a1cd9c",
+      "expected_sha256": "165312ba958498318d91fbc6bf867cc7fd4c3e993a23c1e8a15b492b1f7034a9"
+    },
+    {
+      "suite": "standard",
+      "family": "tanita_780_style",
+      "source_id": 27113629,
+      "mode": "crop",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "0c7d40229934ce0ff2deed40a093c066423af2977f32f6912e62fdc7d28bf028",
+      "expected_sha256": "31237388052bf1ebf897fa86d0b20da2a28c0bdd4e5e4ff17bcb591135e204e4"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113700,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "da5c27f9397bc0334477957b8fd44037defab873ba3e107daa7ea96e76805831",
+      "expected_sha256": "b470404fdba01dc6b89f9cd405a64f3d1d09d3ead5d7ec9ef8415da7ab20c7d3"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113701,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "49805ec88260dc31483e9828874c0db717436dc4f0485069822993ed6ed7390f",
+      "expected_sha256": "9ad9476e0038e0fdc6cf8e17203e583507ffaa6b51a758d29aafb9338cc98d9d"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113702,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "632e0704d7a9f17b6b3f42f5f5bc580be30d6d9cbd9113f2be2b807cbc240ec2",
+      "expected_sha256": "8d38f66bde4ba723badc8885947d621e5560264476836011815fdb09c022734a"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113703,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "ae5de9f39178ccb510d867b6297b9869bf462efe4ac66ec0da2bc6e37bd82334",
+      "expected_sha256": "8a57248755433cd87d5a9a04768131fc0c813b313b023c1d3295f1bbf6c4182a"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113704,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "87e6d98b2d699708b7d114e52dc7f816380a263d69efe5b2d3db9a16d8e9dc3a",
+      "expected_sha256": "e67dfb8a124bdc8c52719327ee2236ec3cb42a79e858bffeaa496b94f01cc3b7"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113705,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "7ce00c41be49af54f3f79371361901dafa60b24147a592fd27b92f19cb0b4a37",
+      "expected_sha256": "4bd3a250fe2a8d9a4461501b65ceaa3c381bbc74a036460443f7609886acd1fc"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113706,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "b8420bba3121a595d263c50fea1c0ffe5b66d4a7397d593ac29968a3497dc46b",
+      "expected_sha256": "ef0782a775a4d1e63eb9868562b42e52564e1f181d0b1becfec24c438854901d"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113707,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "203852ec42ecd3332a757b66ff09cbac57e0c814b1741d91028af318d1e56b43",
+      "expected_sha256": "ab7d267244bb5191931c1f6c7c6d079ce6f42a89ea296d47bbd006a397e650c9"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113708,
+      "mode": "shadow_jpeg",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "7f3a2c05d51ac11825d1a0dbdf871e3212a6e1aa45e33b928c7c14034fdaa911",
+      "expected_sha256": "279fa62e71b30916dd2c32eac652c968a18ab77ba4c64215768aa5a254791966"
+    },
+    {
+      "suite": "stress",
+      "family": "tanita_780_style",
+      "source_id": 27113709,
+      "mode": "tilt_washout",
+      "variant": "valid",
+      "mutated_field": "",
+      "pixels_sha256": "aca4ae3a3c6637815b1d76262ac6829a5f2f6825001f0724273133d32e1447f5",
+      "expected_sha256": "81e17df4d1c346a60c228320f1daf39c6f59bdfe0bf31c38f6f396446f95d597"
+    },
+    {
+      "suite": "challenge",
+      "family": "tanita_780_style",
+      "source_id": 27113800,
+      "mode": "flat",
+      "variant": "unknown",
+      "mutated_field": "",
+      "pixels_sha256": "75efa6636241e547e6fd9da6c245f9dffb2e9c598b8c0ef8c3c9c8ea9e8534ac",
+      "expected_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "suite": "challenge",
+      "family": "tanita_780_style",
+      "source_id": 27113801,
+      "mode": "flat",
+      "variant": "ambiguous_panel",
+      "mutated_field": "",
+      "pixels_sha256": "13ad016fe49196bbac3cb5dab7fbacb3854affeabe8dede3bec2420557e71362",
+      "expected_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a"
+    },
+    {
+      "suite": "challenge",
+      "family": "tanita_780_style",
+      "source_id": 27113802,
+      "mode": "flat",
+      "variant": "swapped_laterality",
+      "mutated_field": "L arm / Muscle mass",
+      "pixels_sha256": "9adf26b02777a7524f28383bd306ef4a0c207801e9f3819bd10d7b18507dc4bf",
+      "expected_sha256": "a3c899980358f570b47d71aa536981e0fb788e4f70d825e7415d9a212d9a0f1f"
+    },
+    {
+      "suite": "challenge",
+      "family": "tanita_780_style",
+      "source_id": 27113803,
+      "mode": "flat",
+      "variant": "wrong_unit",
+      "mutated_field": "L arm / Muscle mass",
+      "pixels_sha256": "0c19731078bb4b25953cac5d0f57ed0312a13d7b01a8eab843e22d6b5a164216",
+      "expected_sha256": "f0ee68e82b21802cd7e63628091ca59c872b846413c9a1daccef14e3632a5377"
+    },
+    {
+      "suite": "challenge",
+      "family": "tanita_780_style",
+      "source_id": 27113804,
+      "mode": "flat",
+      "variant": "wrong_metric_identity",
+      "mutated_field": "L arm / Muscle mass",
+      "pixels_sha256": "6d17353faf1340203595422c9e17aa361069fe97a98dad17e41512c31728a195",
+      "expected_sha256": "3510d97e4c49384566e6f832209fc3137e4e2999fd888835c3adadff18b458fb"
+    }
+  ]
+}
