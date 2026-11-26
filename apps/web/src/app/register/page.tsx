@@ -12,7 +12,7 @@ export default async function RegisterPage({ searchParams: query }: { searchPara
       {configured ? (
         <AuthForm mode="register" action={signup} error={searchParams.error} />
       ) : (
-        <div className="auth-alert is-unavailable" role="status"><p>Workspace thật hiện chưa khả dụng trong môi trường này. Bạn vẫn có thể khám phá giao diện bằng dữ liệu mẫu.</p><Link href="/app/dashboard" className="auth-demo-link">Xem bản mẫu công khai</Link></div>
+        <div className="auth-alert is-unavailable" role="status"><p>Workspace thật hiện chưa khả dụng trong môi trường này. Bạn vẫn có thể khám phá giao diện bằng dữ liệu mẫu.</p></div>
       )}
     </AuthShell>
   );

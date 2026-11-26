@@ -55,15 +55,14 @@ export default function CoachingLanding() {
               <Link href="#du-lieu">Phiếu đo</Link>
               <Link href="#thong-tin">Hỏi đáp</Link>
             </nav>
-            <Link className="nav-action" href="/login">Đăng nhập</Link>
+            <div className="nav-actions-group">
+              <Link className="nav-action is-register" href="/register">Đăng ký</Link>
+              <Link className="nav-action is-login" href="/login">Đăng nhập</Link>
+            </div>
           </header>
           <div className="hero-copy compact-hero-copy">
             <h1 id="hero-title">Cùng tập.<br />Cùng tiến xa.</h1>
             <p>Quản lý hồ sơ, chỉ số InBody, lịch hẹn và check-in học viên trong một không gian gọn nhẹ.</p>
-            <div className="hero-actions">
-              <Link className="button sun" href="/register">Tạo workspace PT<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></Link>
-              <Link className="hero-sample" href="/app/dashboard">Xem bản mẫu</Link>
-            </div>
           </div>
           <div className="appointment-peek arrive" data-ui>
             <div className="peek-top"><span className="linked-dot" aria-hidden="true"></span><span data-peek-title>Lịch mẫu · Xem nhanh</span><span className="live-mark" aria-hidden="true"></span></div>
@@ -71,9 +70,7 @@ export default function CoachingLanding() {
               <div className="date-stamp"><span>Tháng 10</span><strong>30</strong></div>
               <div><p>Khánh Linh &amp; PT Anh Nam</p><strong>16:00 <span>Buổi tập cùng PT</span></strong><span>60 phút · Đã xác nhận</span></div>
             </div>
-            <button className="peek-action" data-open="appointment" onClick={(event) => openSheet("appointment", event.currentTarget)}>Xem chi tiết<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg></button>
           </div>
-          <p className="image-credit">Minh họa AI · Nhân vật giả định</p>
         </section>
 
         <section className="wrap landing-pillars" aria-label="Tính năng chính">
@@ -114,7 +111,7 @@ export default function CoachingLanding() {
           </div>
           <div className={role === "pt" ? "profile-surface" : "profile-surface learner-surface"} data-ui>
             <aside className="profile-rail" hidden={role !== "pt"}>
-              <Link href="/app/dashboard" className="rail-title">Học viên</Link>
+              <span className="rail-title">Học viên</span>
               <span className="rail-person selected"><span className="avatar">KL</span><span>Khánh Linh<small>Hôm nay · 16:00</small></span></span>
               <span className="rail-person"><span className="avatar">MK</span><span>Minh Khoa<small>Buổi PT · 09:00</small></span></span>
               <span className="rail-person"><span className="avatar">HN</span><span>Hoàng Nam<small>Tư vấn · 17:30</small></span></span>
@@ -129,7 +126,6 @@ export default function CoachingLanding() {
                     <span>Giảm mỡ · Giữ nhịp tập đều</span>
                   </div>
                 </div>
-                <Link href={role === "pt" ? "/app/dashboard" : "/app/trainee"} className="profile-link" data-profile-link>Mở bản mẫu<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg></Link>
               </header>
               <div className="profile-body">
                 <div className="history">
@@ -137,11 +133,10 @@ export default function CoachingLanding() {
                     <div className="entry-mark"><span className="linked-dot" aria-hidden="true"></span></div>
                     <div className="entry-content">
                       <p className="entry-date">Hôm nay, 30 tháng 10</p>
-                      <button className="session-row" data-open="appointment" onClick={(event) => openSheet("appointment", event.currentTarget)}>
+                      <div className="session-row">
                         <span><strong>16:00</strong><small>60 phút</small></span>
                         <span><strong>Buổi tập cùng PT Anh Nam</strong><small>Đã xác nhận</small></span>
-                        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7" /></svg>
-                      </button>
+                      </div>
                     </div>
                   </section>
                   <section className="history-entry">
@@ -179,7 +174,6 @@ export default function CoachingLanding() {
                   <div className="conversation">
                     <span className="tiny-avatar">AN</span>
                     <p>“Chiều nay gặp lúc 16:00 nhé.”</p>
-                    <button data-open="chat" onClick={(event) => openSheet("chat", event.currentTarget)}>Mở chat<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button>
                   </div>
                 </aside>
               </div>
@@ -193,7 +187,6 @@ export default function CoachingLanding() {
               <span className="linked-emblem" aria-hidden="true"><svg viewBox="0 0 40 32"><path d="M23 6h-7a10 10 0 0 0 0 20h1M17 6h7a10 10 0 0 1 0 20h-1M14 16h12" /></svg></span>
               <h2 id="data-heading">Số đo có nguồn.<br />Đối chiếu trước khi lưu.</h2>
               <p>Chỉ số luôn được PT kiểm tra đơn vị và xác nhận trước khi hiển thị cho học viên.</p>
-              <button className="button sun" data-open="report" onClick={(event) => openSheet("report", event.currentTarget)}>Thử mở bản nháp<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></button>
             </div>
             <div className="document-scene" data-ui>
               <div className="source-page">
@@ -234,10 +227,10 @@ export default function CoachingLanding() {
           <div className="closing-banner">
             <div>
               <h2>Sẵn sàng gọn nhẹ hơn trong từng buổi tập.</h2>
-              <p>Tạo workspace PT miễn phí trong 30 giây.</p>
+              <p>Tạo tài khoản PT miễn phí trong 30 giây.</p>
             </div>
             <div className="closing-actions">
-              <Link className="button sun" href="/register">Tạo workspace PT<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></Link>
+              <Link className="button sun" href="/register">Đăng ký ngay<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6" /></svg></Link>
               <Link className="hero-sample" href="/login">Đăng nhập</Link>
             </div>
           </div>
@@ -247,7 +240,6 @@ export default function CoachingLanding() {
         <Link className="brand" href="#">fitsync</Link>
         <p>© 2026 FitSync · Team SafeTrail.</p>
         <div className="footer-links">
-          <Link href="/app/dashboard">Bản mẫu</Link>
           <Link href="/privacy">Quyền riêng tư</Link>
           <Link href="/terms">Điều khoản</Link>
         </div>
@@ -260,12 +252,12 @@ export default function CoachingLanding() {
           <div data-sheet="appointment" hidden={sheet !== "appointment"}>
             <div className="sheet-appointment"><span className="linked-dot" aria-hidden="true"></span><p>Khánh Linh &amp; PT Anh Nam</p><strong>16:00</strong><span>30/10/2026 · 60 phút · Đã xác nhận</span></div>
             <p className="sheet-description">Lịch tập dùng chung hai vai trò; đặt lịch không tự trừ buổi PT.</p>
-            <Link className="button forest" href="/app/dashboard">Xem bản mẫu PT</Link>
+            <Link className="button forest" href="/register">Đăng ký trải nghiệm</Link>
           </div>
           <div data-sheet="report" hidden={sheet !== "report"}><ReportSample /></div>
           <div data-sheet="chat" hidden={sheet !== "chat"}>
             <div className="sheet-chat"><p className="chat-author">PT Anh Nam</p><p className="chat-line">Chiều nay mình gặp nhau lúc 16:00 nhé.</p><p className="chat-author learner-author">Khánh Linh</p><p className="chat-line learner-line">Dạ, em xem được lịch rồi ạ.</p><button className="chat-appointment" data-open="appointment" onClick={(event) => openSheet("appointment", event.currentTarget)}><span className="linked-dot" aria-hidden="true"></span><span><strong>16:00 · 30/10</strong><small>60 phút · Đã xác nhận</small></span></button></div>
-            <Link className="button forest" href="/app/dashboard">Xem giao diện PT</Link>
+            <Link className="button forest" href="/register">Đăng ký trải nghiệm</Link>
           </div>
         </div>
       </dialog>

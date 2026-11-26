@@ -122,14 +122,43 @@
   text-decoration: underline;
   text-underline-offset: 6px;
 }
+.coaching-site .nav-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .coaching-site .nav-action {
-  padding: 11px 22px;
+  padding: 10px 20px;
   background: var(--white);
   color: var(--forest);
   font-size: 14px;
   font-weight: 500;
   border-radius: 30px;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .15s ease, border-color .15s ease, transform .12s ease;
+}
+.coaching-site .nav-action:hover {
+  transform: translateY(-1px);
+}
+.coaching-site .nav-action.is-register {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  color: #ffffff;
+  backdrop-filter: blur(4px);
+}
+.coaching-site .nav-action.is-register:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: #ffffff;
+}
+.coaching-site .nav-action.is-login {
+  background: var(--white);
+  color: var(--forest);
+}
+.coaching-site .nav-action.is-login:hover {
+  background: #f0f4f2;
 }
 .coaching-site .hero-copy {
   position: relative;
