@@ -1,12 +1,12 @@
 import React from "react";
 import { redirect } from "next/navigation";
-import { getAdminDashboardData } from "@/features/admin/data";
+import { getLiveAdminData } from "@/features/admin/live-data";
 import { getWorkspaceViewer } from "@/features/workspace/data";
-import AdminDashboardClient from "@/components/admin/AdminDashboardClient";
+import AdminOverviewView from "@/components/admin/AdminOverviewView";
 
 export const dynamic = "force-dynamic";
 
-export default async function AdminPage() {
+export default async function AdminOverviewPage() {
   const viewer = await getWorkspaceViewer();
   if (!viewer) {
     redirect("/login?next=/admin");
@@ -15,13 +15,14 @@ export default async function AdminPage() {
     redirect("/workspace");
   }
 
-  const { kpi, users, transactions } = await getAdminDashboardData();
+  const { snapshot, error } = await getLiveAdminData();
 
-  return (
-    <AdminDashboardClient
-      kpi={kpi}
-      users={users}
-      transactions={transactions}
-    />
+  return snapshot ? (
+    <AdminOverviewView snapshot={snapshot} />
+  ) : (
+    <section className="admin-section">
+      <h2>Chưa tải được dữ liệu quản trị</h2>
+      <p role="alert">{error}</p>
+    </section>
   );
 }

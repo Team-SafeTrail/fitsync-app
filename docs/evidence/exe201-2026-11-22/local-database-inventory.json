@@ -1,0 +1,108 @@
+{
+  "checked_on": "2026-11-22",
+  "source": "read-only local PostgreSQL catalog + count(*)",
+  "syntheticOnly": true,
+  "environment": "isolated fitsync-exe201-demo",
+  "tables": [
+    {
+      "name": "appointment_change_requests",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "appointment_events",
+      "rls": true,
+      "rows": 2
+    },
+    {
+      "name": "billing_requests",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "checkins",
+      "rls": true,
+      "rows": 2
+    },
+    {
+      "name": "coaching_appointments",
+      "rls": true,
+      "rows": 2
+    },
+    {
+      "name": "coaching_membership_versions",
+      "rls": true,
+      "rows": 1
+    },
+    {
+      "name": "coaching_messages",
+      "rls": true,
+      "rows": 3
+    },
+    {
+      "name": "coaching_notes",
+      "rls": true,
+      "rows": 3
+    },
+    {
+      "name": "finance_entries",
+      "rls": true,
+      "rows": 22
+    },
+    {
+      "name": "inbody_records",
+      "rls": true,
+      "rows": 24
+    },
+    {
+      "name": "meal_logs",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "ocr_attempts",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "product_events",
+      "rls": true,
+      "rows": 71
+    },
+    {
+      "name": "profiles",
+      "rls": true,
+      "rows": 29
+    },
+    {
+      "name": "pt_profiles",
+      "rls": true,
+      "rows": 20
+    },
+    {
+      "name": "session_entitlements",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "session_ledger",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "trainee_invitations",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "trainee_profile_events",
+      "rls": true,
+      "rows": 0
+    },
+    {
+      "name": "trainee_profiles",
+      "rls": true,
+      "rows": 8
+    }
+  ]
+}

@@ -77,4 +77,4 @@ Safari/Firefox, screen reader, native camera/keyboard, reconnect/background Andr
 
 ## Biên bản reviewer
 
-Ghi vào issue/PR: commit và môi trường, test đã chạy, các bước checked, defects còn lại và quyết định accept/request changes. Huy review grants/data migration; Khai review interactions/layout. Chủ sản phẩm xử lý business rules còn mở. Không đóng toàn roadmap khi chỉ nhận baseline.
+Ghi vào issue/PR: commit và môi trường, test đã chạy, các bước checked, defects còn lại và quyết định accept/request changes. Khai review grants/data migration. Huy review interactions/layout. Chủ sản phẩm xử lý business rules còn mở. Không đóng toàn roadmap khi chỉ nhận baseline.

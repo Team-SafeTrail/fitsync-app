@@ -2,66 +2,360 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useRef, useState, type KeyboardEvent } from "react";
+import { useState } from "react";
+import {
+  CalendarDays,
+  CheckCircle2,
+  MessageSquareText,
+  UsersRound,
+  TrendingUp,
+  ShieldCheck,
+  Sparkles,
+  ArrowRight,
+  Clock,
+  Flame,
+  Lock,
+} from "lucide-react";
 import { BrandMark } from "@/components/brand/Brand";
 import WeightPlot from "./WeightPlot";
-import { IntakeJourney, CapabilityStatus, ResearchSnapshot, TeamDetails, CoachingOffer } from "./LandingContext";
-import ReportSample from "./ReportSample";
-
-type Sheet = "appointment" | "report" | "chat" | null;
+import { IntakeJourney, PricingSection, TeamDetails } from "./LandingContext";
 
 export default function CoachingLanding() {
   const [role, setRole] = useState<"pt" | "trainee">("pt");
-  const [sheet, setSheet] = useState<Sheet>(null);
-  const dialogRef = useRef<HTMLDialogElement>(null);
-  const openerRef = useRef<HTMLButtonElement | null>(null);
-  useEffect(() => {
-    const dialog = dialogRef.current;
-    if (!dialog) return;
-    if (sheet) {
-      if (!dialog.open) dialog.showModal();
-      dialog.scrollTop = 0;
-      dialog.querySelector<HTMLButtonElement>("[data-close]")?.focus({preventScroll:true});
-    } else if (dialog.open) dialog.close();
-  }, [sheet]);
-  function openSheet(kind: NonNullable<Sheet>, opener: HTMLButtonElement) {
-    if (!dialogRef.current?.open) openerRef.current = opener;
-    setSheet(kind);
-  }
-  function closeSheet() {
-    dialogRef.current?.close();
-    setSheet(null);
-    openerRef.current?.focus({preventScroll:true});
-  }
-  function trapFocus(event: KeyboardEvent<HTMLDialogElement>) {
-    if (event.key !== "Tab") return;
-    const nodes = Array.from(event.currentTarget.querySelectorAll<HTMLElement>("button:not(:disabled),a[href],input:not(:disabled),select:not(:disabled)")).filter(el => el.getClientRects().length);
-    const first = nodes[0], last = nodes[nodes.length - 1];
-    if (event.shiftKey && document.activeElement === first) {event.preventDefault();last?.focus();}
-    else if (!event.shiftKey && document.activeElement === last) {event.preventDefault();first?.focus();}
-  }
-  return <div className="coaching-site"><main id="main-content">
-<section className="hero fs-hero" aria-labelledby="hero-title"><Image className="hero-photo" src="/images/coaching-afternoon.webp" alt="Minh họa AI: PT và học viên trò chuyện giữa buổi tập trong một phòng gym Việt Nam" fill priority sizes="100vw" /><div className="hero-shade"></div>
-<header className="navigation"><Link className="brand" href="#" aria-label="FitSync, đầu trang"><BrandMark /><span>fitsync</span></Link><nav aria-label="Điều hướng chính"><Link href="#ho-so">Không gian PT</Link><Link href="#du-lieu">Phiếu đo</Link><Link href="#thong-tin">Thông tin</Link></nav><Link className="nav-action" href="/login">Đăng nhập</Link></header>
-<div className="hero-copy"><h1 id="hero-title">Cùng tập.<br />Cùng tiến xa.</h1><p>Hồ sơ, số đo và cập nhật học viên trong một nơi.<br />Bớt tìm lại. Thêm thời gian huấn luyện.</p><div className="hero-actions"><Link className="button sun" href="/register">Tạo workspace PT<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></Link><Link className="hero-sample" href="/app/dashboard">Xem bản mẫu</Link></div><span className="hero-platform">Hướng trải nghiệm trên web và điện thoại</span></div>
-<div className="appointment-peek arrive" data-ui><div className="peek-top"><span className="linked-dot" aria-hidden="true"></span><span data-peek-title>Lịch minh họa · Chưa kết nối</span><span className="live-mark" aria-hidden="true"></span></div><div className="peek-main"><div className="date-stamp"><span>Tháng 10</span><strong>30</strong></div><div><p>Khánh Linh &amp; PT Anh Nam</p><strong>16:00 <span>Buổi tập cùng PT</span></strong><span>60 phút · Đã xác nhận</span></div></div><button className="peek-action" data-open="appointment" onClick={(event) => openSheet("appointment", event.currentTarget)}>Xem buổi hẹn mẫu<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div>
-<p className="image-credit">Minh họa AI · Nhân vật giả định</p></section>
-<section className="intro wrap"><p>Ít tìm lại thông tin.<br />Nhiều thời gian bên học viên.</p><div><p>Điều học viên đã chia sẻ, lần đo gần nhất, buổi tập sắp tới. Mở hồ sơ là có đủ ngữ cảnh để tiếp tục đồng hành.</p><span>Hướng trải nghiệm · Hồ sơ, chat và lịch minh họa</span></div></section>
-<IntakeJourney />
-<section className="profile-section wrap" id="ho-so" aria-labelledby="profile-heading"><div className="section-heading"><h2 id="profile-heading">Một người.<br />Đủ ngữ cảnh.</h2><div className="role-control" role="group" aria-label="Chọn góc nhìn"><button data-role="pt" aria-pressed={role === "pt"} onClick={() => setRole("pt")}>Huấn luyện viên</button><button data-role="trainee" aria-pressed={role === "trainee"} onClick={() => setRole("trainee")}>Học viên</button></div></div>
-<div className={role === "pt" ? "profile-surface" : "profile-surface learner-surface"} data-ui><aside className="profile-rail" hidden={role !== "pt"}><Link href="/app/dashboard" className="rail-title">Học viên</Link><span className="rail-person selected"><span className="avatar">KL</span><span>Khánh Linh<small>Buổi hẹn hôm nay</small></span></span><span className="rail-person"><span className="avatar">MK</span><span>Minh Khoa<small>Buổi PT lúc 09:00</small></span></span><span className="rail-person"><span className="avatar">HN</span><span>Hoàng Nam<small>Tư vấn lúc 17:30</small></span></span><div className="rail-footer"><svg viewBox="0 0 40 32" aria-hidden="true"><path d="M23 6h-7a10 10 0 0 0 0 20h1M17 6h7a10 10 0 0 1 0 20h-1M14 16h12"/></svg><span>Không gian PT</span></div></aside>
-<article className="dossier"><header className="person-heading"><div className="person-name"><span className="large-avatar">KL</span><div><p data-role-label>{role === "pt" ? "Hồ sơ trong không gian PT" : "Thông tin được chia sẻ với bạn"}</p><h3>Khánh Linh</h3><span>Giảm mỡ · Giữ nhịp tập đều</span></div></div><Link href={role === "pt" ? "/app/dashboard" : "/app/trainee"} className="profile-link" data-profile-link>Mở bản mẫu<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></Link></header>
-<div className="profile-body"><div className="history"><section className="history-entry current"><div className="entry-mark"><span className="linked-dot" aria-hidden="true"></span></div><div className="entry-content"><p className="entry-date">Hôm nay, 30 tháng 10</p><button className="session-row" data-open="appointment" onClick={(event) => openSheet("appointment", event.currentTarget)}><span><strong>16:00</strong><small>60 phút</small></span><span><strong>Buổi tập cùng PT Anh Nam</strong><small>Đã xác nhận · Bài tập tùy chọn</small></span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 5 7 7-7 7"/></svg></button></div></section>
-<section className="history-entry"><div className="entry-mark"><span className="history-dot" aria-hidden="true"></span></div><div className="entry-content"><div className="entry-date"><span>Lần đo ngày 23 tháng 10</span><span className="verified">PT đã xác nhận</span></div><dl className="measurement-row"><div><dt>Cân nặng</dt><dd>70,4 <span>kg</span></dd></div><div><dt>Khối cơ xương</dt><dd>30,2 <span>kg</span></dd></div><div><dt>Tỷ lệ mỡ</dt><dd>29,0 <span>%</span></dd></div></dl><div className="progress-plot"><div className="plot-heading"><h4>Cân nặng qua các lần đo</h4><span>Tháng 10 · kg</span></div><WeightPlot /><p>Ngày đo trong tháng 10 · Trục dọc thu gọn</p></div></div></section></div>
-<aside className="context"><section className="context-note" data-pt-only hidden={role !== "pt"}><div className="note-caption"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 11h12v10H6zM8 11V7a4 4 0 0 1 8 0v4"/></svg><span>Nội bộ · Chỉ PT xem</span></div><h4>Nhớ trước buổi tập</h4><p>Linh muốn giảm tải ở phần cuối. Hỏi lại mức độ thoải mái trước khi bắt đầu.</p></section><section className="context-note shared" data-trainee-only hidden={role !== "trainee"}><div className="note-caption"><span>Lời nhắn từ PT Anh Nam</span></div><h4>Giữ nhịp của bạn</h4><p>Cứ trao đổi với PT nếu lịch sinh hoạt thay đổi. Mình cùng điều chỉnh buổi tập cho phù hợp nhé.</p></section><section className="package"><div><p>Gói PT của Linh</p><strong>8 <span>/ 12 buổi còn lại</span></strong></div><div className="session-ticks" role="img" aria-label="4 buổi đã dùng, 8 buổi còn lại"><i className="used"></i><i className="used"></i><i className="used"></i><i className="used"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><p>Membership đến 31/12/2026</p><small>Đặt lịch chưa trừ số buổi PT.</small></section><div className="conversation"><span className="tiny-avatar">AN</span><p>“Chiều nay mình gặp nhau lúc 16:00 nhé.”</p><button data-open="chat" onClick={(event) => openSheet("chat", event.currentTarget)}>Mở trao đổi<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button></div></aside>
-</div><p className="fixture-note">Dữ liệu giả · Chuyển góc nhìn chỉ thay nội dung minh họa trên trang.</p></article></div></section>
-<section className="data-section" id="du-lieu" aria-labelledby="data-heading"><div className="wrap data-layout"><div className="data-copy"><span className="linked-emblem" aria-hidden="true"><svg viewBox="0 0 40 32"><path d="M23 6h-7a10 10 0 0 0 0 20h1M17 6h7a10 10 0 0 1 0 20h-1M14 16h12"/></svg></span><h2 id="data-heading">Số đo có nguồn.<br />Đồng hành có tâm.</h2><p>Thông tin từ phiếu đo được PT xem lại trước khi trở thành một phần hồ sơ học viên.</p><button className="button sun" data-open="report" onClick={(event) => openSheet("report", event.currentTarget)}>Thử mở bản nháp<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></button><small>Mô phỏng kiểm duyệt · Không đọc phiếu thật</small></div><div className="document-scene" data-ui><div className="source-page"><div className="source-header"><span>Phiếu đo cơ thể</span><span>30/10/2026</span></div><h3>Khánh Linh</h3><span className="source-caption">Phiếu tổng hợp giả lập</span><dl><div><dt>Cân nặng</dt><dd>70,4 kg</dd></div><div><dt>Khối cơ xương</dt><dd>30,2 kg</dd></div><div><dt>Khối lượng mỡ</dt><dd>20,4 kg</dd></div><div><dt>Tỷ lệ mỡ</dt><dd>29,0 %</dd></div></dl><p>Nguồn, ngày đo và đơn vị được giữ lại.</p></div><div className="draft-label"><span className="linked-dot" aria-hidden="true"></span><div><strong>Bản nháp chờ PT</strong><p>Đối chiếu trước khi chia sẻ.</p></div></div></div></div></section>
-<CoachingOffer /><CapabilityStatus /><ResearchSnapshot />
-<section className="landing-readiness wrap" id="thong-tin" aria-labelledby="readiness-heading"><div className="readiness-layout"><div><h2 id="readiness-heading">Rõ từ lúc bắt đầu.</h2><p>FitSync đang phát triển theo công việc thực tế của PT và học viên. Các giao diện trên trang này dùng dữ liệu giả để bạn tìm hiểu sản phẩm.</p></div><div><details><summary>Workspace thật đang hỗ trợ những gì?</summary><p>Tài khoản PT, hồ sơ và lời mời học viên, nhập và xác nhận các chỉ số InBody, check-in và theo dõi hoạt động. Chat, lịch chung, membership và ghi chú riêng/chia sẻ đã có bản web đang kiểm thử. Trải nghiệm trong workspace phụ thuộc cấu hình dịch vụ thực tế; phần minh họa trên landing không lưu hồ sơ.</p></details><details><summary>Chat và lịch hẹn ở đây đã kết nối thật chưa?</summary><p>Cuộc hẹn và trao đổi trên landing là minh họa. Workspace có bản chat và lịch chung đã được kiểm thử bằng dữ liệu giả, nhưng chỉ dùng được khi chức năng đó được mở tại môi trường đang truy cập.</p></details><details><summary>OCR có tự lưu số liệu không?</summary><p>Không. PT cần xem lại, chỉnh sửa và xác nhận. Phiếu trên trang này là mẫu giả; khả năng đọc phiếu thật phụ thuộc provider và cấu hình triển khai, không có cam kết độ chính xác ở đây.</p></details><details id="contact-app"><summary>Đã có ứng dụng Android hay giá chính thức chưa?</summary><p>Android là nền tảng ưu tiên đang hướng tới. Chưa công bố APK hoặc bản App Store. Mức 199.000đ/tháng đã có khảo sát sơ bộ; chưa mở thanh toán hoặc chương trình dùng thử.</p></details><TeamDetails /></div></div></section><section className="closing wrap"><h2>Đủ thông tin.<br />Trọn sự chú ý.</h2><div><p>Bắt đầu với hồ sơ học viên trong workspace của bạn.</p><Link className="button forest" href="/register">Tạo workspace PT<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></Link><Link className="landing-secondary" href="/app/dashboard">Xem bản mẫu công khai trước</Link></div></section>
-</main><footer className="wrap"><Link className="brand" href="#">fitsync</Link><p>Không gian làm việc của PT.</p><Link href="/privacy">Quyền riêng tư</Link><Link href="/terms">Điều khoản</Link></footer>
-<dialog id="coaching-detail-sheet" ref={dialogRef} aria-labelledby="sheet-heading" onCancel={(event) => {event.preventDefault(); closeSheet();}} onKeyDown={trapFocus}><div className="sheet-inner"><div className="sheet-top"><span className="sheet-context">FitSync · Chi tiết minh họa</span><button data-close onClick={closeSheet} aria-label="Đóng chi tiết"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><h2 id="sheet-heading">{sheet === "report" ? "Đối chiếu bản nháp" : sheet === "chat" ? "Trao đổi với Linh" : "Cùng một buổi hẹn"}</h2>
-<div data-sheet="appointment" hidden={sheet !== "appointment"}><div className="sheet-appointment"><span className="linked-dot" aria-hidden="true"></span><p>Khánh Linh &amp; PT Anh Nam</p><strong>16:00</strong><span>30/10/2026 · 60 phút · Đã xác nhận</span></div><p className="sheet-description">Một cuộc hẹn được chia sẻ trong lịch và cuộc trò chuyện. Đặt lịch chưa trừ số buổi PT; bài tập đính kèm là tùy chọn.</p><Link className="button forest" href="/app/dashboard">Xem bản mẫu PT</Link></div>
-<div data-sheet="report" hidden={sheet !== "report"}><ReportSample /></div>
-<div data-sheet="chat" hidden={sheet !== "chat"}><div className="sheet-chat"><p className="chat-author">PT Anh Nam</p><p className="chat-line">Chiều nay mình gặp nhau lúc 16:00 nhé.</p><p className="chat-author learner-author">Khánh Linh</p><p className="chat-line learner-line">Dạ, em xem được lịch rồi ạ.</p><button className="chat-appointment" data-open="appointment" onClick={(event) => openSheet("appointment", event.currentTarget)}><span className="linked-dot" aria-hidden="true"></span><span><strong>16:00 · 30 tháng 10</strong><small>60 phút · Đã xác nhận</small></span></button></div><p className="sheet-description">Trao đổi minh họa với cùng một cuộc hẹn.</p><Link className="button forest" href="/app/dashboard">Xem giao diện PT</Link></div>
-</div></dialog><p className="sr-only" id="page-status" role="status">{role === "pt" ? "Góc nhìn PT, dữ liệu minh họa." : "Góc nhìn học viên, dữ liệu minh họa."}</p></div>;
+
+  return (
+    <div className="coaching-site">
+      <main id="main-content">
+        {/* Hero Section */}
+        <section className="hero fs-hero modern-hero" aria-labelledby="hero-title">
+          <Image
+            className="hero-photo"
+            src="/images/coaching-afternoon.webp"
+            alt="Minh họa AI: PT và học viên trò chuyện giữa buổi tập trong một phòng gym Việt Nam"
+            fill
+            priority
+            sizes="100vw"
+          />
+          <div className="hero-shade"></div>
+
+          {/* Navigation Bar */}
+          <header className="navigation">
+            <Link className="brand" href="/" prefetch={true} aria-label="FitSync, về trang chủ">
+              <BrandMark />
+              <span>fitsync</span>
+            </Link>
+            <nav aria-label="Điều hướng chính">
+              <Link href="#tinh-nang">Tính năng</Link>
+              <Link href="#quy-trinh">Quy trình</Link>
+              <Link href="#ho-so">Trải nghiệm</Link>
+              <Link href="#bang-gia">Bảng giá</Link>
+              <Link href="#faq">Hỏi đáp</Link>
+            </nav>
+            <div className="nav-actions-group">
+              <Link className="nav-action is-register" href="/register" prefetch={true}>
+                Đăng ký
+              </Link>
+              <Link className="nav-action is-login" href="/login" prefetch={true}>
+                Đăng nhập
+              </Link>
+            </div>
+          </header>
+
+          {/* Hero Copy */}
+          <div className="hero-copy modern-hero-copy">
+            <span className="hero-pill-badge">
+              <Sparkles size={14} /> Nền tảng đồng hành Huấn luyện viên &amp; Học viên
+            </span>
+            <h1 id="hero-title">
+              Cùng tập.<br />Cùng tiến xa.
+            </h1>
+            <p className="hero-description">
+              Không gian làm việc tinh gọn cho PT: Quản lý học viên, xác thực InBody, xếp lịch tập tuần và theo dõi check-in dinh dưỡng mỗi ngày.
+            </p>
+            <div className="hero-cta-group">
+              <Link className="button sun hero-primary-btn" href="/register" prefetch={true} aria-label="Tạo workspace PT">
+                Tạo workspace PT <ArrowRight size={16} />
+              </Link>
+              <Link className="hero-ghost-btn hero-sample" href="/app/dashboard" prefetch={true} aria-label="Xem bản mẫu">
+                Xem bản mẫu
+              </Link>
+            </div>
+          </div>
+
+          {/* Highlights Metrics Bar */}
+          <div className="hero-highlights-bar">
+            <div className="highlight-item">
+              <ShieldCheck size={18} />
+              <span>100% Phân quyền bảo mật</span>
+            </div>
+            <div className="highlight-item">
+              <TrendingUp size={18} />
+              <span>Đối chiếu InBody minh bạch</span>
+            </div>
+            <div className="highlight-item">
+              <CalendarDays size={18} />
+              <span>Lịch tuần Google Calendar</span>
+            </div>
+            <div className="highlight-item">
+              <CheckCircle2 size={18} />
+              <span>Check-in dinh dưỡng riêng tư</span>
+            </div>
+          </div>
+        </section>
+
+        {/* 5 Core Feature Pillars (Bento Grid) */}
+        <section className="wrap modern-features-section" id="tinh-nang" aria-labelledby="features-heading">
+          <div className="section-heading text-center">
+            <span className="landing-kicker">Chức năng cốt lõi</span>
+            <h2 id="features-heading">Mọi công cụ PT cần để quản lý hiệu quả.</h2>
+            <p className="section-subtitle">Loại bỏ ghi chép Zalo và sổ tay rời rạc. Toàn bộ hành trình huấn luyện nằm gọn trong một màn hình.</p>
+          </div>
+
+          <div className="features-bento-grid">
+            {/* Feature 1 */}
+            <article className="bento-card">
+              <div className="bento-icon-box">
+                <UsersRound size={22} />
+              </div>
+              <h3>Hồ sơ &amp; Quản lý gói tập</h3>
+              <p>Mời học viên qua liên kết 1 lần bảo mật. Theo dõi chính xác số buổi đã tập và còn lại (VD: 8/12 buổi), minh bạch cả hai bên.</p>
+              <div className="bento-chip">Không lo nhầm lẫn số buổi</div>
+            </article>
+
+            {/* Feature 2 */}
+            <article className="bento-card">
+              <div className="bento-icon-box">
+                <CalendarDays size={22} />
+              </div>
+              <h3>Lịch tuần &amp; Hẹn buổi thông minh</h3>
+              <p>Lưới lịch tuần trực quan dạng Google Calendar. Xếp lịch nhanh chỉ với 1 cú nhấp chuột; đặt lịch không tự trừ buổi PT khi chưa hoàn thành.</p>
+              <div className="bento-chip">Đồng bộ lịch 2 chiều</div>
+            </article>
+
+            {/* Feature 3 */}
+            <article className="bento-card">
+              <div className="bento-icon-box">
+                <TrendingUp size={22} />
+              </div>
+              <h3>Đối chiếu chỉ số InBody</h3>
+              <p>PT đối chiếu và xác nhận trực tiếp 5 chỉ số nền (cân nặng, cơ, mỡ) từ ảnh phiếu đo trước khi đưa vào biểu đồ tiến trình chính thức.</p>
+              <div className="bento-chip">Dữ liệu có nguồn kiểm chứng</div>
+            </article>
+
+            {/* Feature 4 */}
+            <article className="bento-card">
+              <div className="bento-icon-box">
+                <CheckCircle2 size={22} />
+              </div>
+              <h3>Check-in bữa ăn &amp; Cảnh báo</h3>
+              <p>Học viên tải ảnh bữa ăn trong 30 giây. Hệ thống tự động cảnh báo khi học viên vắng mặt quá 3 ngày để PT kịp thời can thiệp, động viên.</p>
+              <div className="bento-chip">Giữ nhịp tập đều đặn</div>
+            </article>
+
+            {/* Feature 5 */}
+            <article className="bento-card is-wide">
+              <div className="bento-icon-box">
+                <MessageSquareText size={22} />
+              </div>
+              <div className="bento-wide-content">
+                <div>
+                  <h3>Trao đổi 1-1 &amp; Sổ tay ghi chú riêng tư</h3>
+                  <p>Kênh trò chuyện tập trung cho từng cặp PT - học viên. Tách riêng ghi chú chiến thuật nội bộ của PT và lời dặn chia sẻ công khai.</p>
+                </div>
+                <div className="bento-subchips">
+                  <span><Lock size={14} /> Ghi chú nội bộ chỉ PT xem</span>
+                  <span><Clock size={14} /> Trao đổi tức thì không trôi tin</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* 3-Step Journey */}
+        <IntakeJourney />
+
+        {/* Interactive Workspace Preview */}
+        <section className="profile-section compact-profile wrap" id="ho-so" aria-labelledby="profile-heading">
+          <div className="section-heading">
+            <div>
+              <span className="landing-kicker">Trải nghiệm thực tế</span>
+              <h2 id="profile-heading">Một người. Đủ ngữ cảnh.</h2>
+              <p className="profile-subtitle">Chọn góc nhìn để xem cách PT và học viên cùng đồng hành trên FitSync.</p>
+            </div>
+            <div className="role-control" role="group" aria-label="Chọn góc nhìn">
+              <button data-role="pt" aria-label="Huấn luyện viên" aria-pressed={role === "pt"} onClick={() => setRole("pt")}>
+                Huấn luyện viên
+              </button>
+              <button data-role="trainee" aria-label="Học viên" aria-pressed={role === "trainee"} onClick={() => setRole("trainee")}>
+                Học viên
+              </button>
+            </div>
+          </div>
+
+          <div className={role === "pt" ? "profile-surface" : "profile-surface learner-surface"} data-ui>
+            <aside className="profile-rail" hidden={role !== "pt"} data-pt-only>
+              <span className="rail-title">Danh sách học viên</span>
+              <span className="rail-person selected">
+                <span className="avatar">KL</span>
+                <span>Khánh Linh<small>Hôm nay · 16:00</small></span>
+              </span>
+              <span className="rail-person">
+                <span className="avatar">MK</span>
+                <span>Minh Khoa<small>Buổi PT · 09:00</small></span>
+              </span>
+              <span className="rail-person">
+                <span className="avatar">HN</span>
+                <span>Hoàng Nam<small>Tư vấn · 17:30</small></span>
+              </span>
+            </aside>
+
+            <article className="dossier">
+              <header className="person-heading">
+                <div className="person-name">
+                  <span className="large-avatar">KL</span>
+                  <div>
+                    <p data-role-label>{role === "pt" ? "Không gian PT" : "Không gian học viên"}</p>
+                    {role === "trainee" && <span data-trainee-only className="workspace-badge is-verified">Góc học viên</span>}
+                    <h3>Khánh Linh</h3>
+                    <span>Giảm mỡ · Giữ nhịp tập đều</span>
+                  </div>
+                </div>
+              </header>
+
+              <div className="profile-body">
+                <div className="history">
+                  <section className="history-entry current">
+                    <div className="entry-mark"><span className="linked-dot" aria-hidden="true"></span></div>
+                    <div className="entry-content">
+                      <p className="entry-date">Buổi hẹn tiếp theo · Hôm nay</p>
+                      <div className="session-row">
+                        <span><strong>16:00</strong><small>60 phút</small></span>
+                        <span><strong>Buổi tập cùng PT Anh Nam</strong><small>Đã xác nhận</small></span>
+                      </div>
+                    </div>
+                  </section>
+
+                  <section className="history-entry">
+                    <div className="entry-mark"><span className="history-dot" aria-hidden="true"></span></div>
+                    <div className="entry-content">
+                      <div className="entry-date"><span>Lần đo gần nhất</span><span className="verified">PT đã xác nhận</span></div>
+                      <dl className="measurement-row">
+                        <div><dt>Cân nặng</dt><dd>70,4 <span>kg</span></dd></div>
+                        <div><dt>Cơ xương</dt><dd>30,2 <span>kg</span></dd></div>
+                        <div><dt>Tỷ lệ mỡ</dt><dd>29,0 <span>%</span></dd></div>
+                      </dl>
+                      <div className="progress-plot">
+                        <div className="plot-heading"><h4>Biểu đồ cân nặng</h4><span>Tháng này · kg</span></div>
+                        <WeightPlot />
+                      </div>
+                    </div>
+                  </section>
+                </div>
+
+                <aside className="context">
+                  <section className="context-note" data-pt-only hidden={role !== "pt"}>
+                    <div className="note-caption">
+                      <Lock size={14} />
+                      <span>Nội bộ PT</span>
+                    </div>
+                    <h4>Lưu ý buổi tập</h4>
+                    <p>Học viên mới khỏi đau lưng dưới, ưu tiên bài tập bổ trợ core nhẹ nhàng.</p>
+                  </section>
+
+                  <section className="context-note shared" data-trainee-only hidden={role !== "trainee"}>
+                    <div className="note-caption"><span>Dặn dò từ PT Nam</span></div>
+                    <h4>Mục tiêu tuần này</h4>
+                    <p>Nhớ bổ sung đủ nước và check-in bữa trưa trước 13h nhé!</p>
+                  </section>
+
+                  <section className="package">
+                    <div><p>Gói tập PT</p><strong>8 <span>/ 12 buổi</span></strong></div>
+                    <div className="session-ticks" role="img" aria-label="4 buổi đã dùng, 8 buổi còn lại">
+                      <i className="used"></i><i className="used"></i><i className="used"></i><i className="used"></i>
+                      <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                    </div>
+                    <p>Hạn membership: 31/12/2026</p>
+                  </section>
+
+                  <div className="conversation">
+                    <span className="tiny-avatar">AN</span>
+                    <p>“Chiều nay gặp lúc 16:00 nhé Linh.”</p>
+                  </div>
+                </aside>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        {/* Pricing Section */}
+        <PricingSection />
+
+        {/* FAQ Section */}
+        <section className="landing-readiness compact-faq wrap" id="faq" aria-labelledby="readiness-heading">
+          <div className="readiness-layout">
+            <div>
+              <span className="landing-kicker">Hỏi &amp; Đáp</span>
+              <h2 id="readiness-heading">Giải đáp thắc mắc thường gặp.</h2>
+              <p className="faq-subhead">Những thông tin cần thiết nhất trước khi bạn bắt đầu tạo workspace.</p>
+            </div>
+            <div className="faq-accordion">
+              <details open>
+                <summary>FitSync hỗ trợ gì cho công việc của PT?</summary>
+                <p>FitSync gom toàn bộ công việc huấn luyện vào một nơi: Quản lý học viên, theo dõi số buổi, xếp lịch tập tuần không trừ buổi ảo, đối chiếu InBody và theo dõi ảnh bữa ăn hàng ngày.</p>
+              </details>
+              <details>
+                <summary>Học viên của tôi có cần trả phí để sử dụng không?</summary>
+                <p>Không. Học viên luôn được sử dụng miễn phí 100% qua liên kết mời trực tiếp từ PT. Học viên có thể dùng trên điện thoại hoặc máy tính mà không cần cài đặt phức tạp.</p>
+              </details>
+              <details>
+                <summary>Quy trình xác thực chỉ số InBody hoạt động ra sao?</summary>
+                <p>Để đảm bảo số liệu chính xác, chỉ số luôn được PT đối chiếu với phiếu đo gốc trước khi xác nhận. Học viên chỉ nhìn thấy biểu đồ tiến trình khi số đo đã được PT duyệt.</p>
+              </details>
+              <details>
+                <summary>Gói Free và Pro khác nhau thế nào?</summary>
+                <p>Gói Free miễn phí trọn đời cho tối đa 3 học viên đang hoạt động với đầy đủ mọi tính năng. Khi bạn kèm từ 4 học viên trở lên, chỉ 199.000đ/tháng để mở khóa không giới hạn số lượng học viên.</p>
+              </details>
+              <details id="contact-app">
+                <summary>Đã có ứng dụng Android hay giá chính thức chưa?</summary>
+                <p>Android là nền tảng ưu tiên đang hướng tới. Chưa công bố APK hoặc bản App Store. Mức 199.000đ/tháng đã có khảo sát sơ bộ; chưa mở thanh toán hoặc chương trình dùng thử.</p>
+              </details>
+              <TeamDetails />
+            </div>
+          </div>
+        </section>
+
+        {/* Closing Banner */}
+        <section className="closing compact-closing wrap">
+          <div className="closing-banner">
+            <div>
+              <h2>Sẵn sàng chuyên nghiệp hóa quy trình huấn luyện?</h2>
+              <p>Khởi tạo workspace PT miễn phí chỉ trong 30 giây.</p>
+            </div>
+            <div className="closing-actions">
+              <Link className="button sun" href="/register" prefetch={true}>
+                Đăng ký ngay <ArrowRight size={16} />
+              </Link>
+              <Link className="hero-sample" href="/login" prefetch={true}>
+                Đăng nhập
+              </Link>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* Modern Compact Footer */}
+      <footer className="wrap compact-footer">
+        <Link className="brand" href="/" prefetch={true}>fitsync</Link>
+        <p>© 2026 FitSync · Nền tảng đồng hành Huấn luyện viên &amp; Học viên.</p>
+        <div className="footer-links">
+          <Link href="/privacy" prefetch={true}>Quyền riêng tư</Link>
+          <Link href="/terms" prefetch={true}>Điều khoản</Link>
+        </div>
+      </footer>
+
+      <p className="sr-only" id="page-status" role="status">
+        {role === "pt" ? "Góc nhìn PT." : "Góc nhìn học viên."}
+      </p>
+    </div>
+  );
 }

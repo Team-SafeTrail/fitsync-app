@@ -2,6 +2,18 @@
 
 2026-10-30. Nguồn: chủ sản phẩm trao đổi trong chat. Không phải PRD gốc thất lạc.
 
+## Quyết định bổ sung 17/11/2026 — ưu tiên cho bài nộp cuối
+
+- Chủ dự án xác nhận giảng viên chấp nhận web đầy đủ, không bắt buộc APK/Google Play cho bài nộp này. Hạn nộp sản phẩm: trước 19/11/2026.
+- Chưa có giao dịch khách trả phí thật. Không lập biên lai giả, chuyển nhãn Pro lịch sử thành doanh thu hoặc dùng giao dịch kiểm thử làm bằng chứng kinh doanh.
+- Giá được chốt 199.000đ/PT/tháng, đối soát chuyển khoản thủ công. Free tối đa 3 hồ sơ chưa lưu trữ (gồm lời mời chờ nhận); Pro còn hạn không giới hạn học viên, cùng chức năng coaching. Không tự động gia hạn.
+- Khi hết hạn, giữ toàn bộ hồ sơ cũ; tạo thêm/khôi phục hồ sơ phải theo hạn mức Free. Enterprise lịch sử chỉ được xử lý như quyền mở rộng còn hạn, không phải một offer mới.
+- Chờ chủ dự án cung cấp tài khoản nhận tiền; hiện chỉ nhận yêu cầu nâng cấp. Chưa tuyên bố thu tiền thành công.
+- Chủ dự án xem database trước, sau đó mới cung cấp email giảng viên. Chưa cấp quyền hoặc chia sẻ tài khoản admin.
+- Dừng kinh doanh sau học phần. Hoàn thiện sản phẩm phục vụ bài nộp và bàn giao, không cam kết mở rộng thương mại sau môn.
+
+Các mục dưới giữ ngữ cảnh quyết định tháng 10. Những điểm khác với cập nhật này phải được hiểu theo mốc thời gian, không đưa lại APK hoặc giá/hạn mức cũ thành yêu cầu bài nộp hiện tại.
+
 ## Điều phải bám
 
 - PT quản lý/đồng hành học viên và giảm nhập/tìm dữ liệu rời rạc giữa Excel, giấy, Zalo cá nhân. Không biến FitSync thành máy quét hoặc calorie tracker đơn lẻ.

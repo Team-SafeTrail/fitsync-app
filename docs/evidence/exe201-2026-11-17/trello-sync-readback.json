@@ -1,0 +1,25 @@
+{
+  "checked_date": "2026-11-17",
+  "receipts": [
+    {
+      "card": "https://trello.com/c/SIT1ZbPo",
+      "comments": [
+        {
+          "id": "ari:cloud:trello::action/6afc0a87efbbe055663c3539",
+          "date": "2026-11-17T08:04:23.050Z",
+          "text": "17/11/2026 — Cập nhật hồi cứu, trạng thái IN PROGRESS / chờ review, chưa xác nhận đã nộp. Đã chuẩn bị reports/WEEK_08_FORM.md theo đúng6Step của PDF, source/gap audit và kịch bản. Nhóm xác nhận chọn No: dừng kinh doanh sau học phần. Kế hoạch60tài khoản mới là đề xuất20PT+40học viên, không phải actual hoặc20paid. Canva cuối dùng screenshot nguyên bản: https://www.canva.com/d/JP90mzolqoYNL2Z . Branch agent/exe201-fitsync-completion hiện chỉ local vì GitHubwrite403/Gitcredential thiếu; chưa cóPR. Giữ nguyên card/lịch sử và cần reviewer độc lập; không tự DONE."
+        }
+      ]
+    },
+    {
+      "card": "https://trello.com/c/NraaXyby",
+      "comments": [
+        {
+          "id": "ari:cloud:trello::action/6afc0a880057f684325f61ca",
+          "date": "2026-11-17T08:04:24.465Z",
+          "text": "17/11/2026 — Trạng thái IN PROGRESS / bản chuẩn bị chờ review, chưa gửi form. reports/WEEK_09_FORM.md có đúng5Step, customer analytics theo snapshot chỉ đọc17/11 và financial report có actual chưa đối soát/kịch bản tách riêng. Link báo cáo mới đã được owner cho phép upload vàoEXE201 và connector đọc lại: https://drive.google.com/file/d/18SJXm70350xOMlOvkuLelAmP6xPavRRd/view?usp=drivesdk . Chưa kiểm viewer bằng tài khoản giảng viên. Paid proof, actual ledger/channel analytics, contribution/meeting receipts còn thiếu. Không coi planPro/tài khoảnseed là paid; không markDONE trước reviewer và receipt."
+        }
+      ]
+    }
+  ]
+}

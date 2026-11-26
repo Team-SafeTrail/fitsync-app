@@ -2,10 +2,38 @@ import { cache } from "react";
 import { createClient } from "@/lib/supabase/server";
 import { isSupabaseConfigured } from "@/lib/supabase/env";
 
-export const getCurrentUser = cache(async () => {
+export type AuthenticatedUser = {
+  id: string;
+  email?: string;
+};
+
+export const getCurrentUser = cache(async (): Promise<AuthenticatedUser | null> => {
   if (!isSupabaseConfigured()) return null;
-  const supabase = createClient();
+  const supabase = await createClient();
+
+  // Try fast session read from local SSR cookie first (zero network roundtrip)
+  try {
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (sessionData?.session?.user?.id) {
+      return {
+        id: sessionData.session.user.id,
+        email: sessionData.session.user.email ?? undefined,
+      };
+    }
+  } catch {
+    // Continue to fallback if cookie reading fails
+  }
+
+  const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
+  const sub = claimsData?.claims?.sub;
+  if (typeof sub === "string" && sub && !claimsError) {
+    return {
+      id: sub,
+      email: typeof claimsData.claims.email === "string" ? claimsData.claims.email : undefined,
+    };
+  }
+
   const { data, error } = await supabase.auth.getUser();
-  if (error) return null;
-  return data.user;
+  if (error || !data.user) return null;
+  return { id: data.user.id, email: data.user.email };
 });

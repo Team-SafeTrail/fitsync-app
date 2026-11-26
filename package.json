@@ -19,12 +19,19 @@
     "db:types": "supabase gen types typescript --local > apps/web/src/types/database.ts",
     "seed:oc2:plan": "node scripts/seed-oc2-demo.mjs",
     "seed:oc2:apply": "node scripts/seed-oc2-demo.mjs --apply",
-    "seed:oc2:cloud": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/seed-oc2-cloud.ps1"
+    "seed:oc2:cloud": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/seed-oc2-cloud.ps1",
+    "demo:plan": "node scripts/local-demo/start.mjs",
+    "demo:prepare": "node scripts/local-demo/prepare.mjs",
+    "demo:start": "node scripts/local-demo/start.mjs --run"
   },
   "engines": {
     "node": ">=20"
   },
   "devDependencies": {
     "supabase": "^2.118.0"
+  },
+  "overrides": {
+    "postcss": "8.5.33",
+    "source-map-js": "1.2.2"
   }
 }

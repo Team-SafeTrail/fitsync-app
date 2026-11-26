@@ -1,6 +1,6 @@
 # FitSync — công việc sau thiết kế
 
-**Tiến độ hiện hành:** Chủ sản phẩm chốt lượt này hoàn thiện web + bộ bàn giao; Android để Khai triển khai tiếp. Xem [bộ bàn giao v1](../handoff/README.md), [kế hoạch hiện hành](WEB_HANDOFF_V1.md) và [bằng chứng mới](../handoff/UI_ACCEPTANCE.md). Chat/lịch create-read, membership theo ngày và notes private/shared đã có implementation; không gọi toàn bộ B0–B8 hoàn tất. Các snapshot/checkpoint bên dưới là lịch sử, không thay trạng thái trong bộ bàn giao.
+**Tiến độ và phân công hiện hành:** Xem [bàn giao 25/11](../handoff/TEAM_HANDOFF_2026-11-25_VI.md) cho candidate web và prototype Android U-01. Huy phụ trách frontend và Android client. Khai phụ trách backend. Các snapshot B0–B8 bên dưới giữ kết quả tại revision lịch sử.
 
 2026-10-30. Kế hoạch theo yêu cầu chủ sản phẩm; không phải PRD gốc, không mặc định persona/milestone cũ. Baseline199k/tháng đã có khảo sát sơ bộ; đang làm rõ offer/hạn mức/chi phí, không coi như chưa từng có quyết định và không tự thay giá.
 
@@ -157,4 +157,4 @@ Bằng chứng ảnh synthetic đã xem và lưu tại [coaching-core evidence](
 
 ### Web handoff v1 — checkpoint mới
 
-PT Today, dossier năm tab, learner Home/history, progress đa chỉ số, membership revisions/private-shared notes và responsive navigation đã implement. Database tám migrations/mười hai bảng; có schema snapshot, generated dictionary và upgrade rehearsal. [UI_ACCEPTANCE](../handoff/UI_ACCEPTANCE.md) ghi fresh receipts và giới hạn. [WORK_PACKAGES](../handoff/WORK_PACKAGES.md) thay thứ tự “bước tiếp theo” lịch sử phía trên: Huy review backend/ops, Khai review web và tiếp Android. Không tự rollout ba flags hoặc sửa cloud DB.
+PT Today, dossier năm tab, learner Home/history, progress đa chỉ số, membership revisions/private-shared notes và responsive navigation đã implement. Database tám migrations/mười hai bảng; có schema snapshot, generated dictionary và upgrade rehearsal. [UI_ACCEPTANCE](../handoff/UI_ACCEPTANCE.md) ghi fresh receipts và giới hạn. [WORK_PACKAGES](../handoff/WORK_PACKAGES.md) thay thứ tự “bước tiếp theo” lịch sử phía trên: Khai review backend/ops, Huy review web và Android client. Không tự rollout ba flags hoặc sửa cloud DB.

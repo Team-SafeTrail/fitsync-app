@@ -122,14 +122,43 @@
   text-decoration: underline;
   text-underline-offset: 6px;
 }
+.coaching-site .nav-actions-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
 .coaching-site .nav-action {
-  padding: 11px 22px;
+  padding: 10px 20px;
   background: var(--white);
   color: var(--forest);
   font-size: 14px;
   font-weight: 500;
   border-radius: 30px;
   white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color .15s ease, border-color .15s ease, transform .12s ease;
+}
+.coaching-site .nav-action:hover {
+  transform: translateY(-1px);
+}
+.coaching-site .nav-action.is-register {
+  background: rgba(255, 255, 255, 0.16);
+  border: 1.5px solid rgba(255, 255, 255, 0.65);
+  color: #ffffff;
+  backdrop-filter: blur(4px);
+}
+.coaching-site .nav-action.is-register:hover {
+  background: rgba(255, 255, 255, 0.28);
+  border-color: #ffffff;
+}
+.coaching-site .nav-action.is-login {
+  background: var(--white);
+  color: var(--forest);
+}
+.coaching-site .nav-action.is-login:hover {
+  background: #f0f4f2;
 }
 .coaching-site .hero-copy {
   position: relative;
@@ -2208,3 +2237,622 @@
 .coaching-site .offer-relationship>div{display:grid;gap:10px}.coaching-site .offer-relationship strong{font-weight:500;font-size:22px}.coaching-site .offer-relationship span{font-size:14px}.coaching-site .offer-role{color:var(--jade)}.coaching-site .offer-link{text-align:center;font-size:28px!important}
 .coaching-site .offer-status{display:flex;gap:32px;align-items:center;justify-content:space-between}.coaching-site .offer-status p{font-size:14px}.coaching-site .offer-status a{flex-shrink:0}
 @media(max-width:700px){.coaching-site .coaching-offer>div:first-child{grid-template-columns:1fr;gap:8px}.coaching-site .offer-relationship{padding:24px;grid-template-columns:1fr;gap:16px}.coaching-site .offer-link{text-align:left;transform:rotate(90deg);width:28px}.coaching-site .offer-status{display:block}.coaching-site .offer-status a{display:inline-block;margin-top:16px}}
+
+/* --- Compact, card-driven Landing Redesign (exact FitSync colors preserved) --- */
+.coaching-site .landing-kicker {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--jade);
+  background: var(--mint);
+  padding: 4px 12px;
+  border-radius: 999px;
+  margin-bottom: 10px;
+}
+.coaching-site .hero.compact-hero {
+  min-height: 620px;
+  height: min(740px, calc(100svh - 32px));
+}
+.coaching-site .hero-copy.compact-hero-copy {
+  padding: clamp(32px, 6vh, 72px) var(--space) 64px;
+}
+.coaching-site .hero-copy.compact-hero-copy h1 {
+  font-size: clamp(44px, 5vw, 72px);
+}
+.coaching-site .hero-copy.compact-hero-copy > p {
+  font-size: 16.5px;
+  line-height: 1.65;
+  margin: 18px 0 24px;
+  max-width: 42ch;
+}
+.coaching-site .landing-pillars {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+  padding: 40px 0 16px;
+}
+.coaching-site .pillar-tile {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 18px;
+  padding: 22px 20px;
+  display: grid;
+  gap: 8px;
+  align-content: start;
+}
+.coaching-site .pillar-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: var(--mint);
+  color: var(--forest);
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+}
+.coaching-site .pillar-tile h3 {
+  font-size: 17px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.coaching-site .pillar-tile p {
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.coaching-site .landing-context.visual-journey {
+  padding-block: 48px;
+}
+.coaching-site .context-heading.compact-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 28px;
+}
+.coaching-site .context-heading.compact-heading h2 {
+  font-size: clamp(28px, 3vw, 40px);
+}
+.coaching-site .context-heading.compact-heading p {
+  color: var(--muted);
+  font-size: 15px;
+  max-width: 38ch;
+}
+.coaching-site .visual-journey .journey-preview {
+  min-height: 180px;
+  padding: 22px;
+  margin-bottom: 16px;
+}
+.coaching-site .profile-section.compact-profile {
+  padding-block: 36px 56px;
+}
+.coaching-site .profile-section.compact-profile h2 {
+  font-size: clamp(28px, 3vw, 40px);
+}
+.coaching-site .data-section.compact-data {
+  padding-block: 48px;
+}
+.coaching-site .data-section.compact-data h2 {
+  font-size: clamp(28px, 3vw, 40px);
+}
+.coaching-site .coaching-offer.compact-offer {
+  padding-block: 44px;
+}
+.coaching-site .offer-split-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 32px;
+  align-items: center;
+}
+.coaching-site .offer-copy h2 {
+  font-size: clamp(26px, 2.8vw, 36px);
+  margin-bottom: 10px;
+}
+.coaching-site .offer-relationship.compact-relationship {
+  margin: 0;
+  padding: 24px;
+}
+.coaching-site .landing-context.compact-band {
+  padding-block: 28px;
+  border-bottom: 1px solid var(--line);
+}
+.coaching-site .compact-band-header {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr);
+  gap: 32px;
+  align-items: start;
+}
+.coaching-site .compact-band-header h2 {
+  font-size: clamp(24px, 2.6vw, 34px);
+}
+.coaching-site .research-snapshot.compact-research {
+  padding-block: 40px;
+}
+.coaching-site .research-snapshot.compact-research h2 {
+  font-size: clamp(26px, 2.8vw, 36px);
+  margin-bottom: 8px;
+}
+.coaching-site .research-counts.compact-counts > div {
+  padding: 12px 0;
+}
+.coaching-site .research-counts.compact-counts dd {
+  font-size: 28px;
+}
+.coaching-site .landing-readiness.compact-faq {
+  padding-block: 48px;
+}
+.coaching-site .landing-readiness.compact-faq h2 {
+  font-size: clamp(26px, 2.8vw, 36px);
+}
+.coaching-site .compact-team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 16px;
+}
+.coaching-site .closing.compact-closing {
+  display: block;
+  padding-block: 24px 48px;
+}
+.coaching-site .closing.compact-closing > .closing-banner {
+  max-width: none;
+  width: 100%;
+  background: var(--forest);
+  color: var(--white);
+  border-radius: 24px;
+  padding: clamp(28px, 4vw, 48px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.coaching-site .closing.compact-closing > .closing-banner p {
+  margin-bottom: 0;
+  color: #dbe8e0;
+  font-size: 15px;
+}
+.coaching-site .closing-banner h2 {
+  font-size: clamp(26px, 3vw, 36px);
+  margin-bottom: 6px;
+}
+.coaching-site .closing-banner p {
+  color: #dbe8e0;
+  font-size: 15px;
+}
+.coaching-site .closing-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.coaching-site footer.compact-footer {
+  padding: 24px 0 40px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  font-size: 14px;
+  color: var(--muted);
+}
+.coaching-site footer.compact-footer .brand {
+  font-size: 24px;
+  color: var(--forest);
+}
+.coaching-site .footer-links {
+  display: flex;
+  gap: 20px;
+}
+@media(max-width: 980px) {
+  .coaching-site .landing-pillars {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .coaching-site .offer-split-card,
+  .coaching-site .compact-band-header {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+@media(max-width: 640px) {
+  .coaching-site .landing-pillars,
+  .coaching-site .compact-team-grid {
+    grid-template-columns: 1fr;
+  }
+  .coaching-site .context-heading.compact-heading {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+
+@media(max-width: 850px) {
+  .coaching-site .hero.compact-hero {
+    min-height: 700px;
+    height: auto;
+  }
+  .coaching-site .hero-copy.compact-hero-copy {
+    padding: 96px var(--space) 196px;
+    max-width: 600px;
+  }
+}
+@media(max-width: 700px) {
+  .coaching-site .hero.compact-hero {
+    min-height: 0;
+    height: auto;
+    padding-top: 302px;
+  }
+  .coaching-site .hero-copy.compact-hero-copy {
+    padding: 152px 24px 32px;
+    max-width: none;
+  }
+  .coaching-site .hero-copy.compact-hero-copy h1 {
+    font-size: clamp(38px, 10.5vw, 52px);
+  }
+}
+
+/* --- Modern SaaS Redesign Enhancements --- */
+.coaching-site .modern-hero {
+  min-height: 740px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding-bottom: 32px;
+}
+.coaching-site .modern-hero-copy {
+  padding: 120px var(--space) 20px;
+  max-width: 680px;
+  position: relative;
+  z-index: 2;
+}
+.coaching-site .hero-pill-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.16);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  backdrop-filter: blur(8px);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 13.5px;
+  font-weight: 500;
+  color: #ffffff;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+.coaching-site .hero-description {
+  font-size: 17.5px;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.9);
+  margin-top: 16px;
+  max-width: 54ch;
+}
+.coaching-site .hero-cta-group {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 28px;
+  flex-wrap: wrap;
+}
+.coaching-site .hero-primary-btn {
+  padding: 12px 26px;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 30px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.coaching-site .hero-ghost-btn {
+  padding: 11px 24px;
+  border-radius: 30px;
+  color: #ffffff;
+  font-size: 15px;
+  font-weight: 500;
+  background: rgba(255, 255, 255, 0.12);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(6px);
+  transition: all .2s ease;
+  display: inline-flex;
+  align-items: center;
+}
+.coaching-site .hero-ghost-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+  border-color: #ffffff;
+  transform: translateY(-1px);
+}
+.coaching-site .hero-highlights-bar {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  background: rgba(13, 43, 39, 0.88);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(12px);
+  border-radius: 18px;
+  padding: 16px 24px;
+  margin: 32px auto 0;
+  max-width: 1140px;
+  width: calc(100% - (var(--space) * 2));
+  position: relative;
+  z-index: 2;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+.coaching-site .highlight-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e2ede8;
+  font-size: 13.5px;
+  font-weight: 500;
+}
+.coaching-site .highlight-item svg {
+  color: #4ade80;
+  flex-shrink: 0;
+}
+
+/* Modern Features Bento Grid */
+.coaching-site .modern-features-section {
+  padding-top: 64px;
+  padding-bottom: 40px;
+}
+.coaching-site .features-bento-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 36px;
+}
+.coaching-site .bento-card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  padding: 28px 26px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.coaching-site .bento-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(20, 62, 56, 0.07);
+  border-color: var(--forest);
+}
+.coaching-site .bento-card.is-wide {
+  grid-column: span 2;
+}
+.coaching-site .bento-icon-box {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--mint);
+  color: var(--forest);
+  display: grid;
+  place-items: center;
+  margin-bottom: 4px;
+}
+.coaching-site .bento-card h3 {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--ink);
+  letter-spacing: -0.02em;
+  margin: 0;
+}
+.coaching-site .bento-card p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--muted);
+  margin: 0;
+}
+.coaching-site .bento-chip {
+  align-self: flex-start;
+  margin-top: auto;
+  padding: 5px 12px;
+  border-radius: 20px;
+  background: #f1f7f4;
+  color: var(--forest);
+  font-size: 12.5px;
+  font-weight: 600;
+  border: 1px solid #dbe8e1;
+}
+.coaching-site .bento-wide-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+}
+.coaching-site .bento-subchips {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+.coaching-site .bento-subchips span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #f1f7f4;
+  border: 1px solid #dbe8e1;
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--forest);
+}
+
+/* Pricing Section */
+.coaching-site .pricing-section {
+  padding-block: 60px 40px;
+}
+.coaching-site .pricing-subhead {
+  font-size: 15.5px;
+  color: var(--muted);
+  margin-top: 8px;
+  text-align: center;
+}
+.coaching-site .pricing-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 480px));
+  justify-content: center;
+  gap: 24px;
+  margin-top: 36px;
+}
+.coaching-site .pricing-card {
+  background: var(--white);
+  border: 1.5px solid var(--line);
+  border-radius: 24px;
+  padding: 34px 30px;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.coaching-site .pricing-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 16px 36px rgba(20, 62, 56, 0.08);
+}
+.coaching-site .pricing-card.is-popular {
+  border-color: var(--forest);
+  box-shadow: 0 10px 30px rgba(20, 62, 56, 0.08);
+}
+.coaching-site .pricing-badge {
+  display: inline-block;
+  align-self: flex-start;
+  font-size: 12.5px;
+  font-weight: 600;
+  padding: 4px 12px;
+  border-radius: 20px;
+  background: #f1f7f4;
+  color: var(--forest);
+  margin-bottom: 12px;
+}
+.coaching-site .popular-badge {
+  background: var(--forest);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+.coaching-site .pricing-card h3 {
+  font-size: 21px;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.coaching-site .pricing-desc {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+.coaching-site .pricing-price {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 22px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.coaching-site .pricing-price strong {
+  font-size: 34px;
+  font-weight: 800;
+  color: var(--forest);
+  letter-spacing: -0.03em;
+}
+.coaching-site .pricing-price span {
+  font-size: 14px;
+  color: var(--muted);
+}
+.coaching-site .pricing-features {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  flex-grow: 1;
+}
+.coaching-site .pricing-features li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.coaching-site .pricing-features li svg {
+  color: #22c55e;
+  flex-shrink: 0;
+}
+.coaching-site .pricing-btn {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+  padding: 12px;
+  border-radius: 30px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+/* FAQ Accordion */
+.coaching-site .faq-subhead {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 8px;
+}
+.coaching-site .profile-subtitle {
+  font-size: 15px;
+  color: var(--muted);
+  margin-top: 6px;
+}
+.coaching-site .text-center {
+  text-align: center;
+}
+.coaching-site .section-subtitle {
+  font-size: 16px;
+  color: var(--muted);
+  margin: 10px auto 0;
+  max-width: 58ch;
+}
+
+/* Responsive adjustments */
+@media(max-width: 980px) {
+  .coaching-site .hero-highlights-bar {
+    grid-template-columns: repeat(2, 1fr);
+    margin-inline: var(--space);
+    width: auto;
+  }
+  .coaching-site .features-bento-grid {
+    grid-template-columns: 1fr;
+  }
+  .coaching-site .bento-card.is-wide {
+    grid-column: span 1;
+  }
+  .coaching-site .bento-wide-content {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .coaching-site .pricing-grid {
+    grid-template-columns: 1fr;
+    max-width: 480px;
+    margin-inline: auto;
+  }
+}
+@media(max-width: 640px) {
+  .coaching-site .hero-highlights-bar {
+    grid-template-columns: 1fr;
+  }
+  .coaching-site .modern-hero-copy {
+    padding: 110px 20px 20px;
+  }
+  .coaching-site .hero-cta-group {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .coaching-site .hero-primary-btn,
+  .coaching-site .hero-ghost-btn {
+    justify-content: center;
+    width: 100%;
+  }
+}
+

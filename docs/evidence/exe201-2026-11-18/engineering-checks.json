@@ -1,0 +1,48 @@
+{
+  "revision": "0ba9821e39e7cec559473e6aae3262e4294e33b7",
+  "environment": "isolated GitHub Actions loopback Supabase; synthetic only",
+  "qualityRun": {
+    "id": 44155536467,
+    "conclusion": "success"
+  },
+  "backendRun": {
+    "id": 44155536123,
+    "conclusion": "success"
+  },
+  "freshSql": {
+    "files": 13,
+    "assertions": 363,
+    "passed": true
+  },
+  "upgradeSql": {
+    "files": 13,
+    "assertions": 363,
+    "passed": true,
+    "legacyFingerprintsPreserved": true
+  },
+  "coreBrowser": {
+    "passed": 28,
+    "failed": 0,
+    "retries": 0
+  },
+  "demoBrowser": {
+    "passed": 4,
+    "failed": 0,
+    "retries": 0
+  },
+  "seed": {
+    "runs": 2,
+    "entries": 22,
+    "actualFinanceKpiUnchanged": true
+  },
+  "productionDeployed": false,
+  "windowsLocal": false,
+  "excerpts": [
+    "Files=13, Tests=363,  1 wallclock secs ( 0.05 usr  0.03 sys +  0.07 cusr  0.05 csys =  0.20 CPU)",
+    "Result: PASS",
+    "  28 passed (1.8m)",
+    "  4 passed (41.4s)",
+    "Files=13, Tests=363,  1 wallclock secs ( 0.05 usr  0.02 sys +  0.07 cusr  0.05 csys =  0.19 CPU)",
+    "Result: PASS"
+  ]
+}
