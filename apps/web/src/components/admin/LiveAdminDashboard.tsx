@@ -74,12 +74,7 @@ export default function LiveAdminDashboard({ snapshot: s }: { snapshot: AdminSna
 
   return (
     <div className="admin-content live-admin-dashboard" data-testid="live-admin-dashboard">
-      <p role="status" className="admin-status-bar">
-        <Database size={16} aria-hidden="true" />
-        <span>
-          <strong>Database trực tiếp · Cập nhật {date(s.checkedAt)}</strong> — Doanh thu thực tế loại trừ hoàn toàn giao dịch thử.
-        </span>
-      </p>
+
 
       {simulation.visibleTestRows > 0 && (
         <details className="admin-section" data-testid="demo-finance-summary">

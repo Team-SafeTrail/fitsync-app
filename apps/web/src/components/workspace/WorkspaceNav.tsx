@@ -12,12 +12,13 @@ export default function WorkspaceNav({isPt}:{isPt:boolean}) {
   const routes = isPt
    ? ["/workspace", "/workspace/today", "/workspace/calendar", "/workspace/chat", "/workspace/billing"]
    : ["/workspace", "/workspace/progress", "/workspace/calendar", "/workspace/chat"];
-  const timer = window.setTimeout(() => {
-   for (const route of routes) {
-    if (route !== path) router.prefetch(route);
-   }
-  }, 150);
-  return () => window.clearTimeout(timer);
+  
+  const timer = setTimeout(() => {
+    for (const route of routes) {
+      if (route !== path) router.prefetch(route);
+    }
+  }, 50);
+  return () => clearTimeout(timer);
  }, [isPt, path, router]);
 
  return <nav className="workspace-nav" aria-label="Điều hướng workspace">

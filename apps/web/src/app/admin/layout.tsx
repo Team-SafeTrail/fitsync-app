@@ -3,19 +3,12 @@ import Brand from "@/components/brand/Brand";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import {
-  Activity,
-  LayoutDashboard,
-  Users,
-  CreditCard,
   ShieldCheck,
-  ArrowUpRight,
   LogOut,
-  Home,
-  CheckCircle2,
-  Server
 } from "lucide-react";
 import { getWorkspaceViewer } from "@/features/workspace/data";
 import { logout } from "../auth/actions";
+import AdminNav from "@/components/admin/AdminNav";
 import "./admin.css";
 import DemoNotice from "@/components/workspace/DemoNotice";
 
@@ -53,24 +46,7 @@ export default async function AdminLayout({
           </Link>
           <span className="admin-portal-badge">Admin Console</span>
 
-          <nav className="admin-nav" aria-label="Menu quản trị">
-            <Link href="/admin" className="admin-nav-item active">
-              <LayoutDashboard size={18} />
-              <span>Tổng quan KPI</span>
-            </Link>
-            <a href="#finance-summary" className="admin-nav-item">
-              <CheckCircle2 size={18} />
-              <span>Tài chính thực tế</span>
-            </a>
-            <a href="#users-table" className="admin-nav-item">
-              <Users size={18} />
-              <span>Tài khoản hệ thống</span>
-            </a>
-            <a href="#transactions-table" className="admin-nav-item">
-              <CreditCard size={18} />
-              <span>Sổ thu chi</span>
-            </a>
-          </nav>
+          <AdminNav />
         </div>
 
         <div className="admin-sidebar-foot">

@@ -1,51 +1,52 @@
 import Link from "next/link";
+import { Check, Sparkles, Shield, Zap, Users, ArrowRight } from "lucide-react";
 
 export function IntakeJourney() {
   return (
-    <section className="landing-context visual-journey wrap" id="bat-dau" aria-labelledby="intake-heading">
+    <section className="landing-context visual-journey wrap" id="quy-trinh" aria-labelledby="intake-heading">
       <div className="context-heading compact-heading">
         <div>
-          <span className="landing-kicker">Quy trình 3 bước</span>
-          <h2 id="intake-heading">Từ buổi đầu. Đến lần tập tiếp theo.</h2>
+          <span className="landing-kicker">Quy trình vận hành</span>
+          <h2 id="intake-heading">3 bước đồng hành tinh gọn.</h2>
         </div>
-        <p>Tiếp nhận nhanh một lần. Mở đúng hồ sơ để đồng hành xuyên suốt.</p>
+        <p>Bắt đầu trong 30 giây. Kết nối đúng người, chuẩn dữ liệu ngay từ buổi đầu.</p>
       </div>
       <ol className="intake-steps">
         <li>
           <div className="journey-preview preview-person" aria-hidden="true">
             <span className="journey-avatar">KL</span>
             <strong>Khánh Linh</strong>
-            <span>Mục tiêu: Giữ nhịp tập đều</span>
-            <div className="preview-connection"><i /> Đã kết nối PT</div>
+            <span>Mục tiêu: Giảm mỡ & Giữ nhịp</span>
+            <div className="preview-connection"><i /> Đã liên kết PT</div>
           </div>
           <div>
-            <span className="journey-step">01 · Kết nối</span>
-            <h3>Tạo hồ sơ &amp; mời học viên</h3>
-            <p>Gửi liên kết mời một lần, tách biệt hoàn toàn dữ liệu theo cặp.</p>
+            <span className="journey-step">Bước 01</span>
+            <h3>Tạo hồ sơ &amp; Gửi link mời</h3>
+            <p>Tạo mục tiêu, thiết lập số buổi gói tập và gửi link kích hoạt 1 lần bảo mật cho học viên.</p>
           </div>
         </li>
         <li>
           <div className="journey-preview preview-report" aria-hidden="true">
-            <span>Phiếu đo → PT duyệt</span>
+            <span>Phiếu InBody · PT duyệt</span>
             <div><strong>70,4 <small>kg</small></strong><span>Cân nặng</span></div>
             <div className="preview-connection"><i /> Đã xác nhận</div>
           </div>
           <div>
-            <span className="journey-step">02 · Số đo</span>
-            <h3>Đối chiếu chỉ số InBody</h3>
-            <p>PT kiểm duyệt 5 chỉ số nền trước khi lưu vào biểu đồ tiến trình.</p>
+            <span className="journey-step">Bước 02</span>
+            <h3>Xác thực InBody &amp; Lên lịch</h3>
+            <p>PT đối chiếu và xác nhận 5 chỉ số đo trước khi lưu. Lên lịch hẹn tuần trực quan trên lưới.</p>
           </div>
         </li>
         <li>
           <div className="journey-preview preview-update" aria-hidden="true">
-            <span className="preview-bubble">Hôm nay em đã tập rồi ạ.</span>
+            <span className="preview-bubble">Hôm nay em đã hoàn thành bữa ăn & buổi tập!</span>
             <div className="preview-update-line"><span>Check-in</span><strong>Đã ghi nhận</strong></div>
             <div className="preview-update-line"><span>Gói PT</span><strong>8 / 12 buổi</strong></div>
           </div>
           <div>
-            <span className="journey-step">03 · Đồng hành</span>
-            <h3>Theo sát mỗi ngày</h3>
-            <p>Check-in, lịch tập chung, ghi chú và số buổi ngay trong một hồ sơ.</p>
+            <span className="journey-step">Bước 03</span>
+            <h3>Theo sát nhịp sinh hoạt</h3>
+            <p>Học viên check-in ảnh bữa ăn hàng ngày, nhận tin nhắn động viên và xem tiến trình rõ ràng.</p>
           </div>
         </li>
       </ol>
@@ -53,90 +54,55 @@ export function IntakeJourney() {
   );
 }
 
-const capabilities = [
-  ["Có trong workspace", "Hồ sơ & Lời mời", "Tạo, sửa, lưu trữ học viên; link mời dùng một lần và lịch sử chỉ số."],
-  ["Có trong workspace", "Check-in & Số buổi", "Check-in hằng ngày, ảnh riêng tư, membership và sổ buổi PT."],
-  ["Có trong workspace", "Chat & Lịch chung", "Trao đổi riêng tư, xếp lịch chung, đề nghị đổi/hủy có kiểm soát."],
-  ["Đang lên kế hoạch", "OCR đa hãng & App mở rộng", "Nhập tay và PT duyệt chạy độc lập; OCR tự động cần benchmark riêng."],
-];
-
-export function CapabilityStatus() {
+export function PricingSection() {
   return (
-    <section className="landing-context compact-band wrap" id="tinh-nang" aria-labelledby="capability-heading">
-      <div className="compact-band-header">
-        <div>
-          <span className="landing-kicker">Phạm vi hệ thống</span>
-          <h2 id="capability-heading">Rõ phần đã chạy. Minh bạch lộ trình.</h2>
-        </div>
-        <details className="capability-disclosure compact-disclosure">
-          <summary>Xem chi tiết trạng thái tính năng</summary>
-          <dl className="capability-list">
-            {capabilities.map(([status, title, description]) => (
-              <div key={title}>
-                <dt><span>{status}</span><strong>{title}</strong></dt>
-                <dd>{description}</dd>
-              </div>
-            ))}
-          </dl>
-        </details>
+    <section className="pricing-section wrap" id="bang-gia" aria-labelledby="pricing-heading">
+      <div className="section-heading text-center">
+        <span className="landing-kicker">Bảng giá minh bạch</span>
+        <h2 id="pricing-heading">Chọn gói phù hợp với quy mô của bạn.</h2>
+        <p className="pricing-subhead">Bắt đầu miễn phí hoàn toàn. Nâng cấp bất cứ khi nào bạn mở rộng tệp học viên.</p>
       </div>
-    </section>
-  );
-}
 
-export function ResearchSnapshot() {
-  return (
-    <section className="research-snapshot compact-research" aria-labelledby="research-heading">
-      <div className="wrap research-layout">
-        <div>
-          <span className="landing-kicker">Bài toán thực tế</span>
-          <h2 id="research-heading">Bắt đầu từ lắng nghe PT.</h2>
-          <p>Khảo sát 104 PT &amp; quản lý phòng tập tại Việt Nam.</p>
+      <div className="pricing-grid">
+        {/* Free Plan */}
+        <div className="pricing-card">
+          <div className="pricing-badge">Khởi đầu</div>
+          <h3>Gói Miễn Phí</h3>
+          <p className="pricing-desc">Dành cho PT mới bắt đầu hoặc quản lý tệp học viên trọng tâm.</p>
+          <div className="pricing-price">
+            <strong>0đ</strong>
+            <span>/ trọn đời</span>
+          </div>
+          <ul className="pricing-features">
+            <li><Check size={16} /> Tối đa <strong>3 học viên</strong> đang hoạt động</li>
+            <li><Check size={16} /> Đầy đủ 5 tính năng: Lịch, InBody, Check-in, Chat</li>
+            <li><Check size={16} /> Link mời học viên 1 lần bảo mật</li>
+            <li><Check size={16} /> Học viên luôn dùng miễn phí 100%</li>
+          </ul>
+          <Link href="/register" prefetch={true} className="button outline pricing-btn">
+            Tạo tài khoản Free
+          </Link>
         </div>
-        <div>
-          <dl className="research-counts compact-counts">
-            <div><dt>Tốn &gt;3 giờ/tuần cho việc giấy tờ</dt><dd>84<span>/104</span></dd></div>
-            <div><dt>Dùng Zalo/Messenger rời rạc</dt><dd>101<span>/104</span></dd></div>
-            <div><dt>Đang kèm từ 5 học viên trở lên</dt><dd>73<span>/104</span></dd></div>
-          </dl>
-          <details className="compact-research-note">
-            <summary>Nguồn và giới hạn khảo sát</summary>
-            <p>Tổng hợp từ 104 phiếu khảo sát FitSync (27/09/2026), không đại diện toàn bộ thị trường PT Việt Nam và không dùng làm số khách hàng thực tế.</p>
-          </details>
-        </div>
-      </div>
-    </section>
-  );
-}
 
-export function TeamDetails() {
-  return (
-    <details id="team">
-      <summary>Đội ngũ phát triển — Team SafeTrail (EXE201)</summary>
-      <dl className="team-roles compact-team-grid">
-        <div><dt>Huỳnh Quốc Việt</dt><dd>Product &amp; OCR</dd></div>
-        <div><dt>Lê Nguyễn Gia Hưng</dt><dd>Data &amp; Benchmark</dd></div>
-        <div><dt>Dương Quang Huy</dt><dd>Web &amp; Mobile UI</dd></div>
-        <div><dt>Diệp Khai</dt><dd>Backend, RLS &amp; Ops</dd></div>
-        <div><dt>Lê Văn Toàn</dt><dd>UI/UX &amp; Nội dung</dd></div>
-      </dl>
-    </details>
-  );
-}
-
-export function CoachingOffer() {
-  return (
-    <section className="coaching-offer compact-offer wrap" aria-labelledby="offer-heading">
-      <div className="offer-split-card">
-        <div className="offer-copy">
-          <span className="landing-kicker">Gói sử dụng</span>
-          <h2 id="offer-heading">Một workspace cho PT.<br />Miễn phí cho học viên.</h2>
-          <p>Gói Free tối đa 3 học viên đang hoạt động. Gói Pro 199.000đ/tháng không giới hạn hồ sơ.</p>
-        </div>
-        <div className="offer-relationship compact-relationship">
-          <div><span className="offer-role">Huấn luyện viên (PT)</span><strong>Quản lý &amp; Đồng hành</strong><span>Hồ sơ · InBody · Lịch · Ghi chú</span></div>
-          <span className="offer-link" aria-hidden="true">↔</span>
-          <div><span className="offer-role">Học viên</span><strong>Không gian cá nhân</strong><span>Check-in · Tiến trình · Lịch hẹn</span></div>
+        {/* Pro Plan */}
+        <div className="pricing-card is-popular">
+          <div className="pricing-badge popular-badge"><Sparkles size={14} /> Phổ biến nhất</div>
+          <h3>Gói Chuyên Nghiệp</h3>
+          <p className="pricing-desc">Dành cho Huấn luyện viên chuyên nghiệp kèm nhiều học viên cùng lúc.</p>
+          <div className="pricing-price">
+            <strong>199.000đ</strong>
+            <span>/ tháng</span>
+          </div>
+          <ul className="pricing-features">
+            <li><Check size={16} /> <strong>Không giới hạn</strong> số lượng học viên</li>
+            <li><Check size={16} /> Lưu trữ toàn bộ lịch sử chỉ số & hình ảnh bữa ăn</li>
+            <li><Check size={16} /> Cảnh báo học viên vắng mặt tự động</li>
+            <li><Check size={16} /> Tách biệt ghi chú chiến thuật riêng tư</li>
+            <li><Check size={16} /> Ưu tiên trải nghiệm tính năng OCR mở rộng</li>
+          </ul>
+          <Link href="/register" prefetch={true} className="button sun pricing-btn">
+            Bắt đầu dùng Pro <ArrowRight size={16} />
+          </Link>
         </div>
       </div>
     </section>

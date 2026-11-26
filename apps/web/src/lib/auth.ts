@@ -11,6 +11,19 @@ export const getCurrentUser = cache(async (): Promise<AuthenticatedUser | null> 
   if (!isSupabaseConfigured()) return null;
   const supabase = await createClient();
 
+  // Try fast session read from local SSR cookie first (zero network roundtrip)
+  try {
+    const { data: sessionData } = await supabase.auth.getSession();
+    if (sessionData?.session?.user?.id) {
+      return {
+        id: sessionData.session.user.id,
+        email: sessionData.session.user.email ?? undefined,
+      };
+    }
+  } catch {
+    // Continue to fallback if cookie reading fails
+  }
+
   const { data: claimsData, error: claimsError } = await supabase.auth.getClaims();
   const sub = claimsData?.claims?.sub;
   if (typeof sub === "string" && sub && !claimsError) {

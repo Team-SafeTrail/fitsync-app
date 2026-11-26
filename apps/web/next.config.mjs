@@ -3,8 +3,8 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
     staleTimes: {
-      dynamic: 30,
-      static: 180,
+      dynamic: 60,
+      static: 300,
     },
     serverActions: {
       bodySizeLimit: "12mb",
